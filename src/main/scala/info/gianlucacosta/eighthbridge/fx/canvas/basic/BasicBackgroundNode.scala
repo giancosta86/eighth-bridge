@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleDoubleProperty
 import info.gianlucacosta.eighthbridge.fx.canvas._
 import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualGraph
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
-import info.gianlucacosta.helios.fx.geometry.extensions.GeometryExtensions._
+import info.gianlucacosta.helios.fx.geometry.GeometryExtensions._
 
 import scalafx.Includes._
 import scalafx.geometry.{BoundingBox, Bounds, Point2D}

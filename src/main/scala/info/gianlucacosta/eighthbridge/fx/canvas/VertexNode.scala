@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.canvas
 
 import info.gianlucacosta.eighthbridge.graphs.point2point.visual.{VisualGraph, VisualLink, VisualVertex}
-import info.gianlucacosta.helios.fx.styles.PseudoClasses
+import info.gianlucacosta.helios.fx.css.PseudoClasses
 
 import scala.collection.JavaConversions._
 import scalafx.beans.property.ReadOnlyDoubleProperty

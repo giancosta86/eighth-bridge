@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleDoubleProperty
 
 import info.gianlucacosta.eighthbridge.fx.canvas.VertexNode
 import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualGraph
-import info.gianlucacosta.helios.fx.geometry.extensions.GeometryExtensions._
+import info.gianlucacosta.helios.fx.geometry.GeometryExtensions._
 
 import scalafx.Includes._
 import scalafx.geometry.Point2D

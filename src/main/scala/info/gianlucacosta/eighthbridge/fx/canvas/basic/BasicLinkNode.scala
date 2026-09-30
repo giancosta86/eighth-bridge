@@ -4,7 +4,7 @@ import java.util.UUID
 
 import info.gianlucacosta.eighthbridge.fx.canvas._
 import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualGraph
-import info.gianlucacosta.helios.fx.geometry.extensions.GeometryExtensions._
+import info.gianlucacosta.helios.fx.geometry.GeometryExtensions._
 import info.gianlucacosta.helios.fx.geometry.{DiagonalBounds, Segment}
 
 import scala.collection.JavaConversions._
