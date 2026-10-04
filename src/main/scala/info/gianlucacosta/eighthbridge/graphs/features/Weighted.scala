@@ -1,5 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.point2point.specific
 
+import scala.language.implicitConversions
+
 import info.gianlucacosta.helios.mathutils.Numbers
 
 /**
@@ -33,4 +35,28 @@ trait Weighted[T <: Weighted[T]] {
     * @return The resulting new object
     */
   def weightCopy(weight: Double): T
+}
+
+
+object Weighted {
+  implicit def toIterableWeightedExtensions[T <: Weighted[T]](iterable: Iterable[T]) =
+    IterableWeightedExtensions(iterable)
+}
+
+case class IterableWeightedExtensions[T <: Weighted[T]](private val iterable: Iterable[T]) {
+  def sortedByWeight: List[T] = {
+    iterable
+      .toList
+      .sortBy(_.weight)
+  }
+
+  def minWeight: Option[Double] =
+    sortedByWeight
+      .headOption
+      .map(_.weight)
+
+  def maxWeight: Option[Double] =
+    sortedByWeight
+      .lastOption
+      .map(_.weight)
 }
