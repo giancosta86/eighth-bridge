@@ -39,23 +39,23 @@ trait Weighted[T <: Weighted[T]] {
 
 
 object Weighted {
-  implicit def toIterableWeightedExtensions[T <: Weighted[T]](iterable: Iterable[T]) =
+  implicit def toIterableWeightedExtensions[T <: Weighted[T]](iterable: Iterable[T]): IterableWeightedExtensions[T] =
     IterableWeightedExtensions(iterable)
 }
 
 case class IterableWeightedExtensions[T <: Weighted[T]](private val iterable: Iterable[T]) {
-  def sortedByWeight: List[T] = {
+  val sortedByWeight: List[T] = {
     iterable
       .toList
       .sortBy(_.weight)
   }
 
-  def minWeight: Option[Double] =
+  val minWeight: Option[Double] =
     sortedByWeight
       .headOption
       .map(_.weight)
 
-  def maxWeight: Option[Double] =
+  val maxWeight: Option[Double] =
     sortedByWeight
       .lastOption
       .map(_.weight)

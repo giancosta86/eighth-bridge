@@ -21,12 +21,12 @@ trait Named[T <: Named[T]] {
 }
 
 object Named {
-  implicit def toIterableNamedExtensions[T <: Named[T]](iterable: Iterable[T]) =
+  implicit def toIterableNamedExtensions[T <: Named[T]](iterable: Iterable[T]): IterableNamedExtensions[T] =
     IterableNamedExtensions(iterable)
 }
 
 case class IterableNamedExtensions[T <: Named[T]](private val iterable: Iterable[T]) {
-  def sortedByName: List[T] = {
+  val sortedByName: List[T] = {
     iterable
       .toList
       .sortBy(_.name)
