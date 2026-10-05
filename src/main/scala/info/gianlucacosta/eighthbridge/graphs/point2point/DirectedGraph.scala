@@ -1,27 +1,25 @@
 package info.gianlucacosta.eighthbridge.graphs.point2point
 
+import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
+
 import java.util.UUID
-
-import info.gianlucacosta.eighthbridge.graphs._
-
 import scala.annotation.tailrec
 
 /**
-  * A directed graph - that is, a graph whose Binding type parameter resolved to ArcBinding
+  * A directed graph - that is, a graph whose Binding type parameter resolves to ArcBinding
   *
   * @tparam V Vertex type
   * @tparam L Link type
-  * @tparam G
   */
 trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   /**
-    * Adds a link from <i>sourceVertex</i> to <i>targetVertex</i>
-    *
-    * @param sourceVertex
-    * @param targetVertex
-    * @param link
-    * @return
-    */
+   * Adds a link from <i>sourceVertex</i> to <i>targetVertex</i>
+   *
+   * @param sourceVertex
+   * @param targetVertex
+   * @param link
+   * @return
+   */
   def addLink(sourceVertex: V, targetVertex: V, link: L): this.type = {
     val binding = new ArcBinding(
       id = UUID.randomUUID(),
@@ -33,79 +31,216 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
     addLink(link, binding)
   }
 
+  @transient
+  private lazy val topologyCache: Set[(V, L, V)] =
+    createTopologyCache()
+
+  private def createTopologyCache(): Set[(V, L, V)] =
+    createTopologyCache(
+      Set(),
+      bindings.toList
+    )
+
+  @tailrec
+  private def createTopologyCache(
+                                   cumulatedCache: Set[(V, L, V)],
+                                   bindingsToVisit: List[ArcBinding]
+                                 ): Set[(V, L, V)] = {
+    bindingsToVisit match {
+      case headBinding :: tailBindings =>
+        val cacheEntry =
+          createTopologyCacheEntry(headBinding)
+
+        createTopologyCache(
+          cumulatedCache
+            + cacheEntry,
+
+          tailBindings
+        )
+
+      case Nil =>
+        cumulatedCache
+    }
+  }
+
+
+  private def createTopologyCacheEntry(binding: ArcBinding): (V, L, V) = {
+    val sourceVertex =
+      getVertex(binding.sourceVertexId).get
+
+    val arc =
+      getLink(binding.linkId).get
+
+    val targetVertex =
+      getVertex(binding.targetVertexId).get
+
+    (sourceVertex, arc, targetVertex)
+  }
+
+  @transient
+  private lazy val exitingVertexesMap: Map[V, Set[V]] =
+    topologyCache
+      .map { case (sourceVertex, _, targetVertex) =>
+        sourceVertex -> targetVertex
+      }
+      .groupBy(_._1)
+      .mapValues(_.map(_._2))
+
+
+  @transient
+  private lazy val exitingArcsMap: Map[V, Set[L]] =
+    topologyCache
+      .map { case (sourceVertex, arc, _) =>
+        sourceVertex -> arc
+      }
+      .groupBy(_._1)
+      .mapValues(_.map(_._2))
+
+
+  @transient
+  private lazy val enteringVertexesMap: Map[V, Set[V]] =
+    topologyCache
+      .map { case (sourceVertex, _, targetVertex) =>
+        targetVertex -> sourceVertex
+      }
+      .groupBy(_._1)
+      .mapValues(_.map(_._2))
+
+
+  @transient
+  private lazy val enteringArcsMap: Map[V, Set[L]] =
+    topologyCache
+      .map { case (_, arc, targetVertex) =>
+        targetVertex -> arc
+      }
+      .groupBy(_._1)
+      .mapValues(_.map(_._2))
+
+
+  @transient
+  private lazy val arcsBetweenPairsMap: Map[(V, V), Set[L]] =
+    topologyCache
+      .map { case (sourceVertex, arc, targetVertex) =>
+        (sourceVertex -> targetVertex) -> arc
+      }
+      .groupBy(_._1)
+      .mapValues(_.map(_._2))
+
   /**
-    * Returns the set of the vertexes that are source of any arc entering the given vertex
-    *
-    * @param vertex
-    * @return
-    */
-  def getEnteringVertexes(vertex: V): Set[V] =
-    bindings
-      .filter(binding => binding.targetVertexId == vertex.id)
-      .map(binding => getVertex(binding.sourceVertexId).get)
-
-
-  /**
-    * Returns the set of the vertexes that are target of any arc exiting the given vertex
-    *
-    * @param vertex
-    * @return
-    */
-  def getExitingVertexes(vertex: V): Set[V] =
-    bindings
-      .filter(binding => binding.sourceVertexId == vertex.id)
-      .map(binding => getVertex(binding.targetVertexId).get)
-
-
-  /**
-    * Returns all the arcs starting in sourceVertex and ending in targetVertex
-    *
-    * @param sourceVertex The source vertex
-    * @param targetVertex The target vertex
-    * @return A set of links
-    */
-  def getArcsBetween(sourceVertex: V, targetVertex: V): Set[L] =
-    bindings
-      .filter(binding =>
-        binding.sourceVertexId == sourceVertex.id
-          &&
-          binding.targetVertexId == targetVertex.id
-      )
-      .map(binding => getLink(binding.linkId).get)
-
-
-  /**
-    * Returns the set of arcs whose target is the given vertex
-    *
-    * @param vertex
-    * @return
-    */
-  def getEnteringArcs(vertex: V): Set[L] =
-    bindings
-      .filter(_.targetVertexId == vertex.id)
-      .map(binding => getLink(binding.linkId).get)
-
-
-  /**
-    * Returns the set of arcs whose source is the given vertex
-    *
-    * @param vertex
-    * @return
-    */
-  def getExitingArcs(vertex: V): Set[L] =
-    bindings
-      .filter(_.sourceVertexId == vertex.id)
-      .map(binding => getLink(binding.linkId).get)
-
-
-  /**
-    * The vertexes having no entering arcs
-    */
+   * The vertexes having no entering arcs
+   */
   @transient
   lazy val rootVertexes: Set[V] =
     vertexes
       .filter(getEnteringArcs(_).isEmpty)
 
+
+  /**
+   * Returns the set of vertexes that are target of any arc exiting the given vertex
+   *
+   * @param vertex
+   * @return
+   */
+  def getExitingVertexes(vertex: V): Set[V] =
+    exitingVertexesMap.getOrElse(
+      vertex,
+      Set()
+    )
+
+  /**
+   * Returns the set of arcs whose source is the given vertex
+   *
+   * @param vertex
+   * @return
+   */
+  def getExitingArcs(vertex: V): Set[L] =
+    exitingArcsMap.getOrElse(
+      vertex,
+      Set()
+    )
+
+  /**
+   * Returns the set of vertexes that are source of any arc entering the given vertex
+   *
+   * @param vertex
+   * @return
+   */
+  def getEnteringVertexes(vertex: V): Set[V] =
+    enteringVertexesMap.getOrElse(
+      vertex,
+      Set()
+    )
+
+  /**
+   * Returns the set of arcs whose target is the given vertex
+   *
+   * @param vertex
+   * @return
+   */
+  def getEnteringArcs(vertex: V): Set[L] =
+    enteringArcsMap.getOrElse(
+      vertex,
+      Set()
+    )
+
+  /**
+   * Returns all the arcs starting in sourceVertex and ending in targetVertex
+   *
+   * @param sourceVertex The source vertex
+   * @param targetVertex The target vertex
+   * @return A set of links
+   */
+  def getArcsBetween(sourceVertex: V, targetVertex: V): Set[L] =
+    arcsBetweenPairsMap.getOrElse(
+      sourceVertex -> targetVertex,
+      Set()
+    )
+
+  def getArcsBetween(vertexPair: (V, V)): Set[L] =
+    getArcsBetween(vertexPair._1, vertexPair._2)
+
+  override def getLinksBetween(linkVertexes: Set[V]): Set[L] = {
+    require(linkVertexes.size == 2)
+
+    val firstVertex = linkVertexes.head
+
+    val secondVertex = linkVertexes.last
+
+    val firstToSecondArcs =
+      arcsBetweenPairsMap.getOrElse(
+        firstVertex -> secondVertex,
+        Set()
+      )
+
+    val secondToFirstArcs =
+      arcsBetweenPairsMap.getOrElse(
+        secondVertex -> firstVertex,
+        Set()
+      )
+
+    firstToSecondArcs ++
+      secondToFirstArcs
+  }
+
+  override def getLinksBetween(linkVertexes: V*): Set[L] =
+    getLinksBetween(linkVertexes.toSet)
+
+  override def getLinkedVertexes(vertex: V): Set[V] = {
+    val enteringVertexes =
+      enteringVertexesMap.getOrElse(
+        vertex,
+        Set()
+      )
+
+    val exitingVertexes =
+      exitingVertexesMap.getOrElse(
+        vertex,
+        Set()
+      )
+
+    enteringVertexes ++
+      exitingVertexes
+  }
 
   /**
     * Function passed to fold(). Its signature must be:
@@ -144,49 +279,10 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
     * @tparam T
     * @return
     */
-  def fold[T](initialValue: T)(vertexProcessor: VertexFoldProcessor[T]): T = {
-
-    val boundObjects: Set[(V, L, V)] =
-      bindings
-        .map(binding => {
-          val sourceVertex =
-            getVertex(binding.sourceVertexId).get
-
-          val link =
-            getLink(binding.linkId).get
-
-          val targetVertex =
-            getVertex(binding.targetVertexId).get
-
-
-          (sourceVertex, link, targetVertex)
-        })
-
-
-    val enteringArcsMap: Map[V, Set[L]] =
-      boundObjects
-        .groupBy(_._3)
-        .mapValues(_.map(tuple => tuple._2))
-
-
-    val exitingArcsMap: Map[V, Set[L]] =
-      boundObjects
-        .groupBy(_._1)
-        .mapValues(_.map(tuple => tuple._2))
-
-
-    val exitingVertexesMap: Map[V, Set[V]] =
-      boundObjects
-        .groupBy(_._1)
-        .mapValues(_.map(tuple => tuple._3))
-
-
+  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T]): T = {
     fold(
       initialValue,
-      vertexProcessor,
-      enteringArcsMap,
-      exitingArcsMap,
-      exitingVertexesMap,
+      vertexFoldProcessor,
       Set(),
       Set(),
       rootVertexes.toList
@@ -198,9 +294,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   protected[point2point] final def fold[T](
                                             cumulatedValue: T,
                                             vertexFoldProcessor: VertexFoldProcessor[T],
-                                            enteringArcsMap: Map[V, Set[L]],
-                                            exitingArcsMap: Map[V, Set[L]],
-                                            exitingVertexesMap: Map[V, Set[V]],
                                             expandedVertexes: Set[V],
                                             exploredArcs: Set[L],
                                             fringe: List[V]
@@ -211,48 +304,30 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
           enteringArcsMap.getOrElse(currentVertex, Set())
 
 
-        if (!currentEnteringArcs.subsetOf(exploredArcs))
-          fold(
-            cumulatedValue,
-
-            vertexFoldProcessor,
-
-            enteringArcsMap,
-            exitingArcsMap,
-            exitingVertexesMap,
-
-            expandedVertexes,
-
-            exploredArcs,
-
-            fringeTail
-          )
-        else {
+        if (currentEnteringArcs.subsetOf(exploredArcs)) {
           val currentExitingArcs =
             exitingArcsMap.getOrElse(currentVertex, Set())
 
           val currentExitingVertexes =
             exitingVertexesMap.getOrElse(currentVertex, Set())
 
-
           val newCumulatedValue =
             vertexFoldProcessor(
               cumulatedValue,
+
               currentEnteringArcs,
+
               currentVertex,
+
               currentExitingArcs,
+
               currentExitingVertexes
             )
-
 
           fold(
             newCumulatedValue,
 
             vertexFoldProcessor,
-
-            enteringArcsMap,
-            exitingArcsMap,
-            exitingVertexesMap,
 
             expandedVertexes +
               currentVertex,
@@ -262,6 +337,18 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
             (fringeTail ++
               currentExitingVertexes).distinct
+          )
+        } else {
+          fold(
+            cumulatedValue,
+
+            vertexFoldProcessor,
+
+            expandedVertexes,
+
+            exploredArcs,
+
+            fringeTail
           )
         }
 
