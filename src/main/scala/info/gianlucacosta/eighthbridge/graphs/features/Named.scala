@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.point2point.specific
+package info.gianlucacosta.eighthbridge.graphs.features
 
 import scala.language.implicitConversions
 
@@ -11,7 +11,8 @@ trait Named {
   /**
     * Copies the current object, giving it a new name.
     *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method.
+    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method,
+    * casting it via `.toInstanceOf[this.type]`.
     *
     * @param name The new name
     * @return The resulting new object
@@ -19,22 +20,9 @@ trait Named {
   def nameCopy(name: String): this.type
 }
 
-/*
-object Named {
-  implicit def toIterableNamedExtensions[T <: Named](iterable: Iterable[T]): IterableNamedExtensions[T] =
-    IterableNamedExtensions(iterable)
-}
-
-case class IterableNamedExtensions[T <: Named](private val iterable: Iterable[T]) {
-  val sortedByName: List[T] = {
-    iterable
-      .toList
-      .sortBy(_.name)
-  }
-}*/
 
 object Named {
-  implicit class IterableNamedExtensions[T <: Named](private val iterable: Iterable[T]) {
+  implicit class IterableOfNamedExtensions[T <: Named](private val iterable: Iterable[T]) {
     val sortedByName: List[T] = {
       iterable
         .toList

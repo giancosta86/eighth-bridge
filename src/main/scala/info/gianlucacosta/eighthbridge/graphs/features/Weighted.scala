@@ -30,7 +30,8 @@ trait Weighted {
   /**
     * Copies the current object, giving it a new weight.
     *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method.
+    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method,
+    * casting via `.toInstanceOf[this.type]`.
     *
     * @param weight The new weight
     * @return The resulting new object
@@ -59,16 +60,25 @@ object Weighted {
   }
 
   implicit class WeightedGraphExtensions[V <: Vertex, L <: Link with Weighted, B <: Binding](graph: Graph[V, L, B]) {
-    def getMinWeightBetween(vertexes: V*): Double = {
-      graph.getLinksBetween(vertexes.toSet)
+    def getMinWeightBetween(vertexes: Set[V]): Double = {
+      graph.getLinksBetween(vertexes)
         .minWeight
         .getOrElse(Double.PositiveInfinity)
     }
+
+    def getMinWeightBetween(vertexes: V*): Double =
+      graph.getMinWeightBetween(vertexes.toSet)
   }
 
   implicit class WeightedDirectedGraphExtensions[V <: Vertex, L <: Link with Weighted](graph: DirectedGraph[V, L]) {
     def getMinArcWeightBetween(sourceVertex: V, targetVertex: V): Double = {
       graph.getArcsBetween(sourceVertex, targetVertex)
+        .minWeight
+        .getOrElse(Double.PositiveInfinity)
+    }
+
+    def getMinArcWeightBetween(vertexPair: (V,V)): Double = {
+      graph.getArcsBetween(vertexPair._1, vertexPair._2)
         .minWeight
         .getOrElse(Double.PositiveInfinity)
     }

@@ -18,6 +18,6 @@ case class ArcBinding(id: UUID, sourceVertexId: UUID, targetVertexId: UUID, link
   override val vertexIds: Set[UUID] =
     Set(sourceVertexId, targetVertexId)
 
-  val orderedVertexIds: (UUID, UUID) =
+  val vertexPair: (UUID, UUID) =
     (sourceVertexId, targetVertexId)
 }
