@@ -262,8 +262,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   /**
     * Returns the set of links connecting the given vertexes
     *
-    * @param linkVertexes A set of vertexes
-    * @return A set of links connecting the vertexes
+    * @param linkVertexes A set of vertexes.
+    * @return A set of links connecting **all and only** the given vertexes.
     */
   def getLinksBetween(linkVertexes: Set[V]): Set[L] = {
     val linkVertexIds =
@@ -271,7 +271,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
     bindings
       .filter(binding =>
-        linkVertexIds.subsetOf(binding.vertexIds)
+        linkVertexIds == binding.vertexIds
       )
       .map(binding =>
         getLink(binding.linkId).get
