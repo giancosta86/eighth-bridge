@@ -21,7 +21,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   /**
     * Copies the graph.
     *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method.
+    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method,
+    * casting it via `.toInstance[this.type]`.
     *
     * @param vertexes The new vertexes
     * @param links    The new links
@@ -58,6 +59,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     graphCopy(vertexes = newVertexes)
   }
 
+  def addVertexes(vertexesToAdd: V*): this.type =
+    addVertexes(vertexesToAdd.toSet)
 
   def addVertex(vertex: V): this.type =
     addVertexes(Set(vertex))
@@ -75,6 +78,9 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     graphCopy(vertexes = newVertexes)
   }
 
+
+  def replaceVertexes(replacingVertexes: V*): this.type =
+    replaceVertexes(replacingVertexes.toSet)
 
   def replaceVertex(vertex: V): this.type =
     replaceVertexes(Set(vertex))
@@ -112,6 +118,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     )
   }
 
+  def removeVertexes(vertexes: V*): this.type =
+    removeVertexes(vertexes.toSet)
 
   def removeVertex(vertex: V): this.type =
     removeVertexes(Set(vertex))
@@ -188,6 +196,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     graphCopy(links = newLinks)
   }
 
+  def replaceLinks(replacingLinks: L*): this.type =
+    replaceLinks(replacingLinks.toSet)
 
   def replaceLink(replacingLink: L): this.type =
     replaceLinks(Set(replacingLink))
@@ -215,6 +225,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     )
   }
 
+  def removeLinks(linksToRemove: L*): this.type =
+    removeLinks(linksToRemove.toSet)
 
   def removeLink(linkToRemove: L): this.type =
     removeLinks(Set(linkToRemove))
