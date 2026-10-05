@@ -99,8 +99,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
       vertexesToRemove.map(_.id)
 
 
-    val (newBindings, bindingsToRemove) = bindings.partition(
-      _.vertexIds.intersect(vertexIdsToRemove).isEmpty
+    val (newBindings, bindingsToRemove) = bindings.partition(bindings =>
+      (bindings.vertexIds & vertexIdsToRemove).isEmpty
     )
 
     val linkIdsToRemove =

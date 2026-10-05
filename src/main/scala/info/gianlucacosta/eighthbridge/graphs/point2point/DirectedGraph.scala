@@ -14,14 +14,9 @@ import scala.annotation.tailrec
 trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   /**
    * Adds a link from <i>sourceVertex</i> to <i>targetVertex</i>
-   *
-   * @param sourceVertex
-   * @param targetVertex
-   * @param link
-   * @return
    */
   def addLink(sourceVertex: V, targetVertex: V, link: L): this.type = {
-    val binding = new ArcBinding(
+    val binding = ArcBinding(
       id = UUID.randomUUID(),
       sourceVertexId = sourceVertex.id,
       targetVertexId = targetVertex.id,
@@ -137,9 +132,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
   /**
    * Returns the set of vertexes that are target of any arc exiting the given vertex
-   *
-   * @param vertex
-   * @return
    */
   def getExitingVertexes(vertex: V): Set[V] =
     exitingVertexesMap.getOrElse(
@@ -149,9 +141,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
   /**
    * Returns the set of arcs whose source is the given vertex
-   *
-   * @param vertex
-   * @return
    */
   def getExitingArcs(vertex: V): Set[L] =
     exitingArcsMap.getOrElse(
@@ -161,9 +150,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
   /**
    * Returns the set of vertexes that are source of any arc entering the given vertex
-   *
-   * @param vertex
-   * @return
    */
   def getEnteringVertexes(vertex: V): Set[V] =
     enteringVertexesMap.getOrElse(
@@ -173,9 +159,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
   /**
    * Returns the set of arcs whose target is the given vertex
-   *
-   * @param vertex
-   * @return
    */
   def getEnteringArcs(vertex: V): Set[L] =
     enteringArcsMap.getOrElse(
@@ -273,11 +256,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
     *
     * <li>Any cycle in the graph will cause a CircularGraphException</li>
     * </ul>
-    *
-    * @param initialValue
-    * @param vertexProcessor
-    * @tparam T
-    * @return
     */
   def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T]): T = {
     fold(
