@@ -78,7 +78,7 @@ object Weighted {
     }
 
     def getMinArcWeightBetween(vertexPair: (V,V)): Double = {
-      graph.getArcsBetween(vertexPair._1, vertexPair._2)
+      graph.getArcsBetween(vertexPair)
         .minWeight
         .getOrElse(Double.PositiveInfinity)
     }

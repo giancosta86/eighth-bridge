@@ -291,7 +291,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
 
   @tailrec
-  protected[point2point] final def fold[T](
+  private final def fold[T](
                                             cumulatedValue: T,
                                             vertexFoldProcessor: VertexFoldProcessor[T],
                                             expandedVertexes: Set[V],

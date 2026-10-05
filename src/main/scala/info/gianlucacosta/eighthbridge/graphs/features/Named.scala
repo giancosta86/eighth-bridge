@@ -22,11 +22,16 @@ trait Named {
 
 
 object Named {
-  implicit class IterableOfNamedExtensions[T <: Named](private val iterable: Iterable[T]) {
+  implicit class IterableOfNamedExtensions[T <: Named](iterable: Iterable[T]) {
     val sortedByName: List[T] = {
       iterable
         .toList
         .sortBy(_.name)
     }
+  }
+
+  implicit class PairOfNamedExtensions[T <: Named, U <: Named](pair: (T, U)) {
+    val namePair: (String, String) =
+      (pair._1.name, pair._2.name)
   }
 }
