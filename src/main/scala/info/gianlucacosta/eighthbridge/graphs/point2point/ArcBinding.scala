@@ -15,9 +15,9 @@ import info.gianlucacosta.eighthbridge.graphs.Binding
 case class ArcBinding(id: UUID, sourceVertexId: UUID, targetVertexId: UUID, linkId: UUID)
   extends Binding {
 
-  val orderedVertexIds: (UUID, UUID) =
-    (sourceVertexId, targetVertexId)
-
   override val vertexIds: Set[UUID] =
     Set(sourceVertexId, targetVertexId)
+
+  val orderedVertexIds: (UUID, UUID) =
+    (sourceVertexId, targetVertexId)
 }

@@ -197,7 +197,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   @tailrec
   protected[point2point] final def fold[T](
                                             cumulatedValue: T,
-                                            vertexProcessor: VertexFoldProcessor[T],
+                                            vertexFoldProcessor: VertexFoldProcessor[T],
                                             enteringArcsMap: Map[V, Set[L]],
                                             exitingArcsMap: Map[V, Set[L]],
                                             exitingVertexesMap: Map[V, Set[V]],
@@ -215,7 +215,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
           fold(
             cumulatedValue,
 
-            vertexProcessor,
+            vertexFoldProcessor,
 
             enteringArcsMap,
             exitingArcsMap,
@@ -236,7 +236,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
 
           val newCumulatedValue =
-            vertexProcessor(
+            vertexFoldProcessor(
               cumulatedValue,
               currentEnteringArcs,
               currentVertex,
@@ -248,7 +248,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
           fold(
             newCumulatedValue,
 
-            vertexProcessor,
+            vertexFoldProcessor,
 
             enteringArcsMap,
             exitingArcsMap,
