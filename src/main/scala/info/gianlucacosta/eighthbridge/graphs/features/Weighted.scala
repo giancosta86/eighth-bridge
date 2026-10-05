@@ -1,14 +1,15 @@
-package info.gianlucacosta.eighthbridge.graphs.point2point.specific
+package info.gianlucacosta.eighthbridge.graphs.features
+
+import info.gianlucacosta.eighthbridge.graphs.point2point.DirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.{Binding, Graph, Link, Vertex}
 
 import scala.language.implicitConversions
-
 import info.gianlucacosta.helios.mathutils.Numbers
 
 /**
   * Object having a weight
   */
-trait Weighted[T <: Weighted[T]] {
-  this: T =>
+trait Weighted {
   def minWeight: Double
 
   def maxWeight: Double
@@ -34,29 +35,44 @@ trait Weighted[T <: Weighted[T]] {
     * @param weight The new weight
     * @return The resulting new object
     */
-  def weightCopy(weight: Double): T
+  def weightCopy(weight: Double): this.type
 }
 
 
 object Weighted {
-  implicit def toIterableWeightedExtensions[T <: Weighted[T]](iterable: Iterable[T]): IterableWeightedExtensions[T] =
-    IterableWeightedExtensions(iterable)
-}
+  implicit class IterableOfWeightedExtensions[T <: Weighted](iterable: Iterable[T]) {
+    val sortedByWeight: List[T] = {
+      iterable
+        .toList
+        .sortBy(_.weight)
+    }
 
-case class IterableWeightedExtensions[T <: Weighted[T]](private val iterable: Iterable[T]) {
-  val sortedByWeight: List[T] = {
-    iterable
-      .toList
-      .sortBy(_.weight)
+    val minWeight: Option[Double] =
+      sortedByWeight
+        .headOption
+        .map(_.weight)
+
+    val maxWeight: Option[Double] =
+      sortedByWeight
+        .lastOption
+        .map(_.weight)
   }
 
-  val minWeight: Option[Double] =
-    sortedByWeight
-      .headOption
-      .map(_.weight)
+  implicit class WeightedGraphExtensions[V <: Vertex, L <: Link with Weighted, B <: Binding](graph: Graph[V, L, B]) {
+    def getMinWeightBetween(vertexes: V*): Double = {
+      graph.getLinksBetween(vertexes.toSet)
+        .minWeight
+        .getOrElse(Double.PositiveInfinity)
+    }
+  }
 
-  val maxWeight: Option[Double] =
-    sortedByWeight
-      .lastOption
-      .map(_.weight)
+  implicit class WeightedDirectedGraphExtensions[V <: Vertex, L <: Link with Weighted](graph: DirectedGraph[V, L]) {
+    def getMinArcWeightBetween(sourceVertex: V, targetVertex: V): Double = {
+      graph.getArcsBetween(sourceVertex, targetVertex)
+        .minWeight
+        .getOrElse(Double.PositiveInfinity)
+    }
+  }
 }
+
+

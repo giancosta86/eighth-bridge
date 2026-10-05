@@ -6,7 +6,7 @@ import info.gianlucacosta.eighthbridge.graphs.point2point.visual.{VisualGraph, V
   * JavaFX node rendering the graph background and the selection rectangle
   */
 trait BackgroundNode[
-V <: VisualVertex[V],
-L <: VisualLink[L],
-G <: VisualGraph[V, L, G]
+V <: VisualVertex,
+L <: VisualLink,
+G <: VisualGraph[V, L]
 ] extends GraphCanvasNode[V, L, G]

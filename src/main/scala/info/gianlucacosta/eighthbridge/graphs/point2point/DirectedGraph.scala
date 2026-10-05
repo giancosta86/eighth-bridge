@@ -13,8 +13,7 @@ import scala.annotation.tailrec
   * @tparam L Link type
   * @tparam G
   */
-trait DirectedGraph[V <: Vertex, L <: Link, G <: DirectedGraph[V, L, G]] extends Graph[V, L, ArcBinding, G] {
-  this: G =>
+trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   /**
     * Adds a link from <i>sourceVertex</i> to <i>targetVertex</i>
     *
@@ -23,7 +22,7 @@ trait DirectedGraph[V <: Vertex, L <: Link, G <: DirectedGraph[V, L, G]] extends
     * @param link
     * @return
     */
-  def addLink(sourceVertex: V, targetVertex: V, link: L): G = {
+  def addLink(sourceVertex: V, targetVertex: V, link: L): this.type = {
     val binding = new ArcBinding(
       id = UUID.randomUUID(),
       sourceVertexId = sourceVertex.id,

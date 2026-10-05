@@ -9,9 +9,9 @@ import scalafx.geometry.Dimension2D
   * Controller providing behavior for GraphCanvas
   */
 trait GraphCanvasController[
-V <: VisualVertex[V],
-L <: VisualLink[L],
-G <: VisualGraph[V, L, G]
+V <: VisualVertex,
+L <: VisualLink,
+G <: VisualGraph[V, L]
 ] {
   def createBackgroundNode(graphCanvas: GraphCanvas[V, L, G]): BackgroundNode[V, L, G]
 

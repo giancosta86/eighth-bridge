@@ -8,7 +8,7 @@ import scalafx.geometry.Point2D
 /**
   * Controller only showing a graph - totally preventing interactivity
   */
-class ReadOnlyController[V <: BasicVertex[V], L <: BasicLink[L], G <: VisualGraph[V, L, G]](val renderDirected: Boolean) extends BasicController[V, L, G] {
+class ReadOnlyController[V <: BasicVertex, L <: BasicLink, G <: VisualGraph[V, L]](val renderDirected: Boolean) extends BasicController[V, L, G] {
   override def canDrawSelectionRectangle: Boolean =
     false
 

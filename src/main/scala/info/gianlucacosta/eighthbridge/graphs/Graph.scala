@@ -11,8 +11,7 @@ import java.util.UUID
   * @tparam L Link type
   * @tparam B Binding type
   */
-trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
-  this: G =>
+trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   def vertexes: Set[V]
 
   def links: Set[L]
@@ -29,10 +28,10 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
     * @param bindings The new bindings
     * @return The resulting new graph
     */
-  protected def graphCopy(vertexes: Set[V] = vertexes, links: Set[L] = links, bindings: Set[B] = bindings): G
+  protected def graphCopy(vertexes: Set[V] = vertexes, links: Set[L] = links, bindings: Set[B] = bindings): this.type
 
   @transient
-  private lazy val vertexMap =
+  private lazy val vertexMap: Map[UUID, V] =
     vertexes.map(vertex =>
       vertex.id -> vertex
     )
@@ -40,14 +39,14 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
 
 
   @transient
-  private lazy val linkMap =
+  private lazy val linkMap: Map[UUID, L] =
     links.map(
       link => link.id -> link
     )
       .toMap
 
 
-  def addVertexes(vertexesToAdd: Set[V]): G = {
+  def addVertexes(vertexesToAdd: Set[V]): this.type = {
     val newVertexes =
       vertexes ++ vertexesToAdd
 
@@ -60,11 +59,11 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def addVertex(vertex: V) =
+  def addVertex(vertex: V): this.type =
     addVertexes(Set(vertex))
 
 
-  def replaceVertexes(replacingVertexes: Set[V]): G = {
+  def replaceVertexes(replacingVertexes: Set[V]): this.type = {
     val newVertexes =
       vertexes.diff(replacingVertexes) ++ replacingVertexes
 
@@ -77,11 +76,11 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def replaceVertex(vertex: V) =
+  def replaceVertex(vertex: V): this.type =
     replaceVertexes(Set(vertex))
 
 
-  def removeVertexes(vertexesToRemove: Set[V]): G = {
+  def removeVertexes(vertexesToRemove: Set[V]): this.type = {
     val newVertexes =
       vertexes.diff(vertexesToRemove)
 
@@ -98,7 +97,6 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
       binding => binding.vertexIds.intersect(vertexIdsToRemove).isEmpty
     )
 
-
     val linkIdsToRemove =
       bindingsToRemove.map(_.linkId)
 
@@ -106,7 +104,6 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
       links.filter(link =>
         !linkIdsToRemove.contains(link.id)
       )
-
 
     graphCopy(
       vertexes = newVertexes,
@@ -116,11 +113,11 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def removeVertex(vertex: V) =
+  def removeVertex(vertex: V): this.type =
     removeVertexes(Set(vertex))
 
 
-  def addLinks(bindingMapToAdd: Map[L, B]): G = {
+  def addLinks(bindingMapToAdd: Map[L, B]): this.type = {
     bindingMapToAdd.foreach {
       case (link, binding) =>
         require(
@@ -173,13 +170,13 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def addLink(linkToAdd: L, bindingToAdd: B) =
+  def addLink(linkToAdd: L, bindingToAdd: B): this.type =
     addLinks(
       Map(linkToAdd -> bindingToAdd)
     )
 
 
-  def replaceLinks(replacingLinks: Set[L]): G = {
+  def replaceLinks(replacingLinks: Set[L]): this.type = {
     val newLinks =
       links.diff(replacingLinks) ++ replacingLinks
 
@@ -192,11 +189,11 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def replaceLink(replacingLink: L) =
+  def replaceLink(replacingLink: L): this.type =
     replaceLinks(Set(replacingLink))
 
 
-  def removeLinks(linksToRemove: Set[L]): G = {
+  def removeLinks(linksToRemove: Set[L]): this.type = {
     val newLinks =
       links.diff(linksToRemove)
 
@@ -219,7 +216,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def removeLink(linkToRemove: L) =
+  def removeLink(linkToRemove: L): this.type =
     removeLinks(Set(linkToRemove))
 
 
@@ -288,6 +285,4 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
       .filter(binding => binding.vertexIds.contains(vertex.id))
       .flatMap(binding => binding.vertexIds - vertex.id)
       .map(vertexId => getVertex(vertexId).get)
-
-
 }

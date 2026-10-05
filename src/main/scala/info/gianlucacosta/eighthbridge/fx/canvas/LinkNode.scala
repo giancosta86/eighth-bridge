@@ -9,9 +9,9 @@ import scala.collection.JavaConversions._
   * JavaFX node rendering a VisualLink
   */
 trait LinkNode[
-V <: VisualVertex[V],
-L <: VisualLink[L],
-G <: VisualGraph[V, L, G]
+V <: VisualVertex,
+L <: VisualLink,
+G <: VisualGraph[V, L]
 ] extends GraphCanvasNode[V, L, G] {
 
   private var _link: L = _

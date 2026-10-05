@@ -26,9 +26,9 @@ import scalafx.scene.shape.Rectangle
   * @param initialGraph The initial graph shown by the canvas
   */
 class GraphCanvas[
-V <: VisualVertex[V],
-L <: VisualLink[L],
-G <: VisualGraph[V, L, G]
+V <: VisualVertex,
+L <: VisualLink,
+G <: VisualGraph[V, L]
 ](val controller: GraphCanvasController[V, L, G], initialGraph: G) extends Pane {
   require(controller != null)
   require(initialGraph != null)

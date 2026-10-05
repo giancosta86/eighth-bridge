@@ -13,7 +13,7 @@ import scalafx.geometry.Point2D
   * @tparam V Vertex
   * @tparam L Link
   */
-trait InteractiveEditingController[V <: BasicVertex[V], L <: BasicLink[L], G <: VisualGraph[V, L, G]] extends BasicController[V, L, G] {
+trait InteractiveEditingController[V <: BasicVertex, L <: BasicLink, G <: VisualGraph[V, L]] extends BasicController[V, L, G] {
   override def setVertexSelectedState(graph: G, vertex: V, selected: Boolean): Option[G] =
     Some(
       graph.replaceVertex(vertex.visualCopy(selected = selected))
@@ -92,7 +92,7 @@ trait InteractiveEditingController[V <: BasicVertex[V], L <: BasicLink[L], G <: 
     while (true) {
       try {
         val editResult =
-          interactiveVertexEditing(graph, vertex.asInstanceOf[V])
+          interactiveVertexEditing(graph, vertex)
 
         if (editResult.isEmpty) {
           return None
@@ -129,7 +129,7 @@ trait InteractiveEditingController[V <: BasicVertex[V], L <: BasicLink[L], G <: 
     while (true) {
       try {
         val editResult =
-          interactiveLinkEditing(graph, link.asInstanceOf[L])
+          interactiveLinkEditing(graph, link)
 
         if (editResult.isEmpty) {
           return None

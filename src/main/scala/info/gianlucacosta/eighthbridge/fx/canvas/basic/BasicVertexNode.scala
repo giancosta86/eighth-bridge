@@ -96,9 +96,9 @@ object BasicVertexNode {
   * Default, interactive implementation of VertexNode
   */
 class BasicVertexNode[
-V <: BasicVertex[V],
-L <: BasicLink[L],
-G <: VisualGraph[V, L, G]
+V <: BasicVertex,
+L <: BasicLink,
+G <: VisualGraph[V, L]
 ](
    val graphCanvas: GraphCanvas[V, L, G],
    padding: Double = BasicVertexNode.DefaultPadding

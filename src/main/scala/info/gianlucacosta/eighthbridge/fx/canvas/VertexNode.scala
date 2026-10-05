@@ -10,9 +10,9 @@ import scalafx.beans.property.ReadOnlyDoubleProperty
   * JavaFX node rendering a VisualVertex
   */
 trait VertexNode[
-V <: VisualVertex[V],
-L <: VisualLink[L],
-G <: VisualGraph[V, L, G]
+V <: VisualVertex,
+L <: VisualLink,
+G <: VisualGraph[V, L]
 ] extends GraphCanvasNode[V, L, G] {
   private var _vertex: V = _
 

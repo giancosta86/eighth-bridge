@@ -7,8 +7,7 @@ import scalafx.geometry.Point2D
 /**
   * A link for VisualGraph
   */
-trait VisualLink[L <: VisualLink[L]] extends Link {
-  this: L =>
+trait VisualLink extends Link {
   def internalPoints: List[Point2D]
 
   def selected: Boolean
@@ -20,5 +19,5 @@ trait VisualLink[L <: VisualLink[L]] extends Link {
   def visualCopy(
                   internalPoints: List[Point2D] = internalPoints,
                   selected: Boolean = selected,
-                  labelCenter: Option[Point2D] = labelCenter): L
+                  labelCenter: Option[Point2D] = labelCenter): this.type
 }

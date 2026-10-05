@@ -5,8 +5,7 @@ import scala.language.implicitConversions
 /**
   * Object having a name
   */
-trait Named[T <: Named[T]] {
-  this: T =>
+trait Named {
   def name: String
 
   /**
@@ -17,18 +16,29 @@ trait Named[T <: Named[T]] {
     * @param name The new name
     * @return The resulting new object
     */
-  def nameCopy(name: String): T
+  def nameCopy(name: String): this.type
 }
 
+/*
 object Named {
-  implicit def toIterableNamedExtensions[T <: Named[T]](iterable: Iterable[T]): IterableNamedExtensions[T] =
+  implicit def toIterableNamedExtensions[T <: Named](iterable: Iterable[T]): IterableNamedExtensions[T] =
     IterableNamedExtensions(iterable)
 }
 
-case class IterableNamedExtensions[T <: Named[T]](private val iterable: Iterable[T]) {
+case class IterableNamedExtensions[T <: Named](private val iterable: Iterable[T]) {
   val sortedByName: List[T] = {
     iterable
       .toList
       .sortBy(_.name)
+  }
+}*/
+
+object Named {
+  implicit class IterableNamedExtensions[T <: Named](private val iterable: Iterable[T]) {
+    val sortedByName: List[T] = {
+      iterable
+        .toList
+        .sortBy(_.name)
+    }
   }
 }

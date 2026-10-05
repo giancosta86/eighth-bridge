@@ -23,9 +23,9 @@ object BasicController {
   * or one of the mixin subtraits.
   */
 trait BasicController[
-V <: BasicVertex[V],
-L <: BasicLink[L],
-G <: VisualGraph[V, L, G]
+V <: BasicVertex,
+L <: BasicLink,
+G <: VisualGraph[V, L]
 ] extends GraphCanvasController[V, L, G] {
   override def createBackgroundNode(graphCanvas: GraphCanvas[V, L, G]): BackgroundNode[V, L, G] =
     new BasicBackgroundNode(graphCanvas)

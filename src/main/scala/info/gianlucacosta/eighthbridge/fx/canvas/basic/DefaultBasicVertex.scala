@@ -13,12 +13,11 @@ case class DefaultBasicVertex(
                                center: Point2D = Point2D.Zero,
                                selected: Boolean = false,
                                id: UUID = UUID.randomUUID()
-                             ) extends BasicVertex[DefaultBasicVertex] {
+                             ) extends BasicVertex {
 
-
-  override def visualCopy(center: Point2D, selected: Boolean): DefaultBasicVertex =
+  override def visualCopy(center: Point2D, selected: Boolean): this.type =
     copy(
       center = center,
       selected = selected
-    )
+    ).asInstanceOf[this.type]
 }

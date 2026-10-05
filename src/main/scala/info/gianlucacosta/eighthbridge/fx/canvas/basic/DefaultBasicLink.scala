@@ -14,17 +14,15 @@ case class DefaultBasicLink(
                              selected: Boolean = false,
                              labelCenter: Option[Point2D] = None,
                              id: UUID = UUID.randomUUID()
-                           ) extends BasicLink[DefaultBasicLink] {
-
-
+                           ) extends BasicLink {
   override def visualCopy(
                            internalPoints: List[Point2D],
                            selected: Boolean,
                            labelCenter: Option[Point2D]
-                         ): DefaultBasicLink =
+                         ): this.type =
     copy(
       internalPoints = internalPoints,
       selected = selected,
       labelCenter = labelCenter
-    )
+    ).asInstanceOf[this.type]
 }

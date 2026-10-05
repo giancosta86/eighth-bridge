@@ -11,11 +11,12 @@ trait Binding extends GraphElement {
     */
   val vertexIds: Set[UUID]
 
+  //TODO! Del this! Keep it only in ArcBinding!
   /**
-    * The sorted list containing the ids of the attached vertexes.
-    * The actual sort order depends on the specific binding implementation.
+    * The ordered list containing the ids of the attached vertexes.
+    * The actual order depends on the specific binding implementation.
     */
-  val sortedVertexIds: List[UUID]
+  val orderedVertexIds: List[UUID]
 
   /**
     * The id of the attached link

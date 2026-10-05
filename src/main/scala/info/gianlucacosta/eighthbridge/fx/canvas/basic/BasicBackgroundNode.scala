@@ -25,9 +25,9 @@ object BasicBackgroundNode {
   * Default, interactive implementation of BackgroundNode
   */
 class BasicBackgroundNode[
-V <: BasicVertex[V],
-L <: BasicLink[L],
-G <: VisualGraph[V, L, G]
+V <: BasicVertex,
+L <: BasicLink,
+G <: VisualGraph[V, L]
 ](val graphCanvas: GraphCanvas[V, L, G])
   extends Group
     with BackgroundNode[V, L, G]

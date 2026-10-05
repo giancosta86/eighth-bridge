@@ -7,8 +7,7 @@ import scalafx.geometry.Point2D
 /**
   * A vertex for VisualGraph
   */
-trait VisualVertex[V <: VisualVertex[V]] extends Vertex {
-  this: V =>
+trait VisualVertex extends Vertex {
   def center: Point2D
 
   def selected: Boolean
@@ -16,5 +15,5 @@ trait VisualVertex[V <: VisualVertex[V]] extends Vertex {
   def styleClasses: List[String]
 
   def visualCopy(center: Point2D = center,
-                 selected: Boolean = selected): V
+                 selected: Boolean = selected): this.type
 }

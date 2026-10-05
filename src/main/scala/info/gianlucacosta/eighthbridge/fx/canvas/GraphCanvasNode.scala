@@ -8,9 +8,9 @@ import scalafx.scene.Node
   * Generic JavaFX node rendering a graph element
   */
 trait GraphCanvasNode[
-V <: VisualVertex[V],
-L <: VisualLink[L],
-G <: VisualGraph[V, L, G]
+V <: VisualVertex,
+L <: VisualLink,
+G <: VisualGraph[V, L]
 ] extends Node {
   /**
     * The graph canvas owning this UI node

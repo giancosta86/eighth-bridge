@@ -20,9 +20,9 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
   * @tparam G
   */
 trait BasicVertexNodeMixin[
-V <: BasicVertex[V],
-L <: BasicLink[L],
-G <: VisualGraph[V, L, G]
+V <: BasicVertex,
+L <: BasicLink,
+G <: VisualGraph[V, L]
 ] extends BasicGraphCanvasNode[V, L, G]
   with VertexNode[V, L, G] {
   private var dragAnchor: Point2D = _

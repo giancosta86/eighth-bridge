@@ -9,9 +9,7 @@ import info.gianlucacosta.eighthbridge.graphs.point2point.DirectedGraph
   * based on arc bindings - therefore, it's up to the renderer to choose whether to draw it
   * with edges instead of arcs.
   */
-trait VisualGraph[V <: VisualVertex[V], L <: VisualLink[L], G <: VisualGraph[V, L, G]] extends DirectedGraph[V, L, G] {
-  this: G =>
-
+trait VisualGraph[V <: VisualVertex, L <: VisualLink] extends DirectedGraph[V, L] {
   @transient
   lazy val selectedVertexes: Set[V] =
     vertexes.filter(vertex => vertex.selected)
@@ -23,12 +21,12 @@ trait VisualGraph[V <: VisualVertex[V], L <: VisualLink[L], G <: VisualGraph[V, 
 
 
   @transient
-  lazy val selectAll =
+  lazy val selectAll: this.type =
     setSelection(vertexes, links)
 
 
   @transient
-  lazy val deselectAll =
+  lazy val deselectAll: this.type =
     setSelection(Set(), Set())
 
 
@@ -37,15 +35,16 @@ trait VisualGraph[V <: VisualVertex[V], L <: VisualLink[L], G <: VisualGraph[V, 
     selectedVertexes.isEmpty && selectedLinks.isEmpty
 
 
-  def setSelection(selectionVertexes: Set[V] = Set(), selectionLinks: Set[L] = Set()): G =
-    replaceVertexes(
-      vertexes.map(vertex =>
-        vertex.visualCopy(selected = selectionVertexes.contains(vertex))
-      )
+  def setSelection(selectionVertexes: Set[V] = Set(), selectionLinks: Set[L] = Set()): this.type = {
+    var updatedVertexes: Set[V] = vertexes.map(vertex =>
+      vertex.visualCopy(selected = selectionVertexes.contains(vertex))
     )
-      .replaceLinks(
-        links.map(link =>
-          link.visualCopy(selected = selectionLinks.contains(link))
-        )
-      )
+
+    var updatedLinks: Set[L] = links.map(link =>
+      link.visualCopy(selected = selectionLinks.contains(link))
+    )
+
+    replaceVertexes(updatedVertexes)
+      .replaceLinks(updatedLinks)
+  }
 }

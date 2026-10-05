@@ -10,12 +10,9 @@ import scala.annotation.tailrec
   *
   * @tparam V Vertex type
   * @tparam L Link type
-  * @tparam G
   */
-trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link, G <: TopologyCacheDirectedGraph[V, L, G]]
-  extends DirectedGraph[V, L, G] {
-  this: G =>
-
+trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
+  extends DirectedGraph[V, L] {
   @transient
   private lazy val topologyCache: Set[(V, L, V)] =
     createTopologyCache()

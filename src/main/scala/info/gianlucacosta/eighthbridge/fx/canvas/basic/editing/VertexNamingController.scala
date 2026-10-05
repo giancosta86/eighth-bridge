@@ -17,7 +17,7 @@ import scalafx.geometry.Point2D
   * @tparam V Vertex
   * @tparam L Link
   */
-trait VertexNamingController[V <: BasicVertex[V] with Named[V], L <: BasicLink[L], G <: VisualGraph[V, L, G]]
+trait VertexNamingController[V <: BasicVertex with Named, L <: BasicLink, G <: VisualGraph[V, L]]
   extends InteractiveEditingController[V, L, G] {
   /**
     * The first index used when creating vertexes

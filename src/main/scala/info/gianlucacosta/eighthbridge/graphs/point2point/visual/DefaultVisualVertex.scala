@@ -19,9 +19,9 @@ case class DefaultVisualVertex(
                                 styleClasses: List[String] = List(),
 
                                 id: UUID = UUID.randomUUID()
-                              ) extends VisualVertex[DefaultVisualVertex] {
+                              ) extends VisualVertex {
 
-  override def visualCopy(center: Point2D, selected: Boolean): DefaultVisualVertex =
+  override def visualCopy(center: Point2D, selected: Boolean): this.type =
     copy(center = center,
-      selected = selected)
+      selected = selected).asInstanceOf[this.type]
 }
