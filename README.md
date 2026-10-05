@@ -60,9 +60,7 @@ EighthBridge is designed to be simple and minimalist; however, we could now go t
 
 * **GraphCanvas**: the core ScalaFX component for interactive rendering. On construction, it requires a **GraphCanvasController** - telling how to draw graph elements as JavaFX nodes and how to handle user interactions - as well as an initial *VisualGraph*, which gets replaced by new instances as the controller provides them in response to the user.
 
-* **DefaultVisualGraph**, **DefaultVisualVertex** and **DefaultVisualLink** are default implementations of the visual traits
-
-* **fx.canvas.basic** is a very important package providing default implementations of the ScalaFX nodes for rendering graph elements, as well as **BasicController**, a fine-grained controller employed by such components to handle user interaction.
+* **fx.canvas.basic** is a very important package providing default implementations of the ScalaFX nodes for rendering graph elements, as well as **BasicController**, a fine-grained controller employed by such components to handle user interaction. In particular, **DefaultBasicVertex** and **DefaultBasicLink** can be used to set up a custom **VisualGraph** implementation.
 
 * **fx.canvas.basic.editing** is a package containing the utility trait **InteractiveEditingController** and its sub-traits
 
