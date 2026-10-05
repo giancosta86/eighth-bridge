@@ -32,12 +32,12 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
                                  ): Set[(V, L, V)] = {
     bindingsToVisit match {
       case headBinding :: tailBindings =>
-        val headBindingCache =
-          createTopologyCache(headBinding)
+        val cacheEntry =
+          createTopologyCacheEntry(headBinding)
 
         createTopologyCache(
           cumulatedCache
-            + headBindingCache,
+            + cacheEntry,
 
           tailBindings
         )
@@ -48,7 +48,7 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
   }
 
 
-  private def createTopologyCache(binding: ArcBinding): (V, L, V) = {
+  private def createTopologyCacheEntry(binding: ArcBinding): (V, L, V) = {
     val sourceVertex =
       getVertex(binding.sourceVertexId).get
 
@@ -58,7 +58,6 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
     val targetVertex =
       getVertex(binding.targetVertexId).get
 
-
     (sourceVertex, arc, targetVertex)
   }
 
@@ -66,15 +65,9 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
   @transient
   private lazy val exitingVertexesMap: Map[V, Set[V]] =
     topologyCache
-      .map(cacheItem => {
-        val sourceVertex =
-          cacheItem._1
-
-        val targetVertex =
-          cacheItem._3
-
+      .map { case (sourceVertex, _, targetVertex) =>
         sourceVertex -> targetVertex
-      })
+      }
       .groupBy(_._1)
       .mapValues(_.map(_._2))
 
@@ -82,15 +75,9 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
   @transient
   private lazy val exitingArcsMap: Map[V, Set[L]] =
     topologyCache
-      .map(cacheItem => {
-        val sourceVertex =
-          cacheItem._1
-
-        val arc =
-          cacheItem._2
-
+      .map { case (sourceVertex, arc, _) =>
         sourceVertex -> arc
-      })
+      }
       .groupBy(_._1)
       .mapValues(_.map(_._2))
 
@@ -98,15 +85,9 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
   @transient
   private lazy val enteringVertexesMap: Map[V, Set[V]] =
     topologyCache
-      .map(cacheItem => {
-        val sourceVertex =
-          cacheItem._1
-
-        val targetVertex =
-          cacheItem._3
-
+      .map { case (sourceVertex, _, targetVertex) =>
         targetVertex -> sourceVertex
-      })
+      }
       .groupBy(_._1)
       .mapValues(_.map(_._2))
 
@@ -114,15 +95,9 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
   @transient
   private lazy val enteringArcsMap: Map[V, Set[L]] =
     topologyCache
-      .map(cacheItem => {
-        val targetVertex =
-          cacheItem._3
-
-        val arc =
-          cacheItem._2
-
+      .map { case (_, arc, targetVertex) =>
         targetVertex -> arc
-      })
+      }
       .groupBy(_._1)
       .mapValues(_.map(_._2))
 
@@ -130,18 +105,9 @@ trait TopologyCacheDirectedGraph[V <: Vertex, L <: Link]
   @transient
   private lazy val arcsBetweenMap: Map[(V, V), Set[L]] =
     topologyCache
-      .map(cacheItem => {
-        val sourceVertex =
-          cacheItem._1
-
-        val arc =
-          cacheItem._2
-
-        val targetVertex =
-          cacheItem._3
-
+      .map { case (sourceVertex, arc, targetVertex) =>
         (sourceVertex -> targetVertex) -> arc
-      })
+      }
       .groupBy(_._1)
       .mapValues(_.map(_._2))
 
