@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.canvas.basic
 
-import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualLink
+import info.gianlucacosta.eighthbridge.fx.canvas.VisualLink
 
 /**
   * Link dedicated to the "basic" package

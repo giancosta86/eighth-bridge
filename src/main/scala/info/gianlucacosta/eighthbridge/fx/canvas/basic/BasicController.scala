@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.canvas.basic
 
 import info.gianlucacosta.eighthbridge.fx.canvas._
-import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualGraph
 import info.gianlucacosta.helios.fx.Includes._
 
 import scalafx.geometry.{Dimension2D, Point2D}

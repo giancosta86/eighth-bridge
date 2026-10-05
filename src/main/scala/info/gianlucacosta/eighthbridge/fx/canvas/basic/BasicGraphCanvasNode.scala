@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.canvas.basic
 
-import info.gianlucacosta.eighthbridge.fx.canvas.GraphCanvasNode
-import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualGraph
+import info.gianlucacosta.eighthbridge.fx.canvas.{GraphCanvasNode, VisualGraph}
 
 trait BasicGraphCanvasNode[V <: BasicVertex, L <: BasicLink, G <: VisualGraph[V, L]]
   extends GraphCanvasNode[V, L, G] {

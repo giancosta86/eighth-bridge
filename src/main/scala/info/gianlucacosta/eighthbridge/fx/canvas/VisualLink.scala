@@ -1,7 +1,6 @@
-package info.gianlucacosta.eighthbridge.graphs.point2point.visual
+package info.gianlucacosta.eighthbridge.fx.canvas
 
 import info.gianlucacosta.eighthbridge.graphs.Link
-
 import scalafx.geometry.Point2D
 
 /**

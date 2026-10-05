@@ -5,7 +5,6 @@ import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 
 import info.gianlucacosta.eighthbridge.graphs.point2point.ArcBinding
-import info.gianlucacosta.eighthbridge.graphs.point2point.visual.{VisualGraph, VisualLink, VisualVertex}
 
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}

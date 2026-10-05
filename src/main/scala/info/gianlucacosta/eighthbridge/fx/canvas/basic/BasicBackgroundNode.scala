@@ -3,7 +3,6 @@ package info.gianlucacosta.eighthbridge.fx.canvas.basic
 import javafx.beans.property.SimpleDoubleProperty
 
 import info.gianlucacosta.eighthbridge.fx.canvas._
-import info.gianlucacosta.eighthbridge.graphs.point2point.visual.VisualGraph
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import info.gianlucacosta.helios.fx.Includes._
 
