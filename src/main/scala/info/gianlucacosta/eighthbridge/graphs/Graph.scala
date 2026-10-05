@@ -68,7 +68,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
   def replaceVertexes(replacingVertexes: Set[V]): this.type = {
     val newVertexes =
-      vertexes.diff(replacingVertexes) ++ replacingVertexes
+      vertexes -- replacingVertexes ++ replacingVertexes
 
     require(
       newVertexes.size == vertexes.size,
@@ -88,7 +88,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type = {
     val newVertexes =
-      vertexes.diff(vertexesToRemove)
+      vertexes -- vertexesToRemove
 
     require(
       newVertexes.size == vertexes.size - vertexesToRemove.size,
@@ -100,7 +100,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
     val (newBindings, bindingsToRemove) = bindings.partition(
-      binding => binding.vertexIds.intersect(vertexIdsToRemove).isEmpty
+      _.vertexIds.intersect(vertexIdsToRemove).isEmpty
     )
 
     val linkIdsToRemove =
@@ -154,12 +154,9 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
       )
     })
 
+    val newLinks = links ++ linksToAdd
 
-    val newLinks =
-      links.union(linksToAdd)
-
-    val newBindings =
-      bindings.union(bindingsToAdd)
+    val newBindings = bindings ++ bindingsToAdd
 
     require(
       newLinks.size == links.size + linksToAdd.size,
@@ -186,7 +183,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
   def replaceLinks(replacingLinks: Set[L]): this.type = {
     val newLinks =
-      links.diff(replacingLinks) ++ replacingLinks
+      links -- replacingLinks ++ replacingLinks
 
     require(
       newLinks.size == links.size,
@@ -205,7 +202,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
   def removeLinks(linksToRemove: Set[L]): this.type = {
     val newLinks =
-      links.diff(linksToRemove)
+      links -- linksToRemove
 
     require(
       newLinks.size == links.size - linksToRemove.size,
@@ -253,13 +250,13 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     bindings
       .flatMap(binding =>
         binding.vertexIds.map(vertexId =>
-          getVertex(vertexId).get
+          vertexMap(vertexId)
         )
       )
 
   @transient
   lazy val unlinkedVertexes: Set[V] =
-    vertexes.diff(linkedVertexes)
+    vertexes -- linkedVertexes
 
 
   /**
@@ -296,5 +293,5 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
     bindings
       .filter(binding => binding.vertexIds.contains(vertex.id))
       .flatMap(binding => binding.vertexIds - vertex.id)
-      .map(vertexId => getVertex(vertexId).get)
+      .map(vertexId => vertexMap(vertexId))
 }
