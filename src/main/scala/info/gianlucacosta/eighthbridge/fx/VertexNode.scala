@@ -37,7 +37,6 @@ G <: VisualGraph[V, L]
     styleClass.setAll("vertex")
     styleClass.addAll(vertex.styleClasses)
 
-
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
       vertex.selected

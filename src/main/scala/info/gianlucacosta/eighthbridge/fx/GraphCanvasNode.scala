@@ -3,7 +3,7 @@ package info.gianlucacosta.eighthbridge.fx
 import scalafx.scene.Node
 
 /**
-  * Generic JavaFX node rendering a graph element
+  * Generic JavaFX node rendering a graph element into GraphCanvas.
   */
 trait GraphCanvasNode[
 V <: VisualVertex,
