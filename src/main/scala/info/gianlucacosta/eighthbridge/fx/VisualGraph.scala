@@ -3,10 +3,10 @@ package info.gianlucacosta.eighthbridge.fx
 import info.gianlucacosta.eighthbridge.graphs.point2point.DirectedGraph
 
 /**
-  * Graph dedicated to rendering; it is especially useful in combination with GraphCanvas.
+  * Graph dedicated to rendering within GraphCanvas.
   *
   * Since such a graph is designed to be interactively drawn by users, it is necessarily
-  * based on arc bindings - therefore, it's up to the renderer to choose whether to draw it
+  * based on arc bindings - therefore, it's up to the controller to choose whether to draw it
   * with edges instead of arcs.
   */
 trait VisualGraph[V <: VisualVertex, L <: VisualLink] extends DirectedGraph[V, L] {

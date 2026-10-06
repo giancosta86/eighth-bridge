@@ -13,13 +13,13 @@ trait VisualVertex extends Vertex {
 
   def selected: Boolean
 
-  //TODO! Should I copy these, too?
-  def styleClasses: List[String]
+  def styleClasses: Set[String]
 
   def visualCopy(
                   text: String = text,
                   center: Point2D = center,
-                 selected: Boolean = selected): this.type
+                  selected: Boolean = selected,
+                  styleClasses: Set[String] = styleClasses): this.type
 
   override def toString: String =
     text
