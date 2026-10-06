@@ -18,21 +18,19 @@ trait Weighted {
 
   checkWeight()
 
+  //TODO! Should the check really be performed here? Or in the controller instead?
   /**
     * Ensures the weight is in the range [minWeight; maxWeight], throwing an IllegalArgumentException in case of errors
     */
   private def checkWeight(): Unit = {
     require(
       minWeight <= weight && weight <= maxWeight,
-      s"Weight must be in [${Numbers.smartString(minWeight)}; ${Numbers.smartString(maxWeight)}"
+      s"Weight must be in [${Numbers.smartString(minWeight)}; ${Numbers.smartString(maxWeight)}]"
     )
   }
 
   /**
     * Copies the current object, giving it a new weight.
-    *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method,
-    * casting via `.toInstanceOf[this.type]`.
     *
     * @param weight The new weight
     * @return The resulting new object

@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
 trait NonNegativeWeighted extends Weighted {
-  override def minWeight: Double = 0
-  override def maxWeight: Double = Double.PositiveInfinity
+  override val minWeight: Double = 0
+  override val maxWeight: Double = Double.PositiveInfinity
 }
