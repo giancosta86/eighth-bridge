@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx.canvas.controllers
 
-import info.gianlucacosta.eighthbridge.fx.canvas.basic.BasicController
 import info.gianlucacosta.eighthbridge.fx.canvas.{GraphCanvas, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 import scalafx.geometry.Point2D

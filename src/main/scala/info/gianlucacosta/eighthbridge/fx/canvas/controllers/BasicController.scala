@@ -1,8 +1,7 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
+package info.gianlucacosta.eighthbridge.fx.canvas.controllers
 
 import info.gianlucacosta.eighthbridge.fx.canvas._
 import info.gianlucacosta.helios.fx.Includes._
-
 import scalafx.geometry.{Dimension2D, Point2D}
 
 
@@ -27,15 +26,15 @@ L <: VisualLink,
 G <: VisualGraph[V, L]
 ] extends GraphCanvasController[V, L, G] {
   override def createBackgroundNode(graphCanvas: GraphCanvas[V, L, G]): BackgroundNode[V, L, G] =
-    new BasicBackgroundNode(graphCanvas)
+    new DefaultBackgroundNode(graphCanvas)
 
 
   override def createVertexNode(graphCanvas: GraphCanvas[V, L, G], vertex: V): VertexNode[V, L, G] =
-    new BasicVertexNode(graphCanvas)
+    new DefaultVertexNode(graphCanvas)
 
 
   override def createLinkNode(graphCanvas: GraphCanvas[V, L, G], sourceVertex: V, targetVertex: V, link: L): LinkNode[V, L, G] =
-    new BasicLinkNode(graphCanvas, sourceVertex.id, targetVertex.id)
+    new DefaultLinkNode(graphCanvas, sourceVertex.id, targetVertex.id)
 
 
   def createVertex(graph: G, center: Point2D): Option[G]

@@ -1,8 +1,7 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
+package info.gianlucacosta.eighthbridge.fx.canvas
 
-import javafx.beans.property.SimpleDoubleProperty
-import info.gianlucacosta.eighthbridge.fx.canvas.{VertexNode, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
+import javafx.beans.property.SimpleDoubleProperty
 import scalafx.Includes._
 import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
@@ -16,11 +15,11 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
   * @tparam L
   * @tparam G
   */
-trait BasicVertexNodeMixin[
+trait DefaultVertexNodeMixin[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
-] extends BasicGraphCanvasNode[V, L, G]
+] extends DefaultGraphCanvasNode[V, L, G]
   with VertexNode[V, L, G] {
   private var dragAnchor: Point2D = _
 

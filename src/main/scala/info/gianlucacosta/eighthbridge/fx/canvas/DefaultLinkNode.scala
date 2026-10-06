@@ -1,18 +1,16 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
+package info.gianlucacosta.eighthbridge.fx.canvas
 
-import java.util.UUID
-
-import info.gianlucacosta.eighthbridge.fx.canvas._
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.{DiagonalBounds, Segment}
-
-import scala.collection.JavaConversions._
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D, VPos}
 import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
 import scalafx.scene.shape._
 import scalafx.scene.text.Text
+
+import java.util.UUID
+import scala.collection.JavaConversions._
 
 
 /**
@@ -21,14 +19,14 @@ import scalafx.scene.text.Text
   * @param sourceVertexId
   * @param targetVertexId
   */
-class BasicLinkNode[
+class DefaultLinkNode[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val graphCanvas: GraphCanvas[V, L, G], val sourceVertexId: UUID, val targetVertexId: UUID)
   extends Group
     with LinkNode[V, L, G]
-    with BasicGraphCanvasNode[V, L, G] {
+    with DefaultGraphCanvasNode[V, L, G] {
 
   protected class LinkSegment(indexOfNewInternalPoint: Int) extends Segment {
     styleClass.add("line")

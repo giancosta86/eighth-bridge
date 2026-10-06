@@ -1,8 +1,5 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
+package info.gianlucacosta.eighthbridge.fx.canvas
 
-import info.gianlucacosta.eighthbridge.fx.canvas._
-
-import scala.collection.JavaConversions._
 import scalafx.Includes._
 import scalafx.beans.property.ReadOnlyDoubleProperty
 import scalafx.geometry.Dimension2D
@@ -12,8 +9,10 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.TextAlignment
 import scalafx.scene.{Group, Scene}
 
+import scala.collection.JavaConversions._
 
-object BasicVertexNode {
+
+object DefaultVertexNode {
   val DefaultPadding: Double =
     10
 
@@ -94,16 +93,16 @@ object BasicVertexNode {
 /**
   * Default, interactive implementation of VertexNode
   */
-class BasicVertexNode[
+class DefaultVertexNode[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ](
    val graphCanvas: GraphCanvas[V, L, G],
-   padding: Double = BasicVertexNode.DefaultPadding
+   padding: Double = DefaultVertexNode.DefaultPadding
  )
   extends Group
-    with BasicVertexNodeMixin[V, L, G] {
+    with DefaultVertexNodeMixin[V, L, G] {
   protected val label = new Label {
     styleClass.add("label")
 

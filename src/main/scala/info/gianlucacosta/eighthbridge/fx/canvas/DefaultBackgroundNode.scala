@@ -1,18 +1,15 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
+package info.gianlucacosta.eighthbridge.fx.canvas
 
-import javafx.beans.property.SimpleDoubleProperty
-
-import info.gianlucacosta.eighthbridge.fx.canvas._
-import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import info.gianlucacosta.helios.fx.Includes._
-
+import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
+import javafx.beans.property.SimpleDoubleProperty
 import scalafx.Includes._
 import scalafx.geometry.{BoundingBox, Bounds, Point2D}
 import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
 import scalafx.scene.shape.Rectangle
 
-object BasicBackgroundNode {
+object DefaultBackgroundNode {
   private val SelectionRectangleMinSize =
     2
 
@@ -23,14 +20,14 @@ object BasicBackgroundNode {
 /**
   * Default, interactive implementation of BackgroundNode
   */
-class BasicBackgroundNode[
+class DefaultBackgroundNode[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val graphCanvas: GraphCanvas[V, L, G])
   extends Group
     with BackgroundNode[V, L, G]
-    with BasicGraphCanvasNode[V, L, G] {
+    with DefaultGraphCanvasNode[V, L, G] {
   styleClass.add("graph")
 
   private var dragAnchor: Point2D = _
@@ -153,12 +150,12 @@ G <: VisualGraph[V, L]
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          if (selectionBounds.width < BasicBackgroundNode.SelectionRectangleMinSize
-            && selectionBounds.height < BasicBackgroundNode.SelectionRectangleMinSize) {
+          if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
+            && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
             controller.createVertex(graph, mouseEvent.point)
               .foreach(newGraph => {
                 selectionBounds =
-                  BasicBackgroundNode.EmptySelectionBounds
+                  DefaultBackgroundNode.EmptySelectionBounds
 
                 graph =
                   newGraph
@@ -177,7 +174,7 @@ G <: VisualGraph[V, L]
               .toSet
 
             selectionBounds =
-              BasicBackgroundNode.EmptySelectionBounds
+              DefaultBackgroundNode.EmptySelectionBounds
 
             graph =
               graph.setSelection(
