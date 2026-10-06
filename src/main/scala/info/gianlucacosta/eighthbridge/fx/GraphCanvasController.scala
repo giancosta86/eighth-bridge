@@ -3,12 +3,6 @@ package info.gianlucacosta.eighthbridge.fx
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 
-
-object GraphCanvasController {
-  val GraphPadding =
-    20
-}
-
 /**
   * Controller providing behavior for GraphCanvas
   */
@@ -79,6 +73,8 @@ G <: VisualGraph[V, L]
       600
     )
 
+  def graphMargin: Int = 20
+
   def getCanvasDimension(graphCanvas: GraphCanvas[V, L, G]): Dimension2D = {
     if (graphCanvas.vertexNodes.isEmpty)
       minCanvasDimension
@@ -104,12 +100,12 @@ G <: VisualGraph[V, L]
 
       new Dimension2D(
         math.max(
-          maxRightEdge + GraphCanvasController.GraphPadding,
+          maxRightEdge + graphMargin,
           minCanvasDimension.width
         ),
 
         math.max(
-          maxBottomEdge + GraphCanvasController.GraphPadding,
+          maxBottomEdge + graphMargin,
           minCanvasDimension.height
         )
       )
