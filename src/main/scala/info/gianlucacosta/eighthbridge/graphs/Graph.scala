@@ -21,18 +21,22 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   /**
     * Copies the graph.
     *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method,
-    * casting it via `.toInstance[this.type]`.
+    * If you implement this trait as a "case class", you can implement this method
+    * just by using the Scala-provided copy() method, casting it via `.toInstance[this.type]`.
     *
     * @param vertexes The new vertexes
     * @param links    The new links
     * @param bindings The new bindings
     * @return The resulting new graph
     */
-  protected def graphCopy(vertexes: Set[V] = vertexes, links: Set[L] = links, bindings: Set[B] = bindings): this.type
+  protected def graphCopy(
+                           vertexes: Set[V] = vertexes,
+                           links: Set[L] = links,
+                           bindings: Set[B] = bindings
+                         ): this.type
 
   @transient
-  private lazy val vertexMap: Map[UUID, V] =
+  protected lazy val vertexMap: Map[UUID, V] =
     vertexes.map(vertex =>
       vertex.id -> vertex
     )
@@ -40,7 +44,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   @transient
-  private lazy val linkMap: Map[UUID, L] =
+  protected lazy val linkMap: Map[UUID, L] =
     links.map(
       link => link.id -> link
     )
@@ -53,7 +57,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
     require(
       newVertexes.size == vertexes.size + vertexesToAdd.size,
-      "The vertexes to add must not belong to the graph"
+      "The vertexes to add must not already belong to the graph"
     )
 
     graphCopy(vertexes = newVertexes)
@@ -67,12 +71,13 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   def replaceVertexes(replacingVertexes: Set[V]): this.type = {
+    // We can do this because, by definition, all GraphObject's have id-based equals() and hashCode()
     val newVertexes =
       vertexes -- replacingVertexes ++ replacingVertexes
 
     require(
       newVertexes.size == vertexes.size,
-      "The replacing vertexes must match vertexes belonging to the graph"
+      "The replacing vertexes must have the same ids as vertexes belonging to the graph"
     )
 
     graphCopy(vertexes = newVertexes)
@@ -87,8 +92,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type = {
-    val newVertexes =
-      vertexes -- vertexesToRemove
+    val newVertexes = vertexes -- vertexesToRemove
 
     require(
       newVertexes.size == vertexes.size - vertexesToRemove.size,
@@ -99,8 +103,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
       vertexesToRemove.map(_.id)
 
 
-    val (newBindings, bindingsToRemove) = bindings.partition(bindings =>
-      (bindings.vertexIds & vertexIdsToRemove).isEmpty
+    val (newBindings, bindingsToRemove) = bindings.partition(binding =>
+      (binding.vertexIds & vertexIdsToRemove).isEmpty
     )
 
     val linkIdsToRemove =
@@ -142,7 +146,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
     require(
       linksToAdd.size == bindingsToAdd.size,
-      "The bindings must be distinct"
+      "Cannot add the same binding more than once"
     )
 
     bindingsToAdd.foreach(binding => {
@@ -156,16 +160,16 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
     val newLinks = links ++ linksToAdd
 
+    require(
+      newLinks.size == links.size + linksToAdd.size,
+      "The links to add must not already belong to the graph"
+    )
+
     val newBindings = bindings ++ bindingsToAdd
 
     require(
-      newLinks.size == links.size + linksToAdd.size,
-      "The links to add must not belong to the graph"
-    )
-
-    require(
       newBindings.size == bindings.size + bindingsToAdd.size,
-      "The bindings to add must not belong to the graph"
+      "The bindings to add must not already belong to the graph"
     )
 
     graphCopy(
@@ -187,7 +191,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
     require(
       newLinks.size == links.size,
-      "The replacing links must match links belonging to the graph"
+      "The replacing links must have the same ids as links belonging to the graph"
     )
 
     graphCopy(links = newLinks)
@@ -260,7 +264,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   /**
-    * Returns the set of links connecting the given vertexes
+    * Returns the set of links connecting the given vertexes.
     *
     * @param linkVertexes A set of vertexes.
     * @return A set of links connecting **all and only** the given vertexes.
@@ -270,11 +274,8 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
       linkVertexes.map(_.id)
 
     bindings
-      .filter(binding =>
-        linkVertexIds == binding.vertexIds
-      )
-      .map(binding =>
-        getLink(binding.linkId).get
+      .filter(_.vertexIds == linkVertexIds)
+      .map(binding => linkMap(binding.linkId)
       )
   }
 
@@ -284,14 +285,14 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   /**
-    * Returns a set of vertexes connected to the given vertex
+    * Returns the set of vertexes connected to the given vertex.
     *
-    * @param vertex A vertex in the graph
-    * @return The set of all the vertexes connected to the given vertex
+    * @param vertex A vertex in the graph.
+    * @return The set of all the vertexes connected to the given vertex, NOT including it.
     */
   def getLinkedVertexes(vertex: V): Set[V] =
     bindings
-      .filter(binding => binding.vertexIds.contains(vertex.id))
-      .flatMap(binding => binding.vertexIds - vertex.id)
+      .filter(_.vertexIds.contains(vertex.id))
+      .flatMap(_.vertexIds - vertex.id)
       .map(vertexId => vertexMap(vertexId))
 }

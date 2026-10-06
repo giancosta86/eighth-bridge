@@ -5,7 +5,7 @@ import java.util.UUID
 import info.gianlucacosta.eighthbridge.graphs.Binding
 
 /**
-  * Binding for a point-to-point arc (that is, a directed link)
+  * Binding for a point-to-point arc (that is, a directed link).
   *
   * @param id
   * @param sourceVertexId

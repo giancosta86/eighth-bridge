@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs
 
 /**
-  * A vertex
+  * A vertex.
   */
 trait Vertex extends GraphElement

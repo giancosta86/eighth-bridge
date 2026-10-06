@@ -3,11 +3,11 @@ package info.gianlucacosta.eighthbridge.graphs
 import java.util.UUID
 
 /**
-  * Generic graph element (vertex, link, binding) - identified by its UUID
+  * Generic graph element (vertex, link, binding) - identified by its UUID.
   */
 trait GraphElement {
   /**
-    * The unique identification value
+    * The unique identification value.
     */
   val id: UUID
 
