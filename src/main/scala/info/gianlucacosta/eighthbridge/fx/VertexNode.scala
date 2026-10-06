@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.css.PseudoClasses
+import javafx.beans.property.SimpleDoubleProperty
 
 import scala.collection.JavaConversions._
 import scalafx.beans.property.ReadOnlyDoubleProperty
@@ -26,6 +27,12 @@ G <: VisualGraph[V, L]
 
   private[fx] def vertex_=(newVertex: V): Unit =
     _vertex = newVertex
+
+  protected val centerX =
+    new SimpleDoubleProperty(0)
+
+  protected val centerY =
+    new SimpleDoubleProperty(0)
 
 
   def width: ReadOnlyDoubleProperty

@@ -109,14 +109,6 @@ G <: VisualGraph[V, L]
 
   private var dragAnchor: Point2D = _
 
-  protected val centerX =
-    new SimpleDoubleProperty(0)
-
-  protected val centerY =
-    new SimpleDoubleProperty(0)
-
-
-
   protected val label = new Label {
     styleClass.add("label")
 
