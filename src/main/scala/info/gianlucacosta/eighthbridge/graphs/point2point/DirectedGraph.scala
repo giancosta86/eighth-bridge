@@ -6,11 +6,11 @@ import java.util.UUID
 import scala.annotation.tailrec
 
 /**
-  * A directed graph - that is, a graph whose links are arcs.
-  *
-  * @tparam V Vertex type.
-  * @tparam L Link type.
-  */
+ * A directed graph - that is, a graph whose links are arcs.
+ *
+ * @tparam V Vertex type.
+ * @tparam L Link type.
+ */
 trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   /**
    * Adds a link from <i>sourceVertex</i> to <i>targetVertex</i>
@@ -73,7 +73,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   @transient
   protected lazy val exitingVertexesMap: Map[V, Set[V]] =
     topologyCache
-      .groupBy { case (sourceVertex, _, _) => sourceVertex}
+      .groupBy { case (sourceVertex, _, _) => sourceVertex }
       .mapValues(_.map { case (_, _, targetVertex) => targetVertex })
 
 
@@ -110,8 +110,8 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    */
   @transient
   lazy val rootVertexes: Set[V] =
-    vertexes
-      .filter(getEnteringArcs(_).isEmpty)
+  vertexes
+    .filter(getEnteringArcs(_).isEmpty)
 
 
   /**
@@ -213,38 +213,38 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * Topology information for a vertex in a directed graph.
    */
   case class VertexTopology(
-     enteringVertexes: Set[V],
-     enteringArcs: Set[L],
-     exitingArcs: Set[L],
-     exitingVertexes: Set[V]
-  )
+                             enteringVertexes: Set[V],
+                             enteringArcs: Set[L],
+                             exitingArcs: Set[L],
+                             exitingVertexes: Set[V]
+                           )
 
   /**
-    * Function passed to fold(). Its signature must include:
-    * <ul>
-    * <li><b>cumulatedValue</b> - the value cumulated until now</li>
-    * <li><b>vertex</b> - the current vertex</li>
-    * <li><b>vertexTopology</b> - a case class describing the current vertex and its entering/exiting vertexes/arcs</li>
-    * </ul>
-    *
-    * The function must return <b>newCumulatedValue</b>, used by fold() as the return value or to call the next VertexFoldProcessor.
-    *
-    * @tparam T The type of the cumulated value
-    */
+   * Function passed to fold(). Its signature must include:
+   * <ul>
+   * <li><b>cumulatedValue</b> - the value cumulated until now</li>
+   * <li><b>vertex</b> - the current vertex</li>
+   * <li><b>vertexTopology</b> - a case class describing the current vertex and its entering/exiting vertexes/arcs</li>
+   * </ul>
+   *
+   * The function must return <b>newCumulatedValue</b>, used by fold() as the return value or to call the next VertexFoldProcessor.
+   *
+   * @tparam T The type of the cumulated value
+   */
 
   type VertexFoldProcessor[T] = (T, V, VertexTopology) => T
 
 
   /**
-    * Takes an initial value and applies the given <b>vertexProcessor</b> to every vertex
-    * in the graph, starting from the root vertexes, with the following rules:
-    *
-    * <ul>
-    * <li>Each node will be processed <b>only</b> if all of its <i>entering vertexes</i> have been processed</li>
-    *
-    * <li>Any cycle in the graph will cause a CircularGraphException</li>
-    * </ul>
-    */
+   * Takes an initial value and applies the given <b>vertexProcessor</b> to every vertex
+   * in the graph, starting from the root vertexes, with the following rules:
+   *
+   * <ul>
+   * <li>Each node will be processed <b>only</b> if all of its <i>entering vertexes</i> have been processed</li>
+   *
+   * <li>Any cycle in the graph will cause a CircularGraphException</li>
+   * </ul>
+   */
   def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T]): T = {
     /*
      * At the beginning of the algorithm, no vertex has been processed;
@@ -266,7 +266,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
                              vertexFoldProcessor: VertexFoldProcessor[T],
                              processedVertexes: Set[V],
                              fringe: List[V]
-                                          ): T = {
+                           ): T = {
     fringe match {
       /*
        * If the fringe contains at least one vertex to consider, the algorithm can go on.
@@ -330,9 +330,9 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
           )
         }
 
-      /*
-       * When the fringe is empty, there is no more vertex that can be considered.
-       */
+        /*
+         * When the fringe is empty, there is no more vertex that can be considered.
+         */
       case Nil =>
         /*
          * If all the vertexes in the graph have been explored, the algorithm has succeeded;

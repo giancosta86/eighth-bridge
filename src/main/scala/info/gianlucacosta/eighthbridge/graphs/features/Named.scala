@@ -3,17 +3,17 @@ package info.gianlucacosta.eighthbridge.graphs.features
 import scala.language.implicitConversions
 
 /**
-  * Object having a name
-  */
+ * Object having a name
+ */
 trait Named {
   def name: String
 
   /**
-    * Copies the current object, giving it a new name.
-    *
-    * @param name The new name
-    * @return The resulting new object
-    */
+   * Copies the current object, giving it a new name.
+   *
+   * @param name The new name
+   * @return The resulting new object
+   */
   def setName(name: String): this.type
 }
 

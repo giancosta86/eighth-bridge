@@ -2,13 +2,13 @@ package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.point2point.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.{Binding, Graph, Link, Vertex}
-
-import scala.language.implicitConversions
 import info.gianlucacosta.helios.mathutils.Numbers
 
+import scala.language.implicitConversions
+
 /**
-  * Object having a weight
-  */
+ * Object having a weight
+ */
 trait Weighted {
   def minWeight: Double
 
@@ -19,9 +19,10 @@ trait Weighted {
   checkWeight()
 
   //TODO! Should the check really be performed here? Or in the controller instead?
+
   /**
-    * Ensures the weight is in the range [minWeight; maxWeight], throwing an IllegalArgumentException in case of errors
-    */
+   * Ensures the weight is in the range [minWeight; maxWeight], throwing an IllegalArgumentException in case of errors
+   */
   private def checkWeight(): Unit = {
     require(
       minWeight <= weight && weight <= maxWeight,
@@ -30,11 +31,11 @@ trait Weighted {
   }
 
   /**
-    * Copies the current object, giving it a new weight.
-    *
-    * @param weight The new weight
-    * @return The resulting new object
-    */
+   * Copies the current object, giving it a new weight.
+   *
+   * @param weight The new weight
+   * @return The resulting new object
+   */
   def setWeight(weight: Double): this.type
 }
 
@@ -76,7 +77,7 @@ object Weighted {
         .getOrElse(Double.PositiveInfinity)
     }
 
-    def getMinArcWeightBetween(vertexPair: (V,V)): Double = {
+    def getMinArcWeightBetween(vertexPair: (V, V)): Double = {
       graph.getArcsBetween(vertexPair)
         .minWeight
         .getOrElse(Double.PositiveInfinity)

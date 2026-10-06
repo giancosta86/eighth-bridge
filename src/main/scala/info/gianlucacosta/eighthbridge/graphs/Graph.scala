@@ -3,14 +3,14 @@ package info.gianlucacosta.eighthbridge.graphs
 import java.util.UUID
 
 /**
-  * A general-purpose, read-only graph.
-  *
-  * Every status-changing operation returns a new graph.
-  *
-  * @tparam V Vertex type
-  * @tparam L Link type
-  * @tparam B Binding type
-  */
+ * A general-purpose, read-only graph.
+ *
+ * Every status-changing operation returns a new graph.
+ *
+ * @tparam V Vertex type
+ * @tparam L Link type
+ * @tparam B Binding type
+ */
 trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   def vertexes: Set[V]
 
@@ -19,16 +19,16 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   def bindings: Set[B]
 
   /**
-    * Copies the graph.
-    *
-    * If you implement this trait as a "case class", you can implement this method
-    * just by using the Scala-provided copy() method, casting it via `.toInstance[this.type]`.
-    *
-    * @param vertexes The new vertexes
-    * @param links    The new links
-    * @param bindings The new bindings
-    * @return The resulting new graph
-    */
+   * Copies the graph.
+   *
+   * If you implement this trait as a "case class", you can implement this method
+   * just by using the Scala-provided copy() method, casting it via `.toInstance[this.type]`.
+   *
+   * @param vertexes The new vertexes
+   * @param links    The new links
+   * @param bindings The new bindings
+   * @return The resulting new graph
+   */
   protected def graphCopy(
                            vertexes: Set[V] = vertexes,
                            links: Set[L] = links,
@@ -38,16 +38,16 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   @transient
   protected lazy val vertexMap: Map[UUID, V] =
     vertexes.map(vertex =>
-      vertex.id -> vertex
-    )
+        vertex.id -> vertex
+      )
       .toMap
 
 
   @transient
   protected lazy val linkMap: Map[UUID, L] =
     links.map(
-      link => link.id -> link
-    )
+        link => link.id -> link
+      )
       .toMap
 
 
@@ -264,11 +264,11 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   /**
-    * Returns the set of links connecting the given vertexes.
-    *
-    * @param linkVertexes A set of vertexes.
-    * @return A set of links connecting **all and only** the given vertexes.
-    */
+   * Returns the set of links connecting the given vertexes.
+   *
+   * @param linkVertexes A set of vertexes.
+   * @return A set of links connecting **all and only** the given vertexes.
+   */
   def getLinksBetween(linkVertexes: Set[V]): Set[L] = {
     val linkVertexIds =
       linkVertexes.map(_.id)
@@ -285,11 +285,11 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
 
 
   /**
-    * Returns the set of vertexes connected to the given vertex.
-    *
-    * @param vertex A vertex in the graph.
-    * @return The set of all the vertexes connected to the given vertex, NOT including it.
-    */
+   * Returns the set of vertexes connected to the given vertex.
+   *
+   * @param vertex A vertex in the graph.
+   * @return The set of all the vertexes connected to the given vertex, NOT including it.
+   */
   def getLinkedVertexes(vertex: V): Set[V] =
     bindings
       .filter(_.vertexIds.contains(vertex.id))
