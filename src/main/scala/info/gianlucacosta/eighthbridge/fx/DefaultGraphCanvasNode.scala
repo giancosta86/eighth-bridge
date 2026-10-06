@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.canvas.controllers.BasicController
+import info.gianlucacosta.eighthbridge.fx.controllers.BasicController
 
 trait DefaultGraphCanvasNode[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]]
   extends GraphCanvasNode[V, L, G] {

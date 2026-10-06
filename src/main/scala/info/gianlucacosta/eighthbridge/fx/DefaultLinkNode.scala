@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.{DiagonalBounds, Segment}

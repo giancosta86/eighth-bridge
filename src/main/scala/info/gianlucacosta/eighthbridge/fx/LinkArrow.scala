@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 object LinkArrow {
   val Default = LinkArrow(

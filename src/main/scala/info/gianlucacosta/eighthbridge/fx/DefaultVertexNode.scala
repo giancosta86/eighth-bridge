@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 import scalafx.Includes._
 import scalafx.beans.property.ReadOnlyDoubleProperty

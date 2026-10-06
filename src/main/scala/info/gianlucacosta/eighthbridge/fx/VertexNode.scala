@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 
@@ -24,7 +24,7 @@ G <: VisualGraph[V, L]
     _vertex
 
 
-  private[canvas] def vertex_=(newVertex: V): Unit =
+  private[fx] def vertex_=(newVertex: V): Unit =
     _vertex = newVertex
 
 

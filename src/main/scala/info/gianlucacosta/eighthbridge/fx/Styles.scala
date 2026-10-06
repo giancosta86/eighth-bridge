@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 /**
   * Object providing the default CSS stylesheet designed for the "basic"

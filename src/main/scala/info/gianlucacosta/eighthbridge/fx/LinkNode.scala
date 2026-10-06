@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 
@@ -24,7 +24,7 @@ G <: VisualGraph[V, L]
     _link
 
 
-  private[canvas] def link_=(newLink: L): Unit =
+  private[fx] def link_=(newLink: L): Unit =
     _link = newLink
 
 

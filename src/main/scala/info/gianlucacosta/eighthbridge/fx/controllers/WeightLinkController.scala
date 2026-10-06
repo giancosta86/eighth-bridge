@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.controllers
+package info.gianlucacosta.eighthbridge.fx.controllers
 
-import info.gianlucacosta.eighthbridge.fx.canvas.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Weighted
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 

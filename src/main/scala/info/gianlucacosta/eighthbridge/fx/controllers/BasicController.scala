@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.controllers
+package info.gianlucacosta.eighthbridge.fx.controllers
 
-import info.gianlucacosta.eighthbridge.fx.canvas._
+import info.gianlucacosta.eighthbridge.fx._
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 

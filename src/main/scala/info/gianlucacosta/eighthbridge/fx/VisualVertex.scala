@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas
+package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.graphs.Vertex
 import scalafx.geometry.Point2D
