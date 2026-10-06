@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic.editing
+package info.gianlucacosta.eighthbridge.fx.canvas.controllers
 
 import info.gianlucacosta.eighthbridge.fx.canvas.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Weighted
