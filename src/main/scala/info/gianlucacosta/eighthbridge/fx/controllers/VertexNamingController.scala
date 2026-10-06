@@ -98,7 +98,7 @@ trait VertexNamingController[V <: VisualVertex with Named, L <: VisualLink, G <:
     }
 
     val newProblemVertex =
-      vertex.nameCopy(name = newName)
+      vertex.setName(name = newName)
 
     Some(newProblemVertex)
   }

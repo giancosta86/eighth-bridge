@@ -16,11 +16,12 @@ trait Weighted {
 
   def weight: Double
 
+  checkWeight()
 
   /**
     * Ensures the weight is in the range [minWeight; maxWeight], throwing an IllegalArgumentException in case of errors
     */
-  protected def checkWeight(): Unit = {
+  private def checkWeight(): Unit = {
     require(
       minWeight <= weight && weight <= maxWeight,
       s"Weight must be in [${Numbers.smartString(minWeight)}; ${Numbers.smartString(maxWeight)}"
@@ -36,7 +37,7 @@ trait Weighted {
     * @param weight The new weight
     * @return The resulting new object
     */
-  def weightCopy(weight: Double): this.type
+  def setWeight(weight: Double): this.type
 }
 
 

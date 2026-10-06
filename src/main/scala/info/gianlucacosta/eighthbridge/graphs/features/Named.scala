@@ -11,13 +11,10 @@ trait Named {
   /**
     * Copies the current object, giving it a new name.
     *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method,
-    * casting it via `.toInstanceOf[this.type]`.
-    *
     * @param name The new name
     * @return The resulting new object
     */
-  def nameCopy(name: String): this.type
+  def setName(name: String): this.type
 }
 
 

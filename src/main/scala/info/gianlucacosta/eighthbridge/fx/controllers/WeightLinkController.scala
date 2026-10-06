@@ -23,7 +23,9 @@ trait WeightLinkController[V <: VisualVertex, L <: VisualLink with Weighted, G <
       )
 
     newWeightOption.map(newWeight => {
-      link.weightCopy(newWeight)
+      //TODO! What if checkWeight() crashes?
+      //TODO! The same applies when setting a vertex name
+      link.setWeight(newWeight)
     })
   }
 }
