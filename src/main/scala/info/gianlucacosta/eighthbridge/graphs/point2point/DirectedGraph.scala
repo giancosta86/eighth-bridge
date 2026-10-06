@@ -210,24 +210,29 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   }
 
   /**
-    * Function passed to fold(). Its signature must be:
-    * (cumulatedValue, currentEnteringArcs, currentVertex, currentExitingArcs, currentExitingVertexes) => newCumulatedValue
-    *
-    * where:
-    *
+   * Topology information for a vertex in a directed graph.
+   */
+  case class VertexTopology(
+     enteringVertexes: Set[V],
+     enteringArcs: Set[L],
+     exitingArcs: Set[L],
+     exitingVertexes: Set[V]
+  )
+
+  /**
+    * Function passed to fold(). Its signature must include:
     * <ul>
-    * <li><b>cumulatedValue</b> is the value cumulated until now</li>
-    * <li><b>currentEnteringArcs</b> is the set of arcs entering the current vertex</li>
-    * <li><b>currentVertex</b> is the vertex now explored by fold()</li>
-    * <li><b>currentExitingArcs</b> is the set of arcs exiting the current vertex</li>
-    * <li><b>currentExitingVertexes</b> is the set of vertexes that are target of an arc exiting the current vertex</li>
+    * <li><b>cumulatedValue</b> - the value cumulated until now</li>
+    * <li><b>vertex</b> - the current vertex</li>
+    * <li><b>vertexTopology</b> - a case class describing the current vertex and its entering/exiting vertexes/arcs</li>
     * </ul>
     *
-    * The function must return <b>newCumulatedValue</b>, used by fold() as the return value or to call the next VertexFoldProcessor
+    * The function must return <b>newCumulatedValue</b>, used by fold() as the return value or to call the next VertexFoldProcessor.
     *
     * @tparam T The type of the cumulated value
     */
-  type VertexFoldProcessor[T] = (T, Set[L], V, Set[L], Set[V]) => T
+
+  type VertexFoldProcessor[T] = (T, V, VertexTopology) => T
 
 
   /**
@@ -242,13 +247,13 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
     */
   def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T]): T = {
     /*
-     * At the beginning of the algorithm, no vertex has been expanded and no link has been explored;
-     * consequently, the fringe coincides with the root vertexes - the ones having no entering arcs.
+     * At the beginning of the algorithm, no vertex has been processed;
+     * consequently, the fringe - i.e., the buffer of vertexes to process -
+     * coincides with the root vertexes, having no entering vertexes by definition.
      */
     fold(
       initialValue,
       vertexFoldProcessor,
-      Set(),
       Set(),
       rootVertexes.toList
     )
@@ -260,45 +265,44 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
                              cumulatedValue: T,
                              vertexFoldProcessor: VertexFoldProcessor[T],
                              processedVertexes: Set[V],
-                             exploredArcs: Set[L],
                              fringe: List[V]
                                           ): T = {
     fringe match {
       /*
-       * In this first case, the fringe contains at least one vertex to consider.
+       * If the fringe contains at least one vertex to consider, the algorithm can go on.
        */
       case currentVertex :: fringeTail =>
-        val currentEnteringArcs =
-          enteringArcsMap.getOrElse(currentVertex, Set())
+        val currentEnteringVertexes =
+          enteringVertexesMap.getOrElse(currentVertex, Set())
 
         /*
-         * If all the arcs entering the current vertex have already been explored,
+         * If all the vertexes pointing to the current vertex have already been explored,
          * such vertex conceptually behaves now like a root vertex and can be processed.
          */
-        if (currentEnteringArcs.subsetOf(exploredArcs)) {
-          val currentExitingArcs =
-            exitingArcsMap.getOrElse(currentVertex, Set())
-
+        if (currentEnteringVertexes.subsetOf(processedVertexes)) {
           val currentExitingVertexes =
             exitingVertexesMap.getOrElse(currentVertex, Set())
+
+          val vertexTopology = VertexTopology(
+            enteringVertexes = currentEnteringVertexes,
+            enteringArcs =
+              enteringArcsMap.getOrElse(currentVertex, Set()),
+            exitingArcs =
+              exitingArcsMap.getOrElse(currentVertex, Set()),
+            exitingVertexes = currentExitingVertexes
+          )
 
           val newCumulatedValue =
             vertexFoldProcessor(
               cumulatedValue,
-
-              currentEnteringArcs,
-
               currentVertex,
-
-              currentExitingArcs,
-
-              currentExitingVertexes
+              vertexTopology
             )
 
           /**
            * The next step can occur, notifying that the current vertex has been processed
-           * and that its explored arcs have been explored; in particular, the fringe can now
-           * include all of its exiting vertexes.
+           * in particular, the fringe, after losing the current node (as it's a tail),
+           * can now include all the node's exiting vertexes, with no duplicates.
            */
           fold(
             newCumulatedValue,
@@ -307,15 +311,13 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
             processedVertexes + currentVertex,
 
-            exploredArcs ++ currentExitingArcs,
-
             (fringeTail ++ currentExitingVertexes).distinct
           )
         } else {
           /*
-           * If the current vertex has at least an entering link that was not already explored,
+           * If the current vertex has at least an entering vertex that was not already explored,
            * it must be removed from the fringe: it will be re-added later, after processing
-           * one of its entering vertexes.
+           * one of its entering vertexes, as seen in the tail call above - provided the graph has no cycles.
            */
           fold(
             cumulatedValue,
@@ -324,18 +326,16 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
             processedVertexes,
 
-            exploredArcs,
-
             fringeTail
           )
         }
 
       /*
-       * When the fringe is empty, there is no more vertex that can be expanded.
+       * When the fringe is empty, there is no more vertex that can be considered.
        */
       case Nil =>
         /*
-         * If the expanded vertexes are precisely all the vertexes, the algorithm has succeeded;
+         * If all the vertexes in the graph have been explored, the algorithm has succeeded;
          * otherwise, it means that we are stuck in a cycle.
          */
         if (processedVertexes.size == vertexes.size)
