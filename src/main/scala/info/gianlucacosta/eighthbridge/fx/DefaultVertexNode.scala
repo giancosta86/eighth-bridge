@@ -1,9 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import scalafx.Includes._
+import info.gianlucacosta.helios.fx.Includes._
+import javafx.beans.property.SimpleDoubleProperty
 import scalafx.beans.property.ReadOnlyDoubleProperty
-import scalafx.geometry.Dimension2D
+import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.control.Label
+import scalafx.scene.input.{MouseButton, MouseEvent}
 import scalafx.scene.layout.VBox
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.TextAlignment
@@ -102,7 +105,18 @@ G <: VisualGraph[V, L]
    padding: Double = DefaultVertexNode.DefaultPadding
  )
   extends Group
-    with DefaultVertexNodeMixin[V, L, G] {
+    with VertexNode[V, L, G] {
+
+  private var dragAnchor: Point2D = _
+
+  protected val centerX =
+    new SimpleDoubleProperty(0)
+
+  protected val centerY =
+    new SimpleDoubleProperty(0)
+
+
+
   protected val label = new Label {
     styleClass.add("label")
 
@@ -146,6 +160,12 @@ G <: VisualGraph[V, L]
 
     label.text =
       vertex.text
+
+    centerX() =
+      vertex.center.x
+
+    centerY() =
+      vertex.center.y
   }
 
 
@@ -155,4 +175,100 @@ G <: VisualGraph[V, L]
 
   override def height: ReadOnlyDoubleProperty =
     body.height
+
+  handleEvent(MouseEvent.Any) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.consume()
+    }
+  }
+
+
+  handleEvent(MouseEvent.MousePressed) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Primary =>
+          mouseEvent.clickCount match {
+            case 1 =>
+              dragAnchor =
+                mouseEvent.point
+
+              if (mouseEvent.controlDown) {
+                controller.setVertexSelectedState(graph, vertex, !vertex.selected)
+                  .foreach(newGraph =>
+                    graph =
+                      newGraph
+                  )
+              } else if (!vertex.selected) {
+                controller.setSelection(graph, Set(vertex), Set())
+                  .foreach(newGraph =>
+                    graph =
+                      newGraph
+                  )
+              }
+
+            case 2 =>
+              val selectedVertexes =
+                graph.selectedVertexes
+
+              if (selectedVertexes.size == 1 && graph.selectedLinks.isEmpty) {
+                val selectedVertex =
+                  selectedVertexes.head
+
+                controller.editVertex(graph, selectedVertex)
+                  .foreach(newGraph =>
+                    graph =
+                      newGraph
+                  )
+              }
+
+            case _ =>
+          }
+
+        case MouseButton.Secondary =>
+          mouseEvent.clickCount match {
+            case 1 =>
+              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex) && graph.selectedLinks.isEmpty) {
+                val selectedVertex =
+                  graph.selectedVertexes.head
+
+                controller.createLink(graph, selectedVertex, vertex)
+                  .foreach(newGraph =>
+                    graph =
+                      newGraph
+                  )
+              }
+          }
+
+        case _ =>
+      }
+      ()
+    }
+  }
+
+
+  handleEvent(MouseEvent.MouseDragged) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Primary =>
+          val mousePoint =
+            mouseEvent.point
+
+          val delta =
+            mousePoint - dragAnchor
+
+
+          if (vertex.selected) {
+            controller.dragSelection(graphCanvas, delta)
+              .foreach(newGraph => {
+                dragAnchor =
+                  mousePoint
+
+                graph =
+                  newGraph
+              })
+          }
+        case _ =>
+      }
+    }
+  }
 }
