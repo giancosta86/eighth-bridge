@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.canvas.basic.editing
 
-import info.gianlucacosta.eighthbridge.fx.canvas.VisualGraph
-import info.gianlucacosta.eighthbridge.fx.canvas.basic.{BasicLink, BasicVertex}
+import info.gianlucacosta.eighthbridge.fx.canvas.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Named
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 import scalafx.geometry.Point2D
@@ -16,7 +15,7 @@ import scalafx.geometry.Point2D
   * @tparam V Vertex
   * @tparam L Link
   */
-trait VertexNamingController[V <: BasicVertex with Named, L <: BasicLink, G <: VisualGraph[V, L]]
+trait VertexNamingController[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
   extends InteractiveEditingController[V, L, G] {
   /**
     * The first index used when creating vertexes

@@ -22,8 +22,8 @@ import scalafx.scene.text.Text
   * @param targetVertexId
   */
 class BasicLinkNode[
-V <: BasicVertex,
-L <: BasicLink,
+V <: VisualVertex,
+L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val graphCanvas: GraphCanvas[V, L, G], val sourceVertexId: UUID, val targetVertexId: UUID)
   extends Group

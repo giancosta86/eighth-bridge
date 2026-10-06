@@ -1,10 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.canvas.basic
 
 import javafx.beans.property.SimpleDoubleProperty
-
-import info.gianlucacosta.eighthbridge.fx.canvas.{VertexNode, VisualGraph}
+import info.gianlucacosta.eighthbridge.fx.canvas.{VertexNode, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
-
 import scalafx.Includes._
 import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
@@ -19,8 +17,8 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
   * @tparam G
   */
 trait BasicVertexNodeMixin[
-V <: BasicVertex,
-L <: BasicLink,
+V <: VisualVertex,
+L <: VisualLink,
 G <: VisualGraph[V, L]
 ] extends BasicGraphCanvasNode[V, L, G]
   with VertexNode[V, L, G] {

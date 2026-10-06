@@ -95,8 +95,8 @@ object BasicVertexNode {
   * Default, interactive implementation of VertexNode
   */
 class BasicVertexNode[
-V <: BasicVertex,
-L <: BasicLink,
+V <: VisualVertex,
+L <: VisualLink,
 G <: VisualGraph[V, L]
 ](
    val graphCanvas: GraphCanvas[V, L, G],

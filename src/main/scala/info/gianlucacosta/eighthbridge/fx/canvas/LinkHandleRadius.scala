@@ -1,5 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
-
+package info.gianlucacosta.eighthbridge.fx.canvas
 
 object LinkHandleRadius {
   val Default =
