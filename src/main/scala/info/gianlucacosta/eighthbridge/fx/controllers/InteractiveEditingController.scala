@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controllers
 
-import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 import scalafx.geometry.Point2D
 
@@ -10,7 +10,7 @@ import scalafx.geometry.Point2D
   * @tparam V Vertex
   * @tparam L Link
   */
-trait InteractiveEditingController[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends BasicController[V, L, G] {
+trait InteractiveEditingController[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G] {
   override def setVertexSelectedState(graph: G, vertex: V, selected: Boolean): Option[G] =
     Some(
       graph.replaceVertex(vertex.visualCopy(selected = selected))

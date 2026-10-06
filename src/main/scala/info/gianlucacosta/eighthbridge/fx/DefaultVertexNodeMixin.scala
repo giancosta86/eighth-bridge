@@ -19,8 +19,7 @@ trait DefaultVertexNodeMixin[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
-] extends DefaultGraphCanvasNode[V, L, G]
-  with VertexNode[V, L, G] {
+] extends VertexNode[V, L, G] {
   private var dragAnchor: Point2D = _
 
   protected val centerX =

@@ -26,8 +26,8 @@ L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val graphCanvas: GraphCanvas[V, L, G])
   extends Group
-    with BackgroundNode[V, L, G]
-    with DefaultGraphCanvasNode[V, L, G] {
+    with BackgroundNode[V, L, G] {
+
   styleClass.add("graph")
 
   private var dragAnchor: Point2D = _

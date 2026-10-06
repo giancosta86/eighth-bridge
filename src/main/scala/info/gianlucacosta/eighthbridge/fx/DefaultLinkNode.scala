@@ -25,8 +25,7 @@ L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val graphCanvas: GraphCanvas[V, L, G], val sourceVertexId: UUID, val targetVertexId: UUID)
   extends Group
-    with LinkNode[V, L, G]
-    with DefaultGraphCanvasNode[V, L, G] {
+    with LinkNode[V, L, G] {
 
   protected class LinkSegment(indexOfNewInternalPoint: Int) extends Segment {
     styleClass.add("line")

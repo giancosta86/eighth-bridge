@@ -1,12 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx.controllers
 
-import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController, VisualGraph, VisualLink, VisualVertex}
 import scalafx.geometry.Point2D
 
 /**
   * Controller only showing a graph - totally preventing interactivity
   */
-class ReadOnlyController[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]](val renderDirected: Boolean) extends BasicController[V, L, G] {
+class ReadOnlyController[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]](val renderDirected: Boolean) extends GraphCanvasController[V, L, G] {
   override def canDrawSelectionRectangle: Boolean =
     false
 
