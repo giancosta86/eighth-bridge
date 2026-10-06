@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.canvas.basic
+package info.gianlucacosta.eighthbridge.fx.canvas
 
 /**
   * Object providing the default CSS stylesheet designed for the "basic"
@@ -6,6 +6,6 @@ package info.gianlucacosta.eighthbridge.fx.canvas.basic
   * the scene's stylesheet list (via scene.getStylesheets().add()) or as
   * required by your GUI framework.
   */
-object BasicStyles {
-  val resourceUrl = getClass.getResource("BasicStyles.css")
+object Styles {
+  val resourceUrl = getClass.getResource("Styles.css")
 }
