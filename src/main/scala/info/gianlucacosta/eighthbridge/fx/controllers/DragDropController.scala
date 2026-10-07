@@ -2,6 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controllers
 
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController, VisualGraph, VisualLink, VisualVertex}
 import scalafx.geometry.Point2D
+import info.gianlucacosta.helios.fx.Includes._
 
 /**
   * Interactive controller only supporting selection of vertexes/links, as well as drag & drop
@@ -51,6 +52,22 @@ class DragDropController[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V,
 
   override def deleteSelection(graphCanvas: GraphCanvas[V, L, G], graph: G): Option[G] =
     None
+
+  override def dragSelection(graphCanvas: GraphCanvas[V, L, G], delta: Point2D): Option[G] = {
+    val graph =
+      graphCanvas.graph
+
+    Some(
+      graph.replaceVertexes(
+        graph.selectedVertexes.map(vertex => {
+          val newCenter =
+            (vertex.center + delta).clip(graphCanvas.dimension)
+
+          vertex.visualCopy(center = newCenter)
+        })
+      )
+    )
+  }
 
 
   override def createLinkInternalPoint(graph: G, link: L, newInternalPoints: List[Point2D], internalPoint: Point2D): Option[G] =

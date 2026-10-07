@@ -43,21 +43,7 @@ G <: VisualGraph[V, L]
   def setSelection(graph: G, selectionVertexes: Set[V], selectionLinks: Set[L]): Option[G]
 
 
-  def dragSelection(graphCanvas: GraphCanvas[V, L, G], delta: Point2D): Option[G] = {
-    val graph =
-      graphCanvas.graph
-
-    Some(
-      graph.replaceVertexes(
-        graph.selectedVertexes.map(vertex => {
-          val newCenter =
-            (vertex.center + delta).clip(graphCanvas.dimension)
-
-          vertex.visualCopy(center = newCenter)
-        })
-      )
-    )
-  }
+  def dragSelection(graphCanvas: GraphCanvas[V, L, G], delta: Point2D): Option[G]
 
   def createLinkInternalPoint(graph: G, link: L, newInternalPoints: List[Point2D], internalPoint: Point2D): Option[G]
 
