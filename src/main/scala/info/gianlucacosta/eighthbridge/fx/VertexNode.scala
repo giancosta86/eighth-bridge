@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleDoubleProperty
-
+import scalafx.Includes._
 import scala.collection.JavaConversions._
 import scalafx.beans.property.ReadOnlyDoubleProperty
 
@@ -43,6 +43,9 @@ G <: VisualGraph[V, L]
   override def render(): Unit = {
     styleClass.setAll("vertex")
     styleClass.addAll(vertex.styleClasses)
+
+    centerX() = vertex.center.x
+    centerY() = vertex.center.y
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
