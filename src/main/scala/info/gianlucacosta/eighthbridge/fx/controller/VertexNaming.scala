@@ -28,7 +28,7 @@ trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGra
    * @param vertexName
    * @return
    */
-  protected def instantiateVertex(center: Point2D, vertexName: String): V
+  protected def createNamedVertex(center: Point2D, vertexName: String): V
 
   override def createVertex(center: Point2D): Option[G] = {
     val lastUsedVertexIndex = Stream.from(firstIndex)
@@ -51,7 +51,7 @@ trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGra
       getVertexName(vertexIndex)
 
     val newVertex =
-      instantiateVertex(center, vertexName)
+      createNamedVertex(center, vertexName)
 
     Some(
       graph.addVertex(newVertex)
