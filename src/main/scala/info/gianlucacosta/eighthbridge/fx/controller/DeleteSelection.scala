@@ -4,17 +4,10 @@ import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController, V
 import scalafx.geometry.Point2D
 
 trait DeleteSelection[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G] {
-  override def deleteSelection(): Option[G] = {
-    val selectedVertexes =
-      graph.selectedVertexes
-
-    val selectedLinks =
-      graph.selectedLinks
-
+  override def deleteSelection(): Option[G] =
     Some(
       graph
-        .removeLinks(selectedLinks)
-        .removeVertexes(selectedVertexes)
+        .removeLinks(graph.selectedLinks)
+        .removeVertexes(graph.selectedVertexes)
     )
-  }
 }

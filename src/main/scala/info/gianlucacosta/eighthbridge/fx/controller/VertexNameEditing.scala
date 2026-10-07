@@ -44,9 +44,9 @@ trait VertexNameEditing[V <: VisualVertex with Named, L <: VisualLink, G <: Visu
       throw new IllegalArgumentException("The vertex name must be unique!")
     }
 
-    val newProblemVertex =
+    val updatedVertex =
       vertex.setName(name = newName)
 
-    Some(newProblemVertex)
+    Some(updatedVertex)
   }
 }

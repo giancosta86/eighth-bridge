@@ -15,11 +15,11 @@ trait LinkWeightEditing[V <: VisualVertex, L <: VisualLink with Weighted, G <: V
   override protected def doEditLink(link: L): Option[L] = {
     val newWeightOption =
       InputDialogs.askForDouble(
-        "Weight:",
-        link.weight,
-        link.minWeight,
-        link.maxWeight,
-        "Edit link"
+        message = "Weight:",
+        initialValue = link.weight,
+        minValue = link.minWeight,
+        maxValue = link.maxWeight,
+        header = "Edit link"
       )
 
     newWeightOption.map(newWeight => {

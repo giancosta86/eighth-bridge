@@ -1,15 +1,15 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Named
 import scalafx.geometry.Point2D
 
 trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
-  extends VertexEditing[V, L, G] {
+  extends GraphCanvasController[V, L, G] {
   /**
    * The first index used when creating vertexes
    */
-  protected val firstIndex =
+  protected val firstNameIndex =
     1
 
   /**
@@ -31,7 +31,7 @@ trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGra
   protected def createNamedVertex(center: Point2D, vertexName: String): V
 
   override def createVertex(center: Point2D): Option[G] = {
-    val lastUsedVertexIndex = Stream.from(firstIndex)
+    val lastUsedVertexIndex = Stream.from(firstNameIndex)
       .takeWhile(vertexIndex => {
         val vertexName =
           getVertexName(vertexIndex)
@@ -42,7 +42,7 @@ trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGra
         vertexNameExists
       })
       .lastOption
-      .getOrElse(firstIndex - 1)
+      .getOrElse(firstNameIndex - 1)
 
     val vertexIndex =
       lastUsedVertexIndex + 1

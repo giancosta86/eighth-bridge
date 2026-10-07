@@ -5,7 +5,7 @@ import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualGraph, V
 /**
  * Controller mixin enabling selection.
  */
-trait Selection[
+trait DefineSelection[
   V <: VisualVertex,
   L <: VisualLink,
   G <: VisualGraph[V, L]
