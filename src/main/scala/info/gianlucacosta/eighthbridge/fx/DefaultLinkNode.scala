@@ -15,9 +15,6 @@ import scala.collection.JavaConversions._
 
 /**
   * Default, interactive implementation of LinkNode
-  *
-  * @param sourceVertexId
-  * @param targetVertexId
   */
 class DefaultLinkNode[
 V <: VisualVertex,
@@ -173,7 +170,7 @@ G <: VisualGraph[V, L]
       centerY.value
     )
 
-    def center_=(newPoint: Point2D) = {
+    def center_=(newPoint: Point2D): Unit = {
       centerX =
         newPoint.x
 
@@ -366,11 +363,11 @@ G <: VisualGraph[V, L]
     when(hover) choose 0.75 otherwise 1
 
 
-  val sourceVertexNode =
+  val sourceVertexNode: VertexNode[V, L, G] =
     graphCanvas.vertexNodes(sourceVertexId)
 
 
-  val targetVertexNode =
+  val targetVertexNode: VertexNode[V, L, G] =
     graphCanvas.vertexNodes(targetVertexId)
 
 
