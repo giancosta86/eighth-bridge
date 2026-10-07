@@ -1,46 +1,34 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Named
-import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 import scalafx.geometry.Point2D
 
-/**
-  * Mixin for GraphCanvasController that:
-  * <ul>
-  * <li>Creates a vertex by assigning it a unique name based on a counter</li>
-  * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
-  * </ul>
-  *
-  * @tparam V Vertex
-  * @tparam L Link
-  */
 trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
   extends VertexEditing[V, L, G] {
   /**
-    * The first index used when creating vertexes
-    */
+   * The first index used when creating vertexes
+   */
   protected val firstIndex =
     1
 
   /**
-    * Given a vertex index, returns the vertex name
-    *
-    * @param vertexIndex
-    * @return
-    */
+   * Given a vertex index, returns the vertex name
+   *
+   * @param vertexIndex
+   * @return
+   */
   protected def getVertexName(vertexIndex: Int): String =
     s"V${vertexIndex}"
 
   /**
-    * Actually instantiate the vertex
-    *
-    * @param center
-    * @param vertexName
-    * @return
-    */
+   * Actually instantiate the vertex
+   *
+   * @param center
+   * @param vertexName
+   * @return
+   */
   protected def instantiateVertex(center: Point2D, vertexName: String): V
-
 
   override def createVertex(center: Point2D): Option[G] = {
     val lastUsedVertexIndex = Stream.from(firstIndex)
@@ -68,38 +56,5 @@ trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGra
     Some(
       graph.addVertex(newVertex)
     )
-  }
-
-
-  override protected def doEditVertex(vertex: V): Option[V] = {
-    val newNameInput =
-      InputDialogs.askForString("Vertex name:", vertex.name, "Edit vertex")
-
-    if (newNameInput.isEmpty) {
-      return None
-    }
-
-
-    val newName =
-      newNameInput.get
-
-    if (newName.isEmpty) {
-      throw new IllegalArgumentException("The vertex must have a name!")
-    }
-
-
-    val nameAssignedToAnotherVertex =
-      graph
-        .vertexes
-        .exists(otherVertex => otherVertex.name == newName && otherVertex.id != vertex.id)
-
-    if (nameAssignedToAnotherVertex) {
-      throw new IllegalArgumentException("The vertex name must be unique!")
-    }
-
-    val newProblemVertex =
-      vertex.setName(name = newName)
-
-    Some(newProblemVertex)
   }
 }
