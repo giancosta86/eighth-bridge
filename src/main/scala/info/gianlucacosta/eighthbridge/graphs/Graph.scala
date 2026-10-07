@@ -1,38 +1,17 @@
-/*§
-  ===========================================================================
-  EighthBridge
-  ===========================================================================
-  Copyright (C) 2016 Gianluca Costa
-  ===========================================================================
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  ===========================================================================
-*/
-
 package info.gianlucacosta.eighthbridge.graphs
 
 import java.util.UUID
 
 /**
-  * A general-purpose, read-only graph.
-  *
-  * Every status-changing operation returns a new graph.
-  *
-  * @tparam V Vertex type
-  * @tparam L Link type
-  * @tparam B Binding type
-  */
-trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
-  this: G =>
+ * A general-purpose, read-only graph.
+ *
+ * Every status-changing operation returns a new graph.
+ *
+ * @tparam V Vertex type
+ * @tparam L Link type
+ * @tparam B Binding type
+ */
+trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   def vertexes: Set[V]
 
   def links: Set[L]
@@ -40,70 +19,80 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   def bindings: Set[B]
 
   /**
-    * Copies the graph.
-    *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method.
-    *
-    * @param vertexes The new vertexes
-    * @param links    The new links
-    * @param bindings The new bindings
-    * @return The resulting new graph
-    */
-  protected def graphCopy(vertexes: Set[V] = vertexes, links: Set[L] = links, bindings: Set[B] = bindings): G
+   * Copies the graph.
+   *
+   * If you implement this trait as a "case class", you can implement this method
+   * just by using the Scala-provided copy() method, casting it via `.toInstance[this.type]`.
+   *
+   * @param vertexes The new vertexes
+   * @param links    The new links
+   * @param bindings The new bindings
+   * @return The resulting new graph
+   */
+  protected def graphCopy(
+                           vertexes: Set[V] = vertexes,
+                           links: Set[L] = links,
+                           bindings: Set[B] = bindings
+                         ): this.type
 
   @transient
-  private lazy val vertexMap =
+  protected lazy val vertexMap: Map[UUID, V] =
     vertexes.map(vertex =>
-      vertex.id -> vertex
-    )
+        vertex.id -> vertex
+      )
       .toMap
 
 
   @transient
-  private lazy val linkMap =
+  protected lazy val linkMap: Map[UUID, L] =
     links.map(
-      link => link.id -> link
-    )
+        link => link.id -> link
+      )
       .toMap
 
 
-  def addVertexes(vertexesToAdd: Set[V]): G = {
+  def addVertexes(vertexesToAdd: Set[V]): this.type = {
     val newVertexes =
       vertexes ++ vertexesToAdd
 
     require(
       newVertexes.size == vertexes.size + vertexesToAdd.size,
-      "The vertexes to add must not belong to the graph"
+      "The vertexes to add must not already belong to the graph"
     )
 
     graphCopy(vertexes = newVertexes)
   }
 
+  def addVertexes(vertexesToAdd: V*): this.type =
+    addVertexes(vertexesToAdd.toSet)
 
-  def addVertex(vertex: V) =
+  def addVertex(vertex: V): this.type =
     addVertexes(Set(vertex))
 
 
-  def replaceVertexes(replacingVertexes: Set[V]): G = {
+  def replaceVertexes(replacingVertexes: Set[V]): this.type = {
+    // We can do this because, by definition, all GraphObject's have id-based equals() and hashCode()
     val newVertexes =
-      vertexes.diff(replacingVertexes) ++ replacingVertexes
+      vertexes -- replacingVertexes ++ replacingVertexes
 
     require(
       newVertexes.size == vertexes.size,
-      "The replacing vertexes must match vertexes belonging to the graph"
+      "The replacing vertexes must have the same ids as vertexes belonging to the graph"
     )
 
     graphCopy(vertexes = newVertexes)
   }
 
 
-  def replaceVertex(vertex: V) =
+  def replaceVertexes(replacingVertexes: V*): this.type =
+    replaceVertexes(replacingVertexes.toSet)
+
+  def replaceVertex(vertex: V): this.type =
     replaceVertexes(Set(vertex))
 
 
-  def removeVertexes(vertexesToRemove: Set[V]): G = {
-    val newVertexes =
-      vertexes.diff(vertexesToRemove)
+  def removeVertexes(vertexesToRemove: Set[V]): this.type = {
+    val newVertexes = vertexes -- vertexesToRemove
 
     require(
       newVertexes.size == vertexes.size - vertexesToRemove.size,
@@ -114,10 +103,9 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
       vertexesToRemove.map(_.id)
 
 
-    val (newBindings, bindingsToRemove) = bindings.partition(
-      binding => binding.vertexIds.intersect(vertexIdsToRemove).isEmpty
+    val (newBindings, bindingsToRemove) = bindings.partition(binding =>
+      (binding.vertexIds & vertexIdsToRemove).isEmpty
     )
-
 
     val linkIdsToRemove =
       bindingsToRemove.map(_.linkId)
@@ -127,7 +115,6 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
         !linkIdsToRemove.contains(link.id)
       )
 
-
     graphCopy(
       vertexes = newVertexes,
       links = newLinks,
@@ -135,12 +122,14 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
     )
   }
 
+  def removeVertexes(vertexes: V*): this.type =
+    removeVertexes(vertexes.toSet)
 
-  def removeVertex(vertex: V) =
+  def removeVertex(vertex: V): this.type =
     removeVertexes(Set(vertex))
 
 
-  def addLinks(bindingMapToAdd: Map[L, B]): G = {
+  def addLinks(bindingMapToAdd: Map[L, B]): this.type = {
     bindingMapToAdd.foreach {
       case (link, binding) =>
         require(
@@ -157,7 +146,7 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
 
     require(
       linksToAdd.size == bindingsToAdd.size,
-      "The bindings must be distinct"
+      "Cannot add the same binding more than once"
     )
 
     bindingsToAdd.foreach(binding => {
@@ -169,21 +158,18 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
       )
     })
 
-
-    val newLinks =
-      links.union(linksToAdd)
-
-    val newBindings =
-      bindings.union(bindingsToAdd)
+    val newLinks = links ++ linksToAdd
 
     require(
       newLinks.size == links.size + linksToAdd.size,
-      "The links to add must not belong to the graph"
+      "The links to add must not already belong to the graph"
     )
+
+    val newBindings = bindings ++ bindingsToAdd
 
     require(
       newBindings.size == bindings.size + bindingsToAdd.size,
-      "The bindings to add must not belong to the graph"
+      "The bindings to add must not already belong to the graph"
     )
 
     graphCopy(
@@ -193,32 +179,34 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
   }
 
 
-  def addLink(linkToAdd: L, bindingToAdd: B) =
+  def addLink(linkToAdd: L, bindingToAdd: B): this.type =
     addLinks(
       Map(linkToAdd -> bindingToAdd)
     )
 
 
-  def replaceLinks(replacingLinks: Set[L]): G = {
+  def replaceLinks(replacingLinks: Set[L]): this.type = {
     val newLinks =
-      links.diff(replacingLinks) ++ replacingLinks
+      links -- replacingLinks ++ replacingLinks
 
     require(
       newLinks.size == links.size,
-      "The replacing links must match links belonging to the graph"
+      "The replacing links must have the same ids as links belonging to the graph"
     )
 
     graphCopy(links = newLinks)
   }
 
+  def replaceLinks(replacingLinks: L*): this.type =
+    replaceLinks(replacingLinks.toSet)
 
-  def replaceLink(replacingLink: L) =
+  def replaceLink(replacingLink: L): this.type =
     replaceLinks(Set(replacingLink))
 
 
-  def removeLinks(linksToRemove: Set[L]): G = {
+  def removeLinks(linksToRemove: Set[L]): this.type = {
     val newLinks =
-      links.diff(linksToRemove)
+      links -- linksToRemove
 
     require(
       newLinks.size == links.size - linksToRemove.size,
@@ -238,8 +226,10 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
     )
   }
 
+  def removeLinks(linksToRemove: L*): this.type =
+    removeLinks(linksToRemove.toSet)
 
-  def removeLink(linkToRemove: L) =
+  def removeLink(linkToRemove: L): this.type =
     removeLinks(Set(linkToRemove))
 
 
@@ -264,31 +254,28 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
     bindings
       .flatMap(binding =>
         binding.vertexIds.map(vertexId =>
-          getVertex(vertexId).get
+          vertexMap(vertexId)
         )
       )
 
   @transient
   lazy val unlinkedVertexes: Set[V] =
-    vertexes.diff(linkedVertexes)
+    vertexes -- linkedVertexes
 
 
   /**
-    * Returns the set of links connecting the given vertexes
-    *
-    * @param linkVertexes A set of vertexes
-    * @return A set of links connecting the vertexes
-    */
+   * Returns the set of links connecting the given vertexes.
+   *
+   * @param linkVertexes A set of vertexes.
+   * @return A set of links connecting **all and only** the given vertexes.
+   */
   def getLinksBetween(linkVertexes: Set[V]): Set[L] = {
     val linkVertexIds =
       linkVertexes.map(_.id)
 
     bindings
-      .filter(binding =>
-        linkVertexIds.subsetOf(binding.vertexIds)
-      )
-      .map(binding =>
-        getLink(binding.linkId).get
+      .filter(_.vertexIds == linkVertexIds)
+      .map(binding => linkMap(binding.linkId)
       )
   }
 
@@ -298,16 +285,14 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
 
 
   /**
-    * Returns a set of vertexes connected to the given vertex
-    *
-    * @param vertex A vertex in the graph
-    * @return The set of all the vertexes connected to the given vertex
-    */
+   * Returns the set of vertexes connected to the given vertex.
+   *
+   * @param vertex A vertex in the graph.
+   * @return The set of all the vertexes connected to the given vertex, NOT including it.
+   */
   def getLinkedVertexes(vertex: V): Set[V] =
     bindings
-      .filter(binding => binding.vertexIds.contains(vertex.id))
-      .flatMap(binding => binding.vertexIds - vertex.id)
-      .map(vertexId => getVertex(vertexId).get)
-
-
+      .filter(_.vertexIds.contains(vertex.id))
+      .flatMap(_.vertexIds - vertex.id)
+      .map(vertexId => vertexMap(vertexId))
 }
