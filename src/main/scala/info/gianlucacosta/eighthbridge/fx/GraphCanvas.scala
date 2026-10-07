@@ -32,6 +32,8 @@ G <: VisualGraph[V, L]
   require(controller != null)
   require(initialGraph != null)
 
+  controller.graphCanvas = this
+
   styleClass.add("graphCanvas")
 
   /**
@@ -114,7 +116,7 @@ G <: VisualGraph[V, L]
 
 
   val backgroundNode: BackgroundNode[V, L, G] =
-    controller.createBackgroundNode(this)
+    controller.createBackgroundNode()
 
   children.add(backgroundNode)
 
@@ -283,7 +285,7 @@ G <: VisualGraph[V, L]
 
   private def createVertexNode(vertex: V): VertexNode[V, L, G] = {
     val newVertexNode =
-      controller.createVertexNode(this, vertex)
+      controller.createVertexNode(vertex)
 
     newVertexNode.width.addListener((observable: javafx.beans.Observable) => {
       resizeCanvas()
@@ -331,7 +333,7 @@ G <: VisualGraph[V, L]
       graph.getVertex(binding.targetVertexId).get
 
     val newLinkNode =
-      controller.createLinkNode(this, sourceVertex, targetVertex, link)
+      controller.createLinkNode(sourceVertex, targetVertex, link)
 
     children.add(
       newLinkNode
@@ -386,7 +388,7 @@ G <: VisualGraph[V, L]
 
   private def resizeCanvas(): Unit = {
     val newDimension =
-      controller.getCanvasDimension(this)
+      controller.canvasDimension
 
     this.resize(
       newDimension.width,
@@ -424,7 +426,7 @@ G <: VisualGraph[V, L]
     (keyEvent: KeyEvent) => {
       keyEvent.code match {
         case KeyCode.Delete =>
-          controller.deleteSelection(this, graph)
+          controller.deleteSelection()
             .foreach(newGraph =>
               graph = newGraph
             )

@@ -185,13 +185,13 @@ G <: VisualGraph[V, L]
                 mouseEvent.point
 
               if (mouseEvent.controlDown) {
-                controller.setVertexSelectedState(graph, vertex, !vertex.selected)
+                controller.setVertexSelectedState(vertex, !vertex.selected)
                   .foreach(newGraph =>
                     graph =
                       newGraph
                   )
               } else if (!vertex.selected) {
-                controller.setSelection(graph, Set(vertex), Set())
+                controller.setSelection(Set(vertex), Set())
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -206,7 +206,7 @@ G <: VisualGraph[V, L]
                 val selectedVertex =
                   selectedVertexes.head
 
-                controller.editVertex(graph, selectedVertex)
+                controller.editVertex(selectedVertex)
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -223,7 +223,7 @@ G <: VisualGraph[V, L]
                 val selectedVertex =
                   graph.selectedVertexes.head
 
-                controller.createLink(graph, selectedVertex, vertex)
+                controller.createLink(selectedVertex, vertex)
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -250,7 +250,7 @@ G <: VisualGraph[V, L]
 
 
           if (vertex.selected) {
-            controller.dragSelection(graphCanvas, delta)
+            controller.dragSelection(delta)
               .foreach(newGraph => {
                 dragAnchor =
                   mousePoint

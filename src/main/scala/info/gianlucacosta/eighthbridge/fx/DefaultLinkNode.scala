@@ -45,7 +45,7 @@ G <: VisualGraph[V, L]
               precedingInternalPoints ++ (internalPoint :: followingInternalPoints)
             }
 
-            controller.createLinkInternalPoint(graph, link, newInternalPoints, internalPoint)
+            controller.createLinkInternalPoint(link, newInternalPoints, internalPoint)
               .foreach(newGraph =>
                 graph = newGraph
               )
@@ -200,7 +200,7 @@ G <: VisualGraph[V, L]
                 val newInternalPoints =
                   link.internalPoints.filter(internalPoint => internalPoint != center)
 
-                controller.deleteLinkInternalPoint(graph, link, newInternalPoints, center)
+                controller.deleteLinkInternalPoint(link, newInternalPoints, center)
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -234,7 +234,7 @@ G <: VisualGraph[V, L]
                 if (internalPoint == center) newCenter else internalPoint
               )
 
-            if (controller.canDragLinkInternalPoint(graph, link, newInternalPoints, center, newCenter)) {
+            if (controller.canDragLinkInternalPoint(link, newInternalPoints, center, newCenter)) {
               dragAnchor =
                 mousePoint
 
@@ -304,7 +304,7 @@ G <: VisualGraph[V, L]
                 val newCenter =
                   (oldCenter + delta).clip(graphCanvas.dimension)
 
-                controller.dragLinkLabel(graph, link, oldCenter, newCenter)
+                controller.dragLinkLabel(link, oldCenter, newCenter)
                   .foreach(newGraph => {
                     dragAnchor =
                       mousePoint
@@ -428,13 +428,13 @@ G <: VisualGraph[V, L]
           mouseEvent.clickCount match {
             case 1 =>
               if (mouseEvent.controlDown) {
-                controller.setLinkSelectedState(graph, link, !link.selected)
+                controller.setLinkSelectedState(link, !link.selected)
                   .foreach(newGraph =>
                     graph =
                       newGraph
                   )
               } else if (!link.selected) {
-                controller.setSelection(graph, Set(), Set(link))
+                controller.setSelection(Set(), Set(link))
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -450,7 +450,7 @@ G <: VisualGraph[V, L]
                 val selectedLink =
                   selectedLinks.head
 
-                controller.editLink(graph, selectedLink)
+                controller.editLink(selectedLink)
                   .foreach(newGraph =>
                     graph =
                       newGraph

@@ -1,12 +1,12 @@
-package info.gianlucacosta.eighthbridge.fx.controllers
+package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Named
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 import scalafx.geometry.Point2D
 
 /**
-  * Mixin controller that:
+  * Mixin for GraphCanvasController that:
   * <ul>
   * <li>Creates a vertex by assigning it a unique name based on a counter</li>
   * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
@@ -15,8 +15,8 @@ import scalafx.geometry.Point2D
   * @tparam V Vertex
   * @tparam L Link
   */
-trait VertexNamingController[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
-  extends InteractiveEditingController[V, L, G] {
+trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
+  extends VertexEditing[V, L, G] {
   /**
     * The first index used when creating vertexes
     */
@@ -42,7 +42,7 @@ trait VertexNamingController[V <: VisualVertex with Named, L <: VisualLink, G <:
   protected def instantiateVertex(center: Point2D, vertexName: String): V
 
 
-  override def createVertex(graph: G, center: Point2D): Option[G] = {
+  override def createVertex(center: Point2D): Option[G] = {
     val lastUsedVertexIndex = Stream.from(firstIndex)
       .takeWhile(vertexIndex => {
         val vertexName =
@@ -71,7 +71,7 @@ trait VertexNamingController[V <: VisualVertex with Named, L <: VisualLink, G <:
   }
 
 
-  override protected def interactiveVertexEditing(graph: G, vertex: V): Option[V] = {
+  override protected def doEditVertex(vertex: V): Option[V] = {
     val newNameInput =
       InputDialogs.askForString("Vertex name:", vertex.name, "Edit vertex")
 

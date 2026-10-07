@@ -6,52 +6,76 @@ import scalafx.geometry.{Dimension2D, Point2D}
 /**
   * Controller providing behavior for GraphCanvas
   */
-trait GraphCanvasController[
+abstract class GraphCanvasController[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ] {
+  private var _graphCanvas: GraphCanvas[V, L, G] = _
+
+  protected[fx] final def graphCanvas: GraphCanvas[V, L, G] = _graphCanvas
+
+  protected[fx] final def graphCanvas_=(graphCanvas: GraphCanvas[V, L, G]): Unit = {
+    _graphCanvas = graphCanvas
+  }
+
+  protected final def graph: G = graphCanvas.graph
+
   def renderDirected: Boolean
 
-  def createBackgroundNode(graphCanvas: GraphCanvas[V, L, G]): BackgroundNode[V, L, G] =
+  def createBackgroundNode(): BackgroundNode[V, L, G] =
     new DefaultBackgroundNode(graphCanvas)
 
-  def createVertexNode(graphCanvas: GraphCanvas[V, L, G], vertex: V): VertexNode[V, L, G] =
+  //TODO! Should I remove the vertex here?
+  def createVertexNode(vertex: V): VertexNode[V, L, G] =
     new DefaultVertexNode(graphCanvas)
 
-  def createLinkNode(graphCanvas: GraphCanvas[V, L, G], sourceVertex: V, targetVertex: V, link: L): LinkNode[V, L, G] =
+  //TODO! Should I remove the link here?
+  def createLinkNode(sourceVertex: V, targetVertex: V, link: L): LinkNode[V, L, G] =
     new DefaultLinkNode(graphCanvas, sourceVertex.id, targetVertex.id)
 
-  def deleteSelection(graphCanvas: GraphCanvas[V, L, G], graph: G): Option[G]
+  def deleteSelection(): Option[G] =
+    None
 
-  def createVertex(graph: G, center: Point2D): Option[G]
+  def createVertex(center: Point2D): Option[G] =
+    None
 
-  def createLink(graph: G, sourceVertex: V, targetVertex: V): Option[G]
+  def createLink(sourceVertex: V, targetVertex: V): Option[G] =
+    None
 
+  def editVertex(vertex: V): Option[G] =
+    None
 
-  def editVertex(graph: G, vertex: V): Option[G]
+  def editLink(link: L): Option[G] =
+    None
 
-  def editLink(graph: G, link: L): Option[G]
+  def canDrawSelectionRectangle: Boolean =
+    false
 
+  def setVertexSelectedState(vertex: V, selected: Boolean): Option[G] =
+    None
 
-  def canDrawSelectionRectangle: Boolean
+  def setLinkSelectedState(link: L, selected: Boolean): Option[G] =
+    None
 
-  def setVertexSelectedState(graph: G, vertex: V, selected: Boolean): Option[G]
+  def setSelection(selectionVertexes: Set[V], selectionLinks: Set[L]): Option[G] =
+    None
 
-  def setLinkSelectedState(graph: G, link: L, selected: Boolean): Option[G]
+  //TODO! Delta should have a dedicated type!
+  def dragSelection(delta: Point2D): Option[G] =
+    None
 
-  def setSelection(graph: G, selectionVertexes: Set[V], selectionLinks: Set[L]): Option[G]
+  def createLinkInternalPoint(link: L, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[G] =
+    None
 
+  def canDragLinkInternalPoint(link: L, updatedInternalPoints: List[Point2D], originalInternalPoint: Point2D, updatedInternalPoint: Point2D): Boolean =
+    false
 
-  def dragSelection(graphCanvas: GraphCanvas[V, L, G], delta: Point2D): Option[G]
+  def deleteLinkInternalPoint(link: L, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[G] =
+    None
 
-  def createLinkInternalPoint(graph: G, link: L, newInternalPoints: List[Point2D], internalPoint: Point2D): Option[G]
-
-  def canDragLinkInternalPoint(graph: G, link: L, newInternalPoints: List[Point2D], oldInternalPoint: Point2D, newInternalPoint: Point2D): Boolean
-
-  def deleteLinkInternalPoint(graph: G, link: L, newInternalPoints: List[Point2D], internalPoint: Point2D): Option[G]
-
-  def dragLinkLabel(graph: G, link: L, oldCenter: Point2D, newCenter: Point2D): Option[G]
+  def dragLinkLabel(link: L, originalCenter: Point2D, updatedCenter: Point2D): Option[G] =
+    None
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
@@ -59,9 +83,10 @@ G <: VisualGraph[V, L]
       600
     )
 
-  def graphMargin: Int = 20
+  def graphMargin: Int =
+    20
 
-  def getCanvasDimension(graphCanvas: GraphCanvas[V, L, G]): Dimension2D = {
+  def canvasDimension: Dimension2D = {
     if (graphCanvas.vertexNodes.isEmpty)
       minCanvasDimension
     else {

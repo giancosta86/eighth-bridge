@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.controllers
+package info.gianlucacosta.eighthbridge.fx.controller
 
 import info.gianlucacosta.eighthbridge.fx.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.Weighted
@@ -10,9 +10,9 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
   * @tparam V Vertex
   * @tparam L Link
   */
-trait WeightLinkController[V <: VisualVertex, L <: VisualLink with Weighted, G <: VisualGraph[V, L]]
-  extends InteractiveEditingController[V, L, G] {
-  override protected def interactiveLinkEditing(graph: G, link: L): Option[L] = {
+trait LinkWeightEditing[V <: VisualVertex, L <: VisualLink with Weighted, G <: VisualGraph[V, L]]
+  extends LinkEditing[V, L, G] {
+  override protected def doEditLink(link: L): Option[L] = {
     val newWeightOption =
       InputDialogs.askForDouble(
         "Weight:",

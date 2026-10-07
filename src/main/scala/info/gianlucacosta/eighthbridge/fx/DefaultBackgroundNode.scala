@@ -152,7 +152,7 @@ G <: VisualGraph[V, L]
         case MouseButton.Primary =>
           if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
             && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
-            controller.createVertex(graph, mouseEvent.point)
+            controller.createVertex(mouseEvent.point)
               .foreach(newGraph => {
                 selectionBounds =
                   DefaultBackgroundNode.EmptySelectionBounds
