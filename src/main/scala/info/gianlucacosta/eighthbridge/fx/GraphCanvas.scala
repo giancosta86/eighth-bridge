@@ -69,6 +69,15 @@ G <: VisualGraph[V, L]
 
   children.add(backgroundNode)
 
+  focusTraversable =
+    true
+
+  private var dragAnchor: Point2D = _
+
+
+  private var panning: Boolean =
+    false
+
 
   private var _vertexNodes: Map[UUID, VertexNode[V, L, G]] =
     Map()
@@ -84,17 +93,6 @@ G <: VisualGraph[V, L]
 
   def linkNodes: Map[UUID, LinkNode[V, L, G]] =
     _linkNodes
-
-
-  focusTraversable =
-    true
-
-
-  private var dragAnchor: Point2D = _
-
-
-  private var panning: Boolean =
-    false
 
 
   private var latestRenderedVertexPointers =
