@@ -34,74 +34,25 @@ G <: VisualGraph[V, L]
 
   styleClass.add("graphCanvas")
 
-  /**
-    * This property is set whenever a new graph is set - programmatically or via
-    * user interaction.
-    */
-  val graphProperty =
+  val graph =
     new SimpleObjectProperty[G](initialGraph)
 
-  graphProperty.addListener((observable: Observable) => {
+  graph.addListener((observable: Observable) => {
     //The canvas can only be updated by changing the graph
     render()
   })
 
-
-  def graph: G =
-    graphProperty()
-
-
-  def graph_=(newValue: G): Unit =
-    graphProperty() =
-      newValue
-
-
-  val zoomEnabledProperty =
+  val zoomEnabled =
     new SimpleBooleanProperty(true)
 
-
-  def zoomEnabled: Boolean =
-    zoomEnabledProperty.get
-
-
-  def zoomEnabled_=(newValue: Boolean): Unit =
-    zoomEnabledProperty.set(newValue)
-
-
-  val minZoomScaleProperty =
+  val minZoomScale =
     new SimpleDoubleProperty(0.2)
 
-
-  def minZoomScale: Double =
-    minZoomScaleProperty.get
-
-
-  def minZoomScale_=(newValue: Double) =
-    minZoomScaleProperty.set(newValue)
-
-
-  val maxZoomScaleProperty =
+  val maxZoomScale =
     new SimpleDoubleProperty(Double.PositiveInfinity)
 
-
-  def maxZoomScale: Double =
-    maxZoomScaleProperty.get
-
-
-  def maxZoomScale_=(newValue: Double) =
-    maxZoomScaleProperty.set(newValue)
-
-
-  val panEnabledProperty =
+  val panEnabled =
     new SimpleBooleanProperty(true)
-
-
-  def panEnabled: Boolean =
-    panEnabledProperty.get
-
-
-  def panEnabled_=(newValue: Boolean): Unit =
-    panEnabledProperty.set(newValue)
 
 
   clip = new Rectangle {
@@ -202,15 +153,15 @@ G <: VisualGraph[V, L]
 
 
     val currentVertexPointers: Set[Int] =
-      graph.vertexes.map(System.identityHashCode)
+      graph().vertexes.map(System.identityHashCode)
 
 
     val currentLinkPointers: Set[Int] =
-      graph.links.map(System.identityHashCode)
+      graph().links.map(System.identityHashCode)
 
 
     val currentBindingPointers: Set[Int] =
-      graph.bindings.map(System.identityHashCode)
+      graph().bindings.map(System.identityHashCode)
 
 
     val currentLinkToVertexPointersOption: Option[Map[UUID, Set[Int]]] =
@@ -241,7 +192,7 @@ G <: VisualGraph[V, L]
     val (newVertexNodes, vertexNodesToRemove) =
       _vertexNodes.partition {
         case (vertexId, vertexNode) =>
-          graph.containsVertex(vertexId)
+          graph().containsVertex(vertexId)
       }
 
     _vertexNodes =
@@ -257,7 +208,7 @@ G <: VisualGraph[V, L]
     val (newLinkNodes, linkNodesToRemove) =
       _linkNodes.partition {
         case (linkId, linkNode) =>
-          graph.containsLink(linkId)
+          graph().containsLink(linkId)
       }
 
     _linkNodes =
@@ -268,7 +219,7 @@ G <: VisualGraph[V, L]
 
 
   private def updateVertexNodes(): Unit = {
-    graph.vertexes.foreach(vertex => {
+    graph().vertexes.foreach(vertex => {
       val vertexNode =
         _vertexNodes.getOrElse(
           vertex.id,
@@ -307,9 +258,9 @@ G <: VisualGraph[V, L]
 
 
   private def updateLinkNodes(): Unit = {
-    graph.bindings.foreach(binding => {
+    graph().bindings.foreach(binding => {
       val link =
-        graph.getLink(binding.linkId).get
+        graph().getLink(binding.linkId).get
 
       val linkNode =
         _linkNodes.getOrElse(
@@ -325,10 +276,10 @@ G <: VisualGraph[V, L]
 
   private def createLinkNode(link: L, binding: ArcBinding): LinkNode[V, L, G] = {
     val sourceVertex =
-      graph.getVertex(binding.sourceVertexId).get
+      graph().getVertex(binding.sourceVertexId).get
 
     val targetVertex =
-      graph.getVertex(binding.targetVertexId).get
+      graph().getVertex(binding.targetVertexId).get
 
     val newLinkNode =
       controller.createLinkNode(sourceVertex, targetVertex, link)
@@ -347,12 +298,12 @@ G <: VisualGraph[V, L]
   private def getLinkToVertexPointers(currentBindingPointers: Set[Int]): Option[Map[UUID, Set[Int]]] = {
     if (currentBindingPointers == latestRenderedBindingPointers)
       Some(
-        graph.bindings.map(binding => {
+        graph().bindings.map(binding => {
           val sourceVertex =
-            graph.getVertex(binding.sourceVertexId).get
+            graph().getVertex(binding.sourceVertexId).get
 
           val targetVertex =
-            graph.getVertex(binding.targetVertexId).get
+            graph().getVertex(binding.targetVertexId).get
 
           binding.linkId -> Set(
             sourceVertex,
@@ -426,7 +377,7 @@ G <: VisualGraph[V, L]
         case KeyCode.Delete =>
           controller.deleteSelection()
             .foreach(newGraph =>
-              graph = newGraph
+              graph() = newGraph
             )
 
         case _ =>
@@ -437,7 +388,7 @@ G <: VisualGraph[V, L]
 
   handleEvent(ScrollEvent.Scroll) {
     (event: ScrollEvent) => {
-      if (zoomEnabled) {
+      if (zoomEnabled()) {
         event.consume()
 
         val oldScale =
@@ -447,10 +398,10 @@ G <: VisualGraph[V, L]
           math.pow(1.01, event.deltaY / 5)
 
         val newScale = math.max(
-          minZoomScale,
+          minZoomScale(),
 
           math.min(
-            maxZoomScale,
+            maxZoomScale(),
 
             oldScale * scaleFactor
           )
@@ -489,7 +440,7 @@ G <: VisualGraph[V, L]
 
   filterEvent(MouseEvent.MousePressed) {
     (event: MouseEvent) => {
-      if (event.isShiftDown && panEnabled) {
+      if (event.isShiftDown && panEnabled()) {
         event.consume()
 
         dragAnchor =

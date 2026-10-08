@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import scalafx.scene.Node
+import scalafx.Includes._
 
 /**
   * Generic JavaFX node rendering a graph element into GraphCanvas.
@@ -23,7 +24,7 @@ G <: VisualGraph[V, L]
     *
     * @return
     */
-  def controller: GraphCanvasController[V, L, G] =
+  final def controller: GraphCanvasController[V, L, G] =
     graphCanvas.controller
 
 
@@ -32,8 +33,8 @@ G <: VisualGraph[V, L]
     *
     * @return
     */
-  def graph: G =
-    graphCanvas.graph
+  final def graph: G =
+    graphCanvas.graph()
 
 
   /**
@@ -42,8 +43,8 @@ G <: VisualGraph[V, L]
     *
     * @param newGraph
     */
-  def graph_=(newGraph: G): Unit =
-    graphCanvas.graph = newGraph
+  final def graph_=(newGraph: G): Unit =
+    graphCanvas.graph() = newGraph
 
 
   /**

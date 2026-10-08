@@ -2,6 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.Includes._
 
 /**
   * Controller providing behavior for GraphCanvas
@@ -19,7 +20,7 @@ G <: VisualGraph[V, L]
     _graphCanvas = graphCanvas
   }
 
-  protected final def graph: G = graphCanvas.graph
+  protected final def graph: G = graphCanvas.graph()
 
   def renderDirected: Boolean
 
