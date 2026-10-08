@@ -287,12 +287,28 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   /**
    * Returns the set of vertexes connected to the given vertex.
    *
-   * @param vertex A vertex in the graph.
+   * @param vertex A vertex.
    * @return The set of all the vertexes connected to the given vertex, NOT including it.
    */
   def getLinkedVertexes(vertex: V): Set[V] =
     bindings
+      .view
       .filter(_.vertexIds.contains(vertex.id))
       .flatMap(_.vertexIds - vertex.id)
-      .map(vertexId => vertexMap(vertexId))
+      .map(vertexMap)
+      .toSet
+
+  /**
+   * Returns the set of vertexes connected to the given link.
+   *
+   * @param link A link.
+   * @return The set of all the vertexes connected to the given link.
+   */
+  def getLinkedVertexes(link: L): Set[V] =
+    bindings
+      .view
+      .filter(_.linkId == link.id)
+      .head
+      .vertexIds
+      .map(vertexMap)
 }
