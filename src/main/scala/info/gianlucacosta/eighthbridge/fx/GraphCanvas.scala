@@ -55,6 +55,32 @@ G <: VisualGraph[V, L]
     new SimpleBooleanProperty(true)
 
 
+  private var _dimension: Dimension2D =
+    new Dimension2D(
+      width(),
+      height()
+    )
+
+  def dimension: Dimension2D =
+    _dimension
+
+  width.addListener((observable: javafx.beans.Observable) => {
+    _dimension =
+      new Dimension2D(
+        width(),
+        height()
+      )
+  })
+
+  height.addListener((observable: javafx.beans.Observable) => {
+    _dimension =
+      new Dimension2D(
+        width(),
+        height()
+      )
+  })
+
+
   clip = new Rectangle {
     width <==
       GraphCanvas.this.width
@@ -105,37 +131,7 @@ G <: VisualGraph[V, L]
     Set[Int]()
 
 
-  private var _dimension: Dimension2D =
-    new Dimension2D(
-      width(),
-      height()
-    )
-
-
-  def dimension: Dimension2D =
-    _dimension
-
-
-  width.addListener((observable: javafx.beans.Observable) => {
-    _dimension =
-      new Dimension2D(
-        width(),
-        height()
-      )
-  })
-
-
-  height.addListener((observable: javafx.beans.Observable) => {
-    _dimension =
-      new Dimension2D(
-        width(),
-        height()
-      )
-  })
-
-
   render()
-
 
   private def render(): Unit = {
     purgeDanglingVertexNodes()
