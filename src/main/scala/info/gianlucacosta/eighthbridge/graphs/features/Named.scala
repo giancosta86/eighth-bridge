@@ -30,5 +30,13 @@ object Named {
   implicit class PairOfNamedExtensions[T <: Named, U <: Named](pair: (T, U)) {
     val namePair: (String, String) =
       (pair._1.name, pair._2.name)
+
+    val sortedNamePair: (String, String) =
+      if (pair._1.name <= pair._2.name)
+        (pair._1.name, pair._2.name)
+      else
+        (pair._2.name, pair._1.name)
+
+
   }
 }
