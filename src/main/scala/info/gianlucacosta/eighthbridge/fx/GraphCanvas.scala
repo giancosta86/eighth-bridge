@@ -100,7 +100,6 @@ G <: VisualGraph[V, L]
 
   private var dragAnchor: Point2D = _
 
-
   private var panning: Boolean =
     false
 
@@ -185,7 +184,7 @@ G <: VisualGraph[V, L]
   private def purgeDanglingVertexNodes(): Unit = {
     val (newVertexNodes, vertexNodesToRemove) =
       _vertexNodes.partition {
-        case (vertexId, vertexNode) =>
+        case (vertexId, _) =>
           graph().containsVertex(vertexId)
       }
 
@@ -201,14 +200,16 @@ G <: VisualGraph[V, L]
   private def purgeDanglingLinkNodes(): Unit = {
     val (newLinkNodes, linkNodesToRemove) =
       _linkNodes.partition {
-        case (linkId, linkNode) =>
+        case (linkId, _) =>
           graph().containsLink(linkId)
       }
 
     _linkNodes =
       newLinkNodes
 
-    linkNodesToRemove.values.foreach(children.remove)
+    linkNodesToRemove
+      .values
+      .foreach(children.remove)
   }
 
 
