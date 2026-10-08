@@ -18,7 +18,7 @@ import scalafx.scene.shape.Rectangle
   * By plugging a controller, the canvas can flexibly:
   * <ul>
   * <li>Render graph components using different JavaFX nodes</li>
-  * <li>Support a given set of operations - for example: graph creation via user interaction</li>
+  * <li>Support a given set of operations - for example: graph definition via user interaction</li>
   * </ul>
   *
   * @param controller   The controller telling the canvas how to render components and how to react to user input
@@ -29,9 +29,7 @@ V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val controller: GraphCanvasController[V, L, G], initialGraph: G) extends Pane {
-  require(controller != null)
-  require(initialGraph != null)
-
+  require(controller.graphCanvas == null, "The controller must not already belong to a graph!")
   controller.graphCanvas = this
 
   styleClass.add("graphCanvas")
