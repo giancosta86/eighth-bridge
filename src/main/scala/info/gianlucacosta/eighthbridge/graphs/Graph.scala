@@ -236,21 +236,21 @@ trait Graph[V <: Vertex, L <: Link, B <: Binding] {
   def getVertex(id: UUID): Option[V] =
     vertexMap.get(id)
 
-  def containsVertex(vertex: V): Boolean =
-    vertexMap.keySet.contains(vertex.id)
-
   def containsVertex(id: UUID): Boolean =
     vertexMap.keySet.contains(id)
+
+  def contains(vertex: V): Boolean =
+    vertexMap.keySet.contains(vertex.id)
 
 
   def getLink(id: UUID): Option[L] =
     linkMap.get(id)
 
-  def containsLink(link: L): Boolean =
-    linkMap.keySet.contains(link.id)
-
   def containsLink(id: UUID): Boolean =
     linkMap.keySet.contains(id)
+
+  def contains(link: L): Boolean =
+    linkMap.keySet.contains(link.id)
 
 
   @transient
