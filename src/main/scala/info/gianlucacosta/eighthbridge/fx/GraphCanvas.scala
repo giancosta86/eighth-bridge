@@ -163,7 +163,13 @@ G <: VisualGraph[V, L]
 
     renderVertexes()
 
-    resizeCanvas()
+    val newDimension =
+      controller.canvasDimension
+
+    this.resize(
+      newDimension.width,
+      newDimension.height
+    )
 
     renderLinks(currentLinkToVertexPointersOption)
 
@@ -230,16 +236,6 @@ G <: VisualGraph[V, L]
   private def createVertexNode(vertex: V): VertexNode[V, L, G] = {
     val newVertexNode =
       controller.createVertexNode(vertex)
-
-    newVertexNode.width.addListener((observable: javafx.beans.Observable) => {
-      resizeCanvas()
-    })
-
-
-    newVertexNode.height.addListener((observable: javafx.beans.Observable) => {
-      resizeCanvas()
-    })
-
 
     children.add(
       newVertexNode
@@ -328,18 +324,6 @@ G <: VisualGraph[V, L]
       }
     })
   }
-
-
-  private def resizeCanvas(): Unit = {
-    val newDimension =
-      controller.canvasDimension
-
-    this.resize(
-      newDimension.width,
-      newDimension.height
-    )
-  }
-
 
   def renderLinks(currentLinkToVertexPointersOption: Option[Map[UUID, Set[Int]]]): Unit = {
     _linkNodes.values.foreach(linkNode => {
