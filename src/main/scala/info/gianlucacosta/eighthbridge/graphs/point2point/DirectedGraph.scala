@@ -71,39 +71,47 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   }
 
   @transient
-  protected lazy val exitingVertexesMap: Map[V, Set[V]] =
+  protected lazy val exitingVertexesByVertex: Map[V, Set[V]] =
     topologyCache
       .groupBy { case (sourceVertex, _, _) => sourceVertex }
       .mapValues(_.map { case (_, _, targetVertex) => targetVertex })
 
 
   @transient
-  protected lazy val exitingArcsMap: Map[V, Set[L]] =
+  protected lazy val exitingArcsByVertex: Map[V, Set[L]] =
     topologyCache
       .groupBy { case (sourceVertex, _, _) => sourceVertex }
       .mapValues(_.map { case (_, arc, _) => arc })
 
 
   @transient
-  private lazy val enteringVertexesMap: Map[V, Set[V]] =
+  private lazy val enteringVertexesByVertex: Map[V, Set[V]] =
     topologyCache
       .groupBy { case (_, _, targetVertex) => targetVertex }
       .mapValues(_.map { case (sourceVertex, _, _) => sourceVertex })
 
 
   @transient
-  private lazy val enteringArcsMap: Map[V, Set[L]] =
+  private lazy val enteringArcsByVertex: Map[V, Set[L]] =
     topologyCache
       .groupBy { case (_, _, targetVertex) => targetVertex }
       .mapValues(_.map { case (_, arc, _) => arc })
 
   @transient
-  private lazy val arcsBetweenPairsMap: Map[(V, V), Set[L]] =
+  private lazy val arcsByVertexPair: Map[(V, V), Set[L]] =
     topologyCache
       .groupBy { case (sourceVertex, _, targetVertex) =>
         sourceVertex -> targetVertex
       }
       .mapValues(_.map { case (_, arc, _) => arc })
+
+  @transient
+  private lazy val vertexPairsByArc: Map[L, (V, V)] =
+    topologyCache
+      .groupBy { case (_, arc, _) => arc }
+      .mapValues(_.map { case (sourceVertex, _, targetVertex) =>
+        (sourceVertex, targetVertex)
+      }.head)
 
   /**
    * The vertexes having no entering arcs
@@ -118,7 +126,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * Returns the set of vertexes that are target of any arc exiting the given vertex.
    */
   def getExitingVertexes(vertex: V): Set[V] =
-    exitingVertexesMap.getOrElse(
+    exitingVertexesByVertex.getOrElse(
       vertex,
       Set()
     )
@@ -127,7 +135,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * Returns the set of arcs whose source is the given vertex.
    */
   def getExitingArcs(vertex: V): Set[L] =
-    exitingArcsMap.getOrElse(
+    exitingArcsByVertex.getOrElse(
       vertex,
       Set()
     )
@@ -136,7 +144,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * Returns the set of vertexes that are source of any arc entering the given vertex.
    */
   def getEnteringVertexes(vertex: V): Set[V] =
-    enteringVertexesMap.getOrElse(
+    enteringVertexesByVertex.getOrElse(
       vertex,
       Set()
     )
@@ -145,7 +153,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * Returns the set of arcs whose target is the given vertex.
    */
   def getEnteringArcs(vertex: V): Set[L] =
-    enteringArcsMap.getOrElse(
+    enteringArcsByVertex.getOrElse(
       vertex,
       Set()
     )
@@ -156,7 +164,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * @param vertexPair The (source, target) pair.
    */
   def getArcsBetween(vertexPair: (V, V)): Set[L] =
-    arcsBetweenPairsMap.getOrElse(
+    arcsByVertexPair.getOrElse(
       vertexPair,
       Set()
     )
@@ -179,13 +187,13 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
     val rightVertex = linkVertexes.last
 
     val leftToRightArcs =
-      arcsBetweenPairsMap.getOrElse(
+      arcsByVertexPair.getOrElse(
         leftVertex -> rightVertex,
         Set()
       )
 
     val rightToLeftArcs =
-      arcsBetweenPairsMap.getOrElse(
+      arcsByVertexPair.getOrElse(
         rightVertex -> leftVertex,
         Set()
       )
@@ -195,19 +203,25 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
 
   override def getLinkedVertexes(vertex: V): Set[V] = {
     val enteringVertexes =
-      enteringVertexesMap.getOrElse(
+      enteringVertexesByVertex.getOrElse(
         vertex,
         Set()
       )
 
     val exitingVertexes =
-      exitingVertexesMap.getOrElse(
+      exitingVertexesByVertex.getOrElse(
         vertex,
         Set()
       )
 
     enteringVertexes ++ exitingVertexes
   }
+
+  /**
+   * Returns the (source, target) vertex pair for the given link, if the link belongs to the graph.
+   */
+  def getVertexPair(link: L): Option[(V, V)] =
+    vertexPairsByArc.get(link)
 
   /**
    * Topology information for a vertex in a directed graph.
@@ -273,7 +287,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
        */
       case currentVertex :: fringeTail =>
         val currentEnteringVertexes =
-          enteringVertexesMap.getOrElse(currentVertex, Set())
+          enteringVertexesByVertex.getOrElse(currentVertex, Set())
 
         /*
          * If all the vertexes pointing to the current vertex have already been explored,
@@ -281,14 +295,14 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
          */
         if (currentEnteringVertexes.subsetOf(processedVertexes)) {
           val currentExitingVertexes =
-            exitingVertexesMap.getOrElse(currentVertex, Set())
+            exitingVertexesByVertex.getOrElse(currentVertex, Set())
 
           val vertexTopology = VertexTopology(
             enteringVertexes = currentEnteringVertexes,
             enteringArcs =
-              enteringArcsMap.getOrElse(currentVertex, Set()),
+              enteringArcsByVertex.getOrElse(currentVertex, Set()),
             exitingArcs =
-              exitingArcsMap.getOrElse(currentVertex, Set()),
+              exitingArcsByVertex.getOrElse(currentVertex, Set()),
             exitingVertexes = currentExitingVertexes
           )
 
