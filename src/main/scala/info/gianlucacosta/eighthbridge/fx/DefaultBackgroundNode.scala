@@ -111,12 +111,10 @@ G <: VisualGraph[V, L]
           dragAnchor =
             mouseEvent.point
 
-          graph =
-            graph.deselectAll
+          controller.setSelection(Set(), Set()).foreach(graph_=)
 
         case MouseButton.Secondary =>
-          graph =
-            graph.deselectAll
+          controller.setSelection(Set(), Set()).foreach(graph_=)
 
         case _ =>
       }
@@ -131,14 +129,11 @@ G <: VisualGraph[V, L]
       mouseEvent.button match {
         case MouseButton.Primary =>
           if (controller.canDrawSelectionRectangle) {
-            val currentPoint =
-              mouseEvent.point
-
-            val clippedPoint =
-              currentPoint.clip(graphCanvas.dimension)
+            val clippedMousePoint =
+              mouseEvent.point.clip(graphCanvas.dimension)
 
             selectionBounds =
-              new DiagonalBounds(dragAnchor, clippedPoint)
+              new DiagonalBounds(dragAnchor, clippedMousePoint)
           }
         case _ =>
       }
@@ -153,13 +148,7 @@ G <: VisualGraph[V, L]
           if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
             && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
             controller.createVertex(mouseEvent.point)
-              .foreach(newGraph => {
-                selectionBounds =
-                  DefaultBackgroundNode.EmptySelectionBounds
-
-                graph =
-                  newGraph
-              })
+              .foreach(graph_=)
           } else {
             val selectionVertexes = graphCanvas.vertexNodes
               .values
@@ -173,15 +162,15 @@ G <: VisualGraph[V, L]
               .map(_.link)
               .toSet
 
-            selectionBounds =
-              DefaultBackgroundNode.EmptySelectionBounds
-
             graph =
               graph.setSelection(
                 selectionVertexes,
                 selectionLinks
               )
           }
+
+          selectionBounds =
+            DefaultBackgroundNode.EmptySelectionBounds
 
         case _ =>
       }
