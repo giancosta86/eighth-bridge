@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.point2point.DirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{Binding, Graph, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Binding, Graph}
 import info.gianlucacosta.helios.mathutils.Numbers
 
 import scala.language.implicitConversions
@@ -59,7 +59,7 @@ object Weighted {
         .map(_.weight)
   }
 
-  implicit class WeightedGraphExtensions[V <: Vertex, L <: Link with Weighted, B <: Binding](graph: Graph[V, L, B]) {
+  implicit class WeightedGraphExtensions[V, L <: Weighted, B <: Binding[V, L]](graph: Graph[V, L, B]) {
     def getMinWeightBetween(vertexes: Set[V]): Double = {
       graph.getLinksBetween(vertexes)
         .minWeight
@@ -70,7 +70,7 @@ object Weighted {
       graph.getMinWeightBetween(vertexes.toSet)
   }
 
-  implicit class WeightedDirectedGraphExtensions[V <: Vertex, L <: Link with Weighted](graph: DirectedGraph[V, L]) {
+  implicit class WeightedDirectedGraphExtensions[V, L <: Weighted](graph: DirectedGraph[V, L]) {
     def getMinArcWeightBetween(sourceVertex: V, targetVertex: V): Double = {
       graph.getArcsBetween(sourceVertex, targetVertex)
         .minWeight

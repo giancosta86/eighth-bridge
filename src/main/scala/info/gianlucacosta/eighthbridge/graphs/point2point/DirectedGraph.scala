@@ -1,8 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.point2point
 
-import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph}
 
-import java.util.UUID
 import scala.annotation.tailrec
 
 /**
@@ -11,20 +10,15 @@ import scala.annotation.tailrec
  * @tparam V Vertex type.
  * @tparam L Link type.
  */
-trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
-  /**
-   * Adds a link from <i>sourceVertex</i> to <i>targetVertex</i>
-   */
-  def addLink(sourceVertex: V, targetVertex: V, link: L): this.type = {
-    val binding = ArcBinding(
-      id = UUID.randomUUID(),
-      sourceVertexId = sourceVertex.id,
-      targetVertexId = targetVertex.id,
-      linkId = link.id
+trait DirectedGraph[V, L] extends Graph[V, L, ArcBinding[V, L]] {
+  def addLink(sourceVertex: V, targetVertex: V, link: L): this.type =
+    addBinding(
+      ArcBinding(
+        sourceVertex = sourceVertex,
+        targetVertex = targetVertex,
+        link = link
+      )
     )
-
-    addLink(link, binding)
-  }
 
   @transient
   private lazy val topologyCache: Set[(V, L, V)] =
@@ -39,12 +33,12 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
   @tailrec
   private def createTopologyCache(
                                    cumulatedCache: Set[(V, L, V)],
-                                   bindingsToVisit: List[ArcBinding]
+                                   bindingsToVisit: List[ArcBinding[V, L]]
                                  ): Set[(V, L, V)] = {
     bindingsToVisit match {
       case headBinding :: tailBindings =>
         val cacheEntry =
-          createTopologyCacheEntry(headBinding)
+          (headBinding.sourceVertex, headBinding.link, headBinding.targetVertex)
 
         createTopologyCache(
           cumulatedCache + cacheEntry,
@@ -54,20 +48,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
       case Nil =>
         cumulatedCache
     }
-  }
-
-
-  private def createTopologyCacheEntry(binding: ArcBinding): (V, L, V) = {
-    val sourceVertex =
-      vertexMap(binding.sourceVertexId)
-
-    val arc =
-      linkMap(binding.linkId)
-
-    val targetVertex =
-      vertexMap(binding.targetVertexId)
-
-    (sourceVertex, arc, targetVertex)
   }
 
   @transient
@@ -118,8 +98,8 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    */
   @transient
   lazy val rootVertexes: Set[V] =
-  vertexes
-    .filter(getEnteringArcs(_).isEmpty)
+    vertexes
+      .filter(getEnteringArcs(_).isEmpty)
 
 
   /**
@@ -176,29 +156,30 @@ trait DirectedGraph[V <: Vertex, L <: Link] extends Graph[V, L, ArcBinding] {
    * @param targetVertex The target vertex
    * @return A set of links
    */
-  def getArcsBetween(sourceVertex: V, targetVertex: V): Set[L] =
+  final def getArcsBetween(sourceVertex: V, targetVertex: V): Set[L] =
     getArcsBetween(sourceVertex -> targetVertex)
 
   override def getLinksBetween(linkVertexes: Set[V]): Set[L] = {
-    require(linkVertexes.size == 2)
+    if (linkVertexes.size == 2) {
+      val leftVertex = linkVertexes.head
 
-    val leftVertex = linkVertexes.head
+      val rightVertex = linkVertexes.last
 
-    val rightVertex = linkVertexes.last
+      val leftToRightArcs =
+        arcsByVertexPair.getOrElse(
+          leftVertex -> rightVertex,
+          Set()
+        )
 
-    val leftToRightArcs =
-      arcsByVertexPair.getOrElse(
-        leftVertex -> rightVertex,
-        Set()
-      )
+      val rightToLeftArcs =
+        arcsByVertexPair.getOrElse(
+          rightVertex -> leftVertex,
+          Set()
+        )
 
-    val rightToLeftArcs =
-      arcsByVertexPair.getOrElse(
-        rightVertex -> leftVertex,
-        Set()
-      )
-
-    leftToRightArcs ++ rightToLeftArcs
+      leftToRightArcs ++ rightToLeftArcs
+    } else
+      Set()
   }
 
   override def getLinkedVertexes(vertex: V): Set[V] = {

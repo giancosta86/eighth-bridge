@@ -6,15 +6,28 @@ import java.util.UUID
 
 /**
  * Binding for a point-to-point arc (that is, a directed link).
- *
- * @param id
- * @param sourceVertexId
- * @param targetVertexId
- * @param linkId
  */
-case class ArcBinding(id: UUID, sourceVertexId: UUID, targetVertexId: UUID, linkId: UUID)
-  extends Binding {
+case class ArcBinding[V, L](sourceVertex: V, targetVertex: V, link: L)
+  extends Binding[V, L] {
 
-  override val vertexIds: Set[UUID] =
-    Set(sourceVertexId, targetVertexId)
+  override val vertexes: Set[V] = Set(sourceVertex, targetVertex)
+
+  override def replaceVertex(oldVertex: V, newVertex: V): this.type =
+    if (oldVertex == sourceVertex)
+      copy(
+        sourceVertex = newVertex
+      )
+    else if (oldVertex == targetVertex)
+      copy(
+        targetVertex = newVertex
+      )
+    else
+      this
+
+  override def replaceLink(oldLink: L, newLink: L): ArcBinding.this.type = {
+    if (oldLink == link)
+      copy(link = newLink)
+    else
+      this
+  }
 }
