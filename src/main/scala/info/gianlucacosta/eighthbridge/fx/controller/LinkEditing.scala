@@ -7,8 +7,8 @@ trait LinkEditing[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] ex
   override def editLink(link: L): Option[G] = {
     while (true) {
       try {
-        return doEditLink(link).map(
-          graph.replaceLink(_)
+        return doEditLink(link).map(newLink =>
+          graph.replaceLink(link, newLink)
         )
       } catch {
         case ex: IllegalArgumentException =>

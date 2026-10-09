@@ -12,15 +12,20 @@ import scalafx.scene.text.Text
 import java.util.UUID
 import scala.collection.JavaConversions._
 
+case class DefaultLinkNode[V <: VisualVertex,
+  L <: VisualLink,
+  G <: VisualGraph[V, L]](
+                                                     graphCanvas: GraphCanvas[V, L, G],
+                         linkInGraph: L
+                                                   )
+extends Group with LinkNode[V, L, G]
 
-/**
-  * Default, interactive implementation of LinkNode
-  */
+/*
 class DefaultLinkNode[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
-](val graphCanvas: GraphCanvas[V, L, G], val sourceVertexId: UUID, val targetVertexId: UUID)
+](val graphCanvas: GraphCanvas[V, L, G], val link: L)
   extends Group
     with LinkNode[V, L, G] {
 
@@ -362,13 +367,15 @@ G <: VisualGraph[V, L]
   opacity <==
     when(hover) choose 0.75 otherwise 1
 
+  val (sourceVertex, targetVertex) = graph.getVertexPair(link).get
+
 
   val sourceVertexNode: VertexNode[V, L, G] =
-    graphCanvas.vertexNodes(sourceVertexId)
+    graphCanvas.vertexNodes(sourceVertex.id)
 
 
   val targetVertexNode: VertexNode[V, L, G] =
-    graphCanvas.vertexNodes(targetVertexId)
+    graphCanvas.vertexNodes(targetVertex.id)
 
 
   targetVertexNode.width.addListener((observable: javafx.beans.Observable) => {
@@ -639,3 +646,4 @@ G <: VisualGraph[V, L]
     linkLabelConnector.render(labelCenter, labelConnectorLinkJoinPoint)
   }
 }
+*/

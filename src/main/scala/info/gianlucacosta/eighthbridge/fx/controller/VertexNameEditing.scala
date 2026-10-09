@@ -38,7 +38,7 @@ trait VertexNameEditing[V <: VisualVertex with Named, L <: VisualLink, G <: Visu
     val nameAssignedToAnotherVertex =
       graph
         .vertexes
-        .exists(otherVertex => otherVertex.name == newName && otherVertex.id != vertex.id)
+        .exists(otherVertex => otherVertex.name == newName && otherVertex != vertex)
 
     if (nameAssignedToAnotherVertex) {
       throw new IllegalArgumentException("The vertex name must be unique!")

@@ -22,6 +22,7 @@ trait DefineSelection[
   override def setVertexSelectedState(vertex: V, selected: Boolean): Option[G] =
     Some(
       graph.replaceVertex(
+        vertex,
         vertex.visualCopy(selected = selected)
       )
     )
@@ -30,6 +31,7 @@ trait DefineSelection[
   override def setLinkSelectedState(link: L, selected: Boolean): Option[G] =
     Some(
       graph.replaceLink(
+        link,
         link.visualCopy(selected = selected)
       )
     )

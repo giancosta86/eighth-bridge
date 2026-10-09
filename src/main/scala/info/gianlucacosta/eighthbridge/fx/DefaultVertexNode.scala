@@ -14,7 +14,7 @@ import scalafx.scene.{Group, Scene}
 
 import scala.collection.JavaConversions._
 
-
+//TODO! Getting rid of explicit padding will be needed
 object DefaultVertexNode {
   val DefaultPadding: Double =
     10
@@ -96,13 +96,14 @@ object DefaultVertexNode {
 /**
   * Default, interactive implementation of VertexNode
   */
-class DefaultVertexNode[
+case class DefaultVertexNode[
 V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ](
-   val graphCanvas: GraphCanvas[V, L, G],
-   padding: Double = DefaultVertexNode.DefaultPadding
+   graphCanvas: GraphCanvas[V, L, G],
+   vertexInGraph: V
+   //TODO! padding: Double = DefaultVertexNode.DefaultPadding
  )
   extends Group
     with VertexNode[V, L, G] {
@@ -122,43 +123,31 @@ G <: VisualGraph[V, L]
 
     layoutY <==
       centerY - height / 2
+
+    text = vertex().text
   }
 
   protected val body = new Rectangle {
     styleClass.add("body")
 
     width <==
-      label.width + 2 * padding
+      label.width + 2 * DefaultVertexNode.DefaultPadding
 
 
     height <==
-      label.height + 2 * padding
+      label.height + 2 * DefaultVertexNode.DefaultPadding
 
 
     layoutX <==
-      label.layoutX - padding
+      label.layoutX - DefaultVertexNode.DefaultPadding
 
 
     layoutY <==
-      label.layoutY - padding
+      label.layoutY - DefaultVertexNode.DefaultPadding
   }
 
 
   children.addAll(body, label)
-
-
-  override def render(): Unit = {
-    super.render()
-
-    label.text =
-      vertex.text
-
-    centerX() =
-      vertex.center.x
-
-    centerY() =
-      vertex.center.y
-  }
 
 
   override def width: ReadOnlyDoubleProperty =
@@ -185,13 +174,13 @@ G <: VisualGraph[V, L]
                 mouseEvent.point
 
               if (mouseEvent.controlDown) {
-                controller.setVertexSelectedState(vertex, !vertex.selected)
+                controller.setVertexSelectedState(vertexInGraph, !vertex().selected)
                   .foreach(newGraph =>
                     graph =
                       newGraph
                   )
-              } else if (!vertex.selected) {
-                controller.setSelection(Set(vertex), Set())
+              } else if (!vertex().selected) {
+                controller.setSelection(Set(vertexInGraph), Set())
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -219,11 +208,11 @@ G <: VisualGraph[V, L]
         case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 1 =>
-              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex) && graph.selectedLinks.isEmpty) {
+              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertexInGraph) && graph.selectedLinks.isEmpty) {
                 val selectedVertex =
                   graph.selectedVertexes.head
 
-                controller.createLink(selectedVertex, vertex)
+                controller.createLink(selectedVertex, vertexInGraph)
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -249,7 +238,7 @@ G <: VisualGraph[V, L]
             mousePoint - dragAnchor
 
 
-          if (vertex.selected) {
+          if (vertex().selected) {
             controller.dragSelection(delta)
               .foreach(newGraph => {
                 dragAnchor =

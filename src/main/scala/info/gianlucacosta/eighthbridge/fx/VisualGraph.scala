@@ -36,15 +36,11 @@ trait VisualGraph[V <: VisualVertex, L <: VisualLink] extends DirectedGraph[V, L
 
 
   def setSelection(selectionVertexes: Set[V] = Set(), selectionLinks: Set[L] = Set()): this.type = {
-    var updatedVertexes: Set[V] = vertexes.map(vertex =>
-      vertex.visualCopy(selected = selectionVertexes.contains(vertex))
-    )
+    map(vertex =>
+      vertex.visualCopy(selected = selectionVertexes.contains(vertex)),
 
-    var updatedLinks: Set[L] = links.map(link =>
-      link.visualCopy(selected = selectionLinks.contains(link))
+      link =>
+        link.visualCopy(selected = selectionLinks.contains(link))
     )
-
-    replaceVertexes(updatedVertexes)
-      .replaceLinks(updatedLinks)
   }
 }

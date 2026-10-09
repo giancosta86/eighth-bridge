@@ -1,12 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.graphs.Link
 import scalafx.geometry.Point2D
 
 /**
   * A link for VisualGraph
   */
-trait VisualLink extends Link {
+trait VisualLink {
   def text: String
 
   def internalPoints: List[Point2D]

@@ -120,4 +120,28 @@ trait Graph[V, L, B <: Binding[V, L]] {
       .find(_.link == link)
       .map(_.vertexes)
       .getOrElse(Set())
+
+  def map(
+           vertexMapper: V => V,
+           linkMapper: L => L
+         ): this.type =
+    graphCopy(
+      vertexes = vertexes.map(vertexMapper),
+
+      bindings = bindings.map(binding =>
+        binding.replaceLink(binding.link, linkMapper(binding.link))
+      )
+    )
+
+  final def mapVertexes(vertexMapper: V => V): this.type =
+    map(
+      vertexMapper,
+      identity
+    )
+
+  final def mapLinks(linkMapper: L => L): this.type =
+    map(
+      identity,
+      linkMapper
+    )
 }

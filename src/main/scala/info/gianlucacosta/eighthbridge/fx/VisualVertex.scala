@@ -1,12 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.graphs.Vertex
 import scalafx.geometry.Point2D
 
 /**
   * A vertex for VisualGraph
   */
-trait VisualVertex extends Vertex {
+trait VisualVertex {
+  //TODO! Del this later!
   def text: String
 
   def center: Point2D

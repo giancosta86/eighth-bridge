@@ -9,7 +9,7 @@ trait InternalLinkPoints[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V,
       link.visualCopy(internalPoints = updatedInternalPoints)
 
     Some(
-      graph.replaceLink(updatedLink)
+      graph.replaceLink(link, updatedLink)
     )
   }
 
@@ -21,7 +21,7 @@ trait InternalLinkPoints[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V,
       link.visualCopy(internalPoints = updatedInternalPoints)
 
     Some(
-      graph.replaceLink(updatedLink)
+      graph.replaceLink(link, updatedLink)
     )
   }
 }

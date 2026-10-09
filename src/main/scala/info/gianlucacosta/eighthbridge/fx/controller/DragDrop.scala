@@ -9,15 +9,13 @@ import info.gianlucacosta.helios.fx.Includes._
   */
 trait DragDrop[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G] {
   override def dragSelection(delta: Point2D): Option[G] = {
-    val updatedVertexes: Set[V] = graph.selectedVertexes.map(vertex => {
-      val newCenter =
-        (vertex.center + delta).clip(graphCanvas.dimension)
-
-      vertex.visualCopy(center = newCenter)
-    })
-
     Some(
-      graph.replaceVertexes(updatedVertexes)
+      graph.mapVertexes(vertex =>
+        if (vertex.selected)
+          vertex.visualCopy(center = (vertex.center + delta).clip(graphCanvas.dimension))
+        else
+          vertex
+      )
     )
   }
 
@@ -29,7 +27,7 @@ trait DragDrop[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] exten
     )
 
     Some(
-      graph.replaceLink(newLink)
+      graph.replaceLink(link, newLink)
     )
   }
 }

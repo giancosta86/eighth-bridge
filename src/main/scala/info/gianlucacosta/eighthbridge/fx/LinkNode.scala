@@ -1,8 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.css.PseudoClasses
+import javafx.beans.property.SimpleObjectProperty
 
 import scala.collection.JavaConversions._
+import scalafx.Includes._
 
 /**
   * JavaFX node rendering a VisualLink
@@ -12,30 +14,22 @@ V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ] extends GraphCanvasNode[V, L, G] {
+  val linkInGraph: L
 
-  private var _link: L = _
+  val link: SimpleObjectProperty[L] =
+    new SimpleObjectProperty(linkInGraph)
 
-  /**
-    * The underlying link, updated as rendering is performed
-    *
-    * @return
-    */
-  def link: L =
-    _link
+  link.addListener((_: javafx.beans.Observable) => {
+    updateFx()
+  })
 
-
-  private[fx] def link_=(newLink: L): Unit =
-    _link = newLink
-
-
-  override def render(): Unit = {
+  protected[fx] def updateFx(): Unit = {
     styleClass.setAll("link")
-    styleClass.addAll(link.styleClasses)
-
+    styleClass.addAll(link().styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      link.selected
+      link().selected
     )
   }
 }

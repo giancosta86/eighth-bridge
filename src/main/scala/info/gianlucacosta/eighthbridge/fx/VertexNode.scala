@@ -1,8 +1,9 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
+
 import scala.collection.JavaConversions._
 import scalafx.beans.property.ReadOnlyDoubleProperty
 
@@ -14,42 +15,35 @@ V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ] extends GraphCanvasNode[V, L, G] {
-  private var _vertex: V = _
+  val vertexInGraph: V
 
-  /**
-    * The underlying vertex, updated as rendering is performed
-    *
-    * @return
-    */
-  def vertex: V =
-    _vertex
+  val vertex: SimpleObjectProperty[V] =
+    new SimpleObjectProperty(vertexInGraph)
 
-
-  private[fx] def vertex_=(newVertex: V): Unit =
-    _vertex = newVertex
+  vertex.addListener((_: javafx.beans.Observable) => {
+    updateFx()
+  })
 
   protected val centerX =
-    new SimpleDoubleProperty(0)
+    new SimpleDoubleProperty(vertexInGraph.center.x)
 
   protected val centerY =
-    new SimpleDoubleProperty(0)
-
+    new SimpleDoubleProperty(vertexInGraph.center.y)
 
   def width: ReadOnlyDoubleProperty
 
   def height: ReadOnlyDoubleProperty
 
-
-  override def render(): Unit = {
+  protected[fx] def updateFx(): Unit = {
     styleClass.setAll("vertex")
-    styleClass.addAll(vertex.styleClasses)
+    styleClass.addAll(vertex().styleClasses)
 
-    centerX() = vertex.center.x
-    centerY() = vertex.center.y
+    centerX() = vertex().center.x
+    centerY() = vertex().center.y
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      vertex.selected
+      vertex().selected
     )
   }
 }

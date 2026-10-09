@@ -16,17 +16,17 @@ case class ArcBinding[V, L](sourceVertex: V, targetVertex: V, link: L)
     if (oldVertex == sourceVertex)
       copy(
         sourceVertex = newVertex
-      )
+      ).asInstanceOf[this.type]
     else if (oldVertex == targetVertex)
       copy(
         targetVertex = newVertex
-      )
+      ).asInstanceOf[this.type]
     else
       this
 
   override def replaceLink(oldLink: L, newLink: L): ArcBinding.this.type = {
     if (oldLink == link)
-      copy(link = newLink)
+      copy(link = newLink).asInstanceOf[this.type]
     else
       this
   }

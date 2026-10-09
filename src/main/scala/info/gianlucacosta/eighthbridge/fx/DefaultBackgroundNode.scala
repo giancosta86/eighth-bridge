@@ -98,12 +98,6 @@ G <: VisualGraph[V, L]
     selectionRectangle
   )
 
-
-  override def render(): Unit = {
-    //Just do nothing
-  }
-
-
   handleEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
@@ -150,16 +144,16 @@ G <: VisualGraph[V, L]
             controller.createVertex(mouseEvent.point)
               .foreach(graph_=)
           } else {
-            val selectionVertexes = graphCanvas.vertexNodes
+            val selectionVertexes = graphCanvas.vertexNodesByVertex
               .values
               .filter(_.intersects(selectionBounds))
-              .map(_.vertex)
+              .map(_.vertexInGraph)
               .toSet
 
-            val selectionLinks = graphCanvas.linkNodes
+            val selectionLinks = graphCanvas.linkNodesByLink
               .values
               .filter(_.intersects(selectionBounds))
-              .map(_.link)
+              .map(_.linkInGraph)
               .toSet
 
             graph =

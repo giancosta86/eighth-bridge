@@ -45,10 +45,4 @@ G <: VisualGraph[V, L]
     */
   final def graph_=(newGraph: G): Unit =
     graphCanvas.graph() = newGraph
-
-
-  /**
-    * Used by GraphCanvas to draw the node whenever rendering is performed
-    */
-  def render(): Unit
 }

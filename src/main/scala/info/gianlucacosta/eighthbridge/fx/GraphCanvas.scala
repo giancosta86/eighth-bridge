@@ -1,13 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import java.util.UUID
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
-
-import info.gianlucacosta.eighthbridge.graphs.point2point.ArcBinding
-
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.scene.Node
 import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent, ScrollEvent}
 import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
@@ -29,6 +26,7 @@ V <: VisualVertex,
 L <: VisualLink,
 G <: VisualGraph[V, L]
 ](val controller: GraphCanvasController[V, L, G], initialGraph: G) extends Pane {
+  //TODO! Perhaps, find another way to handle this null
   require(controller.graphCanvas == null, "The controller must not already belong to a graph!")
   controller.graphCanvas = this
 
@@ -61,6 +59,7 @@ G <: VisualGraph[V, L]
       height()
     )
 
+  //TODO! Is this really needed?
   def dimension: Dimension2D =
     _dimension
 
@@ -104,65 +103,126 @@ G <: VisualGraph[V, L]
     false
 
 
-  private var _vertexNodes: Map[UUID, VertexNode[V, L, G]] =
+  private var _vertexNodesByVertex: Map[V, VertexNode[V, L, G]] =
     Map()
 
+  def vertexNodesByVertex: Map[V, VertexNode[V, L, G]] =
+    _vertexNodesByVertex
 
-  private var _linkNodes: Map[UUID, LinkNode[V, L, G]] =
+  private var _linkNodesByLink: Map[L, LinkNode[V, L, G]] =
     Map()
 
-
-  def vertexNodes: Map[UUID, VertexNode[V, L, G]] =
-    _vertexNodes
-
-
-  def linkNodes: Map[UUID, LinkNode[V, L, G]] =
-    _linkNodes
-
-
-  private var latestRenderedVertexPointers =
-    Set[Int]()
-
-  private var latestRenderedLinkPointers =
-    Set[Int]()
-
-  private var latestRenderedBindingPointers =
-    Set[Int]()
-
+  def linkNodesByLink: Map[L, LinkNode[V, L, G]] =
+    _linkNodesByLink
 
   render()
 
   private def render(): Unit = {
-    purgeDanglingVertexNodes()
-    purgeDanglingLinkNodes()
+    /*
+     * First of all, we need to update the map of vertex nodes,
+     * creating new vertex nodes as required.
+     */
+    val (vertexNodesToKeep, vertexNodesToRemove) =
+      _vertexNodesByVertex
+        .values
+        .partition(vertexNode =>
+          graph().vertexes.contains(vertexNode.vertexInGraph)
+        )
 
-    updateVertexNodes()
-    updateLinkNodes()
+    val keptVertexes =
+      vertexNodesToKeep
+        .map(_.vertexInGraph)
+        .toSet
+
+    val vertexesWithoutNode =
+      graph().vertexes -- keptVertexes
+
+    val brandNewVertexNodes =
+      vertexesWithoutNode.map(vertex => {
+        val vertexNode = controller.createVertexNode(vertex)
+
+        vertexNode.updateFx()
+
+        vertexNode.toFront()
+
+        vertexNode
+      })
+
+    val updatedVertexNodes = vertexNodesToKeep ++ brandNewVertexNodes
+
+    _vertexNodesByVertex =
+      updatedVertexNodes.map(vertexNode =>
+          vertexNode.vertexInGraph -> vertexNode
+        )
+        .toMap
+
+    /*
+     * Then, we need to repeat the same process to update
+     * the pool of link nodes.
+     */
+    val originalLinkNodes =
+      _linkNodesByLink
+        .values
+        .toSet
+
+    val linkNodesBasedOnExistingLinks =
+      originalLinkNodes
+        .filter(linkNode =>
+          graph().links.contains(linkNode.linkInGraph)
+        )
+
+    val keptLinks =
+      linkNodesBasedOnExistingLinks.map(_.linkInGraph)
+
+    val linkNodesAttachedToExistingVertexes =
+      linkNodesBasedOnExistingLinks.filter(linkNode => {
+        graph().getVertexPair(linkNode.linkInGraph).isDefined
+      })
+
+    val linkNodesToKeep = linkNodesAttachedToExistingVertexes
+
+    val linkNodesToRemove = originalLinkNodes -- linkNodesToKeep
+
+    val linksWithoutNode =
+      graph().links -- keptLinks
+
+    val brandNewLinkNodes =
+      linksWithoutNode.map(link => {
+        val linkNode = controller.createLinkNode(link)
+
+        linkNode.updateFx()
+
+        linkNode
+      })
+
+    val updatedLinkNodes = linkNodesToKeep ++ brandNewLinkNodes
+
+    _linkNodesByLink =
+      updatedLinkNodes.map(linkNode =>
+          linkNode.linkInGraph -> linkNode
+        ).
+        toMap
+
+    /*
+     * Now, we need to add the new nodes to the canvas.
+     */
+    brandNewLinkNodes.foreach((node: Node) => children.add(node))
+
+    brandNewVertexNodes.foreach((node: Node) => children.add(node))
+
+    /*
+     * Right after appending the new nodes, we need to remove stale nodes.
+     */
+    linkNodesToRemove
+      .foreach(children.remove)
+
+    vertexNodesToRemove
+      .foreach(children.remove)
 
 
-    vertexNodes
-      .values
-      .foreach(_.toFront())
-
-
-    val currentVertexPointers: Set[Int] =
-      graph().vertexes.map(System.identityHashCode)
-
-
-    val currentLinkPointers: Set[Int] =
-      graph().links.map(System.identityHashCode)
-
-
-    val currentBindingPointers: Set[Int] =
-      graph().bindings.map(System.identityHashCode)
-
-
-    val currentLinkToVertexPointersOption: Option[Map[UUID, Set[Int]]] =
-      getLinkToVertexPointers(currentBindingPointers)
-
-
-    renderVertexes()
-
+    /*
+     * Finally, we are going to ask the controller to computer the new dimension.
+     */
     val newDimension =
       controller.canvasDimension
 
@@ -170,183 +230,6 @@ G <: VisualGraph[V, L]
       newDimension.width,
       newDimension.height
     )
-
-    renderLinks(currentLinkToVertexPointersOption)
-
-    backgroundNode.render()
-
-
-    latestRenderedVertexPointers =
-      currentVertexPointers
-
-    latestRenderedLinkPointers =
-      currentLinkPointers
-
-    latestRenderedBindingPointers =
-      currentBindingPointers
-  }
-
-
-  private def purgeDanglingVertexNodes(): Unit = {
-    val (newVertexNodes, vertexNodesToRemove) =
-      _vertexNodes.partition {
-        case (vertexId, _) =>
-          graph().containsVertex(vertexId)
-      }
-
-    _vertexNodes =
-      newVertexNodes
-
-    vertexNodesToRemove
-      .values
-      .foreach(children.remove)
-  }
-
-
-  private def purgeDanglingLinkNodes(): Unit = {
-    val (newLinkNodes, linkNodesToRemove) =
-      _linkNodes.partition {
-        case (linkId, _) =>
-          graph().containsLink(linkId)
-      }
-
-    _linkNodes =
-      newLinkNodes
-
-    linkNodesToRemove
-      .values
-      .foreach(children.remove)
-  }
-
-
-  private def updateVertexNodes(): Unit = {
-    graph().vertexes.foreach(vertex => {
-      val vertexNode =
-        _vertexNodes.getOrElse(
-          vertex.id,
-          createVertexNode(vertex)
-        )
-
-      vertexNode.vertex =
-        vertex
-    })
-  }
-
-
-  private def createVertexNode(vertex: V): VertexNode[V, L, G] = {
-    val newVertexNode =
-      controller.createVertexNode(vertex)
-
-    children.add(
-      newVertexNode
-    )
-
-    _vertexNodes +=
-      (vertex.id -> newVertexNode)
-
-    newVertexNode
-  }
-
-
-  private def updateLinkNodes(): Unit = {
-    graph().bindings.foreach(binding => {
-      val link =
-        graph().getLink(binding.linkId).get
-
-      val linkNode =
-        _linkNodes.getOrElse(
-          binding.linkId,
-          createLinkNode(link, binding)
-        )
-
-      linkNode.link =
-        link
-    })
-  }
-
-
-  private def createLinkNode(link: L, binding: ArcBinding): LinkNode[V, L, G] = {
-    val sourceVertex =
-      graph().getVertex(binding.sourceVertexId).get
-
-    val targetVertex =
-      graph().getVertex(binding.targetVertexId).get
-
-    val newLinkNode =
-      controller.createLinkNode(sourceVertex, targetVertex, link)
-
-    children.add(
-      newLinkNode
-    )
-
-    _linkNodes +=
-      (binding.linkId -> newLinkNode)
-
-    newLinkNode
-  }
-
-
-  private def getLinkToVertexPointers(currentBindingPointers: Set[Int]): Option[Map[UUID, Set[Int]]] = {
-    if (currentBindingPointers == latestRenderedBindingPointers)
-      Some(
-        graph().bindings.map(binding => {
-          val sourceVertex =
-            graph().getVertex(binding.sourceVertexId).get
-
-          val targetVertex =
-            graph().getVertex(binding.targetVertexId).get
-
-          binding.linkId -> Set(
-            sourceVertex,
-            targetVertex
-          ).map(System.identityHashCode)
-        })
-          .toMap
-      )
-    else
-      None
-  }
-
-
-  private def renderVertexes(): Unit = {
-    _vertexNodes.values.foreach(vertexNode => {
-      val vertex =
-        vertexNode.vertex
-
-      val vertexPointer =
-        System.identityHashCode(vertex)
-
-      val mustRenderVertex =
-        !latestRenderedVertexPointers.contains(vertexPointer)
-
-      if (mustRenderVertex) {
-        vertexNode.render()
-      }
-    })
-  }
-
-  def renderLinks(currentLinkToVertexPointersOption: Option[Map[UUID, Set[Int]]]): Unit = {
-    _linkNodes.values.foreach(linkNode => {
-      val link =
-        linkNode.link
-
-      val linkPointer =
-        System.identityHashCode(link)
-
-      val mustRenderLink =
-        !latestRenderedLinkPointers.contains(linkPointer) ||
-          currentLinkToVertexPointersOption.forall(linkVertexPointers => {
-            val vertexPointers: Set[Int] =
-              linkVertexPointers(link.id)
-
-            !vertexPointers.subsetOf(latestRenderedVertexPointers)
-          })
-
-
-      if (mustRenderLink) {
-        linkNode.render()
-      }
-    })
   }
 
 

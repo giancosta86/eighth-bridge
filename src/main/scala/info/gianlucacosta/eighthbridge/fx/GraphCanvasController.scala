@@ -27,13 +27,11 @@ G <: VisualGraph[V, L]
   def createBackgroundNode(): BackgroundNode[V, L, G] =
     new DefaultBackgroundNode(graphCanvas)
 
-  //TODO! Should I remove the vertex here?
   def createVertexNode(vertex: V): VertexNode[V, L, G] =
-    new DefaultVertexNode(graphCanvas)
+    new DefaultVertexNode(graphCanvas, vertex)
 
-  //TODO! Should I remove the link here?
-  def createLinkNode(sourceVertex: V, targetVertex: V, link: L): LinkNode[V, L, G] =
-    new DefaultLinkNode(graphCanvas, sourceVertex.id, targetVertex.id)
+  def createLinkNode(link: L): LinkNode[V, L, G] =
+    new DefaultLinkNode(graphCanvas, link)
 
   def deleteSelection(): Option[G] =
     None
@@ -88,24 +86,24 @@ G <: VisualGraph[V, L]
     20
 
   def canvasDimension: Dimension2D = {
-    if (graphCanvas.vertexNodes.isEmpty)
+    if (graphCanvas.vertexNodesByVertex.isEmpty)
       minCanvasDimension
     else {
       val maxRightEdge =
         graphCanvas
-          .vertexNodes
+          .vertexNodesByVertex
           .values
           .map(vertexNode =>
-            vertexNode.vertex.center.x + vertexNode.width() / 2
+            vertexNode.vertexInGraph.center.x + vertexNode.width() / 2
           )
           .max
 
       val maxBottomEdge =
         graphCanvas
-          .vertexNodes
+          .vertexNodesByVertex
           .values
           .map(vertexNode =>
-            vertexNode.vertex.center.y + vertexNode.height() / 2
+            vertexNode.vertexInGraph.center.y + vertexNode.height() / 2
           )
           .max
 
