@@ -15,7 +15,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
 
   def addVertexes(vertexesToAdd: Set[V]): this.type =
     graphCopy(
-      vertexes ++ vertexesToAdd
+      vertexes = vertexes ++ vertexesToAdd
     )
 
   final def addVertexes(vertexesToAdd: V*): this.type =
@@ -62,18 +62,20 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   final def removeVertex(vertex: V): this.type =
     removeVertexes(Set(vertex))
 
-  def addArc(sourceVertex: V, targetVertex: V, link: L): this.type = {
+  def addArc(sourceVertex: V, targetVertex: V, arc: L): this.type = {
     val vertexPair =
       sourceVertex -> targetVertex
 
-    arcsByVertexPair.get(vertexPair).map(linkSet =>
+    if (vertexes.containsPair(vertexPair)) {
+      val updatedLinks =
+        arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
+
       graphCopy(
         arcsByVertexPair =
-          arcsByVertexPair + (vertexPair -> (linkSet + link))
+          arcsByVertexPair + (vertexPair -> updatedLinks)
       )
-    )
-      .getOrElse(this)
-      .asInstanceOf[this.type]
+    } else
+      this
   }
 
   final def addArc(vertexPair: (V, V), link: L): this.type =
@@ -96,9 +98,14 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   def removeLinks(linksToRemove: Set[L]): this.type =
     graphCopy(
       arcsByVertexPair =
-        arcsByVertexPair.mapValues(
+        arcsByVertexPair
+          .mapValues(
           _ -- linksToRemove
         )
+          .filter {
+          case (_, linkSet) =>
+            linkSet.nonEmpty
+        }
     )
 
   final def removeLinks(links: L*): this.type =
@@ -229,8 +236,8 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   lazy val leafVertexes: Set[V] =
   vertexes -- exitingArcsByVertex.keySet
 
-  def getVertexPair(link: L): Option[(V, V)] =
-    vertexPairsByArc.get(link)
+  def getVertexPair(arc: L): Option[(V, V)] =
+    vertexPairsByArc.get(arc)
 
 
   /**
