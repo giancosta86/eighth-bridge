@@ -28,7 +28,7 @@ G <: VisualGraph[V, L]
   final def controller: GraphCanvasController[V, L, G] =
     graphCanvas.controller
 
-
+  //TODO! Del this?
   /**
     * The current graph within the graph canvas
     *
@@ -37,13 +37,13 @@ G <: VisualGraph[V, L]
   final def graph: G =
     graphCanvas.graph()
 
-
+  //TODO! Del this!
   /**
     * Simple way to update the graph contained the graph canvas - thus triggering the rendering process.
     * When migrating from older versions of EighthBridge, use this in lieu of notifyGraphChanged()
     *
     * @param newGraph
     */
-  final def graph_=(newGraph: G): Unit =
-    graphCanvas.graph() = newGraph
+  /*final def graph_=(newGraph: G): Unit =
+    graphCanvas.graph() = newGraph*/
 }
