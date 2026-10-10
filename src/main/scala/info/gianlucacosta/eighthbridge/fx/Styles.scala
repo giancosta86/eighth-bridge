@@ -9,3 +9,5 @@ package info.gianlucacosta.eighthbridge.fx
 object Styles {
   val resourceUrl = getClass.getResource("Styles.css")
 }
+
+//TODO! Also create a StyleClasses object, containing all the style classes as constants!
