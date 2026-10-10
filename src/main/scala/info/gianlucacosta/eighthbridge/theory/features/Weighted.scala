@@ -20,34 +20,22 @@ object Weighted {
         .sortBy(_.weight)
     }
 
-    val minWeight: Option[Double] =
+    def getMinWeightOr(default: Double): Double =
       sortedByWeight
         .headOption
         .map(_.weight)
+        .getOrElse(default)
 
-    val maxWeight: Option[Double] =
+    val minWeight: Double =
+      getMinWeightOr(Double.PositiveInfinity)
+
+    def getMaxWeightOr(default: Double): Double =
       sortedByWeight
         .lastOption
         .map(_.weight)
-  }
+        .getOrElse(default)
 
-  implicit class WeightedDirectedGraphExtensions[V <: Vertex, L <: Link with Weighted](graph: DirectedGraph[V, L]) {
-    def getMinEdgeWeightBetween(oneVertex: V, anotherVertex: V): Double = {
-      graph.getEdgesBetween(oneVertex, anotherVertex)
-        .minWeight
-        .getOrElse(Double.PositiveInfinity)
-    }
-
-    def getMinArcWeightBetween(sourceVertex: V, targetVertex: V): Double = {
-      graph.getArcsBetween(sourceVertex, targetVertex)
-        .minWeight
-        .getOrElse(Double.PositiveInfinity)
-    }
-
-    def getMinArcWeightBetween(vertexPair: (V, V)): Double = {
-      graph.getArcsBetween(vertexPair)
-        .minWeight
-        .getOrElse(Double.PositiveInfinity)
-    }
+    val maxWeight: Double =
+      getMaxWeightOr(Double.NegativeInfinity)
   }
 }
