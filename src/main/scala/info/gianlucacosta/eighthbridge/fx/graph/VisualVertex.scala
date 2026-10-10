@@ -1,26 +1,21 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
+import info.gianlucacosta.eighthbridge.theory.Vertex
 import scalafx.geometry.Point2D
 
 /**
   * A vertex for VisualGraph
   */
-trait VisualVertex {
-  //TODO! Del this later!
-  def text: String
-
+trait VisualVertex extends Vertex {
   def center: Point2D
+
+  def setCenter(value: Point2D): this.type
 
   def selected: Boolean
 
+  def setSelected(value: Boolean): this.type
+
   def styleClasses: Set[String]
 
-  def visualCopy(
-                  text: String = text,
-                  center: Point2D = center,
-                  selected: Boolean = selected,
-                  styleClasses: Set[String] = styleClasses): this.type
-
-  override def toString: String =
-    text
+  def setStyleClasses(value: Set[String]): this.type
 }

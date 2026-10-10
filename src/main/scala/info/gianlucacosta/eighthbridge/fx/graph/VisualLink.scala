@@ -1,38 +1,37 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.fx.{LinkArrow, LinkHandleRadius}
+import info.gianlucacosta.eighthbridge.theory.Link
+import info.gianlucacosta.eighthbridge.theory.features.Named
 import scalafx.geometry.Point2D
 
 /**
   * A link for VisualGraph
   */
-trait VisualLink {
-  def text: String
-
-  def internalPoints: List[Point2D]
-
+trait VisualLink extends Link with Named {
   def selected: Boolean
+
+  def setSelected(value: Boolean): this.type
 
   def labelCenter: Option[Point2D]
 
-  def arrow: LinkArrow =
-    LinkArrow.Default
+  def setLabelCenter(value: Option[Point2D]): this.type
 
-  def handleRadius: LinkHandleRadius =
-    LinkHandleRadius.Default
+  def setName(value: String): this.type
+
+  def internalPoints: List[Point2D]
+
+  def setInternalPoints(value: List[Point2D]): this.type
 
   def styleClasses: Set[String]
 
-  def visualCopy(
-                  text: String = text,
-                  internalPoints: List[Point2D] = internalPoints,
-                  selected: Boolean = selected,
-                  labelCenter: Option[Point2D] = labelCenter,
-                  arrow: LinkArrow = arrow,
-                  handleRadius: LinkHandleRadius = handleRadius,
-                  styleClasses: Set[String] = styleClasses
-                ): this.type
+  def setStyleclasses(value: Set[String]): this.type
 
-  override def toString: String =
-    text
+  //TODO! These go here or in the DefaultVisualLink implementation? + use the .Default values
+  def arrow: LinkArrow
+
+  def setArrow(value: LinkArrow): this.type
+
+  def handleRadius: LinkHandleRadius
+
+  def setHandleRadius(value: LinkHandleRadius): this.type
 }

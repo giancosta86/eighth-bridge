@@ -12,7 +12,6 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
                            arcsByVertexPair: Map[(V, V), Set[L]] = arcsByVertexPair
    ): this.type
 
-
   def addVertexes(vertexesToAdd: Set[V]): this.type =
     graphCopy(
       vertexes = vertexes ++ vertexesToAdd

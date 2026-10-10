@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.point2point.DirectedGraph
+import info.gianlucacosta.eighthbridge.theory.DirectedGraph
 
 /**
   * Graph dedicated to rendering within GraphCanvas.
@@ -36,11 +36,18 @@ trait VisualGraph[V <: VisualVertex, L <: VisualLink] extends DirectedGraph[V, L
 
 
   def setSelection(selectionVertexes: Set[V] = Set(), selectionLinks: Set[L] = Set()): this.type = {
-    map(vertex =>
-      vertex.visualCopy(selected = selectionVertexes.contains(vertex)),
+    val updatedVertexes: Set[V] =
+      vertexes.map(vertex =>
+        vertex.setSelected(selectionVertexes.contains(vertex))
+      )
 
-      link =>
-        link.visualCopy(selected = selectionLinks.contains(link))
-    )
+    val updatedLinks: Set[L] =
+      links.map(link =>
+        link.setSelected(selectionLinks.contains(link))
+      )
+
+    this
+      .updateVertexes(updatedVertexes)
+      .updateLinks(updatedLinks)
   }
 }
