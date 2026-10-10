@@ -1,3 +1,3 @@
-package info.gianlucacosta.eighthbridge.graphs.point2point
+package info.gianlucacosta.eighthbridge.theory
 
 class CircularGraphException extends RuntimeException("Circular graph detected")

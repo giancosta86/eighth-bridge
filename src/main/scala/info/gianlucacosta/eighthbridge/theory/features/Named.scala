@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.features
+package info.gianlucacosta.eighthbridge.theory.features
 
 import scala.language.implicitConversions
 
@@ -7,19 +7,11 @@ import scala.language.implicitConversions
  */
 trait Named {
   def name: String
-
-  /**
-   * Copies the current object, giving it a new name.
-   *
-   * @param name The new name
-   * @return The resulting new object
-   */
-  def setName(name: String): this.type
 }
 
 
 object Named {
-  implicit class IterableOfNamedExtensions[T <: Named](iterable: Iterable[T]) {
+  implicit class NamedIterableExtensions[T <: Named](iterable: Iterable[T]) {
     val sortedByName: List[T] = {
       iterable
         .toList
@@ -27,7 +19,7 @@ object Named {
     }
   }
 
-  implicit class PairOfNamedExtensions[T <: Named, U <: Named](pair: (T, U)) {
+  implicit class NamedPairExtensions[T <: Named, U <: Named](pair: (T, U)) {
     val namePair: (String, String) =
       (pair._1.name, pair._2.name)
 
@@ -36,7 +28,5 @@ object Named {
         (pair._1.name, pair._2.name)
       else
         (pair._2.name, pair._1.name)
-
-
   }
 }
