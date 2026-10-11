@@ -25,7 +25,7 @@ object Link {
         .groupBy { case (vertexPair, _) => vertexSelector(vertexPair) }
         .mapValues(
           _.map( {
-              case ((_, _), link) => link
+              case (_, link) => link
             })
             .flatten
             .toSet

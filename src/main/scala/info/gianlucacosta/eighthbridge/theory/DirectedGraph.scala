@@ -66,19 +66,19 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
       sourceVertex -> targetVertex
 
     if (vertexes.containsPair(vertexPair)) {
-      val updatedLinks =
+      val updatedArcs =
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
 
       graphCopy(
         arcsByVertexPair =
-          arcsByVertexPair + (vertexPair -> updatedLinks)
+          arcsByVertexPair + (vertexPair -> updatedArcs)
       )
     } else
       this
   }
 
-  final def addArc(vertexPair: (V, V), link: L): this.type =
-    addArc(vertexPair._1, vertexPair._2, link)
+  final def addArc(vertexPair: (V, V), arc: L): this.type =
+    addArc(vertexPair._1, vertexPair._2, arc)
 
   def updateLink(updatedLink: L): this.type =
     graphCopy(
