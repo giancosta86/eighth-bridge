@@ -8,7 +8,7 @@ import info.gianlucacosta.helios.fx.Includes._
 /**
   * Controller mixin enabling both selection and drag&drop.
   */
-trait DragDrop[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G] {
+trait DragDrop extends GraphCanvasController {
   override def dragSelection(delta: Point2D): Option[G] = {
     Some(
       graph.mapVertexes(vertex =>

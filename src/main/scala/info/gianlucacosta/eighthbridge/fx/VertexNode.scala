@@ -7,15 +7,12 @@ import scalafx.Includes._
 
 import scala.collection.JavaConversions._
 import scalafx.beans.property.ReadOnlyDoubleProperty
+import scalafx.scene.Group
 
 /**
   * JavaFX node rendering a VisualVertex
   */
-trait VertexNode[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-] extends GraphCanvasNode[V, L, G] {
+class VertexNode extends Group with GraphCanvasNode {
   val vertexInGraph: V
 
   val vertex: SimpleObjectProperty[V] =

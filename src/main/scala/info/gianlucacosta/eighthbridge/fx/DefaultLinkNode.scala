@@ -13,13 +13,11 @@ import scalafx.scene.text.Text
 import java.util.UUID
 import scala.collection.JavaConversions._
 
-case class DefaultLinkNode[V <: VisualVertex,
-  L <: VisualLink,
-  G <: VisualGraph[V, L]](
+case class DefaultLinkNode(
                                                      graphCanvas: GraphCanvas[V, L, G],
                          linkInGraph: L
                                                    )
-extends Group with LinkNode[V, L, G]
+extends Group with LinkNode
 
 /*
 class DefaultLinkNode[

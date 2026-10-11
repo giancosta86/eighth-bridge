@@ -3,7 +3,7 @@ package info.gianlucacosta.eighthbridge.fx.controller
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 
-trait LayoutEditing[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G]
-  with DefineSelection[V, L, G]
-  with DragDrop[V, L, G]
-  with InternalLinkPoints[V, L, G]
+trait LayoutEditing extends GraphCanvasController
+  with DefineSelection
+  with DragDrop
+  with InternalLinkPoints

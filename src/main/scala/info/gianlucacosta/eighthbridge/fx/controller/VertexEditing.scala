@@ -4,7 +4,7 @@ import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, Visual
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 
-trait VertexEditing[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G] {
+trait VertexEditing extends GraphCanvasController {
   override def editVertex(vertex: V): Option[G] = {
     while (true) {
       try {

@@ -4,7 +4,7 @@ import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, Visual
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController}
 import scalafx.geometry.Point2D
 
-trait DeleteSelection[V <: VisualVertex, L <: VisualLink, G <: VisualGraph[V, L]] extends GraphCanvasController[V, L, G] {
+trait DeleteSelection extends GraphCanvasController {
   override def deleteSelection(): Option[G] =
     Some(
       graph

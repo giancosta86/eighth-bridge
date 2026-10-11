@@ -16,9 +16,9 @@ import scalafx.geometry.Point2D
   * @tparam V Vertex
   * @tparam L Link
   */
-trait VertexNameEditing[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
-  extends VertexEditing[V, L, G]
-  with VertexNaming[V, L, G] {
+trait VertexNameEditing
+  extends VertexEditing
+  with VertexNaming {
   override protected def doEditVertex(vertex: V): Option[V] = {
     val newNameInput =
       InputDialogs.askForString("Vertex name:", vertex.name, "Edit vertex")

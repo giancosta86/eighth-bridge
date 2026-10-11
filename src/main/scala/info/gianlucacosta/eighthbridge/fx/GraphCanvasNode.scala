@@ -7,17 +7,13 @@ import scalafx.Includes._
 /**
   * Generic JavaFX node rendering a graph element into GraphCanvas.
   */
-trait GraphCanvasNode[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-] extends Node {
+trait GraphCanvasNode extends Node {
   /**
     * The graph canvas owning this UI node
     *
     * @return
     */
-  def graphCanvas: GraphCanvas[V, L, G]
+  def graphCanvas: GraphCanvas
 
 
   /**
@@ -25,7 +21,7 @@ G <: VisualGraph[V, L]
     *
     * @return
     */
-  final def controller: GraphCanvasController[V, L, G] =
+  final def controller: GraphCanvasController =
     graphCanvas.controller
 
   //TODO! Del this?
@@ -34,7 +30,7 @@ G <: VisualGraph[V, L]
     *
     * @return
     */
-  final def graph: G =
+  final def graph: VisualGraph[_ <: VisualVertex, _ <: VisualLink] =
     graphCanvas.graph()
 
   //TODO! Del this!

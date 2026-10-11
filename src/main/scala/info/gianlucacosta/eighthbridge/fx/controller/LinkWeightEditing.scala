@@ -10,8 +10,8 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
   * @tparam V Vertex
   * @tparam L Link
   */
-trait LinkWeightEditing[V <: VisualVertex, L <: VisualLink with Weighted, G <: VisualGraph[V, L]]
-  extends LinkEditing[V, L, G] {
+trait LinkWeightEditing
+  extends LinkEditing {
   override protected def doEditLink(link: L): Option[L] = {
     val newWeightOption =
       InputDialogs.askForDouble(

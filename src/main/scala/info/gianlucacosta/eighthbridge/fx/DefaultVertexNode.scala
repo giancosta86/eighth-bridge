@@ -96,17 +96,12 @@ object DefaultVertexNode {
 /**
   * Default, interactive implementation of VertexNode
   */
-case class DefaultVertexNode[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-](
-   graphCanvas: GraphCanvas[V, L, G],
+case class DefaultVertexNode(
+   graphCanvas: GraphCanvas,
    vertexInGraph: V
    //TODO! padding: Double = DefaultVertexNode.DefaultPadding
  )
-  extends Group
-    with VertexNode[V, L, G] {
+  extends VertexNode {
 
   private var dragAnchor: Point2D = _
 

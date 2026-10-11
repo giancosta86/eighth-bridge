@@ -22,11 +22,7 @@ import scalafx.scene.shape.Rectangle
   * @param controller   The controller telling the canvas how to render components and how to react to user input
   * @param initialGraph The initial graph shown by the canvas
   */
-class GraphCanvas[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-](val controller: GraphCanvasController[V, L, G], initialGraph: G) extends Pane {
+class GraphCanvas(val controller: GraphCanvasController, initialGraph: VisualGraph[_ <: VisualVertex, _ <: VisualLink]) extends Pane {
   //TODO! Perhaps, find another way to handle this null
   require(controller.graphCanvas == null, "The controller must not already belong to a graph!")
   controller.graphCanvas = this
@@ -34,7 +30,7 @@ G <: VisualGraph[V, L]
   styleClass.add("graphCanvas")
 
   val graph =
-    new SimpleObjectProperty[G](initialGraph)
+    new SimpleObjectProperty[VisualGraph[_ <: VisualVertex, _ <: VisualLink]](initialGraph)
 
   graph.addListener((observable: Observable) => {
     //The canvas can only be updated by changing the graph

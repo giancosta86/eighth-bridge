@@ -8,16 +8,12 @@ import scalafx.Includes._
 /**
   * Controller providing behavior for GraphCanvas
   */
-abstract class GraphCanvasController[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-] {
-  private var _graphCanvas: GraphCanvas[V, L, G] = _
+abstract class GraphCanvasController {
+  private var _graphCanvas: GraphCanvas = _
 
-  protected[fx] final def graphCanvas: GraphCanvas[V, L, G] = _graphCanvas
+  protected[fx] final def graphCanvas: GraphCanvas = _graphCanvas
 
-  protected[fx] final def graphCanvas_=(graphCanvas: GraphCanvas[V, L, G]): Unit = {
+  protected[fx] final def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
     _graphCanvas = graphCanvas
   }
 
@@ -25,13 +21,13 @@ G <: VisualGraph[V, L]
 
   def renderDirected: Boolean
 
-  def createBackgroundNode(): BackgroundNode[V, L, G] =
+  def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
-  def createVertexNode(vertex: V): VertexNode[V, L, G] =
+  def createVertexNode(vertex: V): VertexNode =
     new DefaultVertexNode(graphCanvas, vertex)
 
-  def createLinkNode(link: L): LinkNode[V, L, G] =
+  def createLinkNode(link: L): LinkNode =
     new DefaultLinkNode(graphCanvas, link)
 
   def deleteSelection(): Option[G] =

@@ -21,13 +21,9 @@ object DefaultBackgroundNode {
 /**
   * Default, interactive implementation of BackgroundNode
   */
-class DefaultBackgroundNode[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-](val graphCanvas: GraphCanvas[V, L, G])
+class DefaultBackgroundNode(val graphCanvas: GraphCanvas)
   extends Group
-    with BackgroundNode[V, L, G] {
+    with BackgroundNode {
 
   styleClass.add("graph")
 

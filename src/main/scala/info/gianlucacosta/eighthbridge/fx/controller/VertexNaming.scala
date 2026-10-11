@@ -5,8 +5,8 @@ import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.eighthbridge.theory.features.Named
 import scalafx.geometry.Point2D
 
-trait VertexNaming[V <: VisualVertex with Named, L <: VisualLink, G <: VisualGraph[V, L]]
-  extends GraphCanvasController[V, L, G] {
+trait VertexNaming
+  extends GraphCanvasController {
   /**
    * The first index used when creating vertexes
    */

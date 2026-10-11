@@ -10,11 +10,7 @@ import scalafx.Includes._
 /**
   * JavaFX node rendering a VisualLink
   */
-trait LinkNode[
-V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-] extends GraphCanvasNode[V, L, G] {
+trait LinkNode extends GraphCanvasNode {
   val linkInGraph: L
 
   val link: SimpleObjectProperty[L] =

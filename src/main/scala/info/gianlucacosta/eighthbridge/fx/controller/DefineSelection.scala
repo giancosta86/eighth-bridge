@@ -6,11 +6,7 @@ import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 /**
  * Controller mixin enabling selection.
  */
-trait DefineSelection[
-  V <: VisualVertex,
-  L <: VisualLink,
-  G <: VisualGraph[V, L]
-] extends GraphCanvasController[V, L, G] {
+trait DefineSelection extends GraphCanvasController {
   override def canDrawSelectionRectangle: Boolean =
     true
 
