@@ -17,7 +17,7 @@ case class DefaultLinkNode(
                                                      graphCanvas: GraphCanvas[V, L, G],
                          linkInGraph: L
                                                    )
-extends Group with LinkNode
+extends LinkNode
 
 /*
 class DefaultLinkNode[

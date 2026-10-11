@@ -12,7 +12,7 @@ import scalafx.scene.Group
 /**
   * JavaFX node rendering a VisualVertex
   */
-class VertexNode extends Group with GraphCanvasNode {
+abstract class VertexNode extends Group with GraphCanvasNode {
   val vertexInGraph: V
 
   val vertex: SimpleObjectProperty[V] =
