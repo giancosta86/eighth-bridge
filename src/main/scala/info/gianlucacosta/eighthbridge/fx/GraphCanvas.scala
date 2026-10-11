@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
@@ -22,7 +22,10 @@ import scalafx.scene.shape.Rectangle
   * @param controller   The controller telling the canvas how to render components and how to react to user input
   * @param initialGraph The initial graph shown by the canvas
   */
-class GraphCanvas(val controller: GraphCanvasController, initialGraph: VisualGraph[_ <: VisualVertex, _ <: VisualLink]) extends Pane {
+class GraphCanvas(
+                   val controller: GraphCanvasController,
+                   initialGraph: AnyVisualGraph
+                 ) extends Pane {
   //TODO! Perhaps, find another way to handle this null
   require(controller.graphCanvas == null, "The controller must not already belong to a graph!")
   controller.graphCanvas = this
@@ -30,7 +33,7 @@ class GraphCanvas(val controller: GraphCanvasController, initialGraph: VisualGra
   styleClass.add("graphCanvas")
 
   val graph =
-    new SimpleObjectProperty[VisualGraph[_ <: VisualVertex, _ <: VisualLink]](initialGraph)
+    new SimpleObjectProperty[AnyVisualGraph](initialGraph)
 
   graph.addListener((observable: Observable) => {
     //The canvas can only be updated by changing the graph
@@ -86,7 +89,7 @@ class GraphCanvas(val controller: GraphCanvasController, initialGraph: VisualGra
   }
 
 
-  val backgroundNode: BackgroundNode[V, L, G] =
+  val backgroundNode: BackgroundNode =
     controller.createBackgroundNode()
 
   children.add(backgroundNode)
@@ -100,16 +103,16 @@ class GraphCanvas(val controller: GraphCanvasController, initialGraph: VisualGra
     false
 
 
-  private var _vertexNodesByVertex: Map[V, VertexNode[V, L, G]] =
+  private var _vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     Map()
 
-  def vertexNodesByVertex: Map[V, VertexNode[V, L, G]] =
+  def vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     _vertexNodesByVertex
 
-  private var _linkNodesByLink: Map[L, LinkNode[V, L, G]] =
+  private var _linkNodesByLink: Map[VisualLink, LinkNode] =
     Map()
 
-  def linkNodesByLink: Map[L, LinkNode[V, L, G]] =
+  def linkNodesByLink: Map[VisualLink, LinkNode] =
     _linkNodesByLink
 
   render()
