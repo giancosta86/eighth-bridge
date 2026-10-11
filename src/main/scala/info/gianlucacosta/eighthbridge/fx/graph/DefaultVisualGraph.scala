@@ -1,5 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
+//TODO! Remove this and turn VisualGraph into a case class?
 case class DefaultVisualGraph[V <: VisualVertex, L <: VisualLink] private (
                                                                  vertexes: Set[V],
                                                                  arcsByVertexPair: Map[(V, V), Set[L]]
