@@ -35,15 +35,22 @@ trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A]
     selectedVertexes.isEmpty && selectedArcs.isEmpty
 
 
-  def setSelection(selectionVertexes: Set[V] = Set(), selectionArcs: Set[A] = Set()): this.type = {
+  def setSelection(
+                    selectionVertexes: Set[V] = Set(),
+                    selectionArcs: Set[A] = Set()
+                  ): this.type = {
     val updatedVertexes: Set[V] =
       vertexes.map(vertex =>
-        vertex.setSelected(selectionVertexes.contains(vertex))
+        vertex.setSelected(
+          selectionVertexes.contains(vertex)
+        )
       )
 
     val updatedArcs: Set[A] =
       arcs.map(arc =>
-        arc.setSelected(selectionArcs.contains(arc))
+        arc.setSelected(
+          selectionArcs.contains(arc)
+        )
       )
 
     this

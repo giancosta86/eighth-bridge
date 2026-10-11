@@ -1,14 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-//TODO! In the end, rename this to ArcArrowEnd?
-object ArcArrow {
-  val Default = ArcArrow(
+object ArcArrowEnd {
+  val Default = ArcArrowEnd(
     angle = math.Pi / 6,
     length = 15
   )
 }
 
-case class ArcArrow(
+case class ArcArrowEnd(
                       angle: Double,
                       length: Double
                     )

@@ -7,31 +7,24 @@ import scalafx.geometry.Point2D
 /**
   * An arc for VisualGraph
   */
-trait VisualArc extends Arc with Named {
+trait VisualArc extends Arc {
   def selected: Boolean
 
-  def setSelected(value: Boolean): this.type
+  def setSelected(selected: Boolean): this.type
 
-  def labelCenter: Option[Point2D]
+  def customLabelCenter: Option[Point2D]
 
-  def setLabelCenter(value: Option[Point2D]): this.type
+  def setCustomLabelCenter(customLabelCenter: Option[Point2D]): this.type
 
-  def setName(name: String): this.type
+  def internalPoints: List[ArcInternalPoint]
 
-  def internalPoints: List[Point2D]
-
-  def setInternalPoints(value: List[Point2D]): this.type
+  def setInternalPoints(internalPoints: List[ArcInternalPoint]): this.type
 
   def styleClasses: Set[String]
 
-  def setStyleclasses(value: Set[String]): this.type
+  def setStyleclasses(styleClasses: Set[String]): this.type
 
-  //TODO! These go here or in the DefaultVisualArc implementation? + use the .Default values
-  def arrow: ArcArrow
+  def arrowEnd: Option[ArcArrowEnd]
 
-  def setArrow(value: ArcArrow): this.type
-
-  def handleRadius: ArcHandleRadius
-
-  def setHandleRadius(value: ArcHandleRadius): this.type
+  def setArrowEnd(arrowEnd: Option[ArcArrowEnd]): this.type
 }

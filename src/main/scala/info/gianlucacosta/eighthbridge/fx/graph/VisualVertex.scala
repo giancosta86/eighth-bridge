@@ -9,13 +9,13 @@ import scalafx.geometry.Point2D
 trait VisualVertex extends Vertex {
   def center: Point2D
 
-  def setCenter(value: Point2D): this.type
+  def setCenter(center: Point2D): this.type
 
   def selected: Boolean
 
-  def setSelected(value: Boolean): this.type
+  def setSelected(selected: Boolean): this.type
 
   def styleClasses: Set[String]
 
-  def setStyleClasses(value: Set[String]): this.type
+  def setStyleClasses(styleClasses: Set[String]): this.type
 }
