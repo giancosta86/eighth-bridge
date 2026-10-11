@@ -12,22 +12,22 @@ import scalafx.scene.Group
   * JavaFX node rendering a VisualLink
   */
 abstract class LinkNode extends Group with GraphCanvasNode {
-  val linkInGraph: L
+  val link: VisualLink
 
-  val link: SimpleObjectProperty[L] =
-    new SimpleObjectProperty(linkInGraph)
+  val currentLink: SimpleObjectProperty[VisualLink] =
+    new SimpleObjectProperty(link)
 
-  link.addListener((_: javafx.beans.Observable) => {
+  currentLink.addListener((_: javafx.beans.Observable) => {
     updateFx()
   })
 
   protected[fx] def updateFx(): Unit = {
     styleClass.setAll("link")
-    styleClass.addAll(link().styleClasses)
+    styleClass.addAll(currentLink().styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      link().selected
+      currentLink().selected
     )
   }
 }

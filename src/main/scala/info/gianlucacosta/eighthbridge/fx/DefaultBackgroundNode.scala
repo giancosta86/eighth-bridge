@@ -144,13 +144,13 @@ class DefaultBackgroundNode(val graphCanvas: GraphCanvas)
             val selectionVertexes = graphCanvas.vertexNodesByVertex
               .values
               .filter(_.intersects(selectionBounds))
-              .map(_.vertexInGraph)
+              .map(_.vertex)
               .toSet
 
             val selectionLinks = graphCanvas.linkNodesByLink
               .values
               .filter(_.intersects(selectionBounds))
-              .map(_.linkInGraph)
+              .map(_.link)
               .toSet
 
             graph =

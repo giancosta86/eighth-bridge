@@ -13,20 +13,20 @@ import scalafx.scene.Group
   * JavaFX node rendering a VisualVertex
   */
 abstract class VertexNode extends Group with GraphCanvasNode {
-  val vertexInGraph: V
+  val vertex: VisualVertex
 
-  val vertex: SimpleObjectProperty[V] =
-    new SimpleObjectProperty(vertexInGraph)
+  private val currentVertex: SimpleObjectProperty[VisualVertex] =
+    new SimpleObjectProperty(vertex)
 
-  vertex.addListener((_: javafx.beans.Observable) => {
+  currentVertex.addListener((_: javafx.beans.Observable) => {
     updateFx()
   })
 
   protected val centerX =
-    new SimpleDoubleProperty(vertexInGraph.center.x)
+    new SimpleDoubleProperty(vertex.center.x)
 
   protected val centerY =
-    new SimpleDoubleProperty(vertexInGraph.center.y)
+    new SimpleDoubleProperty(vertex.center.y)
 
   def width: ReadOnlyDoubleProperty
 
@@ -34,14 +34,14 @@ abstract class VertexNode extends Group with GraphCanvasNode {
 
   protected[fx] def updateFx(): Unit = {
     styleClass.setAll("vertex")
-    styleClass.addAll(vertex().styleClasses)
+    styleClass.addAll(currentVertex().styleClasses)
 
-    centerX() = vertex().center.x
-    centerY() = vertex().center.y
+    centerX() = currentVertex().center.x
+    centerY() = currentVertex().center.y
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      vertex().selected
+      currentVertex().selected
     )
   }
 }

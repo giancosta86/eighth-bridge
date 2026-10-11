@@ -97,9 +97,9 @@ object DefaultVertexNode {
   * Default, interactive implementation of VertexNode
   */
 case class DefaultVertexNode(
-   graphCanvas: GraphCanvas,
-   vertexInGraph: VisualVertex
-   //TODO! padding: Double = DefaultVertexNode.DefaultPadding
+                              graphCanvas: GraphCanvas,
+                              vertex: VisualVertex
+                              //TODO! padding: Double = DefaultVertexNode.DefaultPadding
  )
   extends VertexNode {
 
@@ -169,13 +169,13 @@ case class DefaultVertexNode(
                 mouseEvent.point
 
               if (mouseEvent.controlDown) {
-                controller.setVertexSelectedState(vertexInGraph, !vertex().selected)
+                controller.setVertexSelectedState(vertex, !vertex().selected)
                   .foreach(newGraph =>
                     graph =
                       newGraph
                   )
               } else if (!vertex().selected) {
-                controller.setSelection(Set(vertexInGraph), Set())
+                controller.setSelection(Set(vertex), Set())
                   .foreach(newGraph =>
                     graph =
                       newGraph
@@ -203,11 +203,11 @@ case class DefaultVertexNode(
         case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 1 =>
-              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertexInGraph) && graph.selectedLinks.isEmpty) {
+              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex) && graph.selectedLinks.isEmpty) {
                 val selectedVertex =
                   graph.selectedVertexes.head
 
-                controller.createLink(selectedVertex, vertexInGraph)
+                controller.createLink(selectedVertex, vertex)
                   .foreach(newGraph =>
                     graph =
                       newGraph

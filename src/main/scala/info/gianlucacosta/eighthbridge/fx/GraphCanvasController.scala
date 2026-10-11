@@ -94,7 +94,7 @@ abstract class GraphCanvasController {
           .vertexNodesByVertex
           .values
           .map(vertexNode =>
-            vertexNode.vertexInGraph.center.x + vertexNode.width() / 2
+            vertexNode.vertex.center.x + vertexNode.width() / 2
           )
           .max
 
@@ -103,7 +103,7 @@ abstract class GraphCanvasController {
           .vertexNodesByVertex
           .values
           .map(vertexNode =>
-            vertexNode.vertexInGraph.center.y + vertexNode.height() / 2
+            vertexNode.vertex.center.y + vertexNode.height() / 2
           )
           .max
 

@@ -14,8 +14,8 @@ import java.util.UUID
 import scala.collection.JavaConversions._
 
 case class DefaultLinkNode(
-                                                     graphCanvas: GraphCanvas,
-                         linkInGraph: VisualLink
+                            graphCanvas: GraphCanvas,
+                            link: VisualLink
                                                    )
 extends LinkNode
 

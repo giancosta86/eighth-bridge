@@ -126,12 +126,12 @@ class GraphCanvas(
       _vertexNodesByVertex
         .values
         .partition(vertexNode =>
-          graph().vertexes.contains(vertexNode.vertexInGraph)
+          graph().vertexes.contains(vertexNode.vertex)
         )
 
     val keptVertexes =
       vertexNodesToKeep
-        .map(_.vertexInGraph)
+        .map(_.vertex)
         .toSet
 
     val vertexesWithoutNode =
@@ -152,7 +152,7 @@ class GraphCanvas(
 
     _vertexNodesByVertex =
       updatedVertexNodes.map(vertexNode =>
-          vertexNode.vertexInGraph -> vertexNode
+          vertexNode.vertex -> vertexNode
         )
         .toMap
 
@@ -168,15 +168,15 @@ class GraphCanvas(
     val linkNodesBasedOnExistingLinks =
       originalLinkNodes
         .filter(linkNode =>
-          graph().links.contains(linkNode.linkInGraph)
+          graph().links.contains(linkNode.link)
         )
 
     val keptLinks =
-      linkNodesBasedOnExistingLinks.map(_.linkInGraph)
+      linkNodesBasedOnExistingLinks.map(_.link)
 
     val linkNodesAttachedToExistingVertexes =
       linkNodesBasedOnExistingLinks.filter(linkNode => {
-        graph().getVertexPair(linkNode.linkInGraph).isDefined
+        graph().getVertexPair(linkNode.link).isDefined
       })
 
     val linkNodesToKeep = linkNodesAttachedToExistingVertexes
@@ -199,7 +199,7 @@ class GraphCanvas(
 
     _linkNodesByLink =
       updatedLinkNodes.map(linkNode =>
-          linkNode.linkInGraph -> linkNode
+          linkNode.link -> linkNode
         ).
         toMap
 
