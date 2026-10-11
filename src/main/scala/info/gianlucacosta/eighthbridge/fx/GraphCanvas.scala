@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualArc, VisualVertex}
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
@@ -109,11 +109,11 @@ class GraphCanvas(
   def vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     _vertexNodesByVertex
 
-  private var _linkNodesByLink: Map[VisualLink, LinkNode] =
+  private var _arcNodesByArc: Map[VisualArc, ArcNode] =
     Map()
 
-  def linkNodesByLink: Map[VisualLink, LinkNode] =
-    _linkNodesByLink
+  def arcNodesByArc: Map[VisualArc, ArcNode] =
+    _arcNodesByArc
 
   render()
 
@@ -158,62 +158,62 @@ class GraphCanvas(
 
     /*
      * Then, we need to repeat the same process to update
-     * the pool of link nodes.
+     * the pool of arc nodes.
      */
-    val originalLinkNodes =
-      _linkNodesByLink
+    val originalArcNodes =
+      _arcNodesByArc
         .values
         .toSet
 
-    val linkNodesBasedOnExistingLinks =
-      originalLinkNodes
-        .filter(linkNode =>
-          graph().links.contains(linkNode.link)
+    val arcNodesBasedOnExistingArcs =
+      originalArcNodes
+        .filter(arcNode =>
+          graph().arcs.contains(arcNode.arc)
         )
 
-    val keptLinks =
-      linkNodesBasedOnExistingLinks.map(_.link)
+    val keptArcs =
+      arcNodesBasedOnExistingArcs.map(_.arc)
 
-    val linkNodesAttachedToExistingVertexes =
-      linkNodesBasedOnExistingLinks.filter(linkNode => {
-        graph().getVertexPair(linkNode.link).isDefined
+    val arcNodesAttachedToExistingVertexes =
+      arcNodesBasedOnExistingArcs.filter(arcNode => {
+        graph().getVertexPair(arcNode.arc).isDefined
       })
 
-    val linkNodesToKeep = linkNodesAttachedToExistingVertexes
+    val arcNodesToKeep = arcNodesAttachedToExistingVertexes
 
-    val linkNodesToRemove = originalLinkNodes -- linkNodesToKeep
+    val arcNodesToRemove = originalArcNodes -- arcNodesToKeep
 
-    val linksWithoutNode =
-      graph().links -- keptLinks
+    val arcsWithoutNode =
+      graph().arcs -- keptArcs
 
-    val brandNewLinkNodes =
-      linksWithoutNode.map(link => {
-        val linkNode = controller.createLinkNode(link)
+    val brandNewArcNodes =
+      arcsWithoutNode.map(arc => {
+        val arcNode = controller.createArcNode(arc)
 
-        linkNode.updateFx()
+        arcNode.updateFx()
 
-        linkNode
+        arcNode
       })
 
-    val updatedLinkNodes = linkNodesToKeep ++ brandNewLinkNodes
+    val updatedArcNodes = arcNodesToKeep ++ brandNewArcNodes
 
-    _linkNodesByLink =
-      updatedLinkNodes.map(linkNode =>
-          linkNode.link -> linkNode
+    _arcNodesByArc =
+      updatedArcNodes.map(arcNode =>
+          arcNode.arc -> arcNode
         ).
         toMap
 
     /*
      * Now, we need to add the new nodes to the canvas.
      */
-    brandNewLinkNodes.foreach((node: Node) => children.add(node))
+    brandNewArcNodes.foreach((node: Node) => children.add(node))
 
     brandNewVertexNodes.foreach((node: Node) => children.add(node))
 
     /*
      * Right after appending the new nodes, we need to remove stale nodes.
      */
-    linkNodesToRemove
+    arcNodesToRemove
       .foreach(children.remove)
 
     vertexNodesToRemove

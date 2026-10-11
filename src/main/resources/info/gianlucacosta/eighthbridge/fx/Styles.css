@@ -44,40 +44,40 @@
 
 
 /*-------
- * LINKS
+ * ARCS
  *-------*/
 
 
-.link .line {
+.arc .line {
     -fx-stroke: #9fecf3;
     -fx-stroke-width: 5;
 }
 
 
-.link > .internalPointHandle {
+.arc > .internalPointHandle {
     -fx-fill: #9fecf3;
 }
 
-.link > .labelConnector {
+.arc > .labelConnector {
     -fx-stroke: maroon;
     -fx-stroke-dash-array: 15 10;
 }
 
 
-.link > .label {
+.arc > .label {
     -fx-font: 14 Arial;
     -fx-fill: black;
 }
 
 
 /*------------------
- * LINKS - SELECTED
+ * ARCS - SELECTED
  *------------------*/
 
- .link:selected .line {
+ .arc:selected .line {
      -fx-stroke: #18ab00;
  }
 
- .link:selected > .internalPointHandle {
+ .arc:selected > .internalPointHandle {
      -fx-fill: #18ab00;
  }

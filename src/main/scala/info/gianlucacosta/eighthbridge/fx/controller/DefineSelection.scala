@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 
 /**
@@ -10,9 +10,9 @@ trait DefineSelection extends GraphCanvasController {
   override def canDrawSelectionRectangle: Boolean =
     true
 
-  override def setSelection(selectionVertexes: Set[VisualVertex], selectionLinks: Set[VisualLink]): Option[AnyVisualGraph] =
+  override def setSelection(selectionVertexes: Set[VisualVertex], selectionArcs: Set[VisualArc]): Option[AnyVisualGraph] =
     Some(
-      graph.setSelection(selectionVertexes, selectionLinks)
+      graph.setSelection(selectionVertexes, selectionArcs)
     )
 
 
@@ -24,10 +24,10 @@ trait DefineSelection extends GraphCanvasController {
     )
 
 
-  override def setLinkSelectedState(link: VisualLink, selected: Boolean): Option[AnyVisualGraph] =
+  override def setArcSelectedState(arc: VisualArc, selected: Boolean): Option[AnyVisualGraph] =
     Some(
-      graph.updateLink(
-        link.setSelected(selected)
+      graph.updateArc(
+        arc.setSelected(selected)
       )
     )
 }

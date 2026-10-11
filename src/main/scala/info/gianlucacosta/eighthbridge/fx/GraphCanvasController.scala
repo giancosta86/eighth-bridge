@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.Includes._
@@ -21,7 +21,7 @@ abstract class GraphCanvasController {
   protected final def graph: AnyVisualGraph =
     graphCanvas.graph()
 
-  //TODO! Turn this into a function of VisualLink, that the 2 specific trait will implement by returning their related constants!
+  //TODO! Turn this into a function of VisualArc, that the 2 specific trait will implement by returning their related constants!
   def renderDirected: Boolean
 
   def createBackgroundNode(): BackgroundNode =
@@ -30,8 +30,8 @@ abstract class GraphCanvasController {
   def createVertexNode(vertex: VisualVertex): VertexNode =
     new DefaultVertexNode(graphCanvas, vertex)
 
-  def createLinkNode(link: VisualLink): LinkNode =
-    new DefaultLinkNode(graphCanvas, link)
+  def createArcNode(arc: VisualArc): ArcNode =
+    new DefaultArcNode(graphCanvas, arc)
 
   def deleteSelection(): Option[AnyVisualGraph] =
     None
@@ -39,13 +39,13 @@ abstract class GraphCanvasController {
   def createVertex(center: Point2D): Option[AnyVisualGraph] =
     None
 
-  def createLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[AnyVisualGraph] =
+  def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[AnyVisualGraph] =
     None
 
   def editVertex(vertex: VisualVertex): Option[AnyVisualGraph] =
     None
 
-  def editLink(link: VisualLink): Option[AnyVisualGraph] =
+  def editArc(arc: VisualArc): Option[AnyVisualGraph] =
     None
 
   def canDrawSelectionRectangle: Boolean =
@@ -54,26 +54,26 @@ abstract class GraphCanvasController {
   def setVertexSelectedState(vertex: VisualVertex, selected: Boolean): Option[AnyVisualGraph] =
     None
 
-  def setLinkSelectedState(link: VisualLink, selected: Boolean): Option[AnyVisualGraph] =
+  def setArcSelectedState(arc: VisualArc, selected: Boolean): Option[AnyVisualGraph] =
     None
 
-  def setSelection(selectionVertexes: Set[VisualVertex], selectionLinks: Set[VisualLink]): Option[AnyVisualGraph] =
+  def setSelection(selectionVertexes: Set[VisualVertex], selectionArcs: Set[VisualArc]): Option[AnyVisualGraph] =
     None
 
   //TODO! Delta should have a dedicated type!
   def dragSelection(delta: Point2D): Option[AnyVisualGraph] =
     None
 
-  def createLinkInternalPoint(link: VisualLink, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[AnyVisualGraph] =
+  def createArcInternalPoint(arc: VisualArc, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[AnyVisualGraph] =
     None
 
-  def canDragLinkInternalPoint(link: VisualLink, updatedInternalPoints: List[Point2D], originalInternalPoint: Point2D, updatedInternalPoint: Point2D): Boolean =
+  def canDragArcInternalPoint(arc: VisualArc, updatedInternalPoints: List[Point2D], originalInternalPoint: Point2D, updatedInternalPoint: Point2D): Boolean =
     false
 
-  def deleteLinkInternalPoint(link: VisualLink, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[AnyVisualGraph] =
+  def deleteArcInternalPoint(arc: VisualArc, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[AnyVisualGraph] =
     None
 
-  def dragLinkLabel(link: VisualLink, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
+  def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
     None
 
   def minCanvasDimension: Dimension2D =

@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.eighthbridge.theory.features.Named
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
@@ -12,9 +12,6 @@ import scalafx.geometry.Point2D
   * <li>Creates a vertex by assigning it a unique name based on a counter</li>
   * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
   * </ul>
-  *
-  * @tparam V Vertex
-  * @tparam L Link
   */
 trait VertexNameEditing
   extends VertexEditing

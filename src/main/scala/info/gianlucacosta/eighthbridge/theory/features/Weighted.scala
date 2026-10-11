@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.theory.features
 
-import info.gianlucacosta.eighthbridge.theory.{DirectedGraph, Link, Vertex}
+import info.gianlucacosta.eighthbridge.theory.{DirectedGraph, Arc, Vertex}
 
 import scala.language.implicitConversions
 

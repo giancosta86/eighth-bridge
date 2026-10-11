@@ -2,14 +2,14 @@ package info.gianlucacosta.eighthbridge.theory
 
 import scala.annotation.tailrec
 
-trait DirectedGraph[V <: Vertex, L <: Link] {
+trait DirectedGraph[V <: Vertex, A <: Arc] {
   val vertexes: Set[V]
 
-  protected val arcsByVertexPair: Map[(V, V), Set[L]]
+  protected val arcsByVertexPair: Map[(V, V), Set[A]]
 
   protected def graphCopy(
                            vertexes: Set[V] = vertexes,
-                           arcsByVertexPair: Map[(V, V), Set[L]] = arcsByVertexPair
+                           arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
    ): this.type
 
   def addVertexes(vertexesToAdd: Set[V]): this.type =
@@ -32,8 +32,8 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
 
       arcsByVertexPair =
         arcsByVertexPair.map {
-          case (keyPair, link) =>
-            keyPair.updateVertex(updatedVertex) -> link
+          case (keyPair, arc) =>
+            keyPair.updateVertex(updatedVertex) -> arc
         }
     )
 
@@ -61,7 +61,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   final def removeVertex(vertex: V): this.type =
     removeVertexes(Set(vertex))
 
-  def addArc(sourceVertex: V, targetVertex: V, arc: L): this.type = {
+  def addArc(sourceVertex: V, targetVertex: V, arc: A): this.type = {
     val vertexPair =
       sourceVertex -> targetVertex
 
@@ -77,51 +77,51 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
       this
   }
 
-  final def addArc(vertexPair: (V, V), arc: L): this.type =
+  final def addArc(vertexPair: (V, V), arc: A): this.type =
     addArc(vertexPair._1, vertexPair._2, arc)
 
-  def updateLink(updatedLink: L): this.type =
+  def updateArc(updatedArc: A): this.type =
     graphCopy(
       arcsByVertexPair =
-        arcsByVertexPair.mapValues(_.updateLink(updatedLink))
+        arcsByVertexPair.mapValues(_.updateArc(updatedArc))
     )
 
-  final def updateLinks(updatedLinks: Set[L]): this.type =
-    updatedLinks.foldLeft(this)((cumulatedGraph, link) =>
-      cumulatedGraph.updateLink(link)
+  final def updateArcs(updatedArcs: Set[A]): this.type =
+    updatedArcs.foldLeft(this)((cumulatedGraph, arc) =>
+      cumulatedGraph.updateArc(arc)
     ).asInstanceOf[this.type]
 
-  final def updateLinks(updatedLinks: L*): this.type =
-    updateLinks(updatedLinks.toSet)
+  final def updateArcs(updatedArcs: A*): this.type =
+    updateArcs(updatedArcs.toSet)
 
-  def removeLinks(linksToRemove: Set[L]): this.type =
+  def removeArcs(arcsToRemove: Set[A]): this.type =
     graphCopy(
       arcsByVertexPair =
         arcsByVertexPair
           .mapValues(
-          _ -- linksToRemove
+          _ -- arcsToRemove
         )
           .filter {
-          case (_, linkSet) =>
-            linkSet.nonEmpty
+          case (_, arcSet) =>
+            arcSet.nonEmpty
         }
     )
 
-  final def removeLinks(links: L*): this.type =
-    removeLinks(links.toSet)
+  final def removeArcs(arcs: A*): this.type =
+    removeArcs(arcs.toSet)
 
-  final def removeLink(link: L): this.type =
-    removeLinks(Set(link))
+  final def removeArc(arc: A): this.type =
+    removeArcs(Set(arc))
 
   @transient
-  lazy val links: Set[L] =
+  lazy val arcs: Set[A] =
     arcsByVertexPair
       .values
       .flatten
       .toSet
 
   @transient
-  protected lazy val exitingVertexesByVertex: Map[V, Set[V]] =
+  protected lazy val successorsByVertex: Map[V, Set[V]] =
     arcsByVertexPair
       .keySet
       .groupBy {
@@ -133,14 +133,14 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
         })
 
   @transient
-  protected lazy val exitingArcsByVertex: Map[V, Set[L]] =
+  protected lazy val exitingArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
       .flattenByVertex { case (sourceVertex, _) =>
         sourceVertex
       }
 
   @transient
-  protected lazy val enteringVertexesByVertex: Map[V, Set[V]] =
+  protected lazy val predecessorsByVertex: Map[V, Set[V]] =
     arcsByVertexPair
       .keySet
       .groupBy {
@@ -149,22 +149,22 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
       .mapValues(_.map { case (sourceVertex, _ ) => sourceVertex })
 
   @transient
-  protected lazy val enteringArcsByVertex: Map[V, Set[L]] =
+  protected lazy val enteringArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
       .flattenByVertex { case (_, targetVertex) => targetVertex }
 
   @transient
-  protected lazy val vertexPairsByArc: Map[L, (V, V)] =
+  protected lazy val vertexPairsByArc: Map[A, (V, V)] =
     arcsByVertexPair
-      .flatMap { case (vertexPair, links) =>
-        links.map(_ -> vertexPair)
+      .flatMap { case (vertexPair, arcs) =>
+        arcs.map(_ -> vertexPair)
       }
 
   /**
-   * Returns the set of vertexes that are target of any link exiting the given vertex.
+   * Returns the set of vertexes that are target of any arc exiting the given vertex.
    */
-  def getExitingVertexes(vertex: V): Set[V] =
-    exitingVertexesByVertex.getOrElse(
+  def getSuccessors(vertex: V): Set[V] =
+    successorsByVertex.getOrElse(
       vertex,
       Set()
     )
@@ -172,17 +172,17 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   /**
    * Returns the set of arcs whose source is the given vertex.
    */
-  def getExitingArcs(vertex: V): Set[L] =
+  def getExitingArcs(vertex: V): Set[A] =
     exitingArcsByVertex.getOrElse(
       vertex,
       Set()
     )
 
   /**
-   * Returns the set of vertexes that are source of any link entering the given vertex.
+   * Returns the set of vertexes that are source of any arc entering the given vertex.
    */
-  def getEnteringVertexes(vertex: V): Set[V] =
-    enteringVertexesByVertex.getOrElse(
+  def getPredecessors(vertex: V): Set[V] =
+    predecessorsByVertex.getOrElse(
       vertex,
       Set()
     )
@@ -190,36 +190,39 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   /**
    * Returns the set of arcs whose target is the given vertex.
    */
-  def getEnteringArcs(vertex: V): Set[L] =
+  def getEnteringArcs(vertex: V): Set[A] =
     enteringArcsByVertex.getOrElse(
       vertex,
       Set()
     )
 
-  def getArcsBetween(vertexPair: (V, V)): Set[L] =
+  def getArcsBetween(vertexPair: (V, V)): Set[A] =
     arcsByVertexPair.getOrElse(
       vertexPair,
       Set()
     )
 
-  final def getArcsBetween(sourceVertex: V, targetVertex: V): Set[L] =
+  final def getArcsBetween(sourceVertex: V, targetVertex: V): Set[A] =
     getArcsBetween(sourceVertex -> targetVertex)
 
-  def getEdgesBetween(oneVertex: V, anotherVertex: V): Set[L] = {
+  def getEdgesBetween(oneVertex: V, anotherVertex: V): Set[A] = {
     getArcsBetween(oneVertex -> anotherVertex) ++
       getArcsBetween(anotherVertex -> oneVertex)
   }
 
-  def getLinkedVertexes(vertex: V): Set[V] =
-    getExitingVertexes(vertex) ++ getEnteringVertexes(vertex)
+  def getVertexPair(arc: A): Option[(V, V)] =
+    vertexPairsByArc.get(arc)
+
+  def getAdjacent(vertex: V): Set[V] =
+    getSuccessors(vertex) ++ getPredecessors(vertex)
 
   @transient
-  lazy val linkedVertexes: Set[V] =
+  lazy val connectedVertexes: Set[V] =
     exitingArcsByVertex.keySet ++ enteringArcsByVertex.keySet
 
   @transient
-  lazy val unlinkedVertexes: Set[V] =
-    vertexes -- linkedVertexes
+  lazy val isolatedVertexes: Set[V] =
+    vertexes -- connectedVertexes
 
   /**
    * The vertexes having no entering arcs
@@ -235,18 +238,14 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
   lazy val leafVertexes: Set[V] =
   vertexes -- exitingArcsByVertex.keySet
 
-  def getVertexPair(arc: L): Option[(V, V)] =
-    vertexPairsByArc.get(arc)
-
-
   /**
    * Topology information for a vertex in a directed graph.
    */
   case class VertexTopology(
-                             enteringVertexes: Set[V],
-                             enteringArcs: Set[L],
-                             exitingArcs: Set[L],
-                             exitingVertexes: Set[V]
+                             predecessors: Set[V],
+                             enteringArcs: Set[A],
+                             exitingArcs: Set[A],
+                             successors: Set[V]
                            )
 
   /**
@@ -254,7 +253,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
    * <ul>
    * <li><b>cumulatedValue</b> - the value cumulated until now</li>
    * <li><b>vertex</b> - the current vertex</li>
-   * <li><b>vertexTopology</b> - a case class describing the current vertex and its entering/exiting vertexes/arcs</li>
+   * <li><b>vertexTopology</b> - a case class describing the vertex/arc connections for a given vertex</li>
    * </ul>
    *
    * The function must return <b>newCumulatedValue</b>, used by fold() as the return value or to call the next VertexFoldProcessor.
@@ -270,7 +269,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
    * in the graph, starting from the root vertexes, with the following rules:
    *
    * <ul>
-   * <li>Each node will be processed <b>only</b> if all of its <i>entering vertexes</i> have been processed</li>
+   * <li>Each node will be processed <b>only</b> if all of its <i>predecessors</i> have been processed</li>
    *
    * <li>Any cycle in the graph will cause a CircularGraphException</li>
    * </ul>
@@ -279,7 +278,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
     /*
      * At the beginning of the algorithm, no vertex has been processed;
      * consequently, the fringe - i.e., the buffer of vertexes to process -
-     * coincides with the root vertexes, having no entering vertexes by definition.
+     * coincides with the root vertexes, having no predecessors by definition.
      */
     fold(
       initialValue,
@@ -302,24 +301,24 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
        * If the fringe contains at least one vertex to consider, the algorithm can go on.
        */
       case currentVertex :: fringeTail =>
-        val currentEnteringVertexes =
-          enteringVertexesByVertex.getOrElse(currentVertex, Set())
+        val currentPredecessors =
+          predecessorsByVertex.getOrElse(currentVertex, Set())
 
         /*
          * If all the vertexes pointing to the current vertex have already been explored,
          * such vertex conceptually behaves now like a root vertex and can be processed.
          */
-        if (currentEnteringVertexes.subsetOf(processedVertexes)) {
-          val currentExitingVertexes =
-            exitingVertexesByVertex.getOrElse(currentVertex, Set())
+        if (currentPredecessors.subsetOf(processedVertexes)) {
+          val currentSuccessors =
+            successorsByVertex.getOrElse(currentVertex, Set())
 
           val vertexTopology = VertexTopology(
-            enteringVertexes = currentEnteringVertexes,
+            predecessors = currentPredecessors,
             enteringArcs =
               enteringArcsByVertex.getOrElse(currentVertex, Set()),
             exitingArcs =
               exitingArcsByVertex.getOrElse(currentVertex, Set()),
-            exitingVertexes = currentExitingVertexes
+            successors = currentSuccessors
           )
 
           val newCumulatedValue =
@@ -332,7 +331,7 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
           /**
            * The next step can occur, notifying that the current vertex has been processed
            * in particular, the fringe, after losing the current node (as it's a tail),
-           * can now include all the node's exiting vertexes, with no duplicates.
+           * can now include all the node's successors, with no duplicates.
            */
           fold(
             newCumulatedValue,
@@ -341,13 +340,13 @@ trait DirectedGraph[V <: Vertex, L <: Link] {
 
             processedVertexes + currentVertex,
 
-            (fringeTail ++ currentExitingVertexes).distinct
+            (fringeTail ++ currentSuccessors).distinct
           )
         } else {
           /*
-           * If the current vertex has at least an entering vertex that was not already explored,
+           * If the current vertex has at least a predecessor that was not already explored,
            * it must be removed from the fringe: it will be re-added later, after processing
-           * one of its entering vertexes, as seen in the tail call above - provided the graph has no cycles.
+           * one of its predecessors, as seen in the tail call above - provided the graph has no cycles.
            */
           fold(
             cumulatedValue,

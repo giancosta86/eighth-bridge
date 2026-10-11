@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.{DiagonalBounds, Segment}
 import scalafx.Includes._
@@ -13,18 +13,18 @@ import scalafx.scene.text.Text
 import java.util.UUID
 import scala.collection.JavaConversions._
 
-case class DefaultLinkNode(
-                            graphCanvas: GraphCanvas,
-                            link: VisualLink
+case class DefaultArcNode(
+                           graphCanvas: GraphCanvas,
+                           arc: VisualArc
                                                    )
-extends LinkNode
+extends ArcNode
 
 /*
 class DefaultLinkNode[
 V <: VisualVertex,
-L <: VisualLink,
-G <: VisualGraph[V, L]
-](val graphCanvas: GraphCanvas[V, L, G], val link: L)
+A <: VisualArc,
+G <: VisualGraph[V, A]
+](val graphCanvas: GraphCanvas[V, L, G], val link: A)
   extends Group
     with LinkNode[V, L, G] {
 

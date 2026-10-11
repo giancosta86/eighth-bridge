@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import javafx.beans.property.SimpleDoubleProperty
@@ -147,16 +147,16 @@ class DefaultBackgroundNode(val graphCanvas: GraphCanvas)
               .map(_.vertex)
               .toSet
 
-            val selectionLinks = graphCanvas.linkNodesByLink
+            val selectionArcs = graphCanvas.arcNodesByArc
               .values
               .filter(_.intersects(selectionBounds))
-              .map(_.link)
+              .map(_.arc)
               .toSet
 
             graph =
               graph.setSelection(
                 selectionVertexes,
-                selectionLinks
+                selectionArcs
               )
           }
 

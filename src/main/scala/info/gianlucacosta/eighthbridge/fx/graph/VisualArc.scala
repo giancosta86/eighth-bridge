@@ -1,13 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.Link
+import info.gianlucacosta.eighthbridge.theory.Arc
 import info.gianlucacosta.eighthbridge.theory.features.Named
 import scalafx.geometry.Point2D
 
 /**
-  * A link for VisualGraph
+  * An arc for VisualGraph
   */
-trait VisualLink extends Link with Named {
+trait VisualArc extends Arc with Named {
   def selected: Boolean
 
   def setSelected(value: Boolean): this.type
@@ -26,12 +26,12 @@ trait VisualLink extends Link with Named {
 
   def setStyleclasses(value: Set[String]): this.type
 
-  //TODO! These go here or in the DefaultVisualLink implementation? + use the .Default values
-  def arrow: LinkArrow
+  //TODO! These go here or in the DefaultVisualArc implementation? + use the .Default values
+  def arrow: ArcArrow
 
-  def setArrow(value: LinkArrow): this.type
+  def setArrow(value: ArcArrow): this.type
 
-  def handleRadius: LinkHandleRadius
+  def handleRadius: ArcHandleRadius
 
-  def setHandleRadius(value: LinkHandleRadius): this.type
+  def setHandleRadius(value: ArcHandleRadius): this.type
 }

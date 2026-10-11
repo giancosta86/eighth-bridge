@@ -1,14 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 //TODO! Remove this and turn VisualGraph into a case class?
-case class DefaultVisualGraph[V <: VisualVertex, L <: VisualLink] private (
+case class DefaultVisualGraph[V <: VisualVertex, A <: VisualArc] private(
                                                                  vertexes: Set[V],
-                                                                 arcsByVertexPair: Map[(V, V), Set[L]]
-                                                                 ) extends VisualGraph[V, L] {
+                                                                 arcsByVertexPair: Map[(V, V), Set[A]]
+                                                                 ) extends VisualGraph[V, A] {
 
-  def this() = this(vertexes = Set[V](), arcsByVertexPair = Map[(V, V), Set[L]]())
+  def this() = this(vertexes = Set[V](), arcsByVertexPair = Map[(V, V), Set[A]]())
 
-  override protected def graphCopy(vertexes: Set[V], arcsByVertexPair: Map[(V, V), Set[L]]): DefaultVisualGraph.this.type =
+  override protected def graphCopy(vertexes: Set[V], arcsByVertexPair: Map[(V, V), Set[A]]): DefaultVisualGraph.this.type =
     copy(
       vertexes = vertexes,
       arcsByVertexPair = arcsByVertexPair

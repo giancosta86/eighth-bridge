@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController}
 import scalafx.geometry.Point2D
 import info.gianlucacosta.helios.fx.Includes._
@@ -20,10 +20,10 @@ trait DragDrop extends GraphCanvasController {
     )
   }
 
-  override def dragLinkLabel(link: VisualLink, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
+  override def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
     Some(
-      graph.updateLink(
-        link.setLabelCenter(Some(
+      graph.updateArc(
+        arc.setLabelCenter(Some(
           updatedCenter
         ))
       )

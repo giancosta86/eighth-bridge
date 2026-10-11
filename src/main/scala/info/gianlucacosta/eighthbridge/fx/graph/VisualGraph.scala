@@ -9,20 +9,20 @@ import info.gianlucacosta.eighthbridge.theory.DirectedGraph
   * based on arc bindings - therefore, it's up to the controller to choose whether to draw it
   * with edges instead of arcs.
   */
-trait VisualGraph[V <: VisualVertex, L <: VisualLink] extends DirectedGraph[V, L] {
+trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A] {
   @transient
   lazy val selectedVertexes: Set[V] =
     vertexes.filter(vertex => vertex.selected)
 
 
   @transient
-  lazy val selectedLinks: Set[L] =
-    links.filter(link => link.selected)
+  lazy val selectedArcs: Set[A] =
+    arcs.filter(arc => arc.selected)
 
 
   @transient
   lazy val selectAll: this.type =
-    setSelection(vertexes, links)
+    setSelection(vertexes, arcs)
 
 
   @transient
@@ -32,22 +32,22 @@ trait VisualGraph[V <: VisualVertex, L <: VisualLink] extends DirectedGraph[V, L
 
   @transient
   lazy val selectionEmpty: Boolean =
-    selectedVertexes.isEmpty && selectedLinks.isEmpty
+    selectedVertexes.isEmpty && selectedArcs.isEmpty
 
 
-  def setSelection(selectionVertexes: Set[V] = Set(), selectionLinks: Set[L] = Set()): this.type = {
+  def setSelection(selectionVertexes: Set[V] = Set(), selectionArcs: Set[A] = Set()): this.type = {
     val updatedVertexes: Set[V] =
       vertexes.map(vertex =>
         vertex.setSelected(selectionVertexes.contains(vertex))
       )
 
-    val updatedLinks: Set[L] =
-      links.map(link =>
-        link.setSelected(selectionLinks.contains(link))
+    val updatedArcs: Set[A] =
+      arcs.map(arc =>
+        arc.setSelected(selectionArcs.contains(arc))
       )
 
     this
       .updateVertexes(updatedVertexes)
-      .updateLinks(updatedLinks)
+      .updateArcs(updatedArcs)
   }
 }

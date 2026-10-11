@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.Includes._
 import scalafx.beans.property.ReadOnlyDoubleProperty
@@ -186,7 +186,7 @@ case class DefaultVertexNode(
               val selectedVertexes =
                 graph.selectedVertexes
 
-              if (selectedVertexes.size == 1 && graph.selectedLinks.isEmpty) {
+              if (selectedVertexes.size == 1 && graph.selectedArcs.isEmpty) {
                 val selectedVertex =
                   selectedVertexes.head
 
@@ -203,11 +203,11 @@ case class DefaultVertexNode(
         case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 1 =>
-              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex) && graph.selectedLinks.isEmpty) {
+              if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex) && graph.selectedArcs.isEmpty) {
                 val selectedVertex =
                   graph.selectedVertexes.head
 
-                controller.createLink(selectedVertex, vertex)
+                controller.createArc(selectedVertex, vertex)
                   .foreach(newGraph =>
                     graph =
                       newGraph
