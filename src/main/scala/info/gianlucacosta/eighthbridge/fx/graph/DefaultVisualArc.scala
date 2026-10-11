@@ -9,7 +9,7 @@ case class DefaultVisualArc(
                              internalPoints: List[ArcInternalPoint],
                              styleClasses: Set[String],
                              arrowEnd: Option[ArcArrowEnd],
-                             name: String,
+                             name: String
 ) extends VisualArc with Named {
   override def setSelected(selected: Boolean): DefaultVisualArc.this.type =
     copy(selected = selected)
