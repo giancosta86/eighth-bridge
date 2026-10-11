@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
 import scalafx.scene.Node
 import scalafx.Includes._
 
@@ -30,7 +30,7 @@ trait GraphCanvasNode extends Node {
     *
     * @return
     */
-  final def graph: VisualGraph[_ <: VisualVertex, _ <: VisualLink] =
+  final def graph: AnyVisualGraph =
     graphCanvas.graph()
 
   //TODO! Del this!

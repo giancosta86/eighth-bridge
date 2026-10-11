@@ -19,14 +19,15 @@ import scalafx.geometry.Point2D
 trait VertexNameEditing
   extends VertexEditing
   with VertexNaming {
-  override protected def doEditVertex(vertex: V): Option[V] = {
+  override protected def doEditVertex(vertex: VisualVertex): Option[VisualVertex] = {
+    val namedVertex = vertex.asInstanceOf[VisualVertex with Named]
+
     val newNameInput =
-      InputDialogs.askForString("Vertex name:", vertex.name, "Edit vertex")
+      InputDialogs.askForString("Vertex name:", namedVertex.name, "Edit vertex")
 
     if (newNameInput.isEmpty) {
       return None
     }
-
 
     val newName =
       newNameInput.get
@@ -39,14 +40,14 @@ trait VertexNameEditing
     val nameAssignedToAnotherVertex =
       graph
         .vertexes
-        .exists(otherVertex => otherVertex.name == newName && otherVertex != vertex)
+        .exists(otherVertex => otherVertex.asInstanceOf[Named].name == newName && otherVertex != vertex)
 
     if (nameAssignedToAnotherVertex) {
       throw new IllegalArgumentException("The vertex name must be unique!")
     }
 
     val updatedVertex =
-      vertex.setName(name = newName)
+      namedVertex.setName(newName)
 
     Some(updatedVertex)
   }

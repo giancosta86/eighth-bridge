@@ -1,15 +1,15 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 
 trait VertexEditing extends GraphCanvasController {
-  override def editVertex(vertex: V): Option[G] = {
+  override def editVertex(vertex: VisualVertex): Option[AnyVisualGraph] = {
     while (true) {
       try {
-        return doEditVertex(vertex).map(newVertex =>
-          graph.replaceVertex(vertex, newVertex)
+        return doEditVertex(vertex).map(updatedVertex =>
+          graph.updateVertex(updatedVertex)
         )
       } catch {
         case ex: IllegalArgumentException =>
@@ -30,5 +30,5 @@ trait VertexEditing extends GraphCanvasController {
    * @return Some(new vertex) if the editing is complete, None if the user canceled the editing
    *
    */
-  protected def doEditVertex(vertex: V): Option[V]
+  protected def doEditVertex(vertex: VisualVertex): Option[VisualVertex]
 }

@@ -12,20 +12,25 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
   */
 trait LinkWeightEditing
   extends LinkEditing {
-  override protected def doEditLink(link: L): Option[L] = {
-    val newWeightOption =
-      InputDialogs.askForDouble(
-        message = "Weight:",
-        initialValue = link.weight,
-        minValue = link.minWeight,
-        maxValue = link.maxWeight,
-        header = "Edit link"
-      )
 
-    newWeightOption.map(newWeight => {
-      //TODO! What if checkWeight() crashes?
-      //TODO! The same applies when setting a vertex name
-      link.setWeight(newWeight)
-    })
+  def getMinWeight(link: VisualLink with Weighted): Double =
+    0
+
+  def getMaxWeight(link: VisualLink with Weighted): Double =
+    Double.PositiveInfinity
+
+  override protected def doEditLink(link: VisualLink): Option[VisualLink] = {
+    val weightedLink = link.asInstanceOf[VisualLink with Weighted]
+
+    InputDialogs.askForDouble(
+      message = "Weight:",
+      initialValue = weightedLink.weight,
+      minValue = getMinWeight(weightedLink),
+      maxValue = getMaxWeight(weightedLink),
+      header = "Edit link"
+    )
+      .map(newWeight => {
+        weightedLink.setWeight(newWeight).asInstanceOf[VisualLink]
+      })
   }
 }

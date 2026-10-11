@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.Includes._
@@ -11,66 +11,69 @@ import scalafx.Includes._
 abstract class GraphCanvasController {
   private var _graphCanvas: GraphCanvas = _
 
-  protected[fx] final def graphCanvas: GraphCanvas = _graphCanvas
+  protected[fx] final def graphCanvas: GraphCanvas =
+    _graphCanvas
 
   protected[fx] final def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
     _graphCanvas = graphCanvas
   }
 
-  protected final def graph: G = graphCanvas.graph()
+  protected final def graph: AnyVisualGraph =
+    graphCanvas.graph()
 
+  //TODO! Turn this into a function of VisualLink, that the 2 specific trait will implement by returning their related constants!
   def renderDirected: Boolean
 
   def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
-  def createVertexNode(vertex: V): VertexNode =
+  def createVertexNode(vertex: VisualVertex): VertexNode =
     new DefaultVertexNode(graphCanvas, vertex)
 
-  def createLinkNode(link: L): LinkNode =
+  def createLinkNode(link: VisualLink): LinkNode =
     new DefaultLinkNode(graphCanvas, link)
 
-  def deleteSelection(): Option[G] =
+  def deleteSelection(): Option[AnyVisualGraph] =
     None
 
-  def createVertex(center: Point2D): Option[G] =
+  def createVertex(center: Point2D): Option[AnyVisualGraph] =
     None
 
-  def createLink(sourceVertex: V, targetVertex: V): Option[G] =
+  def createLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[AnyVisualGraph] =
     None
 
-  def editVertex(vertex: V): Option[G] =
+  def editVertex(vertex: VisualVertex): Option[AnyVisualGraph] =
     None
 
-  def editLink(link: L): Option[G] =
+  def editLink(link: VisualLink): Option[AnyVisualGraph] =
     None
 
   def canDrawSelectionRectangle: Boolean =
     false
 
-  def setVertexSelectedState(vertex: V, selected: Boolean): Option[G] =
+  def setVertexSelectedState(vertex: VisualVertex, selected: Boolean): Option[AnyVisualGraph] =
     None
 
-  def setLinkSelectedState(link: L, selected: Boolean): Option[G] =
+  def setLinkSelectedState(link: VisualLink, selected: Boolean): Option[AnyVisualGraph] =
     None
 
-  def setSelection(selectionVertexes: Set[V], selectionLinks: Set[L]): Option[G] =
+  def setSelection(selectionVertexes: Set[VisualVertex], selectionLinks: Set[VisualLink]): Option[AnyVisualGraph] =
     None
 
   //TODO! Delta should have a dedicated type!
-  def dragSelection(delta: Point2D): Option[G] =
+  def dragSelection(delta: Point2D): Option[AnyVisualGraph] =
     None
 
-  def createLinkInternalPoint(link: L, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[G] =
+  def createLinkInternalPoint(link: VisualLink, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[AnyVisualGraph] =
     None
 
-  def canDragLinkInternalPoint(link: L, updatedInternalPoints: List[Point2D], originalInternalPoint: Point2D, updatedInternalPoint: Point2D): Boolean =
+  def canDragLinkInternalPoint(link: VisualLink, updatedInternalPoints: List[Point2D], originalInternalPoint: Point2D, updatedInternalPoint: Point2D): Boolean =
     false
 
-  def deleteLinkInternalPoint(link: L, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[G] =
+  def deleteLinkInternalPoint(link: VisualLink, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[AnyVisualGraph] =
     None
 
-  def dragLinkLabel(link: L, originalCenter: Point2D, updatedCenter: Point2D): Option[G] =
+  def dragLinkLabel(link: VisualLink, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
     None
 
   def minCanvasDimension: Dimension2D =

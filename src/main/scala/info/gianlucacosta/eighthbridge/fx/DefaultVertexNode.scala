@@ -98,7 +98,7 @@ object DefaultVertexNode {
   */
 case class DefaultVertexNode(
    graphCanvas: GraphCanvas,
-   vertexInGraph: V
+   vertexInGraph: VisualVertex
    //TODO! padding: Double = DefaultVertexNode.DefaultPadding
  )
   extends VertexNode {

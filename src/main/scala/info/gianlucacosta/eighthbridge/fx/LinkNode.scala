@@ -6,11 +6,12 @@ import javafx.beans.property.SimpleObjectProperty
 
 import scala.collection.JavaConversions._
 import scalafx.Includes._
+import scalafx.scene.Group
 
 /**
   * JavaFX node rendering a VisualLink
   */
-abstract LinkNode extends Group with GraphCanvasNode {
+abstract class LinkNode extends Group with GraphCanvasNode {
   val linkInGraph: L
 
   val link: SimpleObjectProperty[L] =

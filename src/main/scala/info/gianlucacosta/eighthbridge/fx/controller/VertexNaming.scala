@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.eighthbridge.theory.features.Named
 import scalafx.geometry.Point2D
@@ -29,16 +29,16 @@ trait VertexNaming
    * @param vertexName
    * @return
    */
-  protected def createNamedVertex(center: Point2D, vertexName: String): V
+  protected def createNamedVertex(center: Point2D, vertexName: String): VisualVertex with Named
 
-  override def createVertex(center: Point2D): Option[G] = {
+  override def createVertex(center: Point2D): Option[AnyVisualGraph] = {
     val lastUsedVertexIndex = Stream.from(firstNameIndex)
       .takeWhile(vertexIndex => {
         val vertexName =
           getVertexName(vertexIndex)
 
         val vertexNameExists =
-          graph.vertexes.exists(_.name == vertexName)
+          graph.vertexes.exists(_.asInstanceOf[Named].name == vertexName)
 
         vertexNameExists
       })
