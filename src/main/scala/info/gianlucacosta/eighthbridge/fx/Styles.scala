@@ -7,7 +7,6 @@ package info.gianlucacosta.eighthbridge.fx
   * required by your GUI framework.
   */
 object Styles {
-  val resourceUrl = getClass.getResource("Styles.css")
+  val resourceUrl =
+    getClass.getResource("Styles.css")
 }
-
-//TODO! Also create a StyleClasses object, containing all the style classes as constants!
