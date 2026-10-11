@@ -16,7 +16,7 @@ trait VisualArc extends Arc with Named {
 
   def setLabelCenter(value: Option[Point2D]): this.type
 
-  def setName(value: String): this.type
+  def setName(name: String): this.type
 
   def internalPoints: List[Point2D]
 

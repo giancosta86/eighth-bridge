@@ -19,13 +19,17 @@ object Arc {
   implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Arc](
                                                                          thisMap: Map[(V, V), Set[A]]
                                                                        ) {
-    def flattenByVertex(vertexSelector: ((V, V)) => V): Map[V, Set[A]] =
+    def flattenToSingleVertexKey(
+                                  vertexSelector: ((V, V)) => V
+                                ): Map[V, Set[A]] =
       thisMap
         .view
-        .groupBy { case (vertexPair, _) => vertexSelector(vertexPair) }
+        .groupBy { case (vertexPair, _) =>
+          vertexSelector(vertexPair)
+        }
         .mapValues(
           _.map( {
-              case (_, arc) => arc
+              case (_, arcs) => arcs
             })
             .flatten
             .toSet

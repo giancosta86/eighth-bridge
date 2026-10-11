@@ -8,7 +8,7 @@ import scala.language.implicitConversions
 trait Named {
   def name: String
 
-  def setName(value: String): this.type
+  def setName(name: String): this.type
 }
 
 

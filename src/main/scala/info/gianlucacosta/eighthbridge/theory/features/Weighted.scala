@@ -10,7 +10,7 @@ import scala.language.implicitConversions
 trait Weighted {
   def weight: Double
 
-  def setWeight(value: Double): this.type
+  def setWeight(weight: Double): this.type
 }
 
 

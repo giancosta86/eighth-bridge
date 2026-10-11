@@ -1,9 +1,15 @@
 package info.gianlucacosta.eighthbridge.theory
 
-import java.util.UUID
+import info.gianlucacosta.eighthbridge.theory.Entity.idGenerator
+
+object Entity {
+  private val idGenerator =
+    new IdGenerator()
+}
 
 trait Entity {
-  private final val id: UUID = UUID.randomUUID()
+  protected final val id: Int =
+    idGenerator.generate()
 
   final override def equals(obj: Any): Boolean =
     obj match {

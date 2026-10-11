@@ -23,7 +23,7 @@ case class DefaultVisualVertex(
     copy(styleClasses = value)
       .asInstanceOf[this.type]
 
-  def setName(value: String): this.type =
-    copy(name = value)
+  def setName(name: String): this.type =
+    copy(name = name)
       .asInstanceOf[this.type]
 }

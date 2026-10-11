@@ -19,8 +19,8 @@ case class DefaultVisualArc(
     copy(labelCenter = value)
       .asInstanceOf[this.type]
 
-  override def setName(value: String): DefaultVisualArc.this.type =
-    copy(name = value)
+  override def setName(name: String): DefaultVisualArc.this.type =
+    copy(name = name)
       .asInstanceOf[this.type]
 
   override def setInternalPoints(value: List[Point2D]): DefaultVisualArc.this.type =

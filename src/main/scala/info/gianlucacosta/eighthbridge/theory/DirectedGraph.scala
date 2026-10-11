@@ -7,6 +7,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
 
   protected val arcsByVertexPair: Map[(V, V), Set[A]]
 
+  //TODO! Can this be renamed to "copy"? Would the synthesized copy() method work?
   protected def graphCopy(
                            vertexes: Set[V] = vertexes,
                            arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
@@ -14,7 +15,8 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
 
   def addVertexes(vertexesToAdd: Set[V]): this.type =
     graphCopy(
-      vertexes = vertexes ++ vertexesToAdd
+      vertexes =
+        vertexes ++ vertexesToAdd
     )
 
   final def addVertexes(vertexesToAdd: V*): this.type =
@@ -22,7 +24,8 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
 
   final def addVertex(vertex: V): this.type =
     graphCopy(
-      vertexes = vertexes + vertex
+      vertexes =
+        vertexes + vertex
     )
 
   def updateVertex(updatedVertex: V): this.type =
@@ -50,9 +53,10 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       vertexes =
         vertexes -- vertexesToRemove,
 
-      arcsByVertexPair = arcsByVertexPair.filterKeys(
-        !vertexesToRemove.intersectsPair(_)
-      )
+      arcsByVertexPair =
+        arcsByVertexPair.filterKeys(
+          !vertexesToRemove.intersectsPair(_)
+        )
     )
 
   final def removeVertexes(vertexes: V*): this.type =
@@ -66,12 +70,12 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       sourceVertex -> targetVertex
 
     if (vertexes.containsPair(vertexPair)) {
-      val updatedArcs =
+      val updatedArcSet =
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
 
       graphCopy(
         arcsByVertexPair =
-          arcsByVertexPair + (vertexPair -> updatedArcs)
+          arcsByVertexPair + (vertexPair -> updatedArcSet)
       )
     } else
       this
@@ -99,12 +103,11 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       arcsByVertexPair =
         arcsByVertexPair
           .mapValues(
-          _ -- arcsToRemove
-        )
-          .filter {
-          case (_, arcSet) =>
+            _ -- arcsToRemove
+          )
+          .filter { case (_, arcSet) =>
             arcSet.nonEmpty
-        }
+          }
     )
 
   final def removeArcs(arcs: A*): this.type =
@@ -125,17 +128,19 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
     arcsByVertexPair
       .keySet
       .groupBy {
-        case (sourceVertex, _) => sourceVertex
+        case (sourceVertex, _) =>
+          sourceVertex
       }
       .mapValues(
         _.map { case (_, targetVertex ) =>
           targetVertex
-        })
+        }
+      )
 
   @transient
   protected lazy val exitingArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
-      .flattenByVertex { case (sourceVertex, _) =>
+      .flattenToSingleVertexKey { case (sourceVertex, _) =>
         sourceVertex
       }
 
@@ -144,14 +149,21 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
     arcsByVertexPair
       .keySet
       .groupBy {
-        case (_, targetVertex) => targetVertex
+        case (_, targetVertex) =>
+          targetVertex
       }
-      .mapValues(_.map { case (sourceVertex, _ ) => sourceVertex })
+      .mapValues(
+        _.map { case (sourceVertex, _ ) =>
+          sourceVertex
+        }
+      )
 
   @transient
   protected lazy val enteringArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
-      .flattenByVertex { case (_, targetVertex) => targetVertex }
+      .flattenToSingleVertexKey { case (_, targetVertex) =>
+        targetVertex
+      }
 
   @transient
   protected lazy val vertexPairsByArc: Map[A, (V, V)] =
@@ -205,7 +217,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
   final def getArcsBetween(sourceVertex: V, targetVertex: V): Set[A] =
     getArcsBetween(sourceVertex -> targetVertex)
 
-  def getEdgesBetween(oneVertex: V, anotherVertex: V): Set[A] = {
+  final def getEdgesBetween(oneVertex: V, anotherVertex: V): Set[A] = {
     getArcsBetween(oneVertex -> anotherVertex) ++
       getArcsBetween(anotherVertex -> oneVertex)
   }
@@ -236,7 +248,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
    */
   @transient
   lazy val leafVertexes: Set[V] =
-  vertexes -- exitingArcsByVertex.keySet
+    vertexes -- exitingArcsByVertex.keySet
 
   /**
    * Topology information for a vertex in a directed graph.
@@ -253,19 +265,17 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
    * <ul>
    * <li><b>cumulatedValue</b> - the value cumulated until now</li>
    * <li><b>vertex</b> - the current vertex</li>
-   * <li><b>vertexTopology</b> - a case class describing the vertex/arc connections for a given vertex</li>
+   * <li><b>vertexTopology</b> - describes the vertex/arc connections for the current vertex</li>
    * </ul>
    *
-   * The function must return <b>newCumulatedValue</b>, used by fold() as the return value or to call the next VertexFoldProcessor.
-   *
-   * @tparam T The type of the cumulated value
+   * The function must return the next iteration value for <b>fold()</b>.
    */
 
   type VertexFoldProcessor[T] = (T, V, VertexTopology) => T
 
 
   /**
-   * Takes an initial value and applies the given <b>vertexProcessor</b> to every vertex
+   * Takes an initial value and applies the given <b>VertexFoldProcessor</b> to every vertex
    * in the graph, starting from the root vertexes, with the following rules:
    *
    * <ul>
@@ -302,24 +312,30 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
        */
       case currentVertex :: fringeTail =>
         val currentPredecessors =
-          predecessorsByVertex.getOrElse(currentVertex, Set())
+          getPredecessors(currentVertex)
 
         /*
-         * If all the vertexes pointing to the current vertex have already been explored,
+         * If all the predecessors of the current vertex have already been explored,
          * such vertex conceptually behaves now like a root vertex and can be processed.
          */
         if (currentPredecessors.subsetOf(processedVertexes)) {
           val currentSuccessors =
-            successorsByVertex.getOrElse(currentVertex, Set())
+            getSuccessors(currentVertex)
 
-          val vertexTopology = VertexTopology(
-            predecessors = currentPredecessors,
-            enteringArcs =
-              enteringArcsByVertex.getOrElse(currentVertex, Set()),
-            exitingArcs =
-              exitingArcsByVertex.getOrElse(currentVertex, Set()),
-            successors = currentSuccessors
-          )
+          val vertexTopology =
+            VertexTopology(
+              predecessors =
+                currentPredecessors,
+
+              enteringArcs =
+                getEnteringArcs(currentVertex),
+
+              exitingArcs =
+                getExitingArcs(currentVertex),
+
+              successors =
+                currentSuccessors
+            )
 
           val newCumulatedValue =
             vertexFoldProcessor(
@@ -330,8 +346,8 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
 
           /**
            * The next step can occur, notifying that the current vertex has been processed
-           * in particular, the fringe, after losing the current node (as it's a tail),
-           * can now include all the node's successors, with no duplicates.
+           * in particular, the fringe tail, after losing the current node,
+           * can now include all the node's successors, except the ones already in the fringe.
            */
           fold(
             newCumulatedValue,
@@ -345,6 +361,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
         } else {
           /*
            * If the current vertex has at least a predecessor that was not already explored,
+           * which is the case when a vertex is the target of arcs from 2 or more distinct sources,
            * it must be removed from the fringe: it will be re-added later, after processing
            * one of its predecessors, as seen in the tail call above - provided the graph has no cycles.
            */
@@ -360,7 +377,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
         }
 
         /*
-         * When the fringe is empty, there is no more vertex that can be considered.
+         * When the fringe is empty, there are no more vertexes that can be considered.
          */
       case Nil =>
         /*
