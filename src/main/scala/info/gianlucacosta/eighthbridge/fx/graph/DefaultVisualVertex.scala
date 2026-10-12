@@ -11,15 +11,15 @@ case class DefaultVisualVertex(
                               ) extends VisualVertex with Named {
 
 
-  override def setCenter(center: Point2D): DefaultVisualVertex.this.type =
+  override def setCenter(center: Point2D): this.type =
     copy(center = center)
       .asInstanceOf[this.type]
 
-  override def setSelected(selected: Boolean): DefaultVisualVertex.this.type =
+  override def setSelected(selected: Boolean): this.type =
     copy(selected = selected)
       .asInstanceOf[this.type]
 
-  override def setStyleClasses(styleClasses: Set[String]): DefaultVisualVertex.this.type =
+  override def setStyleClasses(styleClasses: Set[String]): this.type =
     copy(styleClasses = styleClasses)
       .asInstanceOf[this.type]
 

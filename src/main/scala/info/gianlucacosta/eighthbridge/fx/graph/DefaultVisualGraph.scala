@@ -13,7 +13,7 @@ case class DefaultVisualGraph[V <: VisualVertex, A <: VisualArc] private(
   override protected def graphCopy(
                                     vertexes: Set[V],
                                     arcsByVertexPair: Map[(V, V), Set[A]]
-                                  ): DefaultVisualGraph.this.type =
+                                  ): this.type =
     copy(
       vertexes =
         vertexes,

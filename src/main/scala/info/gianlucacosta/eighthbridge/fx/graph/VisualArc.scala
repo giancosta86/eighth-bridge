@@ -7,7 +7,8 @@ import scalafx.geometry.Point2D
 /**
   * An arc for VisualGraph
   */
-trait VisualArc extends Arc {
+trait VisualArc
+  extends Arc with Named {
   def selected: Boolean
 
   def setSelected(selected: Boolean): this.type

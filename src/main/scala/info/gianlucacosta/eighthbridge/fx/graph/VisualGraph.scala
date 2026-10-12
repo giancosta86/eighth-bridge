@@ -4,10 +4,6 @@ import info.gianlucacosta.eighthbridge.theory.DirectedGraph
 
 /**
   * Graph dedicated to rendering within GraphCanvas.
-  *
-  * Since such a graph is designed to be interactively drawn by users, it is necessarily
-  * based on arc bindings - therefore, it's up to the controller to choose whether to draw it
-  * with edges instead of arcs.
   */
 trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A] {
   @transient
@@ -21,6 +17,11 @@ trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A]
 
 
   @transient
+  lazy val selectionEmpty: Boolean =
+    selectedVertexes.isEmpty && selectedArcs.isEmpty
+
+
+  @transient
   lazy val selectAll: this.type =
     setSelection(vertexes, arcs)
 
@@ -28,11 +29,6 @@ trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A]
   @transient
   lazy val deselectAll: this.type =
     setSelection(Set(), Set())
-
-
-  @transient
-  lazy val selectionEmpty: Boolean =
-    selectedVertexes.isEmpty && selectedArcs.isEmpty
 
 
   def setSelection(
