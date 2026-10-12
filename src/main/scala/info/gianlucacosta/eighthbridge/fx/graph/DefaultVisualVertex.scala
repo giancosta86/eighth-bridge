@@ -7,7 +7,8 @@ case class DefaultVisualVertex(
                               center: Point2D,
                               selected: Boolean,
                               styleClasses: Set[String],
-                              name: String
+                              name: String,
+                              protected val timestamp: Long = System.nanoTime()
                               ) extends VisualVertex with Named {
 
 
@@ -27,7 +28,7 @@ case class DefaultVisualVertex(
     copy(name = name)
       .asInstanceOf[this.type]
 
-  override def visualEquals(other: VisualVertex): Boolean =
-    name == other.asInstanceOf[DefaultVisualVertex].name &&
-      super.visualEquals(other)
+  override protected def setTimestamp(timestamp: Long): this.type =
+    copy(timestamp = timestamp)
+      .asInstanceOf[this.type]
 }

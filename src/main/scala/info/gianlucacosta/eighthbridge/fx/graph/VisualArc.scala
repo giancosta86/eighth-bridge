@@ -1,14 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.theory.Arc
-import info.gianlucacosta.eighthbridge.theory.features.Named
+import info.gianlucacosta.eighthbridge.theory.features.{Named, Timestamped}
 import scalafx.geometry.Point2D
 
 /**
   * An arc for VisualGraph
   */
 trait VisualArc
-  extends Arc with Named {
+  extends Arc with Named with Timestamped {
   def selected: Boolean
 
   def setSelected(selected: Boolean): this.type

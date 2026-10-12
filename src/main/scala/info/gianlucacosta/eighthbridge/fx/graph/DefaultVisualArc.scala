@@ -9,7 +9,8 @@ case class DefaultVisualArc(
                              internalPoints: List[ArcInternalPoint],
                              styleClasses: Set[String],
                              arrowEnd: Option[ArcArrowEnd],
-                             name: String
+                             name: String,
+                             protected val timestamp: Long = System.nanoTime()
 ) extends VisualArc {
   override def setSelected(selected: Boolean): this.type =
     copy(selected = selected)
@@ -33,5 +34,9 @@ case class DefaultVisualArc(
 
   override def setArrowEnd(arrowEnd: Option[ArcArrowEnd]): this.type =
     copy(arrowEnd = arrowEnd)
+      .asInstanceOf[this.type]
+
+  override protected def setTimestamp(timestamp: Long): this.type =
+    copy(timestamp = timestamp)
       .asInstanceOf[this.type]
 }
