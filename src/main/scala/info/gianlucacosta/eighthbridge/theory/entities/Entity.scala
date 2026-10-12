@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.theory
+package info.gianlucacosta.eighthbridge.theory.entities
 
-import info.gianlucacosta.eighthbridge.theory.Entity.idGenerator
+import Entity.idGenerator
 
 object Entity {
   private val idGenerator =
@@ -8,7 +8,7 @@ object Entity {
 }
 
 trait Entity {
-  protected final val id: Int =
+  protected final val id: EntityId =
     idGenerator.generate()
 
   final override def equals(obj: Any): Boolean =

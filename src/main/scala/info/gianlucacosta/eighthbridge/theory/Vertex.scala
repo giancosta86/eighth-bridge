@@ -1,5 +1,7 @@
 package info.gianlucacosta.eighthbridge.theory
 
+import info.gianlucacosta.eighthbridge.theory.entities.Entity
+
 trait Vertex extends Entity
 
 
