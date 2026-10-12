@@ -131,7 +131,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       .map(vertex => vertex.id -> vertex)
       .toMap
 
-  def getVertexById(id: EntityId): Some[V] =
+  def getVertexById(id: EntityId): Option[V] =
     vertexesById.get(id)
 
   @transient
