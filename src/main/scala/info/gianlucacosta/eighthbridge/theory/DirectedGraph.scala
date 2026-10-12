@@ -131,11 +131,17 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       .map(vertex => vertex.id -> vertex)
       .toMap
 
+  def getVertexById(id: EntityId): Some[V] =
+    vertexesById.get(id)
+
   @transient
   protected lazy val arcsById: Map[EntityId, A] =
     arcs
       .map(arc => arc.id -> arc)
       .toMap
+
+  def getArcById(id: EntityId): Some[A] =
+    arcsById.get(id)
 
 
   @transient
