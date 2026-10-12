@@ -26,4 +26,8 @@ case class DefaultVisualVertex(
   def setName(name: String): this.type =
     copy(name = name)
       .asInstanceOf[this.type]
+
+  override def visualEquals(other: VisualVertex): Boolean =
+    name == other.asInstanceOf[DefaultVisualVertex].name &&
+      super.visualEquals(other)
 }

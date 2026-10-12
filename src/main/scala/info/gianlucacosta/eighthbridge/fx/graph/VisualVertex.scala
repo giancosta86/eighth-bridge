@@ -18,4 +18,9 @@ trait VisualVertex extends Vertex {
   def styleClasses: Set[String]
 
   def setStyleClasses(styleClasses: Set[String]): this.type
+
+  def visualEquals(other: VisualVertex): Boolean =
+    center == other.center &&
+      selected == other.selected &&
+      styleClasses == other.styleClasses
 }

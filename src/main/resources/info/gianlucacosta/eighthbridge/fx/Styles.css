@@ -17,19 +17,20 @@
  * VERTEXES
  *----------*/
 
-.vertex > .body {
-    -fx-stroke: black;
-    -fx-stroke-width: 1;
-
-    -fx-fill: #fbf6ce;
-
-    -fx-arc-width: 16;
-    -fx-arc-height: 16;
-}
-
 .vertex > .label {
-    -fx-font: 14 Arial;
-    -fx-fill: black;
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+
+    -fx-text-fill: black;
+
+    -fx-background-color: #fbf6ce;
+
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+
+    -fx-padding: 5px;
+
+    -fx-border-radius: 16px;
 }
 
 
@@ -38,8 +39,9 @@
  *---------------------*/
 
 
-.vertex:selected > .body {
-    -fx-fill: #ffce5a;
+.vertex:selected > .label {
+    -fx-background-color: #ffce5a;
+
 }
 
 

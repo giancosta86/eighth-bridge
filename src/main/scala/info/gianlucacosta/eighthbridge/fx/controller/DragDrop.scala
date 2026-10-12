@@ -10,6 +10,9 @@ import info.gianlucacosta.helios.fx.Includes._
   */
 trait DragDrop extends GraphCanvasController {
   override def dragSelection(delta: Point2D): Option[AnyVisualGraph] = {
+    None
+    //TODO! Fix this!
+    /*
     Some(
       graph.mapVertexes(vertex =>
         if (vertex.selected)
@@ -17,7 +20,7 @@ trait DragDrop extends GraphCanvasController {
         else
           vertex
       )
-    )
+    )*/
   }
 
   override def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =

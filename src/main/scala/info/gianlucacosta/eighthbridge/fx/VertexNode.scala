@@ -1,47 +1,77 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
+import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
 
 import scala.collection.JavaConversions._
-import scalafx.beans.property.ReadOnlyDoubleProperty
+import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty}
 import scalafx.scene.Group
+import scalafx.scene.layout.Region
 
 /**
   * JavaFX node rendering a VisualVertex
   */
-abstract class VertexNode extends Group with GraphCanvasNode {
-  val vertex: VisualVertex
+abstract class VertexNode(initialVertex: VisualVertex)
+  extends Group with GraphCanvasNode {
+  private var currentVertex: VisualVertex =
+    initialVertex
 
-  private val currentVertex: SimpleObjectProperty[VisualVertex] =
-    new SimpleObjectProperty(vertex)
+  private val _centerX =
+    new SimpleDoubleProperty()
 
-  currentVertex.addListener((_: javafx.beans.Observable) => {
-    updateFx()
-  })
+  val centerX: ReadOnlyDoubleProperty =
+    _centerX
 
-  protected val centerX =
-    new SimpleDoubleProperty(vertex.center.x)
+  private val _centerY =
+    new SimpleDoubleProperty()
 
-  protected val centerY =
-    new SimpleDoubleProperty(vertex.center.y)
+  val centerY: ReadOnlyDoubleProperty =
+    _centerY
 
   def width: ReadOnlyDoubleProperty
-
   def height: ReadOnlyDoubleProperty
 
-  protected[fx] def updateFx(): Unit = {
-    styleClass.setAll("vertex")
-    styleClass.addAll(currentVertex().styleClasses)
+  private val _selected =
+    new SimpleBooleanProperty(false)
 
-    centerX() = currentVertex().center.x
-    centerY() = currentVertex().center.y
+  val selected: ReadOnlyBooleanProperty =
+    _selected
+
+  layoutX <==
+    _centerX - width / 2
+
+  layoutY <==
+    _centerY - height / 2
+
+
+  private[fx] def currentVertex_=(updatedVertex: VisualVertex): Unit = {
+    if (currentVertex.visualEquals(updatedVertex)) {
+      updateFxProps(updatedVertex)
+    }
+
+    this.currentVertex = updatedVertex
+  }
+
+  protected def updateFxProps(currentVertex: VisualVertex): Unit = {
+    _centerX() =
+      currentVertex.center.x
+
+    _centerY() =
+      currentVertex.center.y
+
+    _selected() =
+      currentVertex.selected
+
+    styleClass.setAll("vertex")
+    styleClass.addAll(currentVertex.styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      currentVertex().selected
+      currentVertex.selected
     )
   }
+
+  updateFxProps(initialVertex)
 }

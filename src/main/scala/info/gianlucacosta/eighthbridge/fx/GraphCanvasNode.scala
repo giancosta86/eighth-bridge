@@ -33,13 +33,10 @@ trait GraphCanvasNode extends Node {
   final def graph: AnyVisualGraph =
     graphCanvas.graph()
 
-  //TODO! Del this!
   /**
     * Simple way to update the graph contained the graph canvas - thus triggering the rendering process.
     * When migrating from older versions of EighthBridge, use this in lieu of notifyGraphChanged()
-    *
-    * @param newGraph
     */
-  /*final def graph_=(newGraph: G): Unit =
-    graphCanvas.graph() = newGraph*/
+  final def graph_=(newGraph: AnyVisualGraph): Unit =
+    graphCanvas.graph() = newGraph
 }
