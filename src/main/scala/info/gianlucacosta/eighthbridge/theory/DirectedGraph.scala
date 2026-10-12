@@ -1,5 +1,7 @@
 package info.gianlucacosta.eighthbridge.theory
 
+import info.gianlucacosta.eighthbridge.theory.entities.EntityId
+
 import scala.annotation.tailrec
 
 trait DirectedGraph[V <: Vertex, A <: Arc] {
@@ -122,6 +124,19 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       .values
       .flatten
       .toSet
+
+  @transient
+  protected lazy val vertexesById: Map[EntityId, V] =
+    vertexes
+      .map(vertex => vertex.id -> vertex)
+      .toMap
+
+  @transient
+  protected lazy val arcsById: Map[EntityId, A] =
+    arcs
+      .map(arc => arc.id -> arc)
+      .toMap
+
 
   @transient
   protected lazy val successorsByVertex: Map[V, Set[V]] =

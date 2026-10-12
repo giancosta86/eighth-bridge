@@ -8,7 +8,7 @@ object Entity {
 }
 
 trait Entity {
-  protected final val id: EntityId =
+  final val id: EntityId =
     idGenerator.generate()
 
   final override def equals(obj: Any): Boolean =
