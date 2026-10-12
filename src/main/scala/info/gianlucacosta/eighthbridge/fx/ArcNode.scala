@@ -11,23 +11,14 @@ import scalafx.scene.Group
 /**
   * JavaFX node rendering a VisualArc
   */
-abstract class ArcNode(initialArc: VisualArc) extends Group with GraphCanvasNode {
-  val arc: VisualArc
-
-  val currentArc: SimpleObjectProperty[VisualArc] =
-    new SimpleObjectProperty(arc)
-
-  currentArc.addListener((_: javafx.beans.Observable) => {
-    updateFx()
-  })
-
-  protected[fx] def updateFx(): Unit = {
+abstract class ArcNode extends Group with GraphCanvasNode {
+  protected[fx] def updateFx(arc: VisualArc): Unit = {
     styleClass.setAll("arc")
-    styleClass.addAll(currentArc().styleClasses)
+    styleClass.addAll(arc.styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      currentArc().selected
+      arc.selected
     )
   }
 }

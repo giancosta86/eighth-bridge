@@ -122,6 +122,8 @@ class GraphCanvas(
      * First of all, we need to update the map of vertex nodes,
      * creating new vertex nodes as required.
      */
+
+    /*
     val (vertexNodesToKeep, vertexNodesToRemove) =
       _vertexNodesByVertex
         .values
@@ -155,11 +157,13 @@ class GraphCanvas(
           vertexNode.vertex -> vertexNode
         )
         .toMap
-
+*/
     /*
      * Then, we need to repeat the same process to update
      * the pool of arc nodes.
      */
+
+    /*
     val originalArcNodes =
       _arcNodesByArc
         .values
@@ -202,27 +206,34 @@ class GraphCanvas(
           arcNode.arc -> arcNode
         ).
         toMap
-
+*/
     /*
      * Now, we need to add the new nodes to the canvas.
      */
+
+    /*
     brandNewArcNodes.foreach((node: Node) => children.add(node))
 
     brandNewVertexNodes.foreach((node: Node) => children.add(node))
+*/
 
     /*
      * Right after appending the new nodes, we need to remove stale nodes.
      */
+
+    /*
     arcNodesToRemove
       .foreach(children.remove)
 
     vertexNodesToRemove
       .foreach(children.remove)
-
+*/
 
     /*
      * Finally, we are going to ask the controller to computer the new dimension.
      */
+
+    /*
     val newDimension =
       controller.canvasDimension
 
@@ -230,9 +241,10 @@ class GraphCanvas(
       newDimension.width,
       newDimension.height
     )
+    */
   }
 
-
+  /*
   handleEvent(KeyEvent.KeyPressed) {
     (keyEvent: KeyEvent) => {
       keyEvent.code match {
@@ -354,5 +366,5 @@ class GraphCanvas(
           false
       }
     }
-  }
+  }*/
 }

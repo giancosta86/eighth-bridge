@@ -13,11 +13,8 @@ import scalafx.scene.layout.Region
 /**
   * JavaFX node rendering a VisualVertex
   */
-abstract class VertexNode(initialVertex: VisualVertex)
+abstract class VertexNode
   extends Group with GraphCanvasNode {
-  private var currentVertex: VisualVertex =
-    initialVertex
-
   private val _centerX =
     new SimpleDoubleProperty()
 
@@ -45,33 +42,22 @@ abstract class VertexNode(initialVertex: VisualVertex)
   layoutY <==
     _centerY - height / 2
 
-
-  private[fx] def currentVertex_=(updatedVertex: VisualVertex): Unit = {
-    if (currentVertex.visualEquals(updatedVertex)) {
-      updateFxProps(updatedVertex)
-    }
-
-    this.currentVertex = updatedVertex
-  }
-
-  protected def updateFxProps(currentVertex: VisualVertex): Unit = {
+  protected[fx] def updateFxProps(vertex: VisualVertex): Unit = {
     _centerX() =
-      currentVertex.center.x
+      vertex.center.x
 
     _centerY() =
-      currentVertex.center.y
+      vertex.center.y
 
     _selected() =
-      currentVertex.selected
+      vertex.selected
 
     styleClass.setAll("vertex")
-    styleClass.addAll(currentVertex.styleClasses)
+    styleClass.addAll(vertex.styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      currentVertex.selected
+      vertex.selected
     )
   }
-
-  updateFxProps(initialVertex)
 }

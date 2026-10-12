@@ -114,6 +114,7 @@ class DefaultBackgroundNode(val graphCanvas: GraphCanvas)
     }
   }
 
+  /*
 
   handleEvent(MouseEvent.MouseDragged) {
     (mouseEvent: MouseEvent) => {
@@ -167,4 +168,5 @@ class DefaultBackgroundNode(val graphCanvas: GraphCanvas)
       }
     }
   }
+  */
 }

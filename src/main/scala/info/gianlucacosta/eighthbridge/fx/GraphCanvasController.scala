@@ -23,6 +23,15 @@ abstract class GraphCanvasController {
   protected final def graph: AnyVisualGraph =
     graphCanvas.graph()
 
+  //
+  // NEW FUNCTIONS
+  //
+
+
+  //
+  // ANCIENT FUNCTIONS
+  //
+
   //TODO! Turn this into a function of VisualArc, that the 2 specific trait will implement by returning their related constants!
   def renderDirected: Boolean
 
@@ -30,7 +39,7 @@ abstract class GraphCanvasController {
     new DefaultBackgroundNode(graphCanvas)
 
   def createVertexNode(vertex: VisualVertex): VertexNode =
-    new DefaultVertexNode(graphCanvas, vertex.asInstanceOf[VisualVertex with Named])
+    new DefaultVertexNode(graphCanvas)
 
   def createArcNode(arc: VisualArc): ArcNode =
     new DefaultArcNode(graphCanvas, arc)

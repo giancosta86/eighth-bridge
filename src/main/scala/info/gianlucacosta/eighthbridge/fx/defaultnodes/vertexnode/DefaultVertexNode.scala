@@ -16,11 +16,8 @@ import scala.collection.JavaConversions._
 /**
   * Default, interactive implementation of VertexNode
   */
-class DefaultVertexNode(
-                              val graphCanvas: GraphCanvas,
-                              initialVertex: VisualVertex with Named
- )
-  extends VertexNode(initialVertex) {
+class DefaultVertexNode(val graphCanvas: GraphCanvas)
+  extends VertexNode {
 
   private val _name =
     new SimpleStringProperty()
@@ -42,10 +39,10 @@ class DefaultVertexNode(
   override val height: ReadOnlyDoubleProperty =
     label.height
 
-  override protected def updateFxProps(currentVertex: VisualVertex): Unit = {
-    super.updateFxProps(currentVertex)
+  override protected[fx] def updateFxProps(vertex: VisualVertex): Unit = {
+    super.updateFxProps(vertex)
     _name() =
-      currentVertex.asInstanceOf[Named].name
+      vertex.asInstanceOf[Named].name
   }
 
   /*
