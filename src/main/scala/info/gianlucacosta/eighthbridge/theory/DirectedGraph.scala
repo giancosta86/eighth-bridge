@@ -140,7 +140,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       .map(arc => arc.id -> arc)
       .toMap
 
-  def getArcById(id: EntityId): Some[A] =
+  def getArcById(id: EntityId): Option[A] =
     arcsById.get(id)
 
 
