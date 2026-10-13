@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.vertexnodes.named
 
 import scalafx.scene.control.Label
 
-class VertexLabel(vertexNode: NamedVertexNode)
+private class VertexLabel(vertexNode: NamedVertexNode)
   extends Label {
   styleClass.add("label")
 

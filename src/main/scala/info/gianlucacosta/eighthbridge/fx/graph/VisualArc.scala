@@ -17,9 +17,9 @@ trait VisualArc
 
   def setCustomLabelCenter(customLabelCenter: Option[Point2D]): this.type
 
-  def internalPoints: List[ArcInternalPoint]
+  def handlePoints: List[ArcHandlePoint]
 
-  def setInternalPoints(internalPoints: List[ArcInternalPoint]): this.type
+  def setHandlePoints(internalPoints: List[ArcHandlePoint]): this.type
 
   def styleClasses: Set[String]
 

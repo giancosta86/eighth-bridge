@@ -6,35 +6,65 @@ import scalafx.geometry.Point2D
 case class DefaultVisualArc(
                              selected: Boolean,
                              customLabelCenter: Option[Point2D],
-                             internalPoints: List[ArcInternalPoint],
+                             handlePoints: List[ArcHandlePoint],
                              styleClasses: Set[String],
                              arrowEnd: Option[ArcArrowEnd],
                              name: String,
                              protected val timestamp: Long = System.nanoTime()
 ) extends VisualArc {
-  override def setSelected(selected: Boolean): this.type =
-    copy(selected = selected)
-      .asInstanceOf[this.type]
+  override def setSelected(selected: Boolean): this.type = {
+    if (selected != this.selected)
+      copy(selected = selected)
+        .updateTimestamp()
+        .asInstanceOf[this.type]
+    else
+      this
+  }
 
-  override def setCustomLabelCenter(customLabelCenter: Option[Point2D]): this.type =
-    copy(customLabelCenter = customLabelCenter)
-      .asInstanceOf[this.type]
+  override def setCustomLabelCenter(customLabelCenter: Option[Point2D]): this.type = {
+    if (customLabelCenter != this.customLabelCenter)
+      copy(customLabelCenter = customLabelCenter)
+        .updateTimestamp()
+        .asInstanceOf[this.type]
+    else
+      this
+  }
 
-  override def setName(name: String): this.type =
-    copy(name = name)
-      .asInstanceOf[this.type]
+  override def setName(name: String): this.type = {
+    if (name != this.name)
+      copy(name = name)
+        .updateTimestamp()
+        .asInstanceOf[this.type]
+    else
+      this
+  }
 
-  override def setInternalPoints(value: List[ArcInternalPoint]): this.type =
-    copy(internalPoints = value)
-      .asInstanceOf[this.type]
+  override def setHandlePoints(handlePoints: List[ArcHandlePoint]): this.type = {
+    if (handlePoints != this.handlePoints)
+      copy(handlePoints = handlePoints)
+        .updateTimestamp()
+        .asInstanceOf[this.type]
+    else
+      this
+  }
 
-  override def setStyleclasses(styleClasses: Set[String]): this.type =
-    copy(styleClasses = styleClasses)
-      .asInstanceOf[this.type]
+  override def setStyleclasses(styleClasses: Set[String]): this.type = {
+    if (styleClasses != this.styleClasses)
+      copy(styleClasses = styleClasses)
+        .updateTimestamp()
+        .asInstanceOf[this.type]
+    else
+      this
+  }
 
-  override def setArrowEnd(arrowEnd: Option[ArcArrowEnd]): this.type =
-    copy(arrowEnd = arrowEnd)
-      .asInstanceOf[this.type]
+  override def setArrowEnd(arrowEnd: Option[ArcArrowEnd]): this.type = {
+    if (arrowEnd != this.arrowEnd)
+      copy(arrowEnd = arrowEnd)
+        .updateTimestamp()
+        .asInstanceOf[this.type]
+    else
+      this
+  }
 
   override protected def setTimestamp(timestamp: Long): this.type =
     copy(timestamp = timestamp)

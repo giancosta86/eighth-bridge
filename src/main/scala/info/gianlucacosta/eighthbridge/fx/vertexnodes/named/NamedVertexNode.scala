@@ -19,7 +19,7 @@ class NamedVertexNode(val graphCanvas: GraphCanvas)
 
   private var dragAnchor: Point2D = _
 
-  protected val label =
+  private val label =
     new VertexLabel(this)
 
   children.add(label)
