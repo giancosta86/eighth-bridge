@@ -8,54 +8,54 @@ object ArcArrowEnd {
     length = 15
   )
 
-  def getIntersection(vertexCenter: Point2D, vertexSize: Dimension2D)(arrowSource: Point2D): Option[Point2D] = {
+  def getIntersection(targetCenter: Point2D, targetSize: Dimension2D)(source: Point2D): Option[Point2D] = {
     val arrowSourceWithinVertexRectangle =
-      vertexCenter.x - vertexSize.width/2 < arrowSource.x &&
-        arrowSource.x < vertexCenter.x + vertexSize.width/2 &&
-        vertexCenter.y - vertexSize.height/2 < arrowSource.y &&
-        arrowSource.y < vertexCenter.y + vertexSize.height/2
+      targetCenter.x - targetSize.width/2 < source.x &&
+        source.x < targetCenter.x + targetSize.width/2 &&
+        targetCenter.y - targetSize.height/2 < source.y &&
+        source.y < targetCenter.y + targetSize.height/2
 
     if (arrowSourceWithinVertexRectangle)
       None
     else {
       val deltaX =
-        vertexCenter.x - arrowSource.x
+        targetCenter.x - source.x
 
       if (deltaX == 0) {
         val sy =
-          Math.signum(arrowSource.y - vertexCenter.y)
+          Math.signum(source.y - targetCenter.y)
 
         Some(
           new Point2D(
-            vertexCenter.x,
+            targetCenter.x,
 
-            vertexCenter.y + sy * vertexSize.height / 2
+            targetCenter.y + sy * targetSize.height / 2
           )
         )
       } else {
         val angularCoefficient =
-          (arrowSource.y - vertexCenter.y) / deltaX
+          (source.y - targetCenter.y) / deltaX
 
-        if (Math.abs(arrowSource.y / arrowSource.x) <= vertexSize.height / vertexSize.width) {
+        if (Math.abs(angularCoefficient) <= targetSize.height / targetSize.width) {
           val sx =
-            Math.signum(arrowSource.x - vertexCenter.x)
+            Math.signum(source.x - targetCenter.x)
 
           Some(
             new Point2D(
-              vertexCenter.x + sx * vertexSize.width / 2,
+              targetCenter.x + sx * targetSize.width / 2,
 
-              vertexCenter.y - sx * angularCoefficient * vertexSize.width / 2
+              targetCenter.y - sx * angularCoefficient * targetSize.width / 2
             )
           )
         } else {
           val sy =
-            Math.signum(arrowSource.y - vertexCenter.y)
+            Math.signum(source.y - targetCenter.y)
 
           Some(
             new Point2D(
-              vertexCenter.x - sy * vertexSize.height / (2 * angularCoefficient),
+              targetCenter.x - sy * targetSize.height / (2 * angularCoefficient),
 
-              vertexCenter.y + sy * vertexSize.height / 2
+              targetCenter.y + sy * targetSize.height / 2
             )
           )
         }

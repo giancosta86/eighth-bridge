@@ -8,7 +8,7 @@ case class NamedVisualVertex(
                               selected: Boolean,
                               styleClasses: Set[String],
                               name: String,
-                              protected val timestamp: Long = System.nanoTime()
+                              protected val timestamp: Long
                               ) extends VisualVertex with Named {
 
 

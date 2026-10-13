@@ -19,7 +19,7 @@ trait VisualArc
 
   def handlePoints: List[ArcHandlePoint]
 
-  def setHandlePoints(internalPoints: List[ArcHandlePoint]): this.type
+  def setHandlePoints(handlePoints: List[ArcHandlePoint]): this.type
 
   def styleClasses: Set[String]
 

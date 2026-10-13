@@ -10,7 +10,7 @@ case class DefaultVisualArc(
                              styleClasses: Set[String],
                              arrowEnd: Option[ArcArrowEnd],
                              name: String,
-                             protected val timestamp: Long = System.nanoTime()
+                             protected val timestamp: Long
 ) extends VisualArc {
   override def setSelected(selected: Boolean): this.type = {
     if (selected != this.selected)

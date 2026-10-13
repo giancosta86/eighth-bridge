@@ -31,16 +31,10 @@ abstract class VertexNode
   def height: ReadOnlyDoubleProperty
 
   private val _selected =
-    new SimpleBooleanProperty(false)
+    new SimpleBooleanProperty()
 
   val selected: ReadOnlyBooleanProperty =
     _selected
-
-  layoutX <==
-    _centerX - width / 2
-
-  layoutY <==
-    _centerY - height / 2
 
   protected[fx] def updateFxProps(vertex: VisualVertex): Unit = {
     _centerX() =
