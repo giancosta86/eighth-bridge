@@ -1,6 +1,9 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.theory.DirectedGraph
+import scalafx.geometry.Point2D
+import scalafx.Includes._
+import info.gianlucacosta.helios.fx.Includes._
 
 /**
   * Graph dedicated to rendering within GraphCanvas.
@@ -52,5 +55,16 @@ trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A]
     this
       .updateVertexes(updatedVertexes)
       .updateArcs(updatedArcs)
+  }
+
+  def moveSelectedVertexesBy(delta: Point2D): this.type = {
+    val movedVertexes: Set[V] =
+      selectedVertexes.map(vertex =>
+        vertex.setCenter(
+          vertex.center + delta
+        )
+      )
+
+    updateVertexes(movedVertexes)
   }
 }
