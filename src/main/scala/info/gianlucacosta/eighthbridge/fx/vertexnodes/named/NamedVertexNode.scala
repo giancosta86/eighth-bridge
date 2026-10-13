@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.defaultnodes.vertexnode
+package info.gianlucacosta.eighthbridge.fx.vertexnodes.named
 
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode}
@@ -7,16 +7,8 @@ import javafx.beans.property.SimpleStringProperty
 import scalafx.Includes._
 import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyStringProperty}
 import scalafx.geometry.Point2D
-import scalafx.scene.control.Label
-import scalafx.scene.shape.Rectangle
-import scalafx.scene.text.TextAlignment
 
-import scala.collection.JavaConversions._
-
-/**
-  * Default, interactive implementation of VertexNode
-  */
-class DefaultVertexNode(val graphCanvas: GraphCanvas)
+class NamedVertexNode(val graphCanvas: GraphCanvas)
   extends VertexNode {
 
   private val _name =

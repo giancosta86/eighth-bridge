@@ -1,9 +1,8 @@
-package info.gianlucacosta.eighthbridge.fx.defaultnodes.vertexnode
+package info.gianlucacosta.eighthbridge.fx.vertexnodes.named
 
 import scalafx.scene.control.Label
-import scalafx.scene.text.TextAlignment
 
-class VertexLabel(vertexNode: DefaultVertexNode)
+class VertexLabel(vertexNode: NamedVertexNode)
   extends Label {
   styleClass.add("label")
 
