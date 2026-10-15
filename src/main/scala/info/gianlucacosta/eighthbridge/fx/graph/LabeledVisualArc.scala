@@ -1,17 +1,18 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
+import info.gianlucacosta.eighthbridge.fx.graph.features.Labeled
 import info.gianlucacosta.eighthbridge.theory.features.Named
 import scalafx.geometry.Point2D
 
-case class DefaultVisualArc(
+case class LabeledVisualArc(
                              selected: Boolean,
-                             customLabelCenter: Option[Point2D],
+                             labelCenter: Option[Point2D],
                              handlePoints: List[ArcHandlePoint],
                              styleClasses: Set[String],
                              arrowEnd: Option[ArcArrowEnd],
-                             name: String,
+                             label: String,
                              protected val timestamp: Long
-) extends VisualArc {
+) extends VisualArc with Labeled {
   override def setSelected(selected: Boolean): this.type = {
     if (selected != this.selected)
       copy(selected = selected)
@@ -21,18 +22,18 @@ case class DefaultVisualArc(
       this
   }
 
-  override def setCustomLabelCenter(customLabelCenter: Option[Point2D]): this.type = {
-    if (customLabelCenter != this.customLabelCenter)
-      copy(customLabelCenter = customLabelCenter)
+  override def setLabelCenter(labelCenter: Option[Point2D]): this.type = {
+    if (labelCenter != this.labelCenter)
+      copy(labelCenter = labelCenter)
         .updateTimestamp()
         .asInstanceOf[this.type]
     else
       this
   }
 
-  override def setName(name: String): this.type = {
-    if (name != this.name)
-      copy(name = name)
+  override def setLabel(label: String): this.type = {
+    if (label != this.label)
+      copy(label = label)
         .updateTimestamp()
         .asInstanceOf[this.type]
     else

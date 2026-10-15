@@ -1,19 +1,9 @@
-package info.gianlucacosta.eighthbridge.fx
+package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
-import info.gianlucacosta.helios.fx.Includes._
-import info.gianlucacosta.helios.fx.geometry.{DiagonalBounds, Segment}
-import scalafx.Includes._
-import scalafx.geometry.{Dimension2D, Point2D, VPos}
-import scalafx.scene.Group
-import scalafx.scene.input.{MouseButton, MouseEvent}
-import scalafx.scene.shape._
-import scalafx.scene.text.Text
+import info.gianlucacosta.eighthbridge.fx.graph.VisualArc
+import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
 
-import java.util.UUID
-import scala.collection.JavaConversions._
-
-case class DefaultArcNode(
+case class LabeledArcNode(
                            graphCanvas: GraphCanvas,
                            arc: VisualArc
                                                    )

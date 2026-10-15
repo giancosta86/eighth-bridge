@@ -23,12 +23,15 @@ trait DragDrop extends GraphCanvasController {
     )*/
   }
 
-  override def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
+  override def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] = {
+    /*
     Some(
       graph.updateArc(
-        arc.setCustomLabelCenter(Some(
+        arc.setLabelCenter(Some(
           updatedCenter
         ))
       )
-    )
+    )*/
+    None
+  }
 }

@@ -1,5 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.named.NamedVertexNode
 import info.gianlucacosta.eighthbridge.theory.features.Named
@@ -42,7 +43,7 @@ abstract class GraphCanvasController {
     new NamedVertexNode(graphCanvas)
 
   def createArcNode(arc: VisualArc): ArcNode =
-    new DefaultArcNode(graphCanvas, arc)
+    new LabeledArcNode(graphCanvas, arc)
 
   def deleteSelection(): Option[AnyVisualGraph] =
     None
