@@ -8,7 +8,32 @@ import info.gianlucacosta.eighthbridge.theory.DirectedGraph
 /**
   * Graph dedicated to rendering within GraphCanvas.
   */
-trait VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A] {
+class VisualGraph[V <: VisualVertex, A <: VisualArc] extends DirectedGraph[V, A] with Cloneable {
+  private var _vertexes: Set[V] =
+    Set[V]()
+
+  def vertexes: Set[V] =
+    _vertexes
+
+  private var _arcsByVertexPair: Map[(V, V), Set[A]] =
+    Map[(V, V), Set[A]]()
+
+  def arcsByVertexPair: Map[(V, V), Set[A]] =
+    _arcsByVertexPair
+
+  override protected def graphCopy(vertexes: Set[V], arcsByVertexPair: Map[(V, V), Set[A]]): this.type = {
+    val result: this.type =
+      clone().asInstanceOf[this.type]
+
+    result._vertexes =
+      vertexes
+
+    result._arcsByVertexPair =
+      arcsByVertexPair
+
+    result
+  }
+
   @transient
   lazy val selectedVertexes: Set[V] =
     vertexes.filter(vertex => vertex.selected)
