@@ -13,22 +13,22 @@ trait Named {
 
 
 object Named {
-  implicit class NamedIterableExtensions[T <: Named](iterable: Iterable[T]) {
+  implicit class NamedIterableExtensions[T <: Named](self: Iterable[T]) {
     val sortedByName: List[T] = {
-      iterable
+      self
         .toList
         .sortBy(_.name)
     }
   }
 
-  implicit class NamedPairExtensions[T <: Named, U <: Named](pair: (T, U)) {
+  implicit class NamedPairExtensions[T <: Named, U <: Named](self: (T, U)) {
     val namePair: (String, String) =
-      (pair._1.name, pair._2.name)
+      (self._1.name, self._2.name)
 
     val sortedNamePair: (String, String) =
-      if (pair._1.name <= pair._2.name)
-        (pair._1.name, pair._2.name)
+      if (self._1.name <= self._2.name)
+        (self._1.name, self._2.name)
       else
-        (pair._2.name, pair._1.name)
+        (self._2.name, self._1.name)
   }
 }

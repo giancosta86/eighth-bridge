@@ -5,26 +5,26 @@ import info.gianlucacosta.eighthbridge.theory.entities.Entity
 trait Arc extends Entity
 
 object Arc {
-  implicit class ArcExtensions[A <: Arc](arc: A) {
+  implicit class ArcExtensions[A <: Arc](self: A) {
     def update(updatedArc: A): A =
-      if (arc == updatedArc)
+      if (self == updatedArc)
         updatedArc
       else
-        arc
+        self
   }
 
-  implicit class ArcSetExtensions[A <: Arc](arcSet: Set[A]) {
+  implicit class ArcSetExtensions[A <: Arc](self: Set[A]) {
     def updateArc(updatedArc: A): Set[A] =
-      arcSet.map(_.update(updatedArc))
+      self.map(_.update(updatedArc))
   }
 
   implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Arc](
-                                                                         thisMap: Map[(V, V), Set[A]]
+                                                                       self: Map[(V, V), Set[A]]
                                                                        ) {
     def flattenToSingleVertexKey(
                                   vertexSelector: ((V, V)) => V
                                 ): Map[V, Set[A]] =
-      thisMap
+      self
         .view
         .groupBy { case (vertexPair, _) =>
           vertexSelector(vertexPair)

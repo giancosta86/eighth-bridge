@@ -15,22 +15,22 @@ trait Timestamped {
 }
 
 object Timestamped {
-  implicit class TimestampedGraphExtensions[V <: Vertex with Timestamped, A <: Arc with Timestamped](graph: DirectedGraph[V, A]) {
+  implicit class TimestampedGraphExtensions[V <: Vertex with Timestamped, A <: Arc with Timestamped](self: DirectedGraph[V, A]) {
     def getDiffSince(referenceGraph: DirectedGraph[V, A]): TimestampedGraphDiff[V, A] = {
       val addedVertexes =
-        graph.vertexes -- referenceGraph.vertexes
+        self.vertexes -- referenceGraph.vertexes
 
       val addedArcs =
-        graph.arcs -- referenceGraph.arcs
+        self.arcs -- referenceGraph.arcs
 
       val removedVertexes =
-        referenceGraph.vertexes -- graph.vertexes
+        referenceGraph.vertexes -- self.vertexes
 
       val removedArcs =
-        referenceGraph.arcs -- graph.arcs
+        referenceGraph.arcs -- self.arcs
 
       val keptVertexes =
-        graph.vertexes -- addedVertexes
+        self.vertexes -- addedVertexes
 
       val updatedVertexes =
         keptVertexes
@@ -42,7 +42,7 @@ object Timestamped {
           })
 
       val keptArcs =
-        graph.arcs -- addedArcs
+        self.arcs -- addedArcs
 
       val updatedArcs =
         keptArcs

@@ -6,30 +6,30 @@ trait Vertex extends Entity
 
 
 object Vertex {
-  implicit class VertexExtensions[V <: Vertex](vertex: V) {
+  implicit class VertexExtensions[V <: Vertex](self: V) {
     def update(updatedVertex: V): V =
-      if (vertex == updatedVertex)
+      if (self == updatedVertex)
         updatedVertex
       else
-        vertex
+        self
   }
 
-  implicit class VertexSetExtensions[V <: Vertex](vertexSet: Set[V]) {
+  implicit class VertexSetExtensions[V <: Vertex](self: Set[V]) {
     def updateVertex(updatedVertex: V): Set[V] =
-      vertexSet.map(_.update(updatedVertex))
+      self.map(_.update(updatedVertex))
 
     def containsPair(vertexPair: (V, V)): Boolean =
-      vertexSet.contains(vertexPair._1) && (vertexSet.contains(vertexPair._2))
+      self.contains(vertexPair._1) && (self.contains(vertexPair._2))
 
     def intersectsPair(vertexPair: (V, V)): Boolean =
-      vertexSet.contains(vertexPair._1) || vertexSet.contains(vertexPair._2)
+      self.contains(vertexPair._1) || self.contains(vertexPair._2)
   }
 
-  implicit class VertexPairExtensions[V <: Vertex](vertexPair: (V, V)) {
+  implicit class VertexPairExtensions[V <: Vertex](self: (V, V)) {
     def updateVertex(updatedVertex: V): (V, V) =
       (
-        vertexPair._1.update(updatedVertex),
-        vertexPair._2.update(updatedVertex)
+        self._1.update(updatedVertex),
+        self._2.update(updatedVertex)
       )
   }
 }

@@ -15,9 +15,9 @@ trait Weighted {
 
 
 object Weighted {
-  implicit class WeightedIterableExtensions[T <: Weighted](iterable: Iterable[T]) {
+  implicit class WeightedIterableExtensions[T <: Weighted](self: Iterable[T]) {
     val sortedByWeight: List[T] = {
-      iterable
+      self
         .toList
         .sortBy(_.weight)
     }
