@@ -5,11 +5,10 @@ import info.gianlucacosta.eighthbridge.theory.entities.EntityId
 import scala.annotation.tailrec
 
 trait DirectedGraph[V <: Vertex, A <: Arc] {
-  def vertexes: Set[V]
+  val vertexes: Set[V]
 
-  protected def arcsByVertexPair: Map[(V, V), Set[A]]
+  protected val arcsByVertexPair: Map[(V, V), Set[A]]
 
-  //TODO! Can this be renamed to "copy"? Would the synthesized copy() method work?
   protected def graphCopy(
                            vertexes: Set[V] = vertexes,
                            arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
