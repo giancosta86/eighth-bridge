@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.theory.features.TimestampedGraphDiff
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
@@ -25,7 +25,7 @@ import scalafx.scene.shape.Rectangle
   */
 class GraphCanvas(
                    val controller: GraphCanvasController,
-                   initialGraph: AnyVisualGraph
+                   initialGraph: VisualGraph
                  ) extends Pane {
   //TODO! Perhaps, find another way to handle this null
   require(controller.graphCanvas == null, "The controller must not already belong to a graph!")
@@ -34,7 +34,7 @@ class GraphCanvas(
   styleClass.add("graphCanvas")
 
   val graph =
-    new SimpleObjectProperty[AnyVisualGraph](initialGraph)
+    new SimpleObjectProperty[VisualGraph](initialGraph)
 
   graph.onChange { (_, oldValue, newValue) =>
     val graphDiff =
@@ -131,7 +131,7 @@ class GraphCanvas(
     new TimestampedGraphDiff[VisualVertex, VisualArc]()
   )
 
-  private def render(newGraph: AnyVisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
+  private def render(newGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
     val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       graphDiff.addedVertexes.map(_ -> {
           val vertexNode =

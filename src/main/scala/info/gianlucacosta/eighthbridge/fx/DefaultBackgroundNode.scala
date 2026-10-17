@@ -23,7 +23,7 @@ object DefaultBackgroundNode {
   */
 class DefaultBackgroundNode
   extends BackgroundNode {
-
+  /*
   styleClass.add("graph")
 
   private var dragAnchor: Point2D = _
@@ -112,7 +112,7 @@ class DefaultBackgroundNode
       ()
     }
   }
-
+*/
   /*
 
   handleEvent(MouseEvent.MouseDragged) {

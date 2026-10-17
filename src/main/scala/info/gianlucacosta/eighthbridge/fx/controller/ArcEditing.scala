@@ -1,11 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualArc, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 
 trait ArcEditing extends GraphCanvasController {
-  override def editArc(arc: VisualArc): Option[AnyVisualGraph] = {
+  override def editArc(arc: VisualArc): Option[VisualGraph] = {
     while (true) {
       try {
         return doEditArc(arc).map(updatedArc =>

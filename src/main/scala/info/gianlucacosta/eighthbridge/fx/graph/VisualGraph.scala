@@ -7,13 +7,13 @@ import info.gianlucacosta.eighthbridge.theory.DirectedGraph
 /**
   * Graph dedicated to rendering within GraphCanvas.
   */
-case class VisualGraph[V <: VisualVertex, A <: VisualArc](
-                                                      vertexes: Set[V] =
-                                                        Set[V](),
-                                                      protected val arcsByVertexPair: Map[(V, V), Set[A]] =
-                                                        Map[(V, V), Set[A]]()
-) extends DirectedGraph[V, A] {
-  override protected def graphCopy(vertexes: Set[V], arcsByVertexPair: Map[(V, V), Set[A]]): this.type =
+case class VisualGraph(
+                                                      vertexes: Set[VisualVertex] =
+                                                        Set[VisualVertex](),
+                                                      protected val arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]] =
+                                                        Map[(VisualVertex, VisualVertex), Set[VisualArc]]()
+) extends DirectedGraph[VisualVertex, VisualArc] {
+  override protected def graphCopy(vertexes: Set[VisualVertex], arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]]): this.type =
     copy(
       vertexes = vertexes,
 
@@ -21,12 +21,12 @@ case class VisualGraph[V <: VisualVertex, A <: VisualArc](
     ).asInstanceOf[this.type]
 
   @transient
-  lazy val selectedVertexes: Set[V] =
+  lazy val selectedVertexes: Set[VisualVertex] =
     vertexes.filter(vertex => vertex.selected)
 
 
   @transient
-  lazy val selectedArcs: Set[A] =
+  lazy val selectedArcs: Set[VisualArc] =
     arcs.filter(arc => arc.selected)
 
 
@@ -46,17 +46,17 @@ case class VisualGraph[V <: VisualVertex, A <: VisualArc](
 
 
   def setSelection(
-                    selectionVertexes: Set[V] = Set(),
-                    selectionArcs: Set[A] = Set()
+                    selectionVertexes: Set[VisualVertex] = Set(),
+                    selectionArcs: Set[VisualArc] = Set()
                   ): this.type = {
-    val updatedVertexes: Set[V] =
+    val updatedVertexes: Set[VisualVertex] =
       vertexes.map(vertex =>
         vertex.setSelected(
           selectionVertexes.contains(vertex)
         )
       )
 
-    val updatedArcs: Set[A] =
+    val updatedArcs: Set[VisualArc] =
       arcs.map(arc =>
         arc.setSelected(
           selectionArcs.contains(arc)
@@ -69,7 +69,7 @@ case class VisualGraph[V <: VisualVertex, A <: VisualArc](
   }
 
   def moveSelectedVertexesBy(delta: Delta): this.type = {
-    val movedVertexes: Set[V] =
+    val movedVertexes: Set[VisualVertex] =
       selectedVertexes.map(vertex =>
         vertex.setCenter(
           vertex.center + delta
