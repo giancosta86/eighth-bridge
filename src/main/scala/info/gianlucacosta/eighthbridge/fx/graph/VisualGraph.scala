@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.fx.Delta
-import info.gianlucacosta.eighthbridge.fx.Delta._
+import Delta._
 import info.gianlucacosta.eighthbridge.theory.DirectedGraph
 
 
