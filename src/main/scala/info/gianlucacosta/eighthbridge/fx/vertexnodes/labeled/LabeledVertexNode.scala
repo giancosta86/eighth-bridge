@@ -8,9 +8,7 @@ import scalafx.Includes._
 import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyStringProperty}
 import scalafx.geometry.Point2D
 
-class LabeledVertexNode(val graphCanvas: GraphCanvas)
-  extends VertexNode {
-
+class LabeledVertexNode extends VertexNode {
   private val _label =
     new SimpleStringProperty()
 

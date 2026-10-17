@@ -1,5 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
-class PlainArcNode {
+import info.gianlucacosta.eighthbridge.fx.ArcNode
+
+class PlainArcNode extends ArcNode {
 
 }

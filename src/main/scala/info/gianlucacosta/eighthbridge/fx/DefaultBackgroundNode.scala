@@ -21,9 +21,8 @@ object DefaultBackgroundNode {
 /**
   * Default, interactive implementation of BackgroundNode
   */
-class DefaultBackgroundNode(val graphCanvas: GraphCanvas)
-  extends Group
-    with BackgroundNode {
+class DefaultBackgroundNode
+  extends BackgroundNode {
 
   styleClass.add("graph")
 

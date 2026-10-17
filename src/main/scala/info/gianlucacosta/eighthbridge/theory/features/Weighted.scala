@@ -40,4 +40,11 @@ object Weighted {
     val maxWeight: Double =
       getMaxWeightOr(Double.NegativeInfinity)
   }
+
+  implicit class IterableOfWeightedTupleExtensions[T](self: Iterable[(T, Double)]) {
+    val sortedByWeight: List[(T, Double)] =
+      self
+        .toList
+        .sortBy(_._2)
+  }
 }

@@ -8,8 +8,10 @@ import info.gianlucacosta.eighthbridge.theory.DirectedGraph
   * Graph dedicated to rendering within GraphCanvas.
   */
 case class VisualGraph[V <: VisualVertex, A <: VisualArc](
-                                                      vertexes: Set[V],
-                                                      protected val arcsByVertexPair: Map[(V, V), Set[A]]
+                                                      vertexes: Set[V] =
+                                                        Set[V](),
+                                                      protected val arcsByVertexPair: Map[(V, V), Set[A]] =
+                                                        Map[(V, V), Set[A]]()
 ) extends DirectedGraph[V, A] {
   override protected def graphCopy(vertexes: Set[V], arcsByVertexPair: Map[(V, V), Set[A]]): this.type =
     copy(

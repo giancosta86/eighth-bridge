@@ -92,8 +92,16 @@ class GraphCanvas(
   }
 
 
-  val backgroundNode: BackgroundNode =
-    controller.createBackgroundNode()
+  val backgroundNode: BackgroundNode = {
+    val result =
+      controller.createBackgroundNode()
+
+    result.graphCanvas =
+      this
+
+    result
+  }
+
 
   children.add(backgroundNode)
 
@@ -125,11 +133,27 @@ class GraphCanvas(
 
   private def render(newGraph: AnyVisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
     val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
-      graphDiff.addedVertexes.map(_ -> controller.createVertexNode())
+      graphDiff.addedVertexes.map(_ -> {
+          val vertexNode =
+            controller.createVertexNode()
+
+          vertexNode.graphCanvas =
+            this
+
+          vertexNode
+        })
         .toMap
 
     val addedArcNodesByArc: Map[VisualArc, ArcNode] =
-      graphDiff.addedArcs.map(_ -> controller.createArcNode())
+      graphDiff.addedArcs.map(_ -> {
+          val arcNode =
+            controller.createArcNode()
+
+          arcNode.graphCanvas =
+            this
+
+          arcNode
+        })
         .toMap
 
     val staleVertexNodesByVertex: Map[VisualVertex, VertexNode] =

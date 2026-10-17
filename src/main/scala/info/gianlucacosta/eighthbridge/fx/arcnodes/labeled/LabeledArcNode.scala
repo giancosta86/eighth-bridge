@@ -3,10 +3,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 import info.gianlucacosta.eighthbridge.fx.graph.VisualArc
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
 
-case class LabeledArcNode(
-                           graphCanvas: GraphCanvas,
-                           arc: VisualArc
-                                                   )
+class LabeledArcNode
 extends ArcNode
 
 /*

@@ -28,7 +28,7 @@ abstract class GraphCanvasController {
   // NEW FUNCTIONS
   //
   def createBackgroundNode(): BackgroundNode =
-    new DefaultBackgroundNode(graphCanvas)
+    new DefaultBackgroundNode()
 
   def createVertexNode(): VertexNode
 

@@ -14,6 +14,14 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
                            arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
    ): this.type
 
+  @transient
+  lazy val isEmpty: Boolean =
+    vertexes.isEmpty
+
+  @transient
+  lazy val nonEmpty: Boolean =
+    vertexes.nonEmpty
+
   def addVertexes(vertexesToAdd: Set[V]): this.type =
     graphCopy(
       vertexes =
