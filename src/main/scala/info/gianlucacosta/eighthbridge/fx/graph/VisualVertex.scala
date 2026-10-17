@@ -24,7 +24,7 @@ class VisualVertex(centerValue: Point2D)
   def timestamp: Long =
     _timestamp
 
-  def setTimestamp(timestamp: Long): VisualVertex.this.type = {
+  def setTimestamp(timestamp: Long): this.type = {
     val result: this.type =
       clone().asInstanceOf[this.type]
 

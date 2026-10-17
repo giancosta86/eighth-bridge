@@ -10,7 +10,7 @@ class LabeledVisualArc(arrowEndValue: Option[ArcArrowEnd], labelValue: String) e
   def label: String =
     _label
 
-  def setLabel(label: String) =
+  def setLabel(label: String): this.type =
     if (label != _label) {
       val result =
         updateTimestamp()
