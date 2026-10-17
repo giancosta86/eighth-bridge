@@ -1,40 +1,40 @@
-package info.gianlucacosta.eighthbridge.fx.vertexnodes.named
+package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode}
-import info.gianlucacosta.eighthbridge.theory.features.Named
+import info.gianlucacosta.eighthbridge.theory.features.{Labeled, Named}
 import javafx.beans.property.SimpleStringProperty
 import scalafx.Includes._
 import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyStringProperty}
 import scalafx.geometry.Point2D
 
-class NamedVertexNode(val graphCanvas: GraphCanvas)
+class LabeledVertexNode(val graphCanvas: GraphCanvas)
   extends VertexNode {
 
-  private val _name =
+  private val _label =
     new SimpleStringProperty()
 
-  val name: ReadOnlyStringProperty =
-    _name
+  val label: ReadOnlyStringProperty =
+    _label
 
   private var dragAnchor: Point2D = _
 
-  private val label =
+  private val labelControl =
     new VertexLabel(this)
 
-  children.add(label)
+  children.add(labelControl)
 
 
   override val width: ReadOnlyDoubleProperty =
-    label.width
+    labelControl.width
 
   override val height: ReadOnlyDoubleProperty =
-    label.height
+    labelControl.height
 
   override protected[fx] def updateFxProps(vertex: VisualVertex): Unit = {
     super.updateFxProps(vertex)
-    _name() =
-      vertex.asInstanceOf[Named].name
+    _label() =
+      vertex.asInstanceOf[Labeled].label
   }
 
   /*

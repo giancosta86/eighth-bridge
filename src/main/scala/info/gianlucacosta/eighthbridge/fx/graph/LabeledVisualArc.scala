@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.fx.graph.features.Labeled
-import info.gianlucacosta.eighthbridge.theory.features.Named
+import info.gianlucacosta.eighthbridge.theory.features.{Labeled, Named}
 import scalafx.geometry.Point2D
 
 class LabeledVisualArc(arrowEndValue: Option[ArcArrowEnd], labelValue: String) extends VisualArc(arrowEndValue) with Labeled {

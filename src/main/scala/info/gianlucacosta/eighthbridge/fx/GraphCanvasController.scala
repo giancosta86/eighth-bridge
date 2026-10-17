@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualArc, VisualGraph, VisualVertex}
-import info.gianlucacosta.eighthbridge.fx.vertexnodes.named.NamedVertexNode
+import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.theory.features.Named
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
@@ -40,7 +40,7 @@ abstract class GraphCanvasController {
     new DefaultBackgroundNode(graphCanvas)
 
   def createVertexNode(vertex: VisualVertex): VertexNode =
-    new NamedVertexNode(graphCanvas)
+    new LabeledVertexNode(graphCanvas)
 
   def createArcNode(arc: VisualArc): ArcNode =
     new LabeledArcNode(graphCanvas, arc)

@@ -1,13 +1,13 @@
-package info.gianlucacosta.eighthbridge.fx.vertexnodes.named
+package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 
 import scalafx.scene.control.Label
 
-private class VertexLabel(vertexNode: NamedVertexNode)
+private class VertexLabel(vertexNode: LabeledVertexNode)
   extends Label {
   styleClass.add("label")
 
   text <==
-    vertexNode.name
+    vertexNode.label
 
   layoutX <==
     vertexNode.centerX - width / 2
