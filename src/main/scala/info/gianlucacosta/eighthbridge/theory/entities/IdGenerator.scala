@@ -8,7 +8,8 @@ private class IdGenerator {
     val result =
       idToEmit
 
-    idToEmit += 1
+    idToEmit +=
+      1
 
     result
   }

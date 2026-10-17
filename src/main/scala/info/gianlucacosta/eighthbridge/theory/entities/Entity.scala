@@ -1,7 +1,5 @@
 package info.gianlucacosta.eighthbridge.theory.entities
 
-import Entity.idGenerator
-
 object Entity {
   private val idGenerator =
     new IdGenerator()
@@ -9,7 +7,7 @@ object Entity {
 
 trait Entity {
   final val id: EntityId =
-    idGenerator.generate()
+    Entity.idGenerator.generate()
 
   final override def equals(obj: Any): Boolean =
     obj match {
