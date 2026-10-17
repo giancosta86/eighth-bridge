@@ -6,8 +6,4 @@ trait Labeled {
   def label: String
 
   def setLabel(label: String): this.type
-
-  def labelCenter: Option[Point2D]
-
-  def setLabelCenter(labelCenter: Option[Point2D]): this.type
 }
