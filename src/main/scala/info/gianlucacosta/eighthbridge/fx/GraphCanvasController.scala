@@ -27,6 +27,58 @@ abstract class GraphCanvasController {
   //
   // NEW FUNCTIONS
   //
+  def createBackgroundNode(): BackgroundNode =
+    new DefaultBackgroundNode(graphCanvas)
+
+  def createVertexNode(): VertexNode
+
+  def createArcNode(): ArcNode
+
+  def minCanvasDimension: Dimension2D =
+    new Dimension2D(
+      800,
+      600
+    )
+
+  def graphMargin: Int =
+    20
+
+  def canvasDimension: Dimension2D = {
+    if (graphCanvas.vertexNodesByVertex.isEmpty)
+      minCanvasDimension
+    else {
+      val maxRightEdge =
+        graphCanvas
+          .vertexNodesByVertex
+          .values
+          .map(vertexNode =>
+            vertexNode.centerX() + vertexNode.width() / 2
+          )
+          .max
+
+      val maxBottomEdge =
+        graphCanvas
+          .vertexNodesByVertex
+          .values
+          .map(vertexNode =>
+            vertexNode.centerY() + vertexNode.height() / 2
+          )
+          .max
+
+
+      new Dimension2D(
+        math.max(
+          maxRightEdge + graphMargin,
+          minCanvasDimension.width
+        ),
+
+        math.max(
+          maxBottomEdge + graphMargin,
+          minCanvasDimension.height
+        )
+      )
+    }
+  }
 
 
   //
@@ -36,14 +88,7 @@ abstract class GraphCanvasController {
   //TODO! Turn this into a function of VisualArc, that the 2 specific trait will implement by returning their related constants!
   def renderDirected: Boolean
 
-  def createBackgroundNode(): BackgroundNode =
-    new DefaultBackgroundNode(graphCanvas)
 
-  def createVertexNode(vertex: VisualVertex): VertexNode =
-    new LabeledVertexNode(graphCanvas)
-
-  def createArcNode(arc: VisualArc): ArcNode =
-    new LabeledArcNode(graphCanvas, arc)
 
   def deleteSelection(): Option[AnyVisualGraph] =
     None
@@ -87,53 +132,4 @@ abstract class GraphCanvasController {
 
   def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[AnyVisualGraph] =
     None
-
-  def minCanvasDimension: Dimension2D =
-    new Dimension2D(
-      800,
-      600
-    )
-
-  def graphMargin: Int =
-    20
-
-  def canvasDimension: Dimension2D = {
-    //TODO!
-    minCanvasDimension
-    /*
-    if (graphCanvas.vertexNodesByVertex.isEmpty)
-      minCanvasDimension
-    else {
-      val maxRightEdge =
-        graphCanvas
-          .vertexNodesByVertex
-          .values
-          .map(vertexNode =>
-            vertexNode.vertex.center.x + vertexNode.width() / 2
-          )
-          .max
-
-      val maxBottomEdge =
-        graphCanvas
-          .vertexNodesByVertex
-          .values
-          .map(vertexNode =>
-            vertexNode.vertex.center.y + vertexNode.height() / 2
-          )
-          .max
-
-
-      new Dimension2D(
-        math.max(
-          maxRightEdge + graphMargin,
-          minCanvasDimension.width
-        ),
-
-        math.max(
-          maxBottomEdge + graphMargin,
-          minCanvasDimension.height
-        )
-      )
-    }*/
-  }
 }

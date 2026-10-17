@@ -54,4 +54,6 @@ abstract class VertexNode
       vertex.selected
     )
   }
+
+  toFront()
 }

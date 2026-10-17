@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualGraph, VisualArc, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{AnyVisualGraph, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.theory.features.TimestampedGraphDiff
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
@@ -35,10 +36,12 @@ class GraphCanvas(
   val graph =
     new SimpleObjectProperty[AnyVisualGraph](initialGraph)
 
-  graph.addListener((observable: Observable) => {
-    //The canvas can only be updated by changing the graph
-    render()
-  })
+  graph.onChange { (_, oldValue, newValue) =>
+    val graphDiff =
+      newValue.getDiffSince(oldValue)
+
+    render(newValue, graphDiff)
+  }
 
   val zoomEnabled =
     new SimpleBooleanProperty(true)
@@ -115,125 +118,54 @@ class GraphCanvas(
   def arcNodesByArc: Map[VisualArc, ArcNode] =
     _arcNodesByArc
 
-  render()
+  render(
+    initialGraph,
+    new TimestampedGraphDiff[VisualVertex, VisualArc]()
+  )
 
-  private def render(): Unit = {
-    /*
-     * First of all, we need to update the map of vertex nodes,
-     * creating new vertex nodes as required.
-     */
+  private def render(newGraph: AnyVisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
+    val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
+      graphDiff.addedVertexes.map(_ -> controller.createVertexNode())
+        .toMap
 
-    /*
-    val (vertexNodesToKeep, vertexNodesToRemove) =
-      _vertexNodesByVertex
-        .values
-        .partition(vertexNode =>
-          graph().vertexes.contains(vertexNode.vertex)
-        )
+    val addedArcNodesByArc: Map[VisualArc, ArcNode] =
+      graphDiff.addedArcs.map(_ -> controller.createArcNode())
+        .toMap
 
-    val keptVertexes =
-      vertexNodesToKeep
-        .map(_.vertex)
-        .toSet
+    val staleVertexNodesByVertex: Map[VisualVertex, VertexNode] =
+      vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
-    val vertexesWithoutNode =
-      graph().vertexes -- keptVertexes
-
-    val brandNewVertexNodes =
-      vertexesWithoutNode.map(vertex => {
-        val vertexNode = controller.createVertexNode(vertex)
-
-        vertexNode.updateFx()
-
-        vertexNode.toFront()
-
-        vertexNode
-      })
-
-    val updatedVertexNodes = vertexNodesToKeep ++ brandNewVertexNodes
+    val staleArcNodesByArc: Map[VisualArc, ArcNode] =
+      arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
 
     _vertexNodesByVertex =
-      updatedVertexNodes.map(vertexNode =>
-          vertexNode.vertex -> vertexNode
-        )
-        .toMap
-*/
-    /*
-     * Then, we need to repeat the same process to update
-     * the pool of arc nodes.
-     */
-
-    /*
-    val originalArcNodes =
-      _arcNodesByArc
-        .values
-        .toSet
-
-    val arcNodesBasedOnExistingArcs =
-      originalArcNodes
-        .filter(arcNode =>
-          graph().arcs.contains(arcNode.arc)
-        )
-
-    val keptArcs =
-      arcNodesBasedOnExistingArcs.map(_.arc)
-
-    val arcNodesAttachedToExistingVertexes =
-      arcNodesBasedOnExistingArcs.filter(arcNode => {
-        graph().getVertexPair(arcNode.arc).isDefined
-      })
-
-    val arcNodesToKeep = arcNodesAttachedToExistingVertexes
-
-    val arcNodesToRemove = originalArcNodes -- arcNodesToKeep
-
-    val arcsWithoutNode =
-      graph().arcs -- keptArcs
-
-    val brandNewArcNodes =
-      arcsWithoutNode.map(arc => {
-        val arcNode = controller.createArcNode(arc)
-
-        arcNode.updateFx()
-
-        arcNode
-      })
-
-    val updatedArcNodes = arcNodesToKeep ++ brandNewArcNodes
+      vertexNodesByVertex ++ addedVertexNodesByVertex -- staleVertexNodesByVertex.keySet
 
     _arcNodesByArc =
-      updatedArcNodes.map(arcNode =>
-          arcNode.arc -> arcNode
-        ).
-        toMap
-*/
-    /*
-     * Now, we need to add the new nodes to the canvas.
-     */
+      arcNodesByArc ++ addedArcNodesByArc -- staleArcNodesByArc.keySet
 
-    /*
-    brandNewArcNodes.foreach((node: Node) => children.add(node))
+    vertexNodesByVertex
+      .foreach{ case (vertex, vertexNode) =>
+        vertexNode.updateFxProps(vertex)
+      }
 
-    brandNewVertexNodes.foreach((node: Node) => children.add(node))
-*/
+    arcNodesByArc
+      .foreach { case (arc, arcNode) =>
+        arcNode.updateFxProps(arc)
+      }
 
-    /*
-     * Right after appending the new nodes, we need to remove stale nodes.
-     */
+    children ++=
+      addedVertexNodesByVertex.values.map(_.asInstanceOf[javafx.scene.Node])
 
-    /*
-    arcNodesToRemove
-      .foreach(children.remove)
+    children ++=
+      addedArcNodesByArc.values.map(_.asInstanceOf[javafx.scene.Node])
 
-    vertexNodesToRemove
-      .foreach(children.remove)
-*/
+    children --=
+      staleVertexNodesByVertex.values.map(_.asInstanceOf[javafx.scene.Node])
 
-    /*
-     * Finally, we are going to ask the controller to computer the new dimension.
-     */
+    children --=
+      staleArcNodesByArc.values.map(_.asInstanceOf[javafx.scene.Node])
 
-    /*
     val newDimension =
       controller.canvasDimension
 
@@ -241,10 +173,9 @@ class GraphCanvas(
       newDimension.width,
       newDimension.height
     )
-    */
   }
 
-  /*
+
   handleEvent(KeyEvent.KeyPressed) {
     (keyEvent: KeyEvent) => {
       keyEvent.code match {
@@ -366,5 +297,5 @@ class GraphCanvas(
           false
       }
     }
-  }*/
+  }
 }
