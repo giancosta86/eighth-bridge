@@ -22,7 +22,7 @@ object DefaultBackgroundNode {
   * Default, interactive implementation of BackgroundNode
   */
 class DefaultBackgroundNode(graphCanvas: GraphCanvas)
-  extends BackgroundNode {
+  extends GraphCanvasNode(graphCanvas) with BackgroundNode {
   styleClass.add("graph")
 
   private var dragAnchor: Point2D = _
@@ -121,8 +121,10 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       val clippedMousePoint =
         point.clip(graphCanvas.dimension)
 
-      selectionBounds =
-        new DiagonalBounds(dragAnchor, clippedMousePoint)
+      if (controller.canSelect) {
+        selectionBounds =
+          new DiagonalBounds(dragAnchor, clippedMousePoint)
+      }
     }
   }
 

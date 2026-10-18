@@ -7,18 +7,8 @@ import scalafx.Includes._
 /**
   * Generic JavaFX node rendering a graph element into GraphCanvas.
   */
-abstract class GraphCanvasNode extends Group {
+abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends Group {
   private var _graphCanvas: GraphCanvas = _
-
-  /**
-    * The graph canvas owning this UI node
-    */
-  protected[fx] def graphCanvas: GraphCanvas =
-    _graphCanvas
-
-  private[fx] def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
-    _graphCanvas = graphCanvas
-  }
 
   /**
     * The controller of the owning graph canvas

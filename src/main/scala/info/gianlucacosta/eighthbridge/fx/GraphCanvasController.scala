@@ -33,13 +33,16 @@ abstract class GraphCanvasController {
   def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
+  def canSelect: Boolean =
+    true //TODO! False!
+
   //TODO! Make this abstract!
   def createVertexNode(vertex: VisualVertex): VertexNode =
-    new LabeledVertexNode(vertex)
+    new LabeledVertexNode(graphCanvas, vertex)
 
   //TODO! Make this abstract!
   def createArcNode(arc: VisualArc): ArcNode =
-    new PlainArcNode(arc)
+    new PlainArcNode(graphCanvas, arc)
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(

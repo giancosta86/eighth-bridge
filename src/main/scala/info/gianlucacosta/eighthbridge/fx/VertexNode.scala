@@ -13,8 +13,8 @@ import scalafx.scene.layout.Region
 /**
   * JavaFX node rendering a VisualVertex
   */
-abstract class VertexNode(val vertex: VisualVertex)
-  extends GraphCanvasNode {
+abstract class VertexNode(graphCanvas: GraphCanvas, val vertex: VisualVertex)
+  extends GraphCanvasNode(graphCanvas) {
   private val _centerX =
     new SimpleDoubleProperty()
 
