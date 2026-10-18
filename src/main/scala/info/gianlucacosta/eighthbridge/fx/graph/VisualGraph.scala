@@ -20,6 +20,12 @@ class VisualGraph(
       arcsByVertexPair = arcsByVertexPair
     ).asInstanceOf[this.type]
 
+  override def equals(obj: Any): Boolean =
+    false
+
+  override def hashCode(): Int =
+    0
+
   @transient
   lazy val selectedVertexes: Set[VisualVertex] =
     vertexes.filter(vertex => vertex.selected)
