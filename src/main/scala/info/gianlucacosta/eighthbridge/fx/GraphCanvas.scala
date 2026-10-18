@@ -27,8 +27,6 @@ class GraphCanvas(
                    val controller: GraphCanvasController,
                    initialGraph: VisualGraph
                  ) extends Pane {
-  //TODO! Perhaps, find another way to handle this null
-  require(controller.graphCanvas == null, "The controller must not already belong to a graph!")
   controller.graphCanvas = this
 
   styleClass.add("graphCanvas")

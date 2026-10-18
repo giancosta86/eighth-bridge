@@ -20,6 +20,7 @@ abstract class GraphCanvasController {
     _graphCanvas
 
   protected[fx] final def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
+    require(_graphCanvas == null, "The controller must not be already associated with another GraphCanvas!")
     _graphCanvas = graphCanvas
   }
 
