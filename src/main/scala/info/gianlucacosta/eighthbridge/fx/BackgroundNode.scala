@@ -5,4 +5,6 @@ import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualV
 /**
   * JavaFX node rendering the graph background and the selection rectangle
   */
-trait BackgroundNode extends GraphCanvasNode
+trait BackgroundNode extends GraphCanvasNode {
+
+}

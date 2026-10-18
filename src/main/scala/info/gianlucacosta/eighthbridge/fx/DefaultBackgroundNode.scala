@@ -21,9 +21,9 @@ object DefaultBackgroundNode {
 /**
   * Default, interactive implementation of BackgroundNode
   */
-class DefaultBackgroundNode
+//TODO! Replace this param with a call to updateFxProps?
+class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   extends BackgroundNode {
-  /*
   styleClass.add("graph")
 
   private var dragAnchor: Point2D = _
@@ -112,7 +112,6 @@ class DefaultBackgroundNode
       ()
     }
   }
-*/
   /*
 
   handleEvent(MouseEvent.MouseDragged) {
