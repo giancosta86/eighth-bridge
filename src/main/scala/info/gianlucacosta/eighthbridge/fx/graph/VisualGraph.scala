@@ -7,14 +7,14 @@ import info.gianlucacosta.eighthbridge.theory.DirectedGraph
 /**
   * Graph dedicated to rendering within GraphCanvas.
   */
-case class VisualGraph(
-                                                      vertexes: Set[VisualVertex] =
+class VisualGraph(
+                                                      val vertexes: Set[VisualVertex] =
                                                         Set[VisualVertex](),
                                                       protected val arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]] =
                                                         Map[(VisualVertex, VisualVertex), Set[VisualArc]]()
 ) extends DirectedGraph[VisualVertex, VisualArc] {
   override protected def graphCopy(vertexes: Set[VisualVertex], arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]]): this.type =
-    copy(
+    new VisualGraph(
       vertexes = vertexes,
 
       arcsByVertexPair = arcsByVertexPair

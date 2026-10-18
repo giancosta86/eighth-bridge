@@ -28,7 +28,6 @@ abstract class GraphCanvasNode extends Group {
   protected final def controller: GraphCanvasController =
     graphCanvas.controller
 
-  //TODO! Del this?
   /**
     * The current graph within the graph canvas
     *

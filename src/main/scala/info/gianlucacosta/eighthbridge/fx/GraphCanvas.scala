@@ -129,13 +129,14 @@ class GraphCanvas(
     new TimestampedGraphDiff[VisualVertex, VisualArc]()
   )
 
-  private def render(newGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
+  private def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
     val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       graphDiff.addedVertexes.map(vertex =>
           vertex -> {
             val vertexNode =
               controller.createVertexNode(vertex)
 
+            //TODO! This in the constructor?
             vertexNode.graphCanvas =
               this
 
@@ -150,6 +151,7 @@ class GraphCanvas(
             val arcNode =
               controller.createArcNode(arc)
 
+            //TODO! This in the constructor?
             arcNode.graphCanvas =
               this
 
@@ -158,26 +160,32 @@ class GraphCanvas(
         )
         .toMap
 
-    val staleVertexNodesByVertex: Map[VisualVertex, VertexNode] =
+    val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
-    val staleArcNodesByArc: Map[VisualArc, ArcNode] =
+    val danglingArcNodesByArc: Map[VisualArc, ArcNode] =
       arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
 
     _vertexNodesByVertex =
-      vertexNodesByVertex ++ addedVertexNodesByVertex -- staleVertexNodesByVertex.keySet
+      vertexNodesByVertex ++ addedVertexNodesByVertex -- danglingVertexNodesByVertex.keySet
 
     _arcNodesByArc =
-      arcNodesByArc ++ addedArcNodesByArc -- staleArcNodesByArc.keySet
+      arcNodesByArc ++ addedArcNodesByArc -- danglingArcNodesByArc.keySet
 
     vertexNodesByVertex
       .foreach{ case (vertex, vertexNode) =>
-        vertexNode.updateFxProps(vertex)
+        val updatedVertex =
+          updatedGraph.getVertexById(vertex.id).get
+
+        vertexNode.updateFxProps(updatedVertex)
       }
 
     arcNodesByArc
       .foreach { case (arc, arcNode) =>
-        arcNode.updateFxProps(arc)
+        val updatedArc =
+          updatedGraph.getArcById(arc.id).get
+
+        arcNode.updateFxProps(updatedArc)
       }
 
 
@@ -186,9 +194,9 @@ class GraphCanvas(
 
     addedArcNodesByArc.values.foreach(children.add(_))
 
-    staleVertexNodesByVertex.values.foreach(children.remove(_))
+    danglingVertexNodesByVertex.values.foreach(children.remove(_))
 
-    staleArcNodesByArc.values.foreach(children.remove(_))
+    danglingArcNodesByArc.values.foreach(children.remove(_))
 
     val newDimension =
       controller.canvasDimension

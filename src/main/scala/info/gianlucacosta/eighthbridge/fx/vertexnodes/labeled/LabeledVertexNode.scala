@@ -31,6 +31,7 @@ class LabeledVertexNode(vertex: VisualVertex) extends VertexNode(vertex) {
 
   override protected[fx] def updateFxProps(updatedVertex: VisualVertex): Unit = {
     super.updateFxProps(updatedVertex)
+
     _label() =
       updatedVertex.asInstanceOf[Labeled].label
   }

@@ -21,7 +21,6 @@ object DefaultBackgroundNode {
 /**
   * Default, interactive implementation of BackgroundNode
   */
-//TODO! Replace this param with a call to updateFxProps?
 class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   extends BackgroundNode {
   styleClass.add("graph")
@@ -117,8 +116,18 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       DefaultBackgroundNode.EmptySelectionBounds
   }
 
+  private def handleSingleLeftDragged(point: Point2D): Unit = {
+    if (controller.canDrawSelectionRectangle) {
+      val clippedMousePoint =
+        point.clip(graphCanvas.dimension)
+
+      selectionBounds =
+        new DiagonalBounds(dragAnchor, clippedMousePoint)
+    }
+  }
+
   private def tryToCreateNewVertex(center: Point2D): Unit = {
-    //controller.createVertex(center)
+    //TODO! controller.createVertex(center)
     Some(new NamedVisualVertex(center, "Dodo"))
       .foreach(vertex =>
         graph = graph.addVertex(vertex)
@@ -126,7 +135,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   }
 
   private def setSelectionFromRectangle(): Unit = {
-    /*val selectionVertexes = graphCanvas.vertexNodesByVertex
+    val selectionVertexes = graphCanvas.vertexNodesByVertex
         .values
         .filter(_.intersects(selectionBounds))
         .map(_.vertex)
@@ -142,7 +151,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
         graph.setSelection(
           selectionVertexes,
           selectionArcs
-        )*/
+        )
   }
 
   handleEvent(MouseEvent.MousePressed) {
@@ -160,24 +169,18 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       ()
     }
   }
-  /*
+
 
   handleEvent(MouseEvent.MouseDragged) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          if (controller.canDrawSelectionRectangle) {
-            val clippedMousePoint =
-              mouseEvent.point.clip(graphCanvas.dimension)
-
-            selectionBounds =
-              new DiagonalBounds(dragAnchor, clippedMousePoint)
-          }
+          handleSingleLeftDragged(mouseEvent.point)
         case _ =>
       }
     }
   }
-  */
+
 
   handleEvent(MouseEvent.MouseReleased) {
     (mouseEvent: MouseEvent) => {
