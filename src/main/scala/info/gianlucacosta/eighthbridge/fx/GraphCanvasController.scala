@@ -34,12 +34,12 @@ abstract class GraphCanvasController {
     new DefaultBackgroundNode(graphCanvas)
 
   //TODO! Make this abstract!
-  def createVertexNode(): VertexNode =
-    new PlainVertexNode
+  def createVertexNode(vertex: VisualVertex): VertexNode =
+    new LabeledVertexNode(vertex)
 
   //TODO! Make this abstract!
-  def createArcNode(): ArcNode =
-    new PlainArcNode
+  def createArcNode(arc: VisualArc): ArcNode =
+    new PlainArcNode(arc)
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(

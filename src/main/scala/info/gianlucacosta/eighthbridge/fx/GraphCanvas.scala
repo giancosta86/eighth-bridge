@@ -131,27 +131,31 @@ class GraphCanvas(
 
   private def render(newGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
     val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
-      graphDiff.addedVertexes.map(_ -> {
-          val vertexNode =
-            controller.createVertexNode()
+      graphDiff.addedVertexes.map(vertex =>
+          vertex -> {
+            val vertexNode =
+              controller.createVertexNode(vertex)
 
-          vertexNode.graphCanvas =
-            this
+            vertexNode.graphCanvas =
+              this
 
-          vertexNode
-        })
+            vertexNode
+          }
+        )
         .toMap
 
     val addedArcNodesByArc: Map[VisualArc, ArcNode] =
-      graphDiff.addedArcs.map(_ -> {
-          val arcNode =
-            controller.createArcNode()
+      graphDiff.addedArcs.map(arc =>
+          arc -> {
+            val arcNode =
+              controller.createArcNode(arc)
 
-          arcNode.graphCanvas =
-            this
+            arcNode.graphCanvas =
+              this
 
-          arcNode
-        })
+            arcNode
+          }
+        )
         .toMap
 
     val staleVertexNodesByVertex: Map[VisualVertex, VertexNode] =

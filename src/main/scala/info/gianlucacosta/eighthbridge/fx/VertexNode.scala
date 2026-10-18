@@ -13,7 +13,7 @@ import scalafx.scene.layout.Region
 /**
   * JavaFX node rendering a VisualVertex
   */
-abstract class VertexNode
+abstract class VertexNode(val vertex: VisualVertex)
   extends GraphCanvasNode {
   private val _centerX =
     new SimpleDoubleProperty()
@@ -36,22 +36,22 @@ abstract class VertexNode
   val selected: ReadOnlyBooleanProperty =
     _selected
 
-  protected[fx] def updateFxProps(vertex: VisualVertex): Unit = {
+  protected[fx] def updateFxProps(updatedVertex: VisualVertex): Unit = {
     _centerX() =
-      vertex.center.x
+      updatedVertex.center.x
 
     _centerY() =
-      vertex.center.y
+      updatedVertex.center.y
 
     _selected() =
-      vertex.selected
+      updatedVertex.selected
 
     styleClass.setAll("vertex")
-    styleClass.addAll(vertex.styleClasses)
+    styleClass.addAll(updatedVertex.styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      vertex.selected
+      updatedVertex.selected
     )
   }
 

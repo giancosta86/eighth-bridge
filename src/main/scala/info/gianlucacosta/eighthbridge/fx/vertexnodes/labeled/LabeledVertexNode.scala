@@ -8,7 +8,7 @@ import scalafx.Includes._
 import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyStringProperty}
 import scalafx.geometry.Point2D
 
-class LabeledVertexNode extends VertexNode {
+class LabeledVertexNode(vertex: VisualVertex) extends VertexNode(vertex) {
   private val _label =
     new SimpleStringProperty()
 
@@ -29,10 +29,10 @@ class LabeledVertexNode extends VertexNode {
   override val height: ReadOnlyDoubleProperty =
     labelControl.height
 
-  override protected[fx] def updateFxProps(vertex: VisualVertex): Unit = {
-    super.updateFxProps(vertex)
+  override protected[fx] def updateFxProps(updatedVertex: VisualVertex): Unit = {
+    super.updateFxProps(updatedVertex)
     _label() =
-      vertex.asInstanceOf[Labeled].label
+      updatedVertex.asInstanceOf[Labeled].label
   }
 
   /*
