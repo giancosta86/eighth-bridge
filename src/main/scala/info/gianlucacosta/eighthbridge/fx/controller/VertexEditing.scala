@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{LabeledVisualVertex, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 
@@ -8,9 +8,7 @@ trait VertexEditing extends GraphCanvasController {
   override def editVertex(vertex: VisualVertex): Option[VisualGraph] = {
     while (true) {
       try {
-        return doEditVertex(vertex).map(updatedVertex =>
-          graph.updateVertex(updatedVertex)
-        )
+        return doEditVertex(vertex).map(graph.updateVertex)
       } catch {
         case ex: IllegalArgumentException =>
           Alerts.showWarning(ex.getMessage, "Edit vertex")
