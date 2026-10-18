@@ -92,8 +92,13 @@ abstract class GraphCanvasController {
 
   def createVertex(center: Point2D): Option[VisualVertex]
 
-  def canDeleteSelection(): Boolean =
+  def canDeleteSelection: Boolean =
     true //TODO! false!
+
+  def canDragVertexes: Boolean =
+    true //TODO
+
+
   //
   // ANCIENT FUNCTIONS
   //

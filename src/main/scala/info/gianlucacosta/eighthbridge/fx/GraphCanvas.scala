@@ -153,7 +153,7 @@ class GraphCanvas(
         val updatedVertex =
           updatedGraph.getVertexById(vertex.id).get
 
-        vertexNode.updateFxProps(updatedVertex)
+        vertexNode.update(updatedVertex)
       }
 
     arcNodesByArc
@@ -161,7 +161,7 @@ class GraphCanvas(
         val updatedArc =
           updatedGraph.getArcById(arc.id).get
 
-        arcNode.updateFxProps(updatedArc)
+        arcNode.update(updatedArc)
       }
 
 
@@ -184,7 +184,7 @@ class GraphCanvas(
   }
 
   private def handleDelKeyPressed(): Unit = {
-    if (controller.canDeleteSelection()) {
+    if (controller.canDeleteSelection) {
       graph() =
         graph()
           .removeArcs(graph().selectedArcs)

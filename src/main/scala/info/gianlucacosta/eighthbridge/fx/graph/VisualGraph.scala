@@ -50,7 +50,6 @@ class VisualGraph(
   lazy val deselectAll: this.type =
     setSelection(Set(), Set())
 
-
   def setSelection(
                     selectionVertexes: Set[VisualVertex] = Set(),
                     selectionArcs: Set[VisualArc] = Set()

@@ -93,18 +93,18 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     selectionRectangle
   )
 
-  private def handleSingleLeftPressed(point: Point2D): Unit = {
+  private def handleSinglePrimaryPressed(point: Point2D): Unit = {
     dragAnchor =
       point
 
     controller.setSelection(Set(), Set()).foreach(graph_=)
   }
 
-  private def handleSingleRightPressed(): Unit = {
+  private def handleSingleSecondaryPressed(): Unit = {
     controller.setSelection(Set(), Set()).foreach(graph_=)
   }
 
-  private def handleSingleLeftReleased(point: Point2D): Unit = {
+  private def handleSinglePrimaryReleased(point: Point2D): Unit = {
     if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
       && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
       tryToCreateNewVertex(point)
@@ -116,7 +116,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       DefaultBackgroundNode.EmptySelectionBounds
   }
 
-  private def handleSingleLeftDragged(point: Point2D): Unit = {
+  private def handlePrimaryDragged(point: Point2D): Unit = {
     if (controller.canDrawSelectionRectangle) {
       val clippedMousePoint =
         point.clip(graphCanvas.dimension)
@@ -160,10 +160,10 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          handleSingleLeftPressed(mouseEvent.point)
+          handleSinglePrimaryPressed(mouseEvent.point)
 
         case MouseButton.Secondary =>
-          handleSingleRightPressed()
+          handleSingleSecondaryPressed()
 
         case _ =>
       }
@@ -177,7 +177,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          handleSingleLeftDragged(mouseEvent.point)
+          handlePrimaryDragged(mouseEvent.point)
         case _ =>
       }
     }
@@ -188,7 +188,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          handleSingleLeftReleased(mouseEvent.point)
+          handleSinglePrimaryReleased(mouseEvent.point)
 
         case _ =>
       }
