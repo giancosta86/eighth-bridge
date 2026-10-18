@@ -207,15 +207,20 @@ class GraphCanvas(
     )
   }
 
+  private def handleDelKeyPressed(): Unit = {
+    if (controller.canDeleteSelection()) {
+      graph() =
+        graph()
+          .removeArcs(graph().selectedArcs)
+          .removeVertexes(graph().selectedVertexes)
+    }
+  }
 
   handleEvent(KeyEvent.KeyPressed) {
     (keyEvent: KeyEvent) => {
       keyEvent.code match {
         case KeyCode.Delete =>
-          controller.deleteSelection()
-            .foreach(newGraph =>
-              graph() = newGraph
-            )
+          handleDelKeyPressed()
 
         case _ =>
       }

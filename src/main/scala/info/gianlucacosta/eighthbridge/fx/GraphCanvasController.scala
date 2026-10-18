@@ -89,7 +89,8 @@ abstract class GraphCanvasController {
 
   def createVertex(center: Point2D): Option[VisualVertex]
 
-
+  def canDeleteSelection(): Boolean =
+    true //TODO! false!
   //
   // ANCIENT FUNCTIONS
   //
@@ -99,8 +100,6 @@ abstract class GraphCanvasController {
 
 
 
-  def deleteSelection(): Option[VisualGraph] =
-    None
 
  // def createVertex(center: Point2D): Option[VisualGraph] =
  //   None
