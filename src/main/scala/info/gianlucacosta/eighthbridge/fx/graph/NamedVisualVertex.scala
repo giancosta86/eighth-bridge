@@ -14,7 +14,9 @@ class NamedVisualVertex(centerValue: Point2D, nameValue: String)
   override def setName(name: String): this.type = {
     if (name != _name) {
       val result =
-        this.updateTimestamp()
+        this
+          .updateTimestamp()
+          .setLabel(name)
 
       result._name =
         name
