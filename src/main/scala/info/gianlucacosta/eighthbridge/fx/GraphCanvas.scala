@@ -176,17 +176,15 @@ class GraphCanvas(
         arcNode.updateFxProps(arc)
       }
 
-    children ++=
-      addedVertexNodesByVertex.values.map(_.asInstanceOf[javafx.scene.Node])
 
-    children ++=
-      addedArcNodesByArc.values.map(_.asInstanceOf[javafx.scene.Node])
 
-    children --=
-      staleVertexNodesByVertex.values.map(_.asInstanceOf[javafx.scene.Node])
+    addedVertexNodesByVertex.values.foreach(children.add(_))
 
-    children --=
-      staleArcNodesByArc.values.map(_.asInstanceOf[javafx.scene.Node])
+    addedArcNodesByArc.values.foreach(children.add(_))
+
+    staleVertexNodesByVertex.values.foreach(children.remove(_))
+
+    staleArcNodesByArc.values.foreach(children.remove(_))
 
     val newDimension =
       controller.canvasDimension

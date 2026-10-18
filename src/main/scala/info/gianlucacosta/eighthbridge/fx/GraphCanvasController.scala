@@ -87,6 +87,8 @@ abstract class GraphCanvasController {
     }
   }
 
+  def createVertex(center: Point2D): Option[VisualVertex]
+
 
   //
   // ANCIENT FUNCTIONS
@@ -100,8 +102,8 @@ abstract class GraphCanvasController {
   def deleteSelection(): Option[VisualGraph] =
     None
 
-  def createVertex(center: Point2D): Option[VisualGraph] =
-    None
+ // def createVertex(center: Point2D): Option[VisualGraph] =
+ //   None
 
   def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[VisualGraph] =
     None

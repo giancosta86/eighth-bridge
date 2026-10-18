@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{NamedVisualVertex, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import javafx.beans.property.SimpleDoubleProperty
@@ -94,17 +94,65 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     selectionRectangle
   )
 
+  private def handleSingleLeftPressed(point: Point2D): Unit = {
+    dragAnchor =
+      point
+
+    controller.setSelection(Set(), Set()).foreach(graph_=)
+  }
+
+  private def handleSingleRightPressed(): Unit = {
+    controller.setSelection(Set(), Set()).foreach(graph_=)
+  }
+
+  private def handleSingleLeftReleased(point: Point2D): Unit = {
+    if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
+      && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
+      tryToCreateNewVertex(point)
+    } else {
+      setSelectionFromRectangle()
+    }
+
+    selectionBounds =
+      DefaultBackgroundNode.EmptySelectionBounds
+  }
+
+  private def tryToCreateNewVertex(center: Point2D): Unit = {
+    //controller.createVertex(center)
+    Some(new NamedVisualVertex(center, "Dodo"))
+      .foreach(vertex =>
+        graph = graph.addVertex(vertex)
+      )
+  }
+
+  private def setSelectionFromRectangle(): Unit = {
+    /*val selectionVertexes = graphCanvas.vertexNodesByVertex
+        .values
+        .filter(_.intersects(selectionBounds))
+        .map(_.vertex)
+        .toSet
+
+      val selectionArcs = graphCanvas.arcNodesByArc
+        .values
+        .filter(_.intersects(selectionBounds))
+        .map(_.arc)
+        .toSet
+
+      graph =
+        graph.setSelection(
+          selectionVertexes,
+          selectionArcs
+        )*/
+  }
+
   handleEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          dragAnchor =
-            mouseEvent.point
-
-          controller.setSelection(Set(), Set()).foreach(graph_=)
+          handleSingleLeftPressed(mouseEvent.point)
 
         case MouseButton.Secondary =>
-          controller.setSelection(Set(), Set()).foreach(graph_=)
+          handleSingleRightPressed()
 
         case _ =>
       }
@@ -129,42 +177,17 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       }
     }
   }
-
+  */
 
   handleEvent(MouseEvent.MouseReleased) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
-            && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
-            controller.createVertex(mouseEvent.point)
-              .foreach(graph_=)
-          } else {
-            val selectionVertexes = graphCanvas.vertexNodesByVertex
-              .values
-              .filter(_.intersects(selectionBounds))
-              .map(_.vertex)
-              .toSet
-
-            val selectionArcs = graphCanvas.arcNodesByArc
-              .values
-              .filter(_.intersects(selectionBounds))
-              .map(_.arc)
-              .toSet
-
-            graph =
-              graph.setSelection(
-                selectionVertexes,
-                selectionArcs
-              )
-          }
-
-          selectionBounds =
-            DefaultBackgroundNode.EmptySelectionBounds
+          handleSingleLeftReleased(mouseEvent.point)
 
         case _ =>
       }
     }
   }
-  */
+
 }

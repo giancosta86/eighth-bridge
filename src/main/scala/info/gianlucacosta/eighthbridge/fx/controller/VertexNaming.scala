@@ -31,8 +31,8 @@ trait VertexNaming
    */
   protected def createNamedVertex(center: Point2D, vertexName: String): VisualVertex with Named
 
-  override def createVertex(center: Point2D): Option[VisualGraph] = {
-    val lastUsedVertexIndex = Stream.from(firstNameIndex)
+  override def createVertex(center: Point2D): Option[VisualVertex] = {
+    /*val lastUsedVertexIndex = Stream.from(firstNameIndex)
       .takeWhile(vertexIndex => {
         val vertexName =
           getVertexName(vertexIndex)
@@ -56,6 +56,7 @@ trait VertexNaming
 
     Some(
       graph.addVertex(newVertex)
-    )
+    )*/
+    None
   }
 }
