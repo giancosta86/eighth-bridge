@@ -50,21 +50,22 @@ class VisualGraph(
   lazy val deselectAll: this.type =
     setSelection(Set(), Set())
 
+
   def setSelection(
-                    selectionVertexes: Set[VisualVertex] = Set(),
-                    selectionArcs: Set[VisualArc] = Set()
+                    selectedVertexes: Set[VisualVertex],
+                    selectedArcs: Set[VisualArc]
                   ): this.type = {
     val updatedVertexes: Set[VisualVertex] =
       vertexes.map(vertex =>
         vertex.setSelected(
-          selectionVertexes.contains(vertex)
+          selectedVertexes.contains(vertex)
         )
       )
 
     val updatedArcs: Set[VisualArc] =
       arcs.map(arc =>
         arc.setSelected(
-          selectionArcs.contains(arc)
+          selectedArcs.contains(arc)
         )
       )
 

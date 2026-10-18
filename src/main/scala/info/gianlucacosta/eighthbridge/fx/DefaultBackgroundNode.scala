@@ -121,7 +121,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       val clippedMousePoint =
         point.clip(graphCanvas.dimension)
 
-      if (controller.canSelect) {
+      if (controller.canDrawSelectionRectangle) {
         selectionBounds =
           new DiagonalBounds(dragAnchor, clippedMousePoint)
       }
@@ -129,8 +129,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   }
 
   private def tryToCreateNewVertex(center: Point2D): Unit = {
-    //TODO! controller.createVertex(center)
-    Some(new NamedVisualVertex(center, "Dodo"))
+    controller.createVertex(center)
       .foreach(vertex =>
         graph = graph.addVertex(vertex)
       )

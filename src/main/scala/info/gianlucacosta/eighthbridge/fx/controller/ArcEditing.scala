@@ -5,7 +5,7 @@ import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 
 trait ArcEditing extends GraphCanvasController {
-  override def editArc(arc: VisualArc): Option[VisualGraph] = {
+/*  override def editArc(arc: VisualArc): Option[VisualGraph] = {
     while (true) {
       try {
         return doEditArc(arc).map(updatedArc =>
@@ -30,5 +30,5 @@ trait ArcEditing extends GraphCanvasController {
    * @return Some(new arc) if the editing is complete, None if the user canceled the editing
    *
    */
-  protected def doEditArc(arc: VisualArc): Option[VisualArc]
+  protected def doEditArc(arc: VisualArc): Option[VisualArc]*/
 }

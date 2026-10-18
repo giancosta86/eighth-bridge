@@ -4,5 +4,5 @@ import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualV
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 
 trait Undirected extends GraphCanvasController {
-  override def renderDirected: Boolean = false
+  //override def renderDirected: Boolean = false
 }

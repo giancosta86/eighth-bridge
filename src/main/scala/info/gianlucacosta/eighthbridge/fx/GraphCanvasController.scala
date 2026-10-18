@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.theory.features.Named
@@ -33,8 +33,11 @@ abstract class GraphCanvasController {
   def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
-  def canSelect: Boolean =
+  def canDrawSelectionRectangle: Boolean =
     true //TODO! False!
+
+  def setSelection(selectedVertexes: Set[VisualVertex], selectedArcs: Set[VisualArc]):
+    Option[VisualGraph]
 
   //TODO! Make this abstract!
   def createVertexNode(vertex: VisualVertex): VertexNode =
@@ -42,7 +45,7 @@ abstract class GraphCanvasController {
 
   //TODO! Make this abstract!
   def createArcNode(arc: VisualArc): ArcNode =
-    new PlainArcNode(graphCanvas, arc)
+    new LabeledArcNode(graphCanvas, arc)
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
@@ -90,27 +93,26 @@ abstract class GraphCanvasController {
     }
   }
 
-  def createVertex(center: Point2D): Option[VisualVertex]
+  def createVertex(center: Point2D): Option[VisualVertex] =
+    None
 
-  def canDeleteSelection: Boolean =
-    true //TODO! false!
+  def deleteSelection(): Option[VisualGraph] =
+    None
 
-  def canDragVertexes: Boolean =
-    true //TODO
+  def editVertex(vertex: VisualVertex): Option[VisualGraph] =
+    None
+
+  def dragSelectedVertexesBy(delta: Delta): Option[VisualGraph] =
+    None
 
 
   //
   // ANCIENT FUNCTIONS
   //
 
-  //TODO! Turn this into a function of VisualArc, that the 2 specific trait will implement by returning their related constants!
+  /*//TODO! Turn this into a function of VisualArc, that the 2 specific trait will implement by returning their related constants!
   def renderDirected: Boolean
 
-
-
-
- // def createVertex(center: Point2D): Option[VisualGraph] =
- //   None
 
   def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[VisualGraph] =
     None
@@ -133,7 +135,6 @@ abstract class GraphCanvasController {
   def setSelection(selectionVertexes: Set[VisualVertex], selectionArcs: Set[VisualArc]): Option[VisualGraph] =
     None
 
-  //TODO! Delta should have a dedicated type!
   def dragSelection(delta: Point2D): Option[VisualGraph] =
     None
 
@@ -147,5 +148,5 @@ abstract class GraphCanvasController {
     None
 
   def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[VisualGraph] =
-    None
+    None*/
 }

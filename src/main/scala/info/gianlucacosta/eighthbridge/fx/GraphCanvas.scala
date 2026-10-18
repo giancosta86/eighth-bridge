@@ -183,13 +183,11 @@ class GraphCanvas(
     )
   }
 
+  //TODO! Move to DefaultBackgroundNode and simplify
   private def handleDelKeyPressed(): Unit = {
-    if (controller.canDeleteSelection) {
-      graph() =
-        graph()
-          .removeArcs(graph().selectedArcs)
-          .removeVertexes(graph().selectedVertexes)
-    }
+    controller.deleteSelection().foreach(
+      updatedGraph => graph() = updatedGraph
+    )
   }
 
   handleEvent(KeyEvent.KeyPressed) {

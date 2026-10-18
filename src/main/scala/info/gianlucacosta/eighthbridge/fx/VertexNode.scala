@@ -77,27 +77,57 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     dragAnchor =
       point
 
-    if (controller.canSelect) {
+    val controllerResult =
       if (controlDown) {
-        graph =
-          graph.updateVertex(
-            vertex.setSelected(!vertex.selected)
-          )
-      } else if (!initialVertex.selected) {
-        graph =
-          graph.setSelection(Set(vertex), Set())
+        val vertexesToSelect =
+          if (vertex.selected)
+            graph.selectedVertexes - vertex
+          else
+            graph.selectedVertexes + vertex
+
+        controller.setSelection(
+          selectedVertexes =
+            vertexesToSelect,
+
+          selectedArcs =
+            graph.selectedArcs
+        )
+      } else {
+        controller.setSelection(
+          selectedVertexes =
+            Set(vertex),
+
+          selectedArcs =
+            Set()
+        )
       }
+
+    controllerResult.foreach(graph_=)
+  }
+
+  private def handleDoublePrimaryPressed(): Unit = {
+    val selectedVertexes =
+      graph.selectedVertexes
+
+    if (selectedVertexes.size == 1 && graph.selectedArcs.isEmpty) {
+      val selectedVertex =
+        selectedVertexes.head
+
+      controller.editVertex(selectedVertex)
+        .foreach(newGraph =>
+          graph =
+            newGraph
+        )
     }
   }
 
 
   private def handlePrimaryDragged(mousePoint: Point2D): Unit = {
-    if (vertex.selected && controller.canDragVertexes) {
+    if (vertex.selected) {
       val delta =
         mousePoint - dragAnchor
 
-      graph =
-        graph.moveSelectedVertexesBy(delta)
+      controller.dragSelectedVertexesBy(delta).foreach(graph_=)
 
       dragAnchor =
         mousePoint
@@ -121,19 +151,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
               handleSinglePrimaryPressed(mouseEvent.point, controlDown = mouseEvent.controlDown)
 
             case 2 =>
-              /*val selectedVertexes =
-                graph.selectedVertexes
-
-              if (selectedVertexes.size == 1 && graph.selectedArcs.isEmpty) {
-                val selectedVertex =
-                  selectedVertexes.head
-
-                controller.editVertex(selectedVertex)
-                  .foreach(newGraph =>
-                    graph =
-                      newGraph
-                  )
-              }*/
+              handleDoublePrimaryPressed()
 
             case _ =>
           }

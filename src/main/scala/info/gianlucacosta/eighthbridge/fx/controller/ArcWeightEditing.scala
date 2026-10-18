@@ -10,7 +10,7 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 trait ArcWeightEditing
   extends ArcEditing {
 
-  def getMinWeight(arc: VisualArc with Weighted): Double =
+  /*def getMinWeight(arc: VisualArc with Weighted): Double =
     0
 
   def getMaxWeight(arc: VisualArc with Weighted): Double =
@@ -29,5 +29,5 @@ trait ArcWeightEditing
       .map(newWeight => {
         weightedArc.setWeight(newWeight).asInstanceOf[VisualArc]
       })
-  }
+  }*/
 }
