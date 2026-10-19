@@ -123,18 +123,9 @@ class GraphCanvas(
   )
 
   private def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
-    val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
-      graphDiff.addedVertexes.map(vertex =>
-          vertex ->
-              controller.createVertexNode(vertex)
-        )
-        .toMap
-
-    val addedArcNodesByArc: Map[VisualArc, ArcNode] =
-      graphDiff.addedArcs.map(arc =>
-          arc -> controller.createArcNode(arc)
-        )
-        .toMap
+    println(s"${new java.util.Date}: RENDERING THE GRAPH WITH DIFF:")
+    println(graphDiff)
+    println()
 
     val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
@@ -142,29 +133,58 @@ class GraphCanvas(
     val danglingArcNodesByArc: Map[VisualArc, ArcNode] =
       arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
 
-    _vertexNodesByVertex =
-      vertexNodesByVertex ++ addedVertexNodesByVertex -- danglingVertexNodesByVertex.keySet
+    _vertexNodesByVertex --=
+      danglingVertexNodesByVertex.keySet
 
-    _arcNodesByArc =
-      arcNodesByArc ++ addedArcNodesByArc -- danglingArcNodesByArc.keySet
+    _arcNodesByArc --=
+      danglingArcNodesByArc.keySet
 
-    vertexNodesByVertex
-      .foreach{ case (vertex, vertexNode) =>
+
+    _vertexNodesByVertex.foreach { case (vertex, vertexNode) =>
+      if (graphDiff.updatedVertexes.contains(vertex)) {
         val updatedVertex =
           updatedGraph.getVertexById(vertex.id).get
 
         vertexNode.update(updatedVertex)
       }
+    }
 
-    arcNodesByArc
-      .foreach { case (arc, arcNode) =>
+    _arcNodesByArc.foreach { case (arc, arcNode) =>
+      if (graphDiff.updatedArcs.contains(arc)) {
         val updatedArc =
           updatedGraph.getArcById(arc.id).get
 
         arcNode.update(updatedArc)
       }
+    }
 
+    val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
+      graphDiff.addedVertexes.map(vertex => {
+          val vertexNode =
+            controller.createVertexNode(vertex)
 
+          vertexNode.update(vertex)
+
+          vertex -> vertexNode
+        })
+        .toMap
+
+    val addedArcNodesByArc: Map[VisualArc, ArcNode] =
+      graphDiff.addedArcs.map(arc => {
+          val arcNode =
+            controller.createArcNode(arc)
+
+          arcNode.update(arc)
+
+          arc -> arcNode
+        })
+        .toMap
+
+    _vertexNodesByVertex ++=
+      addedVertexNodesByVertex
+
+    _arcNodesByArc ++=
+      addedArcNodesByArc
 
     addedVertexNodesByVertex.values.foreach(children.add(_))
 

@@ -31,7 +31,7 @@ class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex) e
     super.update(updatedVertex)
 
     //TODO! Reactivate this in Prim to study performance optimizations in GraphCanvas: reduce redraws as much as possible
-    //println(s"${new java.util.Date} LABELED VERTEX NODE UPDATED NOW! ----> ${updatedVertex.asInstanceOf[Labeled].label}")
+    println(s"${new java.util.Date} LABELED VERTEX NODE UPDATED NOW! ----> ${updatedVertex.asInstanceOf[Labeled].label}")
 
     _label() =
       updatedVertex.asInstanceOf[Labeled].label
