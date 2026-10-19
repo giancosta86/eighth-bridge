@@ -7,7 +7,7 @@ import scalafx.geometry.Point2D
 /**
   * An arc for VisualGraph
   */
-class VisualArc(arrowEndValue: Option[ArcArrowEnd])
+class VisualArc(barbsValue: Option[ArcBarbs])
   extends Arc with Timestamped with Cloneable {
   private var _timestamp: Long =
     System.nanoTime()
@@ -21,8 +21,8 @@ class VisualArc(arrowEndValue: Option[ArcArrowEnd])
   private var _styleClasses: Set[String] =
     Set()
 
-  private var _arrowEnd: Option[ArcArrowEnd] =
-    arrowEndValue
+  private var _barbs: Option[ArcBarbs] =
+    barbsValue
 
   def timestamp: Long =
     _timestamp
@@ -81,16 +81,16 @@ class VisualArc(arrowEndValue: Option[ArcArrowEnd])
     } else
       this
 
-  def arrowEnd: Option[ArcArrowEnd] =
-    _arrowEnd
+  def barbs: Option[ArcBarbs] =
+    _barbs
 
-  def setArrowEnd(arrowEnd: Option[ArcArrowEnd]): this.type =
-    if (arrowEnd != _arrowEnd) {
+  def setBarbs(barbs: Option[ArcBarbs]): this.type =
+    if (barbs != _barbs) {
       val result =
         updateTimestamp()
 
-      result._arrowEnd =
-        arrowEnd
+      result._barbs =
+        barbs
 
       result
     } else
