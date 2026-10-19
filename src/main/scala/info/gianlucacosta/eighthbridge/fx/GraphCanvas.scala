@@ -38,7 +38,9 @@ class GraphCanvas(
     val graphDiff =
       newValue.getDiffSince(oldValue)
 
-    render(newValue, graphDiff)
+    if (graphDiff.nonEmpty) {
+      render(newValue, graphDiff)
+    }
   }
 
   val zoomEnabled =
