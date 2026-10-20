@@ -71,12 +71,12 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     )
   }
 
-  private def handleSinglePrimaryPressed(point: Point2D, controlDown: Boolean): Unit = {
+  protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
     dragAnchor =
       point
 
     val controllerResult =
-      if (controlDown) {
+      if (controlPressed) {
         val vertexesToSelect =
           if (vertex.selected)
             graph.selectedVertexes - vertex
@@ -108,7 +108,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     controllerResult.foreach(graph_=)
   }
 
-  private def handleDoublePrimaryPressed(): Unit = {
+  protected override def handleDoublePrimaryPressed(point: Point2D): Unit = {
     val selectedVertexes =
       graph.selectedVertexes
 
@@ -125,7 +125,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
 
-  private def handlePrimaryDragged(mousePoint: Point2D): Unit = {
+  protected override def handlePrimaryDragged(mousePoint: Point2D): Unit = {
     if (vertex.selected) {
       val delta =
         mousePoint - dragAnchor
@@ -137,7 +137,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     }
   }
 
-  def handleSingleSecondaryPressed(): Unit = {
+  protected override def handleSingleSecondaryPressed(point: Point2D): Unit = {
     if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(initialVertex) && graph.selectedArcs.isEmpty) {
       val selectedVertex =
         graph.selectedVertexes.head
@@ -147,52 +147,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
           graph =
             newGraph
         )
-    }
-  }
-
-
-  handleEvent(MouseEvent.Any) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.consume()
-    }
-  }
-
-
-  handleEvent(MouseEvent.MousePressed) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.button match {
-        case MouseButton.Primary =>
-          mouseEvent.clickCount match {
-            case 1 =>
-              handleSinglePrimaryPressed(mouseEvent.point, controlDown = mouseEvent.controlDown)
-
-            case 2 =>
-              handleDoublePrimaryPressed()
-
-            case _ =>
-          }
-
-        case MouseButton.Secondary =>
-          mouseEvent.clickCount match {
-            case 1 =>
-              handleSingleSecondaryPressed()
-          }
-
-        case _ =>
-      }
-      ()
-    }
-  }
-
-
-  handleEvent(MouseEvent.MouseDragged) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.button match {
-        case MouseButton.Primary =>
-          handlePrimaryDragged(mouseEvent.point)
-
-        case _ =>
-      }
     }
   }
 }

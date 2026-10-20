@@ -93,18 +93,18 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     selectionRectangle
   )
 
-  private def handleSinglePrimaryPressed(point: Point2D): Unit = {
+  protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
     dragAnchor =
       point
 
     controller.setSelection(Set(), Set()).foreach(graph_=)
   }
 
-  private def handleSingleSecondaryPressed(): Unit = {
+  protected override def handleSingleSecondaryPressed(point: Point2D): Unit = {
     controller.setSelection(Set(), Set()).foreach(graph_=)
   }
 
-  private def handleSinglePrimaryReleased(point: Point2D): Unit = {
+  protected override def handleSinglePrimaryReleased(point: Point2D): Unit = {
     if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
       && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
       tryToCreateNewVertex(point)
@@ -116,7 +116,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       DefaultBackgroundNode.EmptySelectionBounds
   }
 
-  private def handlePrimaryDragged(point: Point2D): Unit = {
+  protected override def handlePrimaryDragged(point: Point2D): Unit = {
     if (controller.canDrawSelectionRectangle) {
       val clippedMousePoint =
         point.clip(graphCanvas.dimension)
@@ -152,44 +152,4 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
           selectionArcs
         )
   }
-
-  handleEvent(MouseEvent.MousePressed) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.button match {
-        case MouseButton.Primary =>
-          handleSinglePrimaryPressed(mouseEvent.point)
-
-        case MouseButton.Secondary =>
-          handleSingleSecondaryPressed()
-
-        case _ =>
-      }
-
-      ()
-    }
-  }
-
-
-  handleEvent(MouseEvent.MouseDragged) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.button match {
-        case MouseButton.Primary =>
-          handlePrimaryDragged(mouseEvent.point)
-        case _ =>
-      }
-    }
-  }
-
-
-  handleEvent(MouseEvent.MouseReleased) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.button match {
-        case MouseButton.Primary =>
-          handleSinglePrimaryReleased(mouseEvent.point)
-
-        case _ =>
-      }
-    }
-  }
-
 }

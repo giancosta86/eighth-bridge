@@ -374,11 +374,7 @@ G <: VisualGraph[V, A]
   })
 
 
-  handleEvent(MouseEvent.Any) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.consume()
-    }
-  }
+
 
 
   filterEvent(MouseEvent.MousePressed) {

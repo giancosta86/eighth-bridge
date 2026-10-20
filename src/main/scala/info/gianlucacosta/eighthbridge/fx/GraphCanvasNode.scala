@@ -1,8 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import scalafx.scene.{Group, Node}
 import scalafx.Includes._
+import scalafx.geometry.Point2D
+import scalafx.scene.input.{MouseButton, MouseEvent}
 
 /**
   * Generic JavaFX node rendering a graph element into GraphCanvas.
@@ -32,4 +35,71 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
     */
   protected final def graph_=(newGraph: VisualGraph): Unit =
     graphCanvas.graph() = newGraph
+
+
+  handleEvent(MouseEvent.Any) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.consume()
+    }
+  }
+
+  protected def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = { }
+
+  protected def handleDoublePrimaryPressed(point: Point2D): Unit = { }
+
+  protected def handleSingleSecondaryPressed(point: Point2D): Unit = { }
+
+  protected def handlePrimaryDragged(point: Point2D): Unit = { }
+
+  protected def handleSinglePrimaryReleased(point: Point2D): Unit = { }
+
+
+  handleEvent(MouseEvent.MousePressed) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Primary =>
+          mouseEvent.clickCount match {
+            case 1 =>
+              handleSinglePrimaryPressed(mouseEvent.point, controlPressed = mouseEvent.controlDown)
+
+            case 2 =>
+              handleDoublePrimaryPressed(mouseEvent.point)
+
+            case _ =>
+          }
+
+        case MouseButton.Secondary =>
+          mouseEvent.clickCount match {
+            case 1 =>
+              handleSingleSecondaryPressed(mouseEvent.point)
+          }
+
+        case _ =>
+      }
+      ()
+    }
+  }
+
+
+  handleEvent(MouseEvent.MouseDragged) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Primary =>
+          handlePrimaryDragged(mouseEvent.point)
+
+        case _ =>
+      }
+    }
+  }
+
+  handleEvent(MouseEvent.MouseReleased) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Primary =>
+          handleSinglePrimaryReleased(mouseEvent.point)
+
+        case _ =>
+      }
+    }
+  }
 }
