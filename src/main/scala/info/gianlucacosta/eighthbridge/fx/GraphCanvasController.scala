@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, Delta, LabeledVisualArc, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.theory.features.Named
@@ -45,7 +45,7 @@ abstract class GraphCanvasController {
 
   //TODO! Make this abstract!
   def createArcNode(arc: VisualArc): ArcNode =
-    new LabeledArcNode(graphCanvas, arc)
+    new PlainArcNode(graphCanvas, arc)
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
@@ -93,7 +93,7 @@ abstract class GraphCanvasController {
     }
   }
 
-  def createVertex(center: Point2D): Option[VisualVertex] =
+  def createVertex(center: Point2D): Option[VisualGraph] =
     None
 
   def deleteSelection(): Option[VisualGraph] =
@@ -104,6 +104,14 @@ abstract class GraphCanvasController {
 
   def dragSelectedVertexesBy(delta: Delta): Option[VisualGraph] =
     None
+
+  //TODO: None!
+  def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[VisualGraph] =
+    Some(
+      graph.addArc(
+        sourceVertex, targetVertex, new LabeledVisualArc(Some(ArcBarbs.Default), "Dodo")
+      )
+    )
 
 
   //

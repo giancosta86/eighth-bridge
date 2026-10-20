@@ -53,7 +53,7 @@
  *-------*/
 
 
-.arc .line {
+.arc > .line {
     -fx-stroke: #9fecf3;
     -fx-stroke-width: 5;
 }
@@ -79,7 +79,7 @@
  * ARCS - SELECTED
  *------------------*/
 
- .arc:selected .line {
+ .arc:selected > .line {
      -fx-stroke: #18ab00;
  }
 

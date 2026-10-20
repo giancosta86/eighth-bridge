@@ -130,10 +130,10 @@ class GraphCanvas(
     println()
 
     val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
-      vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
+      _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
     val danglingArcNodesByArc: Map[VisualArc, ArcNode] =
-      arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
+      _arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
 
     _vertexNodesByVertex --=
       danglingVertexNodesByVertex.keySet
@@ -190,7 +190,13 @@ class GraphCanvas(
 
     addedVertexNodesByVertex.values.foreach(children.add(_))
 
-    addedArcNodesByArc.values.foreach(children.add(_))
+    addedArcNodesByArc.values.foreach(addedArcNode =>
+      /*
+       * The first child node is always the background node.
+       * Then, new arcs can be added so that newer ones will stay on top.
+       */
+      children.add(updatedGraph.arcs.size, addedArcNode)
+    )
 
     danglingVertexNodesByVertex.values.foreach(children.remove(_))
 

@@ -20,8 +20,6 @@ import scalafx.scene.layout.Region
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends GraphCanvasNode(graphCanvas) {
 
-  toFront()
-
   private var _vertex: VisualVertex =
     initialVertex
 
@@ -134,6 +132,19 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     }
   }
 
+  def handleSingleSecondaryPressed(): Unit = {
+    if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(initialVertex) && graph.selectedArcs.isEmpty) {
+      val selectedVertex =
+        graph.selectedVertexes.head
+
+      controller.createArc(selectedVertex, _vertex)
+        .foreach(newGraph =>
+          graph =
+            newGraph
+        )
+    }
+  }
+
 
   handleEvent(MouseEvent.Any) {
     (mouseEvent: MouseEvent) => {
@@ -159,16 +170,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 1 =>
-              /*if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(initialVertex) && graph.selectedArcs.isEmpty) {
-                val selectedVertex =
-                  graph.selectedVertexes.head
-
-                controller.createArc(selectedVertex, initialVertex)
-                  .foreach(newGraph =>
-                    graph =
-                      newGraph
-                  )
-              }*/
+              handleSingleSecondaryPressed()
           }
 
         case _ =>

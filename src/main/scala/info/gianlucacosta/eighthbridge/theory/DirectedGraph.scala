@@ -250,7 +250,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       getArcsBetween(anotherVertex -> oneVertex)
   }
 
-  def getVertexPair(arc: A): Option[(V, V)] =
+  def getAnchors(arc: A): Option[(V, V)] =
     vertexPairsByArc.get(arc)
 
   def getAdjacent(vertex: V): Set[V] =

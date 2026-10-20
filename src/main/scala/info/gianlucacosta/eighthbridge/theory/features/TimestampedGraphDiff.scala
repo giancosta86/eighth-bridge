@@ -11,10 +11,10 @@ case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Arc with Time
                                                                                           removedArcs: Set[A] = Set[A]()
                                ) {
   def nonEmpty: Boolean =
-    addedVertexes.nonEmpty ||
-      addedArcs.nonEmpty ||
-      updatedVertexes.nonEmpty ||
+    updatedVertexes.nonEmpty ||
       updatedArcs.nonEmpty ||
+      addedVertexes.nonEmpty ||
+      addedArcs.nonEmpty ||
       removedVertexes.nonEmpty ||
       removedArcs.nonEmpty
 }

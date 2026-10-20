@@ -11,7 +11,8 @@ import scalafx.scene.Group
 /**
   * JavaFX node rendering a VisualArc
   */
-abstract class ArcNode(graphCanvas: GraphCanvas, val initialArc: VisualArc) extends GraphCanvasNode(graphCanvas) {
+abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
+  extends GraphCanvasNode(graphCanvas) {
   private var _arc: VisualArc =
     initialArc
 
@@ -19,6 +20,8 @@ abstract class ArcNode(graphCanvas: GraphCanvas, val initialArc: VisualArc) exte
     _arc
 
   protected[fx] def update(updatedArc: VisualArc): Unit = {
+    //TODO! Remove all println() calls!
+
     _arc =
       updatedArc
 

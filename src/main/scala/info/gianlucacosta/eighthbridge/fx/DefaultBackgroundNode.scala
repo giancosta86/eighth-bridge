@@ -130,9 +130,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
 
   private def tryToCreateNewVertex(center: Point2D): Unit = {
     controller.createVertex(center)
-      .foreach(vertex =>
-        graph = graph.addVertex(vertex)
-      )
+      .foreach(graph_=)
   }
 
   private def setSelectionFromRectangle(): Unit = {

@@ -30,7 +30,6 @@ class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex) e
   override protected[fx] def update(updatedVertex: VisualVertex): Unit = {
     super.update(updatedVertex)
 
-    //TODO! Reactivate this in Prim to study performance optimizations in GraphCanvas: reduce redraws as much as possible
     println(s"${new java.util.Date} LABELED VERTEX NODE UPDATED NOW! ----> ${updatedVertex.asInstanceOf[Labeled].label}")
 
     _label() =

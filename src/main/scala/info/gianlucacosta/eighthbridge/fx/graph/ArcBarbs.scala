@@ -102,22 +102,22 @@ object ArcBarbs {
     val deltaQuarterRoot =
       sqrt(halfB * halfB - a * c)
 
-    val x1 =
+    val leftX =
       (-halfB - deltaQuarterRoot) / a
 
-    val y1 =
-      (d - deltaX * x1) / deltaY
+    val leftY =
+      (d - deltaX * leftX) / deltaY
 
-    val x2 =
+    val rightX =
       (-halfB + deltaQuarterRoot) / a
 
-    val y2 =
-      (d - deltaX * x2) / deltaY
+    val rightY =
+      (d - deltaX * rightX) / deltaY
 
     Some(
       (
-        new Point2D(x1, y1),
-        new Point2D(x2, y2)
+        new Point2D(leftX, leftY),
+        new Point2D(rightX, rightY)
       )
     )
   }
