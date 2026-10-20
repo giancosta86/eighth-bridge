@@ -2,7 +2,10 @@ package info.gianlucacosta.eighthbridge.fx.graph
 
 import Delta._
 import info.gianlucacosta.eighthbridge.theory.DirectedGraph
+import info.gianlucacosta.helios.fx.Includes.extendPoint2D
+import scalafx.geometry.Point2D
 
+import Math._
 
 /**
   * Graph dedicated to rendering within GraphCanvas.
@@ -15,9 +18,11 @@ class VisualGraph(
 ) extends DirectedGraph[VisualVertex, VisualArc] {
   override protected def graphCopy(vertexes: Set[VisualVertex], arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]]): this.type =
     new VisualGraph(
-      vertexes = vertexes,
+      vertexes =
+        vertexes,
 
-      arcsByVertexPair = arcsByVertexPair
+      arcsByVertexPair =
+        arcsByVertexPair
     ).asInstanceOf[this.type]
 
   override def equals(obj: Any): Boolean =
@@ -78,7 +83,7 @@ class VisualGraph(
     val movedVertexes: Set[VisualVertex] =
       selectedVertexes.map(vertex =>
         vertex.setCenter(
-          vertex.center + delta
+          (vertex.center + delta).nonNegative
         )
       )
 
