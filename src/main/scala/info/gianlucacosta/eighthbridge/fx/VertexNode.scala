@@ -91,14 +91,19 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
             graph.selectedArcs
         )
       } else {
-        controller.setSelection(
-          selectedVertexes =
-            Set(vertex),
+        if (vertex.selected) {
+          None
+        } else {
+          controller.setSelection(
+            selectedVertexes =
+              Set(vertex),
 
-          selectedArcs =
-            Set()
-        )
+            selectedArcs =
+              Set()
+          )
+        }
       }
+
 
     controllerResult.foreach(graph_=)
   }
