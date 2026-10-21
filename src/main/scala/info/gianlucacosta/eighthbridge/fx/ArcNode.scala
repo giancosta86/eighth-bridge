@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleObjectProperty
 
 import scala.collection.JavaConversions._
 import scalafx.Includes._
-import scalafx.beans.property.ObjectProperty
+import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 import scalafx.scene.input.MouseEvent
@@ -19,8 +19,11 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   private var _arc: VisualArc =
     initialArc
 
-  protected val arcBarbs: ObjectProperty[Option[ArcBarbs]] =
+  private val _arcBarbs =
     new SimpleObjectProperty[Option[ArcBarbs]](None)
+
+  protected val arcBarbs: ReadOnlyObjectProperty[Option[ArcBarbs]] =
+    _arcBarbs
 
   def arc: VisualArc =
     _arc
@@ -30,7 +33,7 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
     _arc =
       updatedArc
 
-    arcBarbs() =
+    _arcBarbs() =
       updatedArc.barbs
 
     styleClass.setAll("arc")
