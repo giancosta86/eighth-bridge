@@ -59,7 +59,7 @@
 }
 
 
-.arc .handlePoint {
+.arc .handle {
     -fx-fill: #9fecf3;
 }
 
@@ -83,6 +83,6 @@
      -fx-stroke: #18ab00;
  }
 
- .arc:selected .handlePoint {
+ .arc:selected .handle {
      -fx-fill: #18ab00;
  }
