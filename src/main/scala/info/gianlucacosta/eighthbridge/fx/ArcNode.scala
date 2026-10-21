@@ -1,11 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 
 import scala.collection.JavaConversions._
 import scalafx.Includes._
+import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 import scalafx.scene.input.MouseEvent
@@ -18,14 +19,19 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   private var _arc: VisualArc =
     initialArc
 
+  protected val arcBarbs: ObjectProperty[Option[ArcBarbs]] =
+    new SimpleObjectProperty[Option[ArcBarbs]](None)
+
   def arc: VisualArc =
     _arc
 
   protected[fx] def update(updatedArc: VisualArc): Unit = {
     //TODO! Remove all println() calls!
-
     _arc =
       updatedArc
+
+    arcBarbs() =
+      updatedArc.barbs
 
     styleClass.setAll("arc")
     styleClass.addAll(updatedArc.styleClasses)

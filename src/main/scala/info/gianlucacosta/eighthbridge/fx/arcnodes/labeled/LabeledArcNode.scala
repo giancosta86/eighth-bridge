@@ -1,10 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 
+import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
 import info.gianlucacosta.eighthbridge.fx.graph.VisualArc
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
 
 class LabeledArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
-extends ArcNode(graphCanvas, arc)
+extends PlainArcNode(graphCanvas, arc)
 
 /*
 class DefaultLinkNode[

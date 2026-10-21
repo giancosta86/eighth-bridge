@@ -3,12 +3,12 @@
  *------------*/
 
 
-.graph > .backgroundRectangle {
+.graph .backgroundRectangle {
     -fx-fill: white;
 }
 
 
-.graph > .selectionRectangle {
+.graph .selectionRectangle {
     -fx-fill: #e5ffe0;
 }
 
@@ -17,7 +17,7 @@
  * VERTEXES
  *----------*/
 
-.vertex > .label {
+.vertex .label {
     -fx-font-family: Arial;
     -fx-font-size: 14px;
 
@@ -42,7 +42,7 @@
  *---------------------*/
 
 
-.vertex:selected > .label {
+.vertex:selected .label {
     -fx-background-color: #ffce5a;
 
 }
@@ -53,23 +53,23 @@
  *-------*/
 
 
-.arc > .line {
+.arc .line {
     -fx-stroke: #9fecf3;
     -fx-stroke-width: 5;
 }
 
 
-.arc > .handlePoint {
+.arc .handlePoint {
     -fx-fill: #9fecf3;
 }
 
-.arc > .labelConnector {
+.arc .labelConnector {
     -fx-stroke: maroon;
     -fx-stroke-dash-array: 15 10;
 }
 
 
-.arc > .label {
+.arc .label {
     -fx-font: 14 Arial;
     -fx-fill: black;
 }
@@ -79,10 +79,10 @@
  * ARCS - SELECTED
  *------------------*/
 
- .arc:selected > .line {
+ .arc:selected .line {
      -fx-stroke: #18ab00;
  }
 
- .arc:selected > .handlePoint {
+ .arc:selected .handlePoint {
      -fx-fill: #18ab00;
  }

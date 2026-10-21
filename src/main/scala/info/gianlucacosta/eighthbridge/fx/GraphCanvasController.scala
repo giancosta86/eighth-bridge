@@ -45,7 +45,7 @@ abstract class GraphCanvasController {
 
   //TODO! Make this abstract!
   def createArcNode(arc: VisualArc): ArcNode =
-    new PlainArcNode(graphCanvas, arc)
+    new LabeledArcNode(graphCanvas, arc)
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(

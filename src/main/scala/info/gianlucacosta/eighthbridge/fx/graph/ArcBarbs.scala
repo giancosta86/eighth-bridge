@@ -5,7 +5,7 @@ import Math._
 
 object ArcBarbs {
   val Default = ArcBarbs(
-    angle = math.Pi / 6,
+    angleInDegrees = 30,
     length = 15
   )
 
@@ -18,6 +18,7 @@ object ArcBarbs {
    * @param targetSize The size of the rectangle.
    * @return The intersection point - which could be None if the source point is internal to the rectangle.
    */
+    //TODO! Simplify these formulas by unpacking the objects into plain parameters?
   def getIntersection(sourcePoint: Point2D, targetCenter: Point2D, targetSize: Dimension2D): Option[Point2D] = {
     val deltaX =
       sourcePoint.x - targetCenter.x
@@ -66,17 +67,13 @@ object ArcBarbs {
         )
   }
 
-  def getBarbPoints(source: Point2D, target: Point2D, barbLength: Double, barbAngleInDegrees: Double): Option[(Point2D, Point2D)] = {
+  def getSidePoints(source: Point2D, target: Point2D, barbs: ArcBarbs): Option[(Point2D, Point2D)] = {
     if (source == target) {
       return None
     }
 
-    if (barbAngleInDegrees <= 0 || barbAngleInDegrees >= 90) {
-      return None
-    }
-
     val barbAngle =
-      toRadians(barbAngleInDegrees)
+      toRadians(barbs.angleInDegrees)
 
     val deltaX =
       source.x - target.x
@@ -91,13 +88,13 @@ object ArcBarbs {
       deltaX * deltaX + squaredDeltaY
 
     val d =
-      source.x * deltaX + source.y * deltaY - a + barbLength * sqrt(a) * cos(barbAngle)
+      source.x * deltaX + source.y * deltaY - a + barbs.length * sqrt(a) * cos(barbAngle)
 
     val halfB =
       target.y * deltaX * deltaY - target.x * squaredDeltaY - d * deltaX
 
     val c =
-      squaredDeltaY * (target.x * target.x + target.y * target.y - barbLength * barbLength) + d * (d - 2 * target.y * deltaY)
+      squaredDeltaY * (target.x * target.x + target.y * target.y - barbs.length * barbs.length) + d * (d - 2 * target.y * deltaY)
 
     val deltaQuarterRoot =
       sqrt(halfB * halfB - a * c)
@@ -124,6 +121,10 @@ object ArcBarbs {
 }
 
 case class ArcBarbs(
-                      angle: Double,
-                      length: Double
-                    )
+                     angleInDegrees: Double,
+                     length: Double
+                    ) {
+  require(0 < angleInDegrees && angleInDegrees < 90)
+
+  require(length > 0)
+}

@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
 import info.gianlucacosta.eighthbridge.fx.graph.VisualArc
-import scalafx.scene.shape.Line
+import scalafx.Includes._
 
 class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
   extends ArcNode(graphCanvas, arc) {
@@ -20,4 +20,26 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
     new LinkLine(sourceVertexNode, targetVertexNode)
 
   children.add(line)
+
+  arcBarbs.onChange(updateBarbSegments())
+
+  private var barbSegments: Option[BarbSegments] =
+    None
+
+  private def updateBarbSegments(): Unit = {
+    if (arcBarbs().isDefined && barbSegments.isEmpty) {
+      val createdBarbSegments =
+        new BarbSegments(sourceVertexNode, targetVertexNode, arc.barbs.get)
+
+      barbSegments =
+        Some(createdBarbSegments)
+
+      children.add(createdBarbSegments)
+    } else if (arcBarbs().isEmpty) {
+      barbSegments.foreach(children.remove(_))
+
+      barbSegments =
+        None
+    }
+  }
 }
