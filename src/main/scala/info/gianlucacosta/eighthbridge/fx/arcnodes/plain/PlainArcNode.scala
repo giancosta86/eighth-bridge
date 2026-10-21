@@ -42,4 +42,11 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
         None
     }
   }
+
+  override protected[fx] def update(updatedArc: VisualArc): Unit = {
+    super.update(updatedArc)
+
+    shaft.handles() =
+      updatedArc.handles
+  }
 }
