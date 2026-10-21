@@ -21,24 +21,24 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
 
   children.add(shaft)
 
-  private var barbSegments: Option[BarbSegments] =
+  private var barbs: Option[Barbs] =
     None
 
   arcBarbs.onChange(updateBarbSegments())
 
   private def updateBarbSegments(): Unit = {
-    if (arcBarbs().isDefined && barbSegments.isEmpty) {
-      val createdBarbSegments =
-        new BarbSegments(sourceVertexNode, targetVertexNode, arc.barbs.get)
+    if (arcBarbs().isDefined && barbs.isEmpty) {
+      val brandNewBarbs =
+        new Barbs(sourceVertexNode, targetVertexNode, arc.barbs.get)
 
-      barbSegments =
-        Some(createdBarbSegments)
+      barbs =
+        Some(brandNewBarbs)
 
-      children.add(createdBarbSegments)
+      children.add(brandNewBarbs)
     } else if (arcBarbs().isEmpty) {
-      barbSegments.foreach(children.remove(_))
+      barbs.foreach(children.remove(_))
 
-      barbSegments =
+      barbs =
         None
     }
   }
