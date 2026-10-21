@@ -16,15 +16,15 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
   private val targetVertexNode =
     graphCanvas.vertexNodesByVertex(targetVertex)
 
-  private val line =
-    new LinkLine(sourceVertexNode, targetVertexNode)
+  private val shaft =
+    new Shaft(sourceVertexNode, targetVertexNode)
 
-  children.add(line)
-
-  arcBarbs.onChange(updateBarbSegments())
+  children.add(shaft)
 
   private var barbSegments: Option[BarbSegments] =
     None
+
+  arcBarbs.onChange(updateBarbSegments())
 
   private def updateBarbSegments(): Unit = {
     if (arcBarbs().isDefined && barbSegments.isEmpty) {
