@@ -77,5 +77,31 @@ object Weighted {
         .getMinEdgeBetween(oneVertex, anotherVertex)
         .map(_.weight)
         .getOrElse(Weight.PositiveInfinity)
+
+    def getMaxArcBetween(source: V, target: V): Option[A] =
+      self
+        .getArcsBetween(source, target)
+        .toList
+        .sortBy(_.weight)
+        .lastOption
+
+    def getMaxEdgeBetween(oneVertex: V, anotherVertex: V): Option[A] =
+      self
+        .getEdgesBetween(oneVertex, anotherVertex)
+        .toList
+        .sortBy(_.weight)
+        .lastOption
+
+    def getMaxArcWeightBetween(source: V, target: V): Weight =
+      self
+        .getMaxArcBetween(source, target)
+        .map(_.weight)
+        .getOrElse(Weight.NegativeInfinity)
+
+    def getMaxEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
+      self
+        .getMaxEdgeBetween(oneVertex, anotherVertex)
+        .map(_.weight)
+        .getOrElse(Weight.NegativeInfinity)
   }
 }
