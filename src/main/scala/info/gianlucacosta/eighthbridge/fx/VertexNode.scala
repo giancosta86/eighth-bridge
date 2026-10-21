@@ -18,7 +18,7 @@ import scalafx.scene.layout.Region
   * JavaFX node rendering a VisualVertex
   */
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
-  extends GraphCanvasNode(graphCanvas) {
+  extends GraphCanvasNode(graphCanvas) with Centered {
 
   private var _vertex: VisualVertex =
     initialVertex

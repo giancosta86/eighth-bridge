@@ -1,20 +1,21 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.VertexNode
+import info.gianlucacosta.eighthbridge.fx.{Centered, VertexNode}
+import scalafx.geometry.Point2D
 import scalafx.scene.shape.Line
 
-private class ShaftSegment(sourceVertexNode: VertexNode, targetVertexNode: VertexNode) extends Line {
+private class ShaftSegment(start: Centered, end: Centered) extends Line {
   styleClass.add("line")
 
   startX <==
-    sourceVertexNode.centerX
+    start.centerX
 
   startY <==
-    sourceVertexNode.centerY
+    start.centerY
 
   endX <==
-    targetVertexNode.centerX
+    end.centerX
 
   endY <==
-    targetVertexNode.centerY
+    end.centerY
 }

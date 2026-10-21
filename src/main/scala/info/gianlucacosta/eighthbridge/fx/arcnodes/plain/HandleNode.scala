@@ -1,10 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
+import info.gianlucacosta.eighthbridge.fx.Centered
 import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
 import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
 
-class HandleNode(initialArcHandle: ArcHandle) extends Ellipse {
+class HandleNode(initialArcHandle: ArcHandle) extends Ellipse with Centered {
   styleClass.add("handle")
 
   private var arcHandle: ArcHandle =
