@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
-import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
+import info.gianlucacosta.helios.fx.Includes.{extendMouseEvent, extendNode}
 import scalafx.scene.{Group, Node}
 import scalafx.Includes._
 import scalafx.geometry.Point2D
@@ -37,11 +37,7 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
     graphCanvas.graph() = newGraph
 
 
-  handleEvent(MouseEvent.Any) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.consume()
-    }
-  }
+  this.consumeMouseEvents()
 
   protected def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = { }
 

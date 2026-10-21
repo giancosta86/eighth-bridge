@@ -4,6 +4,7 @@ import scalafx.geometry.Point2D
 
 case class Delta(x: Double, y: Double)
 
+//TODO! Move this to Helios FX?
 object Delta {
   implicit class Point2DDeltaExtensions(self: Point2D) {
     def +(delta: Delta): Point2D =
