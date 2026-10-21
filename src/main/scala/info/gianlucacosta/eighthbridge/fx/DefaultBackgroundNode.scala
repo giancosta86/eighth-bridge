@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{NamedVisualVertex, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, NamedVisualVertex, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import javafx.beans.property.SimpleDoubleProperty
@@ -22,11 +22,8 @@ object DefaultBackgroundNode {
   * Default, interactive implementation of BackgroundNode
   */
 class DefaultBackgroundNode(graphCanvas: GraphCanvas)
-  extends GraphCanvasNode(graphCanvas) with BackgroundNode {
+  extends GraphCanvasNode(graphCanvas) with BackgroundNode with DragContext {
   styleClass.add("graph")
-
-  private var dragAnchor: Point2D = _
-
 
   private val selectionBoundsX =
     new SimpleDoubleProperty(0)
@@ -94,9 +91,6 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   )
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
-    dragAnchor =
-      point
-
     controller.setSelection(Set(), Set()).foreach(graph_=)
   }
 
@@ -116,14 +110,14 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       DefaultBackgroundNode.EmptySelectionBounds
   }
 
-  protected override def handlePrimaryDragged(point: Point2D): Unit = {
+  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit = {
     if (controller.canDrawSelectionRectangle) {
       val clippedMousePoint =
         point.clip(graphCanvas.dimension)
 
       if (controller.canDrawSelectionRectangle) {
         selectionBounds =
-          new DiagonalBounds(dragAnchor, clippedMousePoint)
+          new DiagonalBounds(startPoint, clippedMousePoint)
       }
     }
   }

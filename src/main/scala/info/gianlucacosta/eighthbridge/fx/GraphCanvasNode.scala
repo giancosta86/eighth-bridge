@@ -45,8 +45,6 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
 
   protected def handleSingleSecondaryPressed(point: Point2D): Unit = { }
 
-  protected def handlePrimaryDragged(point: Point2D): Unit = { }
-
   protected def handleSinglePrimaryReleased(point: Point2D): Unit = { }
 
 
@@ -73,18 +71,6 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
         case _ =>
       }
       ()
-    }
-  }
-
-
-  handleEvent(MouseEvent.MouseDragged) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.button match {
-        case MouseButton.Primary =>
-          handlePrimaryDragged(mouseEvent.point)
-
-        case _ =>
-      }
     }
   }
 

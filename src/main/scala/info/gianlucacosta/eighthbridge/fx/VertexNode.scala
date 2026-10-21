@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.Delta.Point2DDeltaExtensions
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
@@ -18,7 +18,7 @@ import scalafx.scene.layout.Region
   * JavaFX node rendering a VisualVertex
   */
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
-  extends GraphCanvasNode(graphCanvas) with Centered {
+  extends GraphCanvasNode(graphCanvas) with Centered with DragContext {
 
   private var _vertex: VisualVertex =
     initialVertex
@@ -47,8 +47,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   val selected: ReadOnlyBooleanProperty =
     _selected
 
-  private var dragAnchor: Point2D = _
-
   protected[fx] def update(updatedVertex: VisualVertex): Unit = {
     _vertex =
       updatedVertex
@@ -72,9 +70,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
-    dragAnchor =
-      point
-
     val controllerResult =
       if (controlPressed) {
         val vertexesToSelect =
@@ -125,18 +120,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
 
-  protected override def handlePrimaryDragged(mousePoint: Point2D): Unit = {
-    if (vertex.selected) {
-      val delta =
-        mousePoint - dragAnchor
-
-      controller.dragSelectedVertexesBy(delta).foreach(graph_=)
-
-      dragAnchor =
-        mousePoint
-    }
-  }
-
   protected override def handleSingleSecondaryPressed(point: Point2D): Unit = {
     if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(initialVertex) && graph.selectedArcs.isEmpty) {
       val selectedVertex =
@@ -147,6 +130,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
           graph =
             newGraph
         )
+    }
+  }
+
+  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit = {
+    if (vertex.selected) {
+      controller
+        .dragSelectedVertexesBy(delta)
+        .foreach(graph_=)
     }
   }
 }
