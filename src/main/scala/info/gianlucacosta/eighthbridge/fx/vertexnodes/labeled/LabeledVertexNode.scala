@@ -10,30 +10,15 @@ import scalafx.geometry.Point2D
 
 class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends VertexNode(graphCanvas, initialVertex) {
-  private val _label =
-    new SimpleStringProperty()
 
-  val label: ReadOnlyStringProperty =
-    _label
-
-  private val labelControl =
+  private val label =
     new VertexLabel(this)
 
-  children.add(labelControl)
-
+  children.add(label)
 
   override val width: ReadOnlyDoubleProperty =
-    labelControl.width
+    label.width
 
   override val height: ReadOnlyDoubleProperty =
-    labelControl.height
-
-  override protected[fx] def update(updatedVertex: VisualVertex): Unit = {
-    super.update(updatedVertex)
-
-    println(s"${new java.util.Date} LABELED VERTEX NODE UPDATED NOW! ----> ${updatedVertex.asInstanceOf[Labeled].label}")
-
-    _label() =
-      updatedVertex.asInstanceOf[Labeled].label
-  }
+    label.height
 }

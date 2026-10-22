@@ -147,7 +147,8 @@ class GraphCanvas(
         val updatedVertex =
           updatedGraph.getVertexById(vertex.id).get
 
-        vertexNode.update(updatedVertex)
+        vertexNode.vertex() =
+          updatedVertex
       }
     }
 
@@ -164,8 +165,6 @@ class GraphCanvas(
       graphDiff.addedVertexes.map(vertex => {
           val vertexNode =
             controller.createVertexNode(vertex)
-
-          vertexNode.update(vertex)
 
           vertex -> vertexNode
         })

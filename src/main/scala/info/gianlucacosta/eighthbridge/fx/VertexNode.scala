@@ -6,6 +6,7 @@ import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 
 import scala.collection.JavaConversions._
 import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty}
@@ -20,20 +21,45 @@ import scalafx.scene.layout.Region
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends GraphCanvasNode(graphCanvas) with Centered with DragContext {
 
-  private var _vertex: VisualVertex =
-    initialVertex
+  val vertex =
+    new SimpleObjectProperty[VisualVertex]
 
-  def vertex: VisualVertex =
-    _vertex
+  vertex.onChange {
+    styleClass.setAll("vertex")
+    styleClass.addAll(vertex().styleClasses)
+
+    this.pseudoClassStateChanged(
+      PseudoClasses.Selected,
+      vertex().selected
+    )
+  }
+
+  vertex() =
+    initialVertex
 
   private val _centerX =
     new SimpleDoubleProperty()
+
+  //TODO! Do these simple but still chained bindings still require the methods from Bindings?
+  _centerX <== Bindings.createDoubleBinding(
+    () =>
+      vertex().center.x,
+
+    vertex
+  )
 
   val centerX: ReadOnlyDoubleProperty =
     _centerX
 
   private val _centerY =
     new SimpleDoubleProperty()
+
+  _centerY <== Bindings.createDoubleBinding(
+    () =>
+      vertex().center.y,
+
+    vertex
+  )
 
   val centerY: ReadOnlyDoubleProperty =
     _centerY
@@ -44,39 +70,23 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   private val _selected =
     new SimpleBooleanProperty()
 
+  _selected <== Bindings.createBooleanBinding(
+    () => vertex().selected,
+
+    vertex
+  )
+
   val selected: ReadOnlyBooleanProperty =
     _selected
-
-  protected[fx] def update(updatedVertex: VisualVertex): Unit = {
-    _vertex =
-      updatedVertex
-
-    _centerX() =
-      updatedVertex.center.x
-
-    _centerY() =
-      updatedVertex.center.y
-
-    _selected() =
-      updatedVertex.selected
-
-    styleClass.setAll("vertex")
-    styleClass.addAll(updatedVertex.styleClasses)
-
-    this.pseudoClassStateChanged(
-      PseudoClasses.Selected,
-      updatedVertex.selected
-    )
-  }
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
     val controllerResult =
       if (controlPressed) {
         val vertexesToSelect =
-          if (vertex.selected)
-            graph.selectedVertexes - vertex
+          if (vertex().selected)
+            graph.selectedVertexes - vertex()
           else
-            graph.selectedVertexes + vertex
+            graph.selectedVertexes + vertex()
 
         controller.setSelection(
           selectedVertexes =
@@ -86,12 +96,12 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
             graph.selectedArcs
         )
       } else {
-        if (vertex.selected) {
+        if (vertex().selected) {
           None
         } else {
           controller.setSelection(
             selectedVertexes =
-              Set(vertex),
+              Set(vertex()),
 
             selectedArcs =
               Set()
@@ -125,7 +135,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       val selectedVertex =
         graph.selectedVertexes.head
 
-      controller.createArc(selectedVertex, _vertex)
+      controller.createArc(selectedVertex, vertex())
         .foreach(newGraph =>
           graph =
             newGraph
@@ -134,7 +144,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
   override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit = {
-    if (vertex.selected) {
+    if (vertex().selected) {
       controller
         .dragSelectedVertexesBy(delta)
         .foreach(graph_=)
