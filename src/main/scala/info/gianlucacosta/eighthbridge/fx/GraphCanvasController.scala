@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, Delta, LabeledVisualArc, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, LabeledVisualArc, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.theory.features.Named
@@ -114,6 +114,24 @@ abstract class GraphCanvasController {
       )
     )
 
+  def createAddArcHandle(arc: VisualArc, shaftSegmentIndex: Int, point: Point2D): Option[VisualGraph] = {
+    //TODO! REVISE THIS!
+    val updatedArcHandles: List[ArcHandle] =
+      arc.handles.take(shaftSegmentIndex) ++
+        List(ArcHandle.makeCircle(point)) ++
+          arc.handles.drop(shaftSegmentIndex)
+
+    val updatedArc =
+      arc.setHandles(
+        updatedArcHandles
+      )
+
+    println(s"${new java.util.Date}: the controller say the handles in the arc are ${updatedArc.handles.size}")
+
+    Some(
+      graph.updateArc(updatedArc)
+    )
+  }
 
   //
   // ANCIENT FUNCTIONS

@@ -14,7 +14,7 @@ import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
 
 //TODO! All over the codebase, ensure that GUI stuff are as private as possible!
-private class Barbs(sourceVertexNode: VertexNode, targetVertexNode: VertexNode, initialArcBarbs: ArcBarbs) extends Group {
+private class BarbsNode(sourceVertexNode: VertexNode, targetVertexNode: VertexNode, initialArcBarbs: ArcBarbs) extends Group {
   private val self =
     this
 

@@ -5,26 +5,29 @@ import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
 import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
 
-class HandleNode(initialArcHandle: ArcHandle) extends Ellipse with Centered {
+private class HandleNode(initialHandle: ArcHandle) extends Ellipse with Centered {
   styleClass.add("handle")
 
-  private var arcHandle: ArcHandle =
-    initialArcHandle
+  private var _handle: ArcHandle =
+    initialHandle
 
-  private[plain] def update(updatedArcHandle: ArcHandle): Unit = {
-    arcHandle =
-      updatedArcHandle
+  def handle: ArcHandle =
+    _handle
+
+  def update(updatedHandle: ArcHandle): Unit = {
+    _handle =
+      updatedHandle
 
     radiusX() =
-      updatedArcHandle.dimension.width / 2
+      updatedHandle.dimension.width / 2
 
     radiusY() =
-      updatedArcHandle.dimension.height / 2
+      updatedHandle.dimension.height / 2
 
     centerX() =
-      updatedArcHandle.center.x
+      updatedHandle.center.x
 
     centerY() =
-      updatedArcHandle.center.y
+      updatedHandle.center.y
   }
 }

@@ -8,3 +8,15 @@ case class ArcHandle(
   center: Point2D,
   dimension: Dimension2D
 ) extends Entity
+
+object ArcHandle {
+  def makeCircle(center: Point2D): ArcHandle =
+    ArcHandle(
+      center,
+      new Dimension2D(
+        18,
+        18
+      )
+    )
+}
+

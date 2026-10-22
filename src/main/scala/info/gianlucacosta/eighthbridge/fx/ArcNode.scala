@@ -16,6 +16,7 @@ import scalafx.scene.input.MouseEvent
   */
 abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   extends GraphCanvasNode(graphCanvas) {
+  //TODO! Remove the update() method and replace everything with a property + onChange?
   private var _arc: VisualArc =
     initialArc
 
