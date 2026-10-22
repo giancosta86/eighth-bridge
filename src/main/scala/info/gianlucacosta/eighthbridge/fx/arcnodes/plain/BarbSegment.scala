@@ -7,53 +7,18 @@ import scalafx.scene.shape.Line
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 
-private class BarbSegment extends Line {
+private class BarbSegment(intersectionPoint: Point2D, sidePoint: Point2D) extends Line {
   styleClass.add("line")
 
-  //TODO! All over the codebase, choose well the field type for props!
-  val intersectionPoint: ObjectProperty[Option[Point2D]]  =
-    new SimpleObjectProperty[Option[Point2D]](None)
+  startX =
+    intersectionPoint.x
 
-  val sidePoint: ObjectProperty[Option[Point2D]] =
-    new SimpleObjectProperty[Option[Point2D]](None)
+  startY =
+    intersectionPoint.y
 
-  startX <==
-    Bindings.createDoubleBinding(
-      () =>
-        intersectionPoint()
-          .map(_.x)
-          .getOrElse(0),
+  endX =
+    sidePoint.x
 
-      intersectionPoint
-    )
-
-  startY <==
-    Bindings.createDoubleBinding(
-      () =>
-        intersectionPoint()
-          .map(_.y)
-          .getOrElse(0),
-
-      intersectionPoint
-    )
-
-  endX <==
-    Bindings.createDoubleBinding(
-      () =>
-        sidePoint()
-          .map(_.x)
-          .getOrElse(0),
-
-      sidePoint
-    )
-
-  endY <==
-    Bindings.createDoubleBinding(
-      () =>
-        sidePoint()
-          .map(_.y)
-          .getOrElse(0),
-
-      sidePoint
-    )
+  endY =
+    sidePoint.y
 }

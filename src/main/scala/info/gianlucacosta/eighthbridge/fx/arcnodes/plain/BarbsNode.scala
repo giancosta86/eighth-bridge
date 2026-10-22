@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
-import info.gianlucacosta.eighthbridge.fx.{ArcNode, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.{ArcNode, Centered, VertexNode}
 import javafx.beans.binding.DoubleBinding
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.geometry.{Dimension2D, Point2D}
@@ -14,9 +14,28 @@ import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
 
 //TODO! All over the codebase, ensure that GUI stuff are as private as possible!
-private class BarbsNode(sourceVertexNode: VertexNode, targetVertexNode: VertexNode, initialArcBarbs: ArcBarbs) extends Group {
+private class BarbsNode(
+                          initialSourcePointProvider: Centered,
+                         targetVertexNode: VertexNode,
+                          initialArcBarbs: Option[ArcBarbs]
+                       ) extends Group {
   private val self =
     this
+
+  val sourcePointProvider =
+    new SimpleObjectProperty[Centered](initialSourcePointProvider)
+
+  private val sourcePoint =
+    Bindings.createObjectBinding[Point2D](
+      () => new Point2D(
+        sourcePointProvider().centerX(),
+        sourcePointProvider().centerY()
+      ),
+
+      sourcePointProvider,
+      sourcePointProvider().centerX,
+      sourcePointProvider().centerY
+    )
 
   private val intersectionPoint =
     new SimpleObjectProperty[Option[Point2D]]
@@ -25,10 +44,7 @@ private class BarbsNode(sourceVertexNode: VertexNode, targetVertexNode: VertexNo
     Bindings.createObjectBinding(
       () =>
         ArcBarbs.getIntersection(
-          new Point2D(
-            sourceVertexNode.centerX(),
-            sourceVertexNode.centerY()
-          ),
+          sourcePoint(),
 
           new Point2D(
             targetVertexNode.centerX(),
@@ -41,78 +57,70 @@ private class BarbsNode(sourceVertexNode: VertexNode, targetVertexNode: VertexNo
           )
         ),
 
-      sourceVertexNode.centerX,
-      sourceVertexNode.centerY,
+      sourcePoint,
       targetVertexNode.centerX,
       targetVertexNode.centerY,
       targetVertexNode.width,
       targetVertexNode.height
     )
 
-  private val arcBarbs =
-    new SimpleObjectProperty[ArcBarbs](initialArcBarbs)
+  val arcBarbs =
+    new SimpleObjectProperty[Option[ArcBarbs]](initialArcBarbs)
 
   private val sidePoints =
-    new SimpleObjectProperty[Option[(Point2D, Point2D)]]
+    Bindings.createObjectBinding[Option[(Point2D, Point2D)]](
+      () =>
+        arcBarbs().flatMap(arcBarbs =>
+          intersectionPoint().flatMap(actualIntersectionPoint =>
+            ArcBarbs.getSidePoints(
+              sourcePoint(),
 
-  sidePoints <== Bindings.createObjectBinding(
-    () =>
-      intersectionPoint().flatMap(actualIntersectionPoint =>
-        ArcBarbs.getSidePoints(
-          new Point2D(
-            sourceVertexNode.centerX(),
-            sourceVertexNode.centerY()
-          ),
+              actualIntersectionPoint,
 
-          actualIntersectionPoint,
+              arcBarbs
+            )
+          )
+        ),
 
-          arcBarbs()
-        )
-      ),
+      arcBarbs,
+      intersectionPoint,
+      sourcePoint
+    )
 
-    sourceVertexNode.centerX,
-    sourceVertexNode.centerY,
-    intersectionPoint,
-    arcBarbs
-  )
+  val sideSegments =
+    Bindings.createObjectBinding[Option[(BarbSegment, BarbSegment)]](
+      () =>
+        intersectionPoint().flatMap(intersectionPoint =>
+          sidePoints().map(sidePoints =>
+            (
+              new BarbSegment(
+                intersectionPoint =
+                  intersectionPoint,
 
-  private val canDraw =
-    new SimpleBooleanProperty
+                sidePoint =
+                  sidePoints._1
+              ),
 
-  canDraw <== Bindings.createBooleanBinding(
-    () =>
-      sidePoints().isDefined,
+              new BarbSegment(
+                intersectionPoint =
+                  intersectionPoint,
 
-    sidePoints
-  )
+                sidePoint =
+                  sidePoints._2
+              )
+            )
+          )
+        ),
 
-  private val leftSegment =
-    new BarbSegment {
-      intersectionPoint <==
-        self.intersectionPoint
+      intersectionPoint,
+      sidePoints
+    )
 
-      sidePoint <==
-        Bindings.createObjectBinding(
-          () =>
-            sidePoints().map(_._1),
+  sideSegments.onChange {
+    children.clear()
 
-          sidePoints
-        )
+    sideSegments().foreach { case (leftSegment, rightSegment) =>
+      children.addAll(leftSegment, rightSegment)
     }
-
-  private val rightSegment =
-    new BarbSegment {
-      intersectionPoint <==
-        self.intersectionPoint
-
-      sidePoint <==
-        Bindings.createObjectBinding(
-          () =>
-            sidePoints().map(_._2),
-
-          sidePoints
-        )
-    }
-
-  children.addAll(leftSegment, rightSegment)
+  }
 }

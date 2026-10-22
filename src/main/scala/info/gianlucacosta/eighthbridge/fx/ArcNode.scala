@@ -19,7 +19,7 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   extends GraphCanvasNode(graphCanvas) {
 
   val arc =
-    new SimpleObjectProperty[VisualArc]()
+    new SimpleObjectProperty[VisualArc]
 
   protected val timestamp =
     new SimpleLongProperty
@@ -41,6 +41,9 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
       arc().selected
     )
   }
+
+  arc() =
+    initialArc
 
   //TODO! Remove all println() calls!
 

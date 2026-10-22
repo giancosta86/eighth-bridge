@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.binding.Bindings
 import scalafx.scene.Group
 import scalafx.Includes._
+import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty, ReadOnlyObjectWrapper}
 import scalafx.geometry.Point2D
 
 private class Shaft(
@@ -13,11 +14,15 @@ private class Shaft(
                      targetVertexNode: VertexNode,
                      onSegmentRightClicked: (Int, Point2D) => Unit
                    ) extends Group {
-  /*private val line =
-    new ShaftSegment(sourceVertexNode, targetVertexNode)
+  private val line =
+    new ShaftSegment(sourceVertexNode, targetVertexNode, _ => {})
 
-  children.add(line)*/
+  children.add(line)
 
+  val arrowSourcePointProvider: ReadOnlyObjectProperty[Centered] =
+    new SimpleObjectProperty[Centered](sourceVertexNode)
+
+  /*
   //TODO: for private classes, just use private properties when change from outside is required
   val handles =
     new SimpleObjectProperty[List[ArcHandle]](Nil)
@@ -126,5 +131,5 @@ private class Shaft(
       .foreach(children.add(0, _))
   }
 
-  redrawSegments(List(), segments())
+  redrawSegments(List(), segments()) */
 }

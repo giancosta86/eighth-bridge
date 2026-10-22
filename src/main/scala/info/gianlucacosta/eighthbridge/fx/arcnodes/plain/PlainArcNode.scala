@@ -27,50 +27,33 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
         handleRightClickOnShaftSegment
     ) {
       //TODO! Use this compact notation more!
-      handles <==
+      /*handles <==
         Bindings.createObjectBinding(
           () =>
             arc().handles,
 
           arc
-        )
+        )*/
     }
 
   children.add(shaft)
 
-  private val arcBarbs =
-    new SimpleObjectProperty[Option[ArcBarbs]]
 
-  arcBarbs <==
-    Bindings.createObjectBinding(
-      () =>
-        arc().barbs,
+  private val barbsNode =
+    new BarbsNode(shaft.arrowSourcePointProvider(), targetVertexNode, initialArc.barbs) {
+      sourcePointProvider <==
+        shaft.arrowSourcePointProvider
 
-      arc
+      arcBarbs <==
+        Bindings.createObjectBinding(
+          () =>
+            arc().barbs,
+
+          arc
     )
-
-  private var barbsNode: Option[BarbsNode] =
-    None
-
-  arcBarbs.onChange(updateBarbSegments())
-
-  private def updateBarbSegments(): Unit = {
-    if (arcBarbs().isDefined && barbsNode.isEmpty) {
-      val brandNewBarbsNode =
-        new BarbsNode(sourceVertexNode, targetVertexNode, arc().barbs.get)
-
-      barbsNode =
-        Some(brandNewBarbsNode)
-
-      children.add(brandNewBarbsNode)
-    } else if (arcBarbs().isEmpty) {
-      barbsNode.foreach(children.remove(_))
-
-      barbsNode =
-        None
-    }
   }
 
+  children.add(barbsNode)
 
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE CLICKED ON SEGMENT #${shaftSegmentIndex}")
