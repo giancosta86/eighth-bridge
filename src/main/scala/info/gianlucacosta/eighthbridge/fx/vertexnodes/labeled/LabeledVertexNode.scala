@@ -5,6 +5,7 @@ import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode}
 import info.gianlucacosta.eighthbridge.theory.features.{Labeled, Named}
 import javafx.beans.property.SimpleStringProperty
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyStringProperty}
 import scalafx.geometry.Point2D
 

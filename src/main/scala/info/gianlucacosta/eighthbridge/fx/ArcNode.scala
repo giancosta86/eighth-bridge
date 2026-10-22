@@ -21,7 +21,7 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   val arc =
     new SimpleObjectProperty[VisualArc]()
 
-  private val timestamp =
+  protected val timestamp =
     new SimpleLongProperty
 
   timestamp <==

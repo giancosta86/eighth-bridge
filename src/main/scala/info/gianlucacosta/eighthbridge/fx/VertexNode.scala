@@ -4,12 +4,13 @@ import info.gianlucacosta.eighthbridge.fx.graph.Delta.Point2DDeltaExtensions
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import info.gianlucacosta.helios.fx.css.PseudoClasses
+import javafx.beans.binding.DoubleBinding
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleLongProperty, SimpleObjectProperty}
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 
 import scala.collection.JavaConversions._
-import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty}
+import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, ReadOnlyDoubleWrapper}
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
@@ -24,10 +25,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   val vertex =
     new SimpleObjectProperty[VisualVertex]
 
-  private val timestamp =
-    new SimpleLongProperty
-
-  timestamp <==
+  val timestamp =
     Bindings.createLongBinding(
       () =>
         vertex().timestamp,
@@ -48,47 +46,47 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   vertex() =
     initialVertex
 
-  private val _centerX =
-    new SimpleDoubleProperty()
+  val centerX: ReadOnlyDoubleProperty = {
+    val wrapper =
+      new ReadOnlyDoubleWrapper()
 
-  //TODO! Do these simple but still chained bindings still require the methods from Bindings?
-  _centerX <== Bindings.createDoubleBinding(
-    () =>
-      vertex().center.x,
+    wrapper.bind(
+      Bindings.createDoubleBinding(
+        () =>
+          vertex().center.x,
 
-    vertex
-  )
+        vertex
+      )
+    )
 
-  val centerX: ReadOnlyDoubleProperty =
-    _centerX
+    wrapper
+  }
 
-  private val _centerY =
-    new SimpleDoubleProperty()
+  val centerY: ReadOnlyDoubleProperty = {
+    val wrapper =
+      new ReadOnlyDoubleWrapper()
 
-  _centerY <== Bindings.createDoubleBinding(
-    () =>
-      vertex().center.y,
+    wrapper.bind(
+      Bindings.createDoubleBinding(
+        () =>
+          vertex().center.y,
 
-    vertex
-  )
+        vertex
+      )
+    )
 
-  val centerY: ReadOnlyDoubleProperty =
-    _centerY
+    wrapper
+  }
 
   def width: ReadOnlyDoubleProperty
   def height: ReadOnlyDoubleProperty
 
-  private val _selected =
-    new SimpleBooleanProperty()
+  val selected =
+    Bindings.createBooleanBinding(
+      () => vertex().selected,
 
-  _selected <== Bindings.createBooleanBinding(
-    () => vertex().selected,
-
-    vertex
-  )
-
-  val selected: ReadOnlyBooleanProperty =
-    _selected
+      vertex
+    )
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
     val controllerResult =
