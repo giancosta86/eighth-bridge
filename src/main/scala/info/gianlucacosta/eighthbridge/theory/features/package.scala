@@ -1,6 +1,10 @@
 package info.gianlucacosta.eighthbridge.theory
 
 package object features {
+  //TODO! Replace "Long" with "Timestamp" whenever possible!
+  type Timestamp =
+    Long
+
   type Weight =
     Double
 

@@ -2,10 +2,11 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.{SimpleLongProperty, SimpleObjectProperty}
 
 import scala.collection.JavaConversions._
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
@@ -16,44 +17,41 @@ import scalafx.scene.input.MouseEvent
   */
 abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   extends GraphCanvasNode(graphCanvas) {
-  //TODO! Remove the update() method and replace everything with a property + onChange?
-  private var _arc: VisualArc =
-    initialArc
 
-  private val _arcBarbs =
-    new SimpleObjectProperty[Option[ArcBarbs]](None)
+  val arc =
+    new SimpleObjectProperty[VisualArc]()
 
-  protected val arcBarbs: ReadOnlyObjectProperty[Option[ArcBarbs]] =
-    _arcBarbs
+  private val timestamp =
+    new SimpleLongProperty
 
-  def arc: VisualArc =
-    _arc
+  timestamp <==
+    Bindings.createLongBinding(
+      () =>
+        arc().timestamp,
 
-  protected[fx] def update(updatedArc: VisualArc): Unit = {
-    //TODO! Remove all println() calls!
-    _arc =
-      updatedArc
+      arc
+    )
 
-    _arcBarbs() =
-      updatedArc.barbs
-
+  timestamp.onChange {
     styleClass.setAll("arc")
-    styleClass.addAll(updatedArc.styleClasses)
+    styleClass.addAll(arc().styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      updatedArc.selected
+      arc().selected
     )
   }
+
+  //TODO! Remove all println() calls!
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
     val controllerResult =
       if (controlPressed) {
         val arcsToSelect =
-          if (arc.selected)
-            graph.selectedArcs - arc
+          if (arc().selected)
+            graph.selectedArcs - arc()
           else
-            graph.selectedArcs + arc
+            graph.selectedArcs + arc()
 
         controller.setSelection(
           selectedVertexes =
@@ -63,7 +61,7 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
             arcsToSelect
         )
       } else {
-        if (arc.selected) {
+        if (arc().selected) {
           None
         } else {
           controller.setSelection(
@@ -71,7 +69,7 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
               Set(),
 
             selectedArcs =
-              Set(arc)
+              Set(arc())
           )
         }
       }

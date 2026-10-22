@@ -137,7 +137,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       val selectionArcs = graphCanvas.arcNodesByArc
         .values
         .filter(_.intersects(selectionBounds))
-        .map(_.arc)
+        .map(_.arc())
         .toSet
 
       graph =

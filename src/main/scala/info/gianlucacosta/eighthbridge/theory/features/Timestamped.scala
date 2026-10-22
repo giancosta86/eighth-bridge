@@ -3,9 +3,9 @@ package info.gianlucacosta.eighthbridge.theory.features
 import info.gianlucacosta.eighthbridge.theory.{Arc, DirectedGraph, Vertex}
 
 trait Timestamped {
-  protected def timestamp: Long
+  protected def timestamp: Timestamp
 
-  protected def setTimestamp(timestamp: Long): this.type
+  protected def setTimestamp(timestamp: Timestamp): this.type
 
   def updateTimestamp(): this.type =
     setTimestamp(System.nanoTime())

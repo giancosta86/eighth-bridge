@@ -4,7 +4,7 @@ import info.gianlucacosta.eighthbridge.fx.graph.Delta.Point2DDeltaExtensions
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
+import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleLongProperty, SimpleObjectProperty}
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 
@@ -24,7 +24,18 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   val vertex =
     new SimpleObjectProperty[VisualVertex]
 
-  vertex.onChange {
+  private val timestamp =
+    new SimpleLongProperty
+
+  timestamp <==
+    Bindings.createLongBinding(
+      () =>
+        vertex().timestamp,
+
+      vertex
+    )
+
+  timestamp.onChange {
     styleClass.setAll("vertex")
     styleClass.addAll(vertex().styleClasses)
 

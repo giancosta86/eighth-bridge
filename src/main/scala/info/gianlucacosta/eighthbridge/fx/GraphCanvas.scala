@@ -157,7 +157,8 @@ class GraphCanvas(
         val updatedArc =
           updatedGraph.getArcById(arc.id).get
 
-        arcNode.update(updatedArc)
+        arcNode.arc() =
+          updatedArc
       }
     }
 
@@ -174,8 +175,6 @@ class GraphCanvas(
       graphDiff.addedArcs.map(arc => {
           val arcNode =
             controller.createArcNode(arc)
-
-          arcNode.update(arc)
 
           arc -> arcNode
         })

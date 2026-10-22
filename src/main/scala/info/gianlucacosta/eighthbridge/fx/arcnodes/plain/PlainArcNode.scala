@@ -1,15 +1,17 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.fx.graph.VisualArc
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualArc}
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
-class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
-  extends ArcNode(graphCanvas, arc) {
+class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
+  extends ArcNode(graphCanvas, initialArc) {
 
   private val (sourceVertex, targetVertex) =
-    graph.getAnchors(arc).get
+    graph.getAnchors(arc()).get
 
   private val sourceVertexNode =
     graphCanvas.vertexNodesByVertex(sourceVertex)
@@ -23,9 +25,29 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
       targetVertexNode,
       onSegmentRightClicked =
         handleRightClickOnShaftSegment
-    )
+    ) {
+      //TODO! Use this compact notation more!
+      handles <==
+        Bindings.createObjectBinding(
+          () =>
+            arc().handles,
+
+          arc
+        )
+    }
 
   children.add(shaft)
+
+  private val arcBarbs =
+    new SimpleObjectProperty[Option[ArcBarbs]]
+
+  arcBarbs <==
+    Bindings.createObjectBinding(
+      () =>
+        arc().barbs,
+
+      arc
+    )
 
   private var barbsNode: Option[BarbsNode] =
     None
@@ -35,7 +57,7 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
   private def updateBarbSegments(): Unit = {
     if (arcBarbs().isDefined && barbsNode.isEmpty) {
       val brandNewBarbsNode =
-        new BarbsNode(sourceVertexNode, targetVertexNode, arc.barbs.get)
+        new BarbsNode(sourceVertexNode, targetVertexNode, arc().barbs.get)
 
       barbsNode =
         Some(brandNewBarbsNode)
@@ -49,18 +71,10 @@ class PlainArcNode(graphCanvas: GraphCanvas, arc: VisualArc)
     }
   }
 
-  override protected[fx] def update(updatedArc: VisualArc): Unit = {
-    super.update(updatedArc)
-
-    println(s"When updating the plain arc node, the handles are: ${updatedArc.handles}")
-
-    shaft.handles() =
-      updatedArc.handles
-  }
 
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE CLICKED ON SEGMENT #${shaftSegmentIndex}")
-    controller.createAddArcHandle(arc, shaftSegmentIndex, point)
+    controller.createAddArcHandle(arc(), shaftSegmentIndex, point)
       .foreach(graph_=)
   }
 }
