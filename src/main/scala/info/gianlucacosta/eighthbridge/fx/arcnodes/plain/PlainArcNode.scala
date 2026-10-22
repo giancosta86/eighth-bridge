@@ -23,17 +23,17 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
     new Shaft(
       sourceVertexNode,
       targetVertexNode,
+      initialArc.handles,
       onSegmentRightClicked =
         handleRightClickOnShaftSegment
     ) {
-      //TODO! Use this compact notation more!
-      /*handles <==
+      handles <==
         Bindings.createObjectBinding(
           () =>
             arc().handles,
 
           arc
-        )*/
+        )
     }
 
   children.add(shaft)

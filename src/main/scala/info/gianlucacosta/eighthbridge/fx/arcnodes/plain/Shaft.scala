@@ -3,7 +3,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 import info.gianlucacosta.eighthbridge.fx.{Centered, VertexNode}
 import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
 import javafx.beans.property.SimpleObjectProperty
-import scalafx.beans.binding.Bindings
+import scalafx.beans.binding.{Bindings, ObjectBinding}
 import scalafx.scene.Group
 import scalafx.Includes._
 import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty, ReadOnlyObjectWrapper}
@@ -12,6 +12,7 @@ import scalafx.geometry.Point2D
 private class Shaft(
                      sourceVertexNode: VertexNode,
                      targetVertexNode: VertexNode,
+                     initialHandles: List[ArcHandle],
                      onSegmentRightClicked: (Int, Point2D) => Unit
                    ) extends Group {
   private val line =
@@ -19,16 +20,29 @@ private class Shaft(
 
   children.add(line)
 
-  val arrowSourcePointProvider: ReadOnlyObjectProperty[Centered] =
-    new SimpleObjectProperty[Centered](sourceVertexNode)
 
-  /*
   //TODO: for private classes, just use private properties when change from outside is required
   val handles =
-    new SimpleObjectProperty[List[ArcHandle]](Nil)
+    new SimpleObjectProperty[List[ArcHandle]](initialHandles)
 
   private val handleNodes =
     new SimpleObjectProperty[List[HandleNode]](Nil)
+
+  val arrowSourcePointProvider: ObjectBinding[Centered] =
+    Bindings.createObjectBinding[Centered](
+      () =>
+        if (handleNodes().nonEmpty)
+          handleNodes().last
+        else
+          sourceVertexNode,
+
+      handleNodes
+    )
+
+  /*
+
+
+
 
   handles.onChange {
     val updatedHandles =
