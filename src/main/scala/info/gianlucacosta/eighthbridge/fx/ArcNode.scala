@@ -19,12 +19,9 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   extends GraphCanvasNode(graphCanvas) {
 
   val arc =
-    new SimpleObjectProperty[VisualArc](initialArc)
+    new SimpleObjectProperty[VisualArc]
 
-  protected val timestamp =
-    new SimpleLongProperty
-
-  timestamp.onChange {
+  arc.onInvalidate {
     styleClass.setAll("arc")
     styleClass.addAll(arc().styleClasses)
 
@@ -34,13 +31,8 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
     )
   }
 
-  timestamp <==
-    Bindings.createLongBinding(
-      () =>
-        arc().timestamp,
-
-      arc
-    )
+  arc() =
+    initialArc
 
   //TODO! Remove all println() calls!
 

@@ -23,13 +23,9 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends GraphCanvasNode(graphCanvas) with Centered with DragContext {
 
   val vertex =
-    new SimpleObjectProperty[VisualVertex](initialVertex)
+    new SimpleObjectProperty[VisualVertex]
 
-  protected val timestamp =
-    new SimpleLongProperty
-
-  timestamp.onChange {
-    println(s"TIMESTAMP FOR VERTEX ${vertex()} IS: ${timestamp}")
+  vertex.onInvalidate {
     styleClass.setAll("vertex")
     styleClass.addAll(vertex().styleClasses)
 
@@ -39,13 +35,8 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     )
   }
 
-  timestamp <==
-    Bindings.createLongBinding(
-      () =>
-        vertex().timestamp,
-
-      vertex
-    )
+  vertex() =
+    initialVertex
 
   val centerX: ReadOnlyDoubleProperty = {
     val wrapper =
