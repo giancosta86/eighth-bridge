@@ -40,7 +40,11 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
 
 
   private val barbsNode =
-    new BarbsNode(shaft.arrowSourcePointProvider(), targetVertexNode, initialArc.barbs) {
+    new BarbsNode(
+      shaft.arrowSourcePointProvider(),
+      targetVertexNode,
+      initialArc.barbs
+    ) {
       sourcePointProvider <==
         shaft.arrowSourcePointProvider
 
@@ -57,7 +61,7 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
 
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE CLICKED ON SEGMENT #${shaftSegmentIndex}")
-    controller.createAddArcHandle(arc(), shaftSegmentIndex, point)
-      .foreach(graph_=)
+    /*controller.createAddArcHandle(arc(), shaftSegmentIndex, point)
+      .foreach(graph_=)*/
   }
 }

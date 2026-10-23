@@ -19,9 +19,6 @@ private class BarbsNode(
                          targetVertexNode: VertexNode,
                           initialArcBarbs: Option[ArcBarbs]
                        ) extends Group {
-  private val self =
-    this
-
   val sourcePointProvider =
     new SimpleObjectProperty[Centered](initialSourcePointProvider)
 
@@ -71,11 +68,11 @@ private class BarbsNode(
     Bindings.createObjectBinding[Option[(Point2D, Point2D)]](
       () =>
         arcBarbs().flatMap(arcBarbs =>
-          intersectionPoint().flatMap(actualIntersectionPoint =>
+          intersectionPoint().flatMap(intersectionPoint =>
             ArcBarbs.getSidePoints(
               sourcePoint(),
 
-              actualIntersectionPoint,
+              intersectionPoint,
 
               arcBarbs
             )
@@ -87,7 +84,7 @@ private class BarbsNode(
       sourcePoint
     )
 
-  val sideSegments =
+  private val sideSegments =
     Bindings.createObjectBinding[Option[(BarbSegment, BarbSegment)]](
       () =>
         intersectionPoint().flatMap(intersectionPoint =>
