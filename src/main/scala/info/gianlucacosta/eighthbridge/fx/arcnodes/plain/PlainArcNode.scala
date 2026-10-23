@@ -24,7 +24,7 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
       sourceVertexNode,
       targetVertexNode,
       initialArc.handles,
-      onSegmentRightClicked =
+      onSegmentRightClick =
         handleRightClickOnShaftSegment
     ) {
       handles <==

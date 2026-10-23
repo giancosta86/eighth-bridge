@@ -10,7 +10,7 @@ import scalafx.Includes._
 
 private class ShaftPolyline(
                              initialPointProviders: List[Centered],
-                             onSegmentRightClicked: SegmentRightClickHandler
+                             onSegmentRightClick: SegmentRightClickHandler
                            ) extends Group {
 
   val pointProviders: ObjectProperty[List[Centered]] =
@@ -28,7 +28,7 @@ private class ShaftPolyline(
                 startProvider,
                 endProvider,
                 onRightClick = (point) => {
-                  onSegmentRightClicked(index, point)
+                  onSegmentRightClick(index, point)
                 }
               )
             case _ =>

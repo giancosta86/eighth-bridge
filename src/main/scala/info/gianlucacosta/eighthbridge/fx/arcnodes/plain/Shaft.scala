@@ -6,14 +6,14 @@ import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.binding.{Bindings, ObjectBinding}
 import scalafx.scene.Group
 import scalafx.Includes._
-import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty, ReadOnlyObjectWrapper}
+import scalafx.beans.property.{ObjectProperty, ReadOnlyDoubleProperty, ReadOnlyObjectProperty, ReadOnlyObjectWrapper}
 import scalafx.geometry.Point2D
 
 private class Shaft(
                      sourceVertexNode: VertexNode,
                      targetVertexNode: VertexNode,
                      initialHandles: List[ArcHandle],
-                     onSegmentRightClicked: (Int, Point2D) => Unit
+                     onSegmentRightClick: (Int, Point2D) => Unit
                    ) extends Group {
   /*
   private val line =
@@ -26,15 +26,15 @@ private class Shaft(
     this
 
   //TODO: for private classes, just use private properties when change from outside is required
+
   val handles =
     new SimpleObjectProperty[List[ArcHandle]](initialHandles)
 
-  handles.onInvalidate {
-    println(s"The handles are: ${handles()}")
-  }
-
   private val handleNodeGroup =
-    new HandleNodeGroup(initialHandles)
+    new HandleNodeGroup(initialHandles) {
+      handles <==
+        self.handles
+    }
 
   children.add(handleNodeGroup)
 
@@ -48,7 +48,7 @@ private class Shaft(
     )
 
   private val polyline =
-    new ShaftPolyline(pointProviders(), onSegmentRightClicked) {
+    new ShaftPolyline(pointProviders(), onSegmentRightClick = onSegmentRightClick) {
       pointProviders <==
         self.pointProviders
     }
