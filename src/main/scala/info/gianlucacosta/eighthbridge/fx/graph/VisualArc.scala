@@ -53,8 +53,8 @@ class VisualArc(barbsValue: Option[ArcBarbs])
   def handles: List[ArcHandle] =
     _handles
 
-  def setHandles(handles: List[ArcHandle]): this.type =
-    if (handles != _handles) {
+  def setHandles(handles: List[ArcHandle]): this.type = {
+    if (handles.ne(this.handles)) {
       val result =
         updateTimestamp()
 
@@ -64,6 +64,7 @@ class VisualArc(barbsValue: Option[ArcBarbs])
       result
     } else
       this
+  }
 
   def addHandle(index: Int, arcHandle: ArcHandle): this.type = {
     val updatedHandles: List[ArcHandle] =
@@ -75,7 +76,7 @@ class VisualArc(barbsValue: Option[ArcBarbs])
   }
 
   def updateHandle(handle: ArcHandle): this.type = {
-    println(s"UPDATING HANDLE: ${handle}")
+    //println(s"UPDATING HANDLE: ${handle}")
 
     setHandles(
       handles.map(currentHandle =>

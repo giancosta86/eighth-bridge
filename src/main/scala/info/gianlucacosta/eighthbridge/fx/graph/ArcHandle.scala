@@ -5,20 +5,30 @@ import scalafx.geometry.{Dimension2D, Point2D}
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 
 
-case class ArcHandle(
-  center: Point2D,
-  dimension: Dimension2D
-) extends Entity {
-  def moveBy(delta: Delta): ArcHandle =
-    copy(
-      center =
-        center + delta
-    )
+final class ArcHandle(
+  private var _center: Point2D,
+  private var _dimension: Dimension2D
+) extends Entity with Cloneable {
+  def center: Point2D =
+    _center
+
+  def dimension: Dimension2D =
+    _dimension
+
+  def moveTo(updatedCenter: Point2D): ArcHandle = {
+    val result =
+      clone().asInstanceOf[ArcHandle]
+
+    result._center =
+      updatedCenter
+
+    result
+  }
 }
 
 object ArcHandle {
   def makeCircle(center: Point2D): ArcHandle =
-    ArcHandle(
+    new ArcHandle(
       center,
       new Dimension2D(
         18,

@@ -73,5 +73,5 @@ private class HandleNode(
   }
 
   override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit =
-    onDrag(handle(), delta)
+    onDrag(handle(), point)
 }

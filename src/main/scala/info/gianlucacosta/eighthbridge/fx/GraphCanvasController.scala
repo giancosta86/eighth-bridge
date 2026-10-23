@@ -135,10 +135,10 @@ abstract class GraphCanvasController {
     )
   }
 
-  def dragArcHandle(arc: VisualArc, arcHandle: ArcHandle, delta: Delta): Option[VisualGraph] = {
+  def dragArcHandle(arc: VisualArc, arcHandle: ArcHandle, updatedCenter: Point2D): Option[VisualGraph] = {
     val updatedArc =
       arc.updateHandle(
-        arcHandle.moveBy(delta)
+        arcHandle.moveTo(updatedCenter)
       )
 
     Some(

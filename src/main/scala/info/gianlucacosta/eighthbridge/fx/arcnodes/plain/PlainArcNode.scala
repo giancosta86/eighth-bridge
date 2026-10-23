@@ -75,8 +75,9 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
       .foreach(graph_=)
   }
 
-  private def handleDragOnHandleNode(handle: ArcHandle, delta: Delta): Unit = {
-    controller.dragArcHandle(arc(), handle, delta)
+  private def handleDragOnHandleNode(handle: ArcHandle, updatedCenter: Point2D): Unit = {
+    //println(s"///////////////// YOU ARE DRAGGING ${handle} to ${updatedCenter}")
+    controller.dragArcHandle(arc(), handle, updatedCenter)
       .foreach(graph_=)
   }
 }
