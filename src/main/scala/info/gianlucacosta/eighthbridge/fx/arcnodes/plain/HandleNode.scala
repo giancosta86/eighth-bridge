@@ -2,32 +2,48 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.Centered
 import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
+import scalafx.beans.property.ObjectProperty
 
 private class HandleNode(initialHandle: ArcHandle) extends Ellipse with Centered {
   styleClass.add("handle")
 
-  private var _handle: ArcHandle =
-    initialHandle
+  //TODO! Choose a style for typing properties
+  val handle: ObjectProperty[ArcHandle] =
+    new SimpleObjectProperty[ArcHandle](initialHandle)
 
-  def handle: ArcHandle =
-    _handle
+  radiusX <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().dimension.width / 2,
 
-  def update(updatedHandle: ArcHandle): Unit = {
-    _handle =
-      updatedHandle
+      handle
+    )
 
-    radiusX() =
-      updatedHandle.dimension.width / 2
+  radiusY <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().dimension.height / 2,
 
-    radiusY() =
-      updatedHandle.dimension.height / 2
+      handle
+    )
 
-    centerX() =
-      updatedHandle.center.x
+  centerX <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().center.x,
 
-    centerY() =
-      updatedHandle.center.y
-  }
+      handle
+    )
+
+  centerY <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().center.y,
+
+      handle
+    )
 }

@@ -15,35 +15,83 @@ private class Shaft(
                      initialHandles: List[ArcHandle],
                      onSegmentRightClicked: (Int, Point2D) => Unit
                    ) extends Group {
+  /*
   private val line =
     new ShaftSegment(sourceVertexNode, targetVertexNode, _ => {})
 
   children.add(line)
+  */
 
 
   //TODO: for private classes, just use private properties when change from outside is required
   val handles =
     new SimpleObjectProperty[List[ArcHandle]](initialHandles)
 
+  //TODO!
+  handles.onChange {
+    println(s"The handles, within the arc shaft, are: ${handles()}")
+  }
+
   private val handleNodes =
     new SimpleObjectProperty[List[HandleNode]](Nil)
+
+  private val pointProviders =
+    Bindings.createObjectBinding[List[Centered]](
+      () =>
+          List(sourceVertexNode) ++ handleNodes() ++ List(targetVertexNode),
+      handleNodes
+    )
+
+  private val segments =
+    Bindings.createObjectBinding[List[ShaftSegment]](
+      () =>
+        pointProviders()
+          .sliding(2)
+          .zipWithIndex
+          .map {
+            case (startProvider::endProvider::Nil, index) =>
+              new ShaftSegment(
+                startProvider,
+                endProvider,
+                onRightClick = (point) => {
+                  onSegmentRightClicked(index, point)
+                }
+              )
+            case _ =>
+              throw new Exception("This should not occur!")
+          }
+          .toList,
+
+      pointProviders
+    )
+
+  println(s"############## The INITIAL segments are: ${segments().size}")
+
+  segments.onChange(updateSegmentNodes())
+
+  updateSegmentNodes()
+
+  private def updateSegmentNodes(): Unit = {
+    println(s"############## The segments are: ${segments().size}")
+    children.clear()
+
+    segments().foreach(children.add(_))
+  }
+
 
   val arrowSourcePointProvider: ObjectBinding[Centered] =
     Bindings.createObjectBinding[Centered](
       () =>
-        if (handleNodes().nonEmpty)
-          handleNodes().last
-        else
-          sourceVertexNode,
+        pointProviders().takeRight(2).head,
 
-      handleNodes
+      pointProviders
     )
 
+
+
+
+
   /*
-
-
-
-
   handles.onChange {
     val updatedHandles =
       handles()

@@ -23,17 +23,13 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends GraphCanvasNode(graphCanvas) with Centered with DragContext {
 
   val vertex =
-    new SimpleObjectProperty[VisualVertex]
+    new SimpleObjectProperty[VisualVertex](initialVertex)
 
-  val timestamp =
-    Bindings.createLongBinding(
-      () =>
-        vertex().timestamp,
-
-      vertex
-    )
+  protected val timestamp =
+    new SimpleLongProperty
 
   timestamp.onChange {
+    println(s"TIMESTAMP FOR VERTEX ${vertex()} IS: ${timestamp}")
     styleClass.setAll("vertex")
     styleClass.addAll(vertex().styleClasses)
 
@@ -43,8 +39,13 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     )
   }
 
-  vertex() =
-    initialVertex
+  timestamp <==
+    Bindings.createLongBinding(
+      () =>
+        vertex().timestamp,
+
+      vertex
+    )
 
   val centerX: ReadOnlyDoubleProperty = {
     val wrapper =
@@ -92,7 +93,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     val controllerResult =
       if (controlPressed) {
         val vertexesToSelect =
-          if (vertex().selected)
+          if (selected())
             graph.selectedVertexes - vertex()
           else
             graph.selectedVertexes + vertex()
@@ -105,7 +106,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
             graph.selectedArcs
         )
       } else {
-        if (vertex().selected) {
+        if (selected()) {
           None
         } else {
           controller.setSelection(
