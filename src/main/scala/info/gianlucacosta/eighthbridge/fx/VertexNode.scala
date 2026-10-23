@@ -38,42 +38,26 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   vertex() =
     initialVertex
 
-  val centerX: ReadOnlyDoubleProperty = {
-    val wrapper =
-      new ReadOnlyDoubleWrapper()
+  val centerX: ReadOnlyDoubleProperty =
+    ReadOnlyProperties.createDouble(
+      () =>
+        vertex().center.x,
 
-    wrapper.bind(
-      Bindings.createDoubleBinding(
-        () =>
-          vertex().center.x,
-
-        vertex
-      )
+      vertex
     )
 
-    wrapper
-  }
+  val centerY: ReadOnlyDoubleProperty =
+    ReadOnlyProperties.createDouble(
+      () =>
+        vertex().center.y,
 
-  val centerY: ReadOnlyDoubleProperty = {
-    val wrapper =
-      new ReadOnlyDoubleWrapper()
-
-    wrapper.bind(
-      Bindings.createDoubleBinding(
-        () =>
-          vertex().center.y,
-
-        vertex
-      )
+      vertex
     )
-
-    wrapper
-  }
 
   def width: ReadOnlyDoubleProperty
   def height: ReadOnlyDoubleProperty
 
-  val selected =
+  private val selected =
     Bindings.createBooleanBinding(
       () => vertex().selected,
 
