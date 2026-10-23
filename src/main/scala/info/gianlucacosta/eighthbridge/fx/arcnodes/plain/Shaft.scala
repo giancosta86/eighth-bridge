@@ -14,7 +14,8 @@ private class Shaft(
                      targetVertexNode: VertexNode,
                      initialHandles: List[ArcHandle],
                      onSegmentRightClick: SegmentRightClickHandler,
-                     onHandleNodeRightClick: HandleNodeRightClickHandler
+                     onHandleNodeRightClick: HandleNodeRightClickHandler,
+                     onHandleNodeDrag: HandleNodeDragHandler
                    ) extends Group {
   /*
   private val line =
@@ -35,7 +36,9 @@ private class Shaft(
     new HandleNodeGroup(
       initialHandles,
       onHandleNodeRightClick =
-        onHandleNodeRightClick
+        onHandleNodeRightClick,
+      onHandleNodeDrag =
+        onHandleNodeDrag
     ) {
       handles <==
         self.handles

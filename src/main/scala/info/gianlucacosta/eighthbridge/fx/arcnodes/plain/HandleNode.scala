@@ -2,6 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{Centered, DragContext}
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcHandle, Delta}
+import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
@@ -12,8 +13,9 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
 
 private class HandleNode(
                           initialHandle: ArcHandle,
-                          onRightClick: HandleNodeRightClickHandler
-                        ) extends Ellipse with Centered {
+                          onRightClick: HandleNodeRightClickHandler,
+                          onDrag: HandleNodeDragHandler
+                        ) extends Ellipse with Centered with DragContext {
   styleClass.add("handle")
 
   //TODO! Choose a style for typing properties
@@ -52,6 +54,8 @@ private class HandleNode(
       handle
     )
 
+  this.consumeMouseEvents()
+
   handleEvent(MouseEvent.MouseClicked) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
@@ -67,4 +71,7 @@ private class HandleNode(
       ()
     }
   }
+
+  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit =
+    onDrag(handle(), delta)
 }

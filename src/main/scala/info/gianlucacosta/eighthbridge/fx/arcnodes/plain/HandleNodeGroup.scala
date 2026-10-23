@@ -9,7 +9,8 @@ import scalafx.Includes._
 
 private class HandleNodeGroup(
                                initialHandles: List[ArcHandle],
-                               onHandleNodeRightClick: HandleNodeRightClickHandler
+                               onHandleNodeRightClick: HandleNodeRightClickHandler,
+                               onHandleNodeDrag: HandleNodeDragHandler
                              ) extends Group {
   val handles: ObjectProperty[List[ArcHandle]] =
     new SimpleObjectProperty[List[ArcHandle]]
@@ -23,6 +24,8 @@ private class HandleNodeGroup(
   handles.onInvalidate {
     val updatedHandles =
       handles()
+
+    println(s"/////////////// The updated handles are: ${updatedHandles}")
 
     val currentHandleNodes =
       _handleNodes().toSet
@@ -60,7 +63,9 @@ private class HandleNodeGroup(
               new HandleNode(
                 handle,
                 onRightClick =
-                  onHandleNodeRightClick
+                  onHandleNodeRightClick,
+                onDrag =
+                  onHandleNodeDrag
               )
 
             children.add(brandNewHandleNode)

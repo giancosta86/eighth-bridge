@@ -74,7 +74,9 @@ class VisualArc(barbsValue: Option[ArcBarbs])
     setHandles(updatedHandles)
   }
 
-  def replaceHandle(handle: ArcHandle): this.type =
+  def updateHandle(handle: ArcHandle): this.type = {
+    println(s"UPDATING HANDLE: ${handle}")
+
     setHandles(
       handles.map(currentHandle =>
         if (currentHandle == handle)
@@ -83,6 +85,7 @@ class VisualArc(barbsValue: Option[ArcBarbs])
           currentHandle
       )
     )
+  }
 
   def removeHandle(handle: ArcHandle): this.type =
     setHandles(

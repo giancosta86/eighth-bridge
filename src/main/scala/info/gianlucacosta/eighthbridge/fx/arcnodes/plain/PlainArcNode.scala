@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, VisualArc}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, VisualArc}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
@@ -27,7 +27,9 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
       onSegmentRightClick =
         handleRightClickOnShaftSegment,
       onHandleNodeRightClick =
-        handleRightClickOnHandleNode
+        handleRightClickOnHandleNode,
+      onHandleNodeDrag =
+        handleDragOnHandleNode
     ) {
       handles <==
         Bindings.createObjectBinding(
@@ -70,6 +72,11 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   private def handleRightClickOnHandleNode(handle: ArcHandle): Unit = {
     println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
     controller.removeArcHandle(arc(), handle)
+      .foreach(graph_=)
+  }
+
+  private def handleDragOnHandleNode(handle: ArcHandle, delta: Delta): Unit = {
+    controller.dragArcHandle(arc(), handle, delta)
       .foreach(graph_=)
   }
 }

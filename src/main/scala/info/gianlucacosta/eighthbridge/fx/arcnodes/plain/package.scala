@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes
 
-import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcHandle, Delta}
 import scalafx.geometry.Point2D
 
 package object plain {
@@ -9,4 +9,7 @@ package object plain {
 
   type HandleNodeRightClickHandler =
     (ArcHandle) => Unit
+
+  type HandleNodeDragHandler =
+    (ArcHandle, Delta) => Unit
 }
