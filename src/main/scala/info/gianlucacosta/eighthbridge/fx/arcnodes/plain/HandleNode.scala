@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{Centered, DragContext}
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcHandle, Delta}
-import info.gianlucacosta.helios.fx.Includes.extendNode
+import info.gianlucacosta.helios.fx.Includes.{extendNode, extendPoint2D}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
@@ -73,5 +73,8 @@ private class HandleNode(
   }
 
   override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit =
-    onDrag(handle(), point)
+    onDrag(
+      handle(),
+      point.nonNegative
+    )
 }
