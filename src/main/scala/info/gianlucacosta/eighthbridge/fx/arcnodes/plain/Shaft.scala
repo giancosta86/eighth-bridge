@@ -22,6 +22,9 @@ private class Shaft(
   children.add(line)
   */
 
+  val self =
+    this
+
   //TODO: for private classes, just use private properties when change from outside is required
   val handles =
     new SimpleObjectProperty[List[ArcHandle]](initialHandles)
@@ -31,7 +34,15 @@ private class Shaft(
   }
 
   private val handleNodes =
-    new SimpleObjectProperty[List[HandleNode]](Nil) //TODO! Actually, bind to handles!
+    new SimpleObjectProperty[List[HandleNode]](Nil)
+    /*
+    Bindings.createObjectBinding[List[HandleNode]](
+      () =>
+        handles().map(),
+
+      handles
+    )
+  }*/
 
   private val pointProviders =
     Bindings.createObjectBinding[List[Centered]](
@@ -41,6 +52,14 @@ private class Shaft(
       handleNodes
     )
 
+  private val polyline =
+    new ShaftPolyline(pointProviders(), onSegmentRightClicked) {
+      pointProviders <==
+        self.pointProviders
+    }
+
+  children.add(polyline)
+
   val arrowSourcePointProvider: ObjectBinding[Centered] =
     Bindings.createObjectBinding[Centered](
       () =>
@@ -49,39 +68,7 @@ private class Shaft(
       pointProviders
     )
 
-  private val segments =
-    Bindings.createObjectBinding[List[ShaftSegment]](
-      () =>
-        pointProviders()
-          .sliding(2)
-          .zipWithIndex
-          .map {
-            case (startProvider::endProvider::Nil, index) =>
-              new ShaftSegment(
-                startProvider,
-                endProvider,
-                onRightClick = (point) => {
-                  onSegmentRightClicked(index, point)
-                }
-              )
-            case _ =>
-              throw new Exception("This should not occur!")
-          }
-          .toList,
 
-      pointProviders
-    )
-
-  segments.onChange(updateSegmentNodes())
-
-  updateSegmentNodes()
-
-  private def updateSegmentNodes(): Unit = {
-    println(s"############## The segments are: ${segments().size}")
-    children.clear()
-
-    segments().foreach(children.add(_))
-  }
 
 
 
