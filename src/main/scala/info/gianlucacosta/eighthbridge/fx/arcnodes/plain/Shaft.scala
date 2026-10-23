@@ -22,7 +22,7 @@ private class Shaft(
   children.add(line)
   */
 
-  val self =
+  private val self =
     this
 
   //TODO: for private classes, just use private properties when change from outside is required
@@ -33,23 +33,18 @@ private class Shaft(
     println(s"The handles are: ${handles()}")
   }
 
-  private val handleNodes =
-    new SimpleObjectProperty[List[HandleNode]](Nil)
-    /*
-    Bindings.createObjectBinding[List[HandleNode]](
-      () =>
-        handles().map(),
+  private val handleNodeGroup =
+    new HandleNodeGroup(initialHandles)
 
-      handles
-    )
-  }*/
+  children.add(handleNodeGroup)
+
 
   private val pointProviders =
     Bindings.createObjectBinding[List[Centered]](
       () =>
-          List(sourceVertexNode) ++ handleNodes() ++ List(targetVertexNode),
+          List(sourceVertexNode) ++ handleNodeGroup.handleNodes() ++ List(targetVertexNode),
 
-      handleNodes
+      handleNodeGroup.handleNodes
     )
 
   private val polyline =
