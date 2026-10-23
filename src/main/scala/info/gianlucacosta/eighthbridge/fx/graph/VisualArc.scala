@@ -54,7 +54,7 @@ class VisualArc(barbsValue: Option[ArcBarbs])
   def handles: List[ArcHandle] =
     _handles
 
-  def setHandles(handles: List[ArcHandle]): this.type =
+  private def setHandles(handles: List[ArcHandle]): this.type =
     if (handles != _handles) {
       val result =
         updateTimestamp()
@@ -65,6 +65,30 @@ class VisualArc(barbsValue: Option[ArcBarbs])
       result
     } else
       this
+
+  def addHandle(index: Int, arcHandle: ArcHandle): this.type = {
+    val updatedHandles: List[ArcHandle] =
+      handles.take(index) ++
+        List(arcHandle) ++
+        handles.drop(index)
+
+    setHandles(updatedHandles)
+  }
+
+  def replaceHandle(handle: ArcHandle): this.type =
+    setHandles(
+      handles.map(currentHandle =>
+        if (currentHandle == handle)
+          handle
+        else
+          currentHandle
+      )
+    )
+
+  def removeHandle(handle: ArcHandle): this.type =
+    setHandles(
+      handles.filter(_ != handle)
+    )
 
   def styleClasses: Set[String] =
     _styleClasses

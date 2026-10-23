@@ -114,19 +114,21 @@ abstract class GraphCanvasController {
       )
     )
 
-  def createAddArcHandle(arc: VisualArc, shaftSegmentIndex: Int, point: Point2D): Option[VisualGraph] = {
-    //TODO! REVISE THIS!
-    val updatedArcHandles: List[ArcHandle] =
-      arc.handles.take(shaftSegmentIndex) ++
-        List(ArcHandle.makeCircle(point)) ++
-          arc.handles.drop(shaftSegmentIndex)
+  def addArcHandle(arc: VisualArc, index: Int, point: Point2D): Option[VisualGraph] = {
+    val arcHandle =
+      ArcHandle.makeCircle(point)
 
     val updatedArc =
-      arc.setHandles(
-        updatedArcHandles
-      )
+      arc.addHandle(index, arcHandle)
 
-    println(s"${new java.util.Date}: the controller say the handles in the arc are ${updatedArc.handles.size}")
+    Some(
+      graph.updateArc(updatedArc)
+    )
+  }
+
+  def removeArcHandle(arc: VisualArc, handle: ArcHandle): Some[VisualGraph] = {
+    val updatedArc =
+      arc.removeHandle(handle)
 
     Some(
       graph.updateArc(updatedArc)

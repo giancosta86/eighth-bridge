@@ -63,15 +63,13 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
 
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE RIGHT-CLICKED ON SEGMENT #${shaftSegmentIndex}")
-    controller.createAddArcHandle(arc(), shaftSegmentIndex, point)
+    controller.addArcHandle(arc(), shaftSegmentIndex, point)
       .foreach(graph_=)
   }
 
   private def handleRightClickOnHandleNode(handle: ArcHandle): Unit = {
     println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
-    arc() =
-      arc().setHandles(
-        arc().handles.filter(_ != handle)
-      )
+    controller.removeArcHandle(arc(), handle)
+      .foreach(graph_=)
   }
 }

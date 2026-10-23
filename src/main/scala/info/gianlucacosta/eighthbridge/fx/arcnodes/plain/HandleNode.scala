@@ -1,12 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.Centered
-import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
+import info.gianlucacosta.eighthbridge.fx.{Centered, DragContext}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcHandle, Delta}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ObjectProperty
+import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
 private class HandleNode(
