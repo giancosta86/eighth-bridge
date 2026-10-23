@@ -7,8 +7,12 @@ import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ObjectProperty
+import scalafx.scene.input.{MouseButton, MouseEvent}
 
-private class HandleNode(initialHandle: ArcHandle) extends Ellipse with Centered {
+private class HandleNode(
+                          initialHandle: ArcHandle,
+                          onRightClick: HandleNodeRightClickHandler
+                        ) extends Ellipse with Centered {
   styleClass.add("handle")
 
   //TODO! Choose a style for typing properties
@@ -46,4 +50,20 @@ private class HandleNode(initialHandle: ArcHandle) extends Ellipse with Centered
 
       handle
     )
+
+  handleEvent(MouseEvent.MouseClicked) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Secondary =>
+          mouseEvent.clickCount match {
+            case 1 =>
+              mouseEvent.consume()
+              onRightClick(handle())
+          }
+
+        case _ =>
+      }
+      ()
+    }
+  }
 }

@@ -7,7 +7,10 @@ import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty}
 import scalafx.scene.Group
 import scalafx.Includes._
 
-private class HandleNodeGroup(initialHandles: List[ArcHandle]) extends Group {
+private class HandleNodeGroup(
+                               initialHandles: List[ArcHandle],
+                               onHandleNodeRightClick: HandleNodeRightClickHandler
+                             ) extends Group {
   val handles: ObjectProperty[List[ArcHandle]] =
     new SimpleObjectProperty[List[ArcHandle]]
 
@@ -54,7 +57,11 @@ private class HandleNodeGroup(initialHandles: List[ArcHandle]) extends Group {
 
           case None =>
             val brandNewHandleNode =
-              new HandleNode(handle)
+              new HandleNode(
+                handle,
+                onRightClick =
+                  onHandleNodeRightClick
+              )
 
             children.add(brandNewHandleNode)
 
@@ -65,33 +72,4 @@ private class HandleNodeGroup(initialHandles: List[ArcHandle]) extends Group {
 
   handles() =
     initialHandles
-
-
-  /*val handleNodes: ReadOnlyObjectProperty[List[HandleNode]] =
-    ReadOnlyProperties.createObject(
-      () => {
-        handles().map(handle => {
-          val existingHandleNode: Option[HandleNode] =
-            handleNodes()
-              .find(_.handle() == handle)
-
-          existingHandleNode.map(handleNode => {
-            handleNode.handle() =
-              handle
-
-            handleNode
-          }).getOrElse {
-            val brandNewHandleNode =
-              new HandleNode(handle)
-
-            children.add(brandNewHandleNode)
-
-            brandNewHandleNode
-          }
-        })
-      },
-
-      handles
-    )*/
-
 }

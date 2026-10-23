@@ -13,7 +13,8 @@ private class Shaft(
                      sourceVertexNode: VertexNode,
                      targetVertexNode: VertexNode,
                      initialHandles: List[ArcHandle],
-                     onSegmentRightClick: (Int, Point2D) => Unit
+                     onSegmentRightClick: SegmentRightClickHandler,
+                     onHandleNodeRightClick: HandleNodeRightClickHandler
                    ) extends Group {
   /*
   private val line =
@@ -31,13 +32,14 @@ private class Shaft(
     new SimpleObjectProperty[List[ArcHandle]](initialHandles)
 
   private val handleNodeGroup =
-    new HandleNodeGroup(initialHandles) {
+    new HandleNodeGroup(
+      initialHandles,
+      onHandleNodeRightClick =
+        onHandleNodeRightClick
+    ) {
       handles <==
         self.handles
     }
-
-  children.add(handleNodeGroup)
-
 
   private val pointProviders =
     Bindings.createObjectBinding[List[Centered]](
@@ -48,12 +50,14 @@ private class Shaft(
     )
 
   private val polyline =
-    new ShaftPolyline(pointProviders(), onSegmentRightClick = onSegmentRightClick) {
+    new ShaftPolyline(
+      pointProviders(),
+      onSegmentRightClick =
+        onSegmentRightClick
+    ) {
       pointProviders <==
         self.pointProviders
     }
-
-  children.add(polyline)
 
   val arrowSourcePointProvider: ObjectBinding[Centered] =
     Bindings.createObjectBinding[Centered](
@@ -63,112 +67,6 @@ private class Shaft(
       pointProviders
     )
 
-
-
-
-
-
-  /*
-  handles.onChange {
-    val updatedHandles =
-      handles()
-
-    val currentHandleNodes =
-      handleNodes()
-
-    val handleNodesToRemove =
-      currentHandleNodes
-        .filter(handleNode =>
-          !updatedHandles.contains(handleNode.handle)
-        )
-        .toSet
-
-    handleNodesToRemove.foreach(
-      children.remove(_)
-    )
-
-    val keptHandleNodes: List[HandleNode] =
-      currentHandleNodes.filter(
-        !handleNodesToRemove.contains(_)
-      )
-
-    val updatedHandleNodes: List[HandleNode] =
-      updatedHandles
-        .zipWithIndex
-        .map { case (handle, index) =>
-          val handleNode =
-            keptHandleNodes
-              .find(_.handle == handle)
-              .getOrElse {
-                val brandNewHandleNode =
-                  new HandleNode(handle)
-
-                children.add(brandNewHandleNode)
-
-                brandNewHandleNode
-              }
-
-          handleNode.update(handle)
-
-          handleNode
-        }
-
-    handleNodes() =
-      updatedHandleNodes
-  }
-
-
-  private val segmentPointProviders =
-    new SimpleObjectProperty[List[Centered]]
-
-  segmentPointProviders <== Bindings.createObjectBinding(
-    () =>
-      List(sourceVertexNode) ++
-        handleNodes() ++
-        List(targetVertexNode),
-
-    handleNodes
-  )
-
-  private val segments =
-    new SimpleObjectProperty[List[ShaftSegment]](Nil)
-
-  segments <== Bindings.createObjectBinding(
-    () => {
-      segmentPointProviders()
-        .sliding(2)
-        .zipWithIndex
-        .map {
-          case (startProvider::endProvider::Nil, index) =>
-            new ShaftSegment(
-              startProvider,
-              endProvider,
-              onRightClick = (point) => {
-                onSegmentRightClicked(index, point)
-              }
-            )
-          case _ =>
-            throw new Exception("This should not occur!")
-        }
-        .toList
-    },
-
-    segmentPointProviders
-  )
-
-  segments.onChange((_, oldValue, newValue) => {
-    redrawSegments(oldValue, newValue)
-  })
-
-  private def redrawSegments(oldSegments: List[ShaftSegment], newSegments: List[ShaftSegment]): Unit = {
-    println(s"-----------> THE ARC SEGMENTS ARE: ${segments().size}")
-
-    children.removeRange(0, oldSegments.size)
-
-    newSegments
-      .reverse
-      .foreach(children.add(0, _))
-  }
-
-  redrawSegments(List(), segments()) */
+  children.add(polyline)
+  children.add(handleNodeGroup)
 }

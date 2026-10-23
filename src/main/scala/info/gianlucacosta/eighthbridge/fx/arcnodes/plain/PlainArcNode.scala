@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualArc}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, VisualArc}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
@@ -25,7 +25,9 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
       targetVertexNode,
       initialArc.handles,
       onSegmentRightClick =
-        handleRightClickOnShaftSegment
+        handleRightClickOnShaftSegment,
+      onHandleNodeRightClick =
+        handleRightClickOnHandleNode
     ) {
       handles <==
         Bindings.createObjectBinding(
@@ -60,8 +62,16 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   children.add(barbsNode)
 
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
-    println(s"%%%%%%%%%%%% YOU HAVE CLICKED ON SEGMENT #${shaftSegmentIndex}")
+    println(s"%%%%%%%%%%%% YOU HAVE RIGHT-CLICKED ON SEGMENT #${shaftSegmentIndex}")
     controller.createAddArcHandle(arc(), shaftSegmentIndex, point)
       .foreach(graph_=)
+  }
+
+  private def handleRightClickOnHandleNode(handle: ArcHandle): Unit = {
+    println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
+    arc() =
+      arc().setHandles(
+        arc().handles.filter(_ != handle)
+      )
   }
 }
