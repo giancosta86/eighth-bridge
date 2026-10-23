@@ -2,7 +2,6 @@ package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.theory.Arc
 import info.gianlucacosta.eighthbridge.theory.features.{Named, Timestamped}
-import scalafx.geometry.Point2D
 
 /**
   * An arc for VisualGraph
@@ -54,7 +53,7 @@ class VisualArc(barbsValue: Option[ArcBarbs])
   def handles: List[ArcHandle] =
     _handles
 
-  private def setHandles(handles: List[ArcHandle]): this.type =
+  def setHandles(handles: List[ArcHandle]): this.type =
     if (handles != _handles) {
       val result =
         updateTimestamp()
