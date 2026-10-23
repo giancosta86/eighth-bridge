@@ -22,24 +22,31 @@ private class Shaft(
   children.add(line)
   */
 
-
   //TODO: for private classes, just use private properties when change from outside is required
   val handles =
     new SimpleObjectProperty[List[ArcHandle]](initialHandles)
 
-  //TODO!
-  handles.onChange {
-    println(s"The handles, within the arc shaft, are: ${handles()}")
+  handles.onInvalidate {
+    println(s"The handles are: ${handles()}")
   }
 
   private val handleNodes =
-    new SimpleObjectProperty[List[HandleNode]](Nil)
+    new SimpleObjectProperty[List[HandleNode]](Nil) //TODO! Actually, bind to handles!
 
   private val pointProviders =
     Bindings.createObjectBinding[List[Centered]](
       () =>
           List(sourceVertexNode) ++ handleNodes() ++ List(targetVertexNode),
+
       handleNodes
+    )
+
+  val arrowSourcePointProvider: ObjectBinding[Centered] =
+    Bindings.createObjectBinding[Centered](
+      () =>
+        pointProviders().takeRight(2).head,
+
+      pointProviders
     )
 
   private val segments =
@@ -65,8 +72,6 @@ private class Shaft(
       pointProviders
     )
 
-  println(s"############## The INITIAL segments are: ${segments().size}")
-
   segments.onChange(updateSegmentNodes())
 
   updateSegmentNodes()
@@ -77,16 +82,6 @@ private class Shaft(
 
     segments().foreach(children.add(_))
   }
-
-
-  val arrowSourcePointProvider: ObjectBinding[Centered] =
-    Bindings.createObjectBinding[Centered](
-      () =>
-        pointProviders().takeRight(2).head,
-
-      pointProviders
-    )
-
 
 
 
