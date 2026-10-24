@@ -75,6 +75,7 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
       .foreach(graph_=)
   }
 
+  //TODO! Actually, using the DELTA would be more precise
   private def handleDragOnHandleNode(handle: ArcHandle, updatedCenter: Point2D): Unit = {
     //println(s"///////////////// YOU ARE DRAGGING ${handle} to ${updatedCenter}")
     controller.dragArcHandle(arc(), handle, updatedCenter)
