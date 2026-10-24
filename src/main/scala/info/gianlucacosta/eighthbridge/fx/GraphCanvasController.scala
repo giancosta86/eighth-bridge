@@ -103,6 +103,8 @@ abstract class GraphCanvasController {
   def editVertex(vertex: VisualVertex): Option[VisualGraph] =
     None
 
+  //TODO! handle link editing on double click!
+
   def dragSelectedVertexesBy(delta: Delta): Option[VisualGraph] =
     None
 
@@ -114,6 +116,7 @@ abstract class GraphCanvasController {
       )
     )
 
+  //TODO! Should I replace these handle-related methods with merely an "updateArc()" function?
   def addArcHandle(arc: VisualArc, index: Int, point: Point2D): Option[VisualGraph] = {
     val arcHandle =
       ArcHandle.makeCircle(point)
