@@ -13,10 +13,10 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
   private val (sourceVertex, targetVertex) =
     graph.getAnchors(arc()).get
 
-  private val sourceVertexNode =
+  protected val sourceVertexNode =
     graphCanvas.vertexNodesByVertex(sourceVertex)
 
-  private val targetVertexNode =
+  protected val targetVertexNode =
     graphCanvas.vertexNodesByVertex(targetVertex)
 
   private val shaft =

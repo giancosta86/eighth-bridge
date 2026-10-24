@@ -10,7 +10,7 @@ import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 
 import scala.collection.JavaConversions._
-import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, ReadOnlyDoubleWrapper}
+import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, ReadOnlyDoubleWrapper, ReadOnlyObjectProperty}
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
@@ -52,6 +52,18 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         vertex().center.y,
 
       vertex
+    )
+
+  val center: ReadOnlyObjectProperty[Point2D] =
+    ReadOnlyProperties.createObject[Point2D](
+      () =>
+        new Point2D(
+          centerX(),
+          centerY()
+        ),
+
+      centerX,
+      centerY
     )
 
   def width: ReadOnlyDoubleProperty

@@ -43,10 +43,7 @@ private class BarbsNode(
         ArcBarbs.getIntersection(
           sourcePoint(),
 
-          new Point2D(
-            targetVertexNode.centerX(),
-            targetVertexNode.centerY()
-          ),
+          targetVertexNode.center(),
 
           new Dimension2D(
             targetVertexNode.width(),
@@ -55,8 +52,7 @@ private class BarbsNode(
         ),
 
       sourcePoint,
-      targetVertexNode.centerX,
-      targetVertexNode.centerY,
+      targetVertexNode.center,
       targetVertexNode.width,
       targetVertexNode.height
     )
