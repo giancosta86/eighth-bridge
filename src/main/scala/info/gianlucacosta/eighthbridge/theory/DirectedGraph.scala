@@ -5,79 +5,45 @@ import info.gianlucacosta.eighthbridge.theory.entities.IntBasedEntity
 import scala.annotation.tailrec
 
 abstract class DirectedGraph[V <: Vertex, A <: Arc](
-                                                     val vertexes: Set[V],
+                                                     vertexes: Set[V],
                                                      protected val arcsByVertexPair: Map[(V, V), Set[A]]
-                                                   ) {
+                                                   )
+  extends GraphCore(vertexes) {
   protected def graphCopy(
-                           vertexes: Set[V] = vertexes,
-                           arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
+                           updatedVertexes: Set[V] = vertexes,
+                           updatedArcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
    ): this.type
 
-  override def equals(obj: Any): Boolean =
-    false
-
-  override def hashCode(): Int =
-    0
-
-  @transient
-  lazy val isEmpty: Boolean =
-    vertexes.isEmpty
-
-  @transient
-  lazy val nonEmpty: Boolean =
-    vertexes.nonEmpty
-
-  def addVertexes(vertexesToAdd: Set[V]): this.type =
+  override protected def setVertexes(updatedVertexes: Set[V]): DirectedGraph.this.type =
     graphCopy(
-      vertexes =
-        vertexes ++ vertexesToAdd
-    )
-
-  final def addVertexes(vertexesToAdd: V*): this.type =
-    addVertexes(vertexesToAdd.toSet)
-
-  final def addVertex(vertex: V): this.type =
-    graphCopy(
-      vertexes =
-        vertexes + vertex
+      updatedVertexes =
+        updatedVertexes
     )
 
   def updateVertex(updatedVertex: V): this.type =
     graphCopy(
-      vertexes =
+      updatedVertexes =
         vertexes.updateEntity(updatedVertex),
 
-      arcsByVertexPair =
+      updatedArcsByVertexPair =
         arcsByVertexPair.map {
           case (keyPair, arc) =>
             keyPair.updateEntity(updatedVertex) -> arc
         }
     )
 
-  final def updateVertexes(updatedVertexes: Set[V]): this.type =
-    updatedVertexes.foldLeft(this)((cumulatedGraph, vertex) =>
-      cumulatedGraph.updateVertex(vertex)
-    ).asInstanceOf[this.type]
 
-  final def updateVertexes(updatedVertexes: V*): this.type =
-    updateVertexes(updatedVertexes.toSet)
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type =
     graphCopy(
-      vertexes =
+      updatedVertexes =
         vertexes -- vertexesToRemove,
 
-      arcsByVertexPair =
+      updatedArcsByVertexPair =
         arcsByVertexPair.filterKeys(
           !vertexesToRemove.intersectsPair(_)
         )
     )
-
-  final def removeVertexes(vertexes: V*): this.type =
-    removeVertexes(vertexes.toSet)
-
-  final def removeVertex(vertex: V): this.type =
-    removeVertexes(Set(vertex))
 
   def addArc(sourceVertex: V, targetVertex: V, arc: A): this.type = {
     val vertexPair =
@@ -88,7 +54,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
 
       graphCopy(
-        arcsByVertexPair =
+        updatedArcsByVertexPair =
           arcsByVertexPair + (vertexPair -> updatedArcSet)
       )
     } else
@@ -100,7 +66,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
 
   def updateArc(updatedArc: A): this.type =
     graphCopy(
-      arcsByVertexPair =
+      updatedArcsByVertexPair =
         arcsByVertexPair.mapValues(_.updateEntity(updatedArc))
     )
 
@@ -114,7 +80,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
 
   def removeArcs(arcsToRemove: Set[A]): this.type =
     graphCopy(
-      arcsByVertexPair =
+      updatedArcsByVertexPair =
         arcsByVertexPair
           .mapValues(
             _ -- arcsToRemove
@@ -137,22 +103,14 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
       .flatten
       .toSet
 
-  @transient
-  protected lazy val vertexesById: Map[IntBasedEntity#EntityId, V] =
-    vertexes
-      .map(vertex => vertex.id -> vertex)
-      .toMap
-
-  def getVertexById(id: IntBasedEntity#EntityId): Option[V] =
-    vertexesById.get(id)
 
   @transient
-  protected lazy val arcsById: Map[IntBasedEntity#EntityId, A] =
+  protected lazy val arcsById: Map[Arc#EntityId, A] =
     arcs
       .map(arc => arc.id -> arc)
       .toMap
 
-  def getArcById(id: IntBasedEntity#EntityId): Option[A] =
+  def getArcById(id: Arc#EntityId): Option[A] =
     arcsById.get(id)
 
 

@@ -16,14 +16,15 @@ class VisualGraph(
                                                       arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]] =
                                                         Map[(VisualVertex, VisualVertex), Set[VisualArc]]()
 ) extends DirectedGraph[VisualVertex, VisualArc](vertexes, arcsByVertexPair) {
-  override protected def graphCopy(vertexes: Set[VisualVertex], arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]]): this.type =
+  override protected def graphCopy(updatedVertexes: Set[VisualVertex], updatedArcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]]): this.type =
     new VisualGraph(
       vertexes =
-        vertexes,
+        updatedVertexes,
 
       arcsByVertexPair =
-        arcsByVertexPair
+        updatedArcsByVertexPair
     ).asInstanceOf[this.type]
+
 
   @transient
   lazy val selectedVertexes: Set[VisualVertex] =
