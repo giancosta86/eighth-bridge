@@ -20,6 +20,9 @@ extends PlainArcNode(graphCanvas, initialArc) {
   private val self =
     this
 
+  override type A <:
+    LabeledVisualLink
+
   private val firstHandlePoint =
     Bindings.createObjectBinding[Option[Point2D]](
       () =>
@@ -67,7 +70,6 @@ extends PlainArcNode(graphCanvas, initialArc) {
         Bindings.createObjectBinding[Point2D](
           () =>
             arc()
-              .asInstanceOf[LabeledVisualLink] //TODO! Can I get rid of this cast?
               .customLabelCenter
               .getOrElse(labelAnchorPoint()),
 
@@ -114,7 +116,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
       visible <==
         Bindings.createBooleanBinding(
           () =>
-            self.hover() && arc().asInstanceOf[LabeledVisualLink].customLabelCenter.isDefined,
+            self.hover() && arc().customLabelCenter.isDefined,
 
           self.hover,
           arc
@@ -128,7 +130,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
   private def handleDragOnLabel(delta: Delta): Unit = {
     //TODO! Pass through the controller!
     val currentArc =
-      arc().asInstanceOf[LabeledVisualLink]
+      arc()
 
     val actualCenter: Point2D =
       currentArc
@@ -156,7 +158,6 @@ extends PlainArcNode(graphCanvas, initialArc) {
 
     val updatedArc =
       arc()
-        .asInstanceOf[LabeledVisualLink]
         .setCustomLabelCenter(None)
 
     graph =

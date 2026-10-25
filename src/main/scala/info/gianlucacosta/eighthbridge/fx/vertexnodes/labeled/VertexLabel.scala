@@ -20,7 +20,6 @@ private class VertexLabel(vertexNode: LabeledVertexNode)
     () =>
       vertexNode
         .vertex()
-        .asInstanceOf[Labeled]
         .label,
 
     vertexNode.vertex

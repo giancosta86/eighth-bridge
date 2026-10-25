@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
+import info.gianlucacosta.eighthbridge.fx.graph.{LabeledVisualVertex, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode}
 import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
 import javafx.beans.property.SimpleStringProperty
@@ -11,6 +11,9 @@ import scalafx.geometry.Point2D
 
 class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends VertexNode(graphCanvas, initialVertex) {
+
+  override type V <:
+    LabeledVisualVertex
 
   private val label =
     new VertexLabel(this)

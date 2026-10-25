@@ -18,8 +18,11 @@ import scalafx.scene.input.MouseEvent
 abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends GraphCanvasNode(graphCanvas) {
 
+  type A <:
+    VisualLink
+
   val arc =
-    new SimpleObjectProperty[VisualLink]
+    new SimpleObjectProperty[A]
 
   arc.onInvalidate {
     styleClass.setAll("arc")
@@ -32,7 +35,7 @@ abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   }
 
   arc() =
-    initialArc
+    initialArc.asInstanceOf[A]
 
   //TODO! Remove all println() calls!
 

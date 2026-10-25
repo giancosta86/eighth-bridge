@@ -148,7 +148,7 @@ class GraphCanvas(
           updatedGraph.getVertexById(vertex.id).get
 
         vertexNode.vertex() =
-          updatedVertex
+          updatedVertex.asInstanceOf[vertexNode.V]
       }
     }
 
@@ -158,7 +158,7 @@ class GraphCanvas(
           updatedGraph.getArcById(arc.id).get
 
         arcNode.arc() =
-          updatedArc
+          updatedArc.asInstanceOf[arcNode.A]
       }
     }
 

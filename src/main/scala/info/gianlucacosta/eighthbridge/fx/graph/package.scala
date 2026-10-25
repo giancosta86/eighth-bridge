@@ -7,7 +7,8 @@ import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
 package object graph {
-  type VisualGraph = DirectedGraph[VisualVertex, VisualLink]
+  type VisualGraph =
+    DirectedGraph[VisualVertex, VisualLink]
 
   implicit class VisualGraphExtensions(self: VisualGraph) {
     def selectedVertexes: Set[VisualVertex] =

@@ -22,8 +22,11 @@ import scalafx.scene.layout.Region
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends GraphCanvasNode(graphCanvas) with Centered with DragContext {
 
+  type V <:
+    VisualVertex
+
   val vertex =
-    new SimpleObjectProperty[VisualVertex]
+    new SimpleObjectProperty[V]
 
   vertex.onInvalidate {
     styleClass.setAll("vertex")
@@ -36,7 +39,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
   vertex() =
-    initialVertex
+    initialVertex.asInstanceOf[V]
 
   val centerX: ReadOnlyDoubleProperty =
     ReadOnlyProperties.createDouble(
