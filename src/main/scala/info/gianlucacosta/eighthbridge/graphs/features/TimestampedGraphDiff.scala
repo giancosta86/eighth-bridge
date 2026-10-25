@@ -1,9 +1,8 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
-import info.gianlucacosta.eighthbridge.graphs.Vertex
-import info.gianlucacosta.eighthbridge.graphs.directed.Arc
+import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
-case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Arc with Timestamped](
+case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Link with Timestamped](
                                                                                           addedVertexes: Set[V] = Set[V](),
                                                                                           addedArcs: Set[A] = Set[A](),
                                                                                           updatedVertexes: Set[V] = Set[V](),

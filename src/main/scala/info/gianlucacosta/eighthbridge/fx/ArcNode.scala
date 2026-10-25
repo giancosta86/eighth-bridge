@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.{SimpleLongProperty, SimpleObjectProperty}
 
@@ -15,11 +15,11 @@ import scalafx.scene.input.MouseEvent
 /**
   * JavaFX node rendering a VisualArc
   */
-abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
+abstract class ArcNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends GraphCanvasNode(graphCanvas) {
 
   val arc =
-    new SimpleObjectProperty[VisualArc]
+    new SimpleObjectProperty[VisualLink]
 
   arc.onInvalidate {
     styleClass.setAll("arc")

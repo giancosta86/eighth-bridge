@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 
 trait Directed extends GraphCanvasController {

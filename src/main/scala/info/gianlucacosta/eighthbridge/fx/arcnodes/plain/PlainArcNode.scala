@@ -1,13 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, VisualArc}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, VisualLink}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
-class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualArc)
+class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends ArcNode(graphCanvas, initialArc) {
 
   private val (sourceVertex, targetVertex) =

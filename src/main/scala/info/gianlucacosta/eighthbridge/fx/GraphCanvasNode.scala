@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes.{extendMouseEvent, extendNode}
 import scalafx.scene.{Group, Node}
 import scalafx.Includes._

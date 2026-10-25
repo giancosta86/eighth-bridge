@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphCanvasController}
 import scalafx.geometry.Point2D
 import info.gianlucacosta.helios.fx.Includes._

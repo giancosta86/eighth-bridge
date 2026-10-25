@@ -3,10 +3,10 @@ package info.gianlucacosta.eighthbridge.fx.graph
 import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
 import scalafx.geometry.Point2D
 
-class LabeledVisualArc(
+class LabeledVisualLink(
                         barbsValue: Option[ArcBarbs],
                         labelValue: String
-                      ) extends VisualArc(barbsValue) with Labeled {
+                      ) extends VisualLink(barbsValue) with Labeled {
   private var _label: String =
     labelValue
 

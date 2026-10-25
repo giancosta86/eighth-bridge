@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, LabeledVisualArc, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, LabeledVisualLink, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
@@ -36,7 +36,7 @@ abstract class GraphCanvasController {
   def canDrawSelectionRectangle: Boolean =
     true //TODO! False!
 
-  def setSelection(selectedVertexes: Set[VisualVertex], selectedArcs: Set[VisualArc]):
+  def setSelection(selectedVertexes: Set[VisualVertex], selectedArcs: Set[VisualLink]):
     Option[VisualGraph]
 
   //TODO! Make this abstract!
@@ -44,8 +44,8 @@ abstract class GraphCanvasController {
     new LabeledVertexNode(graphCanvas, vertex)
 
   //TODO! Make this abstract!
-  def createArcNode(arc: VisualArc): ArcNode =
-    new LabeledArcNode(graphCanvas, arc.asInstanceOf[LabeledVisualArc])
+  def createArcNode(arc: VisualLink): ArcNode =
+    new LabeledArcNode(graphCanvas, arc.asInstanceOf[LabeledVisualLink])
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
@@ -112,12 +112,12 @@ abstract class GraphCanvasController {
   def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[VisualGraph] =
     Some(
       graph.addArc(
-        sourceVertex, targetVertex, new LabeledVisualArc(Some(ArcBarbs.Default), "Dodo")
+        sourceVertex, targetVertex, new LabeledVisualLink(Some(ArcBarbs.Default), "Dodo")
       )
     )
 
   //TODO! Should I replace these handle-related methods with merely an "updateArc()" function?
-  def addArcHandle(arc: VisualArc, index: Int, point: Point2D): Option[VisualGraph] = {
+  def addArcHandle(arc: VisualLink, index: Int, point: Point2D): Option[VisualGraph] = {
     val arcHandle =
       ArcHandle.makeCircle(point)
 
@@ -129,7 +129,7 @@ abstract class GraphCanvasController {
     )
   }
 
-  def removeArcHandle(arc: VisualArc, handle: ArcHandle): Some[VisualGraph] = {
+  def removeArcHandle(arc: VisualLink, handle: ArcHandle): Some[VisualGraph] = {
     val updatedArc =
       arc.removeHandle(handle)
 
@@ -138,7 +138,7 @@ abstract class GraphCanvasController {
     )
   }
 
-  def dragArcHandle(arc: VisualArc, arcHandle: ArcHandle, delta: Delta): Option[VisualGraph] = {
+  def dragArcHandle(arc: VisualLink, arcHandle: ArcHandle, delta: Delta): Option[VisualGraph] = {
     val updatedArc =
       arc.updateHandle(
         arcHandle.moveBy(delta)

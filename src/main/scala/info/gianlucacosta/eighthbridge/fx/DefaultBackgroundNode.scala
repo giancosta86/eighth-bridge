@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, NamedVisualVertex, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, NamedVisualVertex, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import javafx.beans.property.SimpleDoubleProperty

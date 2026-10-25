@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualArc, VisualArc}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
 import info.gianlucacosta.eighthbridge.graphs.features.Labeled
 import info.gianlucacosta.helios.fx.geometry.Segment
@@ -15,7 +15,7 @@ import javafx.beans.property.SimpleObjectProperty
 
 import java.util.Date
 
-class LabeledArcNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualArc)
+class LabeledArcNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualLink)
 extends PlainArcNode(graphCanvas, initialArc) {
   private val self =
     this
@@ -67,7 +67,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
         Bindings.createObjectBinding[Point2D](
           () =>
             arc()
-              .asInstanceOf[LabeledVisualArc] //TODO! Can I get rid of this cast?
+              .asInstanceOf[LabeledVisualLink] //TODO! Can I get rid of this cast?
               .customLabelCenter
               .getOrElse(labelAnchorPoint()),
 
@@ -114,7 +114,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
       visible <==
         Bindings.createBooleanBinding(
           () =>
-            self.hover() && arc().asInstanceOf[LabeledVisualArc].customLabelCenter.isDefined,
+            self.hover() && arc().asInstanceOf[LabeledVisualLink].customLabelCenter.isDefined,
 
           self.hover,
           arc
@@ -128,7 +128,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
   private def handleDragOnLabel(delta: Delta): Unit = {
     //TODO! Pass through the controller!
     val currentArc =
-      arc().asInstanceOf[LabeledVisualArc]
+      arc().asInstanceOf[LabeledVisualLink]
 
     val actualCenter: Point2D =
       currentArc
@@ -142,7 +142,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
 
     val updatedArc =
       arc()
-        .asInstanceOf[LabeledVisualArc]
+        .asInstanceOf[LabeledVisualLink]
         .setCustomLabelCenter(
           Some(updatedCenter)
         )
@@ -156,7 +156,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
 
     val updatedArc =
       arc()
-        .asInstanceOf[LabeledVisualArc]
+        .asInstanceOf[LabeledVisualLink]
         .setCustomLabelCenter(None)
 
     graph =

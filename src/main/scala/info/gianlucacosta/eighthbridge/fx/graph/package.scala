@@ -7,14 +7,14 @@ import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
 package object graph {
-  type VisualGraph = DirectedGraph[VisualVertex, VisualArc]
+  type VisualGraph = DirectedGraph[VisualVertex, VisualLink]
 
   implicit class VisualGraphExtensions(self: VisualGraph) {
     def selectedVertexes: Set[VisualVertex] =
       self.vertexes.filter(vertex => vertex.selected)
 
 
-    def selectedArcs: Set[VisualArc] =
+    def selectedArcs: Set[VisualLink] =
       self.arcs.filter(arc => arc.selected)
 
 
@@ -35,7 +35,7 @@ package object graph {
 
     def setSelection(
                       selectedVertexes: Set[VisualVertex],
-                      selectedArcs: Set[VisualArc]
+                      selectedArcs: Set[VisualLink]
                     ): VisualGraph = {
       val updatedVertexes: Set[VisualVertex] =
         self.vertexes.map(vertex =>
@@ -44,7 +44,7 @@ package object graph {
           )
         )
 
-      val updatedArcs: Set[VisualArc] =
+      val updatedArcs: Set[VisualLink] =
         self.arcs.map(arc =>
           arc.setSelected(
             selectedArcs.contains(arc)

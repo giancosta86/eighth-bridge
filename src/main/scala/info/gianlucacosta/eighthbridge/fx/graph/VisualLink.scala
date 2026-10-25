@@ -1,13 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.graphs.directed.Arc
+import info.gianlucacosta.eighthbridge.graphs.Link
 import info.gianlucacosta.eighthbridge.graphs.features.{Named, Timestamped}
 
 /**
   * An arc for VisualGraph
   */
-class VisualArc(barbsValue: Option[ArcBarbs])
-  extends Arc with Timestamped with Cloneable {
+class VisualLink(barbsValue: Option[ArcBarbs])
+  extends Link with Timestamped with Cloneable {
   private var _timestamp: Long =
     System.nanoTime()
 

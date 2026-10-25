@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
-import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, DirectedGraph}
-import info.gianlucacosta.eighthbridge.graphs.Vertex
+import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
 import scala.language.implicitConversions
 
@@ -52,7 +52,7 @@ object Weighted {
         .sortBy(_._2)
   }
   */
-  implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Arc with Weighted](self: DirectedGraph[V, A]) {
+  implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with Weighted](self: DirectedGraph[V, A]) {
     def getMinArcBetween(source: V, target: V): Option[A] =
       self
         .getArcsBetween(source, target)

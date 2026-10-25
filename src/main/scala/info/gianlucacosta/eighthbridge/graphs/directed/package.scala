@@ -1,13 +1,9 @@
-package info.gianlucacosta.eighthbridge.graphs.directed
+package info.gianlucacosta.eighthbridge.graphs
 
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
-
-trait Arc extends Link
-
-object Arc {
-  implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Arc](
-                                                                       self: Map[(V, V), Set[A]]
-                                                                       ) {
+package object directed {
+  implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Link](
+                                                                        self: Map[(V, V), Set[A]]
+                                                                      ) {
     def flattenToSingleVertexKey(
                                   vertexSelector: ((V, V)) => V
                                 ): Map[V, Set[A]] =
@@ -25,4 +21,3 @@ object Arc {
         )
   }
 }
-

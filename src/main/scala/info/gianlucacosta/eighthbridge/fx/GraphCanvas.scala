@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.TimestampedGraphDiff
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
@@ -113,18 +113,18 @@ class GraphCanvas(
   def vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     _vertexNodesByVertex
 
-  private var _arcNodesByArc: Map[VisualArc, ArcNode] =
+  private var _arcNodesByArc: Map[VisualLink, ArcNode] =
     Map()
 
-  def arcNodesByArc: Map[VisualArc, ArcNode] =
+  def arcNodesByArc: Map[VisualLink, ArcNode] =
     _arcNodesByArc
 
   render(
     initialGraph,
-    new TimestampedGraphDiff[VisualVertex, VisualArc]()
+    new TimestampedGraphDiff[VisualVertex, VisualLink]()
   )
 
-  private def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
+  private def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     /*println(s"${new java.util.Date}: RENDERING THE GRAPH WITH DIFF:")
     println(graphDiff)
     println()*/
@@ -132,7 +132,7 @@ class GraphCanvas(
     val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
-    val danglingArcNodesByArc: Map[VisualArc, ArcNode] =
+    val danglingArcNodesByArc: Map[VisualLink, ArcNode] =
       _arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
 
     _vertexNodesByVertex --=
@@ -171,7 +171,7 @@ class GraphCanvas(
         })
         .toMap
 
-    val addedArcNodesByArc: Map[VisualArc, ArcNode] =
+    val addedArcNodesByArc: Map[VisualLink, ArcNode] =
       graphDiff.addedArcs.map(arc => {
           val arcNode =
             controller.createArcNode(arc)

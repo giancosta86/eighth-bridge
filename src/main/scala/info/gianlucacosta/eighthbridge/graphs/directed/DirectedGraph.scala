@@ -1,10 +1,10 @@
 package info.gianlucacosta.eighthbridge.graphs.directed
 
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
-final class DirectedGraph[V <: Vertex, A <: Arc] private (
+final class DirectedGraph[V <: Vertex, A <: Link] private(
                                                      vertexes: Set[V],
                                                      protected val arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
@@ -122,12 +122,12 @@ final class DirectedGraph[V <: Vertex, A <: Arc] private (
 
 
   @transient
-  protected lazy val arcsById: Map[Arc#EntityId, A] =
+  protected lazy val arcsById: Map[Link#EntityId, A] =
     arcs
       .map(arc => arc.id -> arc)
       .toMap
 
-  def getArcById(id: Arc#EntityId): Option[A] =
+  def getArcById(id: Link#EntityId): Option[A] =
     arcsById.get(id)
 
 

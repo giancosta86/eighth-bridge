@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.Delta.Point2DDeltaExtensions
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualArc, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.binding.DoubleBinding
