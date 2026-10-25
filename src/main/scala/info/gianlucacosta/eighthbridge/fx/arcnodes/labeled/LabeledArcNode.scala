@@ -11,6 +11,9 @@ import scalafx.geometry.Point2D
 import scalafx.scene.shape.Line
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
+import javafx.beans.property.SimpleObjectProperty
+
+import java.util.Date
 
 class LabeledArcNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualArc)
 extends PlainArcNode(graphCanvas, initialArc) {
@@ -124,17 +127,21 @@ extends PlainArcNode(graphCanvas, initialArc) {
     val currentArc =
       arc().asInstanceOf[LabeledVisualArc]
 
-    val currentCenter: Point2D =
+    val actualCenter: Point2D =
       currentArc
         .customLabelCenter
         .getOrElse(labelAnchorPoint())
+
+    val updatedCenter =
+      actualCenter + delta
+
+    //println(s"!!!!!!!!!!!!! ${new Date()}: the delta is: ${delta} and the updated center is: ${updatedCenter}")
 
     val updatedArc =
       arc()
         .asInstanceOf[LabeledVisualArc]
         .setCustomLabelCenter(
-
-          Some(currentCenter + delta)
+          Some(updatedCenter)
         )
 
     graph =

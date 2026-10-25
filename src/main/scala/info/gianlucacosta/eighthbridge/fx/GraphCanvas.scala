@@ -125,9 +125,9 @@ class GraphCanvas(
   )
 
   private def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualArc]): Unit = {
-    println(s"${new java.util.Date}: RENDERING THE GRAPH WITH DIFF:")
+    /*println(s"${new java.util.Date}: RENDERING THE GRAPH WITH DIFF:")
     println(graphDiff)
-    println()
+    println()*/
 
     val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)

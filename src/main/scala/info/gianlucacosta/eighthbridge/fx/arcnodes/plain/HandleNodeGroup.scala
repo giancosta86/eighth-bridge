@@ -25,7 +25,7 @@ private class HandleNodeGroup(
     val updatedHandles =
       handles()
 
-    println(s"/////////////// The updated handles are: ${updatedHandles}")
+    //println(s"/////////////// The updated handles are: ${updatedHandles}")
 
     val currentHandleNodes =
       _handleNodes().toSet
