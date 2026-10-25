@@ -14,6 +14,7 @@ object IntBasedEntity {
     result
   }
 }
+
 trait IntBasedEntity extends Entity {
   override type EntityId =
     Int
