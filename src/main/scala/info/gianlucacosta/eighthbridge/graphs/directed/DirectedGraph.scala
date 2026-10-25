@@ -4,24 +4,41 @@ import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore
 
 import scala.annotation.tailrec
 
-abstract class DirectedGraph[V <: Vertex, A <: Arc](
+final class DirectedGraph[V <: Vertex, A <: Arc] private (
                                                      vertexes: Set[V],
                                                      protected val arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
   extends GraphCore(vertexes) {
-  protected def graphCopy(
+
+  def this() = this(
+    vertexes =
+      Set[V](),
+
+    arcsByVertexPair =
+      Map[(V, V), Set[A]]()
+  )
+
+  //TODO! Strictly speaking, this could merely return "DirectedGraph" in lieu of "this.type" - which applies to the methods calling it, as well.
+  private def copy(
                            updatedVertexes: Set[V] = vertexes,
                            updatedArcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
-   ): this.type
+   ): this.type =
+    new DirectedGraph(
+      vertexes =
+        updatedVertexes,
+
+      arcsByVertexPair =
+        updatedArcsByVertexPair
+    ).asInstanceOf[this.type]
 
   override protected def setVertexes(updatedVertexes: Set[V]): DirectedGraph.this.type =
-    graphCopy(
+    copy(
       updatedVertexes =
         updatedVertexes
     )
 
   def updateVertex(updatedVertex: V): this.type =
-    graphCopy(
+    copy(
       updatedVertexes =
         vertexes.updateEntity(updatedVertex),
 
@@ -35,7 +52,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
 
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type =
-    graphCopy(
+    copy(
       updatedVertexes =
         vertexes -- vertexesToRemove,
 
@@ -53,7 +70,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
       val updatedArcSet =
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
 
-      graphCopy(
+      copy(
         updatedArcsByVertexPair =
           arcsByVertexPair + (vertexPair -> updatedArcSet)
       )
@@ -65,7 +82,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
     addArc(vertexPair._1, vertexPair._2, arc)
 
   def updateArc(updatedArc: A): this.type =
-    graphCopy(
+    copy(
       updatedArcsByVertexPair =
         arcsByVertexPair.mapValues(_.updateEntity(updatedArc))
     )
@@ -79,7 +96,7 @@ abstract class DirectedGraph[V <: Vertex, A <: Arc](
     updateArcs(updatedArcs.toSet)
 
   def removeArcs(arcsToRemove: Set[A]): this.type =
-    graphCopy(
+    copy(
       updatedArcsByVertexPair =
         arcsByVertexPair
           .mapValues(
