@@ -40,12 +40,12 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
   def updateVertex(updatedVertex: V): this.type =
     graphCopy(
       vertexes =
-        vertexes.updateVertex(updatedVertex),
+        vertexes.updateEntity(updatedVertex),
 
       arcsByVertexPair =
         arcsByVertexPair.map {
           case (keyPair, arc) =>
-            keyPair.updateVertex(updatedVertex) -> arc
+            keyPair.updateEntity(updatedVertex) -> arc
         }
     )
 
@@ -96,7 +96,7 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
   def updateArc(updatedArc: A): this.type =
     graphCopy(
       arcsByVertexPair =
-        arcsByVertexPair.mapValues(_.updateArc(updatedArc))
+        arcsByVertexPair.mapValues(_.updateEntity(updatedArc))
     )
 
   final def updateArcs(updatedArcs: Set[A]): this.type =
