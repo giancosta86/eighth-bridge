@@ -1,11 +1,24 @@
 package info.gianlucacosta.eighthbridge.theory.entities
 
-import info.gianlucacosta.eighthbridge.theory.{Arc, Vertex}
+trait Entity {
+  type EntityId
+
+  val id: EntityId
+
+  final override def equals(obj: Any): Boolean =
+    obj match {
+      case other: Entity =>
+        id == other.id
+
+      case _ =>
+        false
+    }
+
+  final override def hashCode(): Int =
+    id.hashCode()
+}
 
 object Entity {
-  private val idGenerator =
-    new IdGenerator()
-
   implicit class EntityExtensions[E <: Entity](self: E) {
     def update(updated: E): E =
       if (self == updated)
@@ -26,21 +39,4 @@ object Entity {
         self._2.update(updated)
       )
   }
-}
-
-trait Entity {
-  final val id: EntityId =
-    Entity.idGenerator.generate()
-
-  final override def equals(obj: Any): Boolean =
-    obj match {
-      case other: Entity =>
-        id == other.id
-
-      case _ =>
-        false
-    }
-
-  final override def hashCode(): Int =
-    id.hashCode()
 }

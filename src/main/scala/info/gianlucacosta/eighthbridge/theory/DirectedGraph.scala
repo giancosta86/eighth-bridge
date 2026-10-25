@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.theory
 
-import info.gianlucacosta.eighthbridge.theory.entities.EntityId
+import info.gianlucacosta.eighthbridge.theory.entities.IntBasedEntity
 
 import scala.annotation.tailrec
 
@@ -133,21 +133,21 @@ trait DirectedGraph[V <: Vertex, A <: Arc] {
       .toSet
 
   @transient
-  protected lazy val vertexesById: Map[EntityId, V] =
+  protected lazy val vertexesById: Map[IntBasedEntity#EntityId, V] =
     vertexes
       .map(vertex => vertex.id -> vertex)
       .toMap
 
-  def getVertexById(id: EntityId): Option[V] =
+  def getVertexById(id: IntBasedEntity#EntityId): Option[V] =
     vertexesById.get(id)
 
   @transient
-  protected lazy val arcsById: Map[EntityId, A] =
+  protected lazy val arcsById: Map[IntBasedEntity#EntityId, A] =
     arcs
       .map(arc => arc.id -> arc)
       .toMap
 
-  def getArcById(id: EntityId): Option[A] =
+  def getArcById(id: IntBasedEntity#EntityId): Option[A] =
     arcsById.get(id)
 
 

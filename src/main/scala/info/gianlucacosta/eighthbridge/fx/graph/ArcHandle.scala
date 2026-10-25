@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.entities.Entity
+import info.gianlucacosta.eighthbridge.theory.entities.{Entity, IntBasedEntity}
 import scalafx.geometry.{Dimension2D, Point2D}
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 
@@ -8,7 +8,7 @@ import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 final class ArcHandle(
   private var _center: Point2D,
   private var _dimension: Dimension2D
-) extends Entity with Cloneable {
+) extends IntBasedEntity with Cloneable {
   def center: Point2D =
     _center
 

@@ -1,8 +1,8 @@
 package info.gianlucacosta.eighthbridge.theory
 
-import info.gianlucacosta.eighthbridge.theory.entities.Entity
+import info.gianlucacosta.eighthbridge.theory.entities.{Entity, IntBasedEntity}
 
-trait Vertex extends Entity
+trait Vertex extends IntBasedEntity
 
 
 object Vertex {
