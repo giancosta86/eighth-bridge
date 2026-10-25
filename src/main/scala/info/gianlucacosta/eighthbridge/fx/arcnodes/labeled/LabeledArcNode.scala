@@ -17,6 +17,9 @@ import java.util.Date
 
 class LabeledArcNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualArc)
 extends PlainArcNode(graphCanvas, initialArc) {
+  private val self =
+    this
+
   private val firstHandlePoint =
     Bindings.createObjectBinding[Option[Point2D]](
       () =>
@@ -111,9 +114,9 @@ extends PlainArcNode(graphCanvas, initialArc) {
       visible <==
         Bindings.createBooleanBinding(
           () =>
-            label.hover() && arc().asInstanceOf[LabeledVisualArc].customLabelCenter.isDefined,
+            self.hover() && arc().asInstanceOf[LabeledVisualArc].customLabelCenter.isDefined,
 
-          label.hover,
+          self.hover,
           arc
         )
     }
