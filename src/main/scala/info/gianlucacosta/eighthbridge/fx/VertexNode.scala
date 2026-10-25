@@ -5,7 +5,7 @@ import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink, VisualGraph,
 import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.binding.DoubleBinding
-import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleLongProperty, SimpleObjectProperty}
+import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 

@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.graphs.Vertex
-import info.gianlucacosta.eighthbridge.graphs.features.Timestamped
+import info.gianlucacosta.eighthbridge.graphs.features.{Timestamp, Timestamped}
 import scalafx.geometry.Point2D
 
 /**
@@ -9,7 +9,7 @@ import scalafx.geometry.Point2D
   */
 class VisualVertex(centerValue: Point2D)
   extends Vertex with Timestamped with Cloneable {
-  private var _timestamp: Long =
+  private var _timestamp: Timestamp =
     System.nanoTime()
 
   private var _center: Point2D =
@@ -21,10 +21,10 @@ class VisualVertex(centerValue: Point2D)
   private var _styleClasses: Set[String] =
     Set()
 
-  def timestamp: Long =
+  def timestamp: Timestamp =
     _timestamp
 
-  def setTimestamp(timestamp: Long): this.type = {
+  def setTimestamp(timestamp: Timestamp): this.type = {
     val result: this.type =
       clone().asInstanceOf[this.type]
 

@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.property.{SimpleLongProperty, SimpleObjectProperty}
+import javafx.beans.property.{SimpleObjectProperty}
 
 import scala.collection.JavaConversions._
 import scalafx.Includes._

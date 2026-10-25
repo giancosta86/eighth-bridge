@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs
 
 package object features {
-  //TODO! Replace "Long" with "Timestamp" whenever possible!
   type Timestamp =
     Long
 
