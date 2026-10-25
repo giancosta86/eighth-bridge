@@ -4,7 +4,6 @@ import info.gianlucacosta.eighthbridge.theory.entities.{Entity, IntBasedEntity}
 
 trait Vertex extends IntBasedEntity
 
-
 object Vertex {
   implicit class VertexSetExtensions[V <: Vertex](self: Set[V]) {
     def containsPair(vertexPair: (V, V)): Boolean =

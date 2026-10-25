@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.theory
 
 import info.gianlucacosta.eighthbridge.theory.entities.{Entity, IntBasedEntity}
 
-trait Arc extends IntBasedEntity
+trait Arc extends Link
 
 object Arc {
   implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Arc](
