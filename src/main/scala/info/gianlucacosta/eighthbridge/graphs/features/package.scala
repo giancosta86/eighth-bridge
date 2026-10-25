@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.theory
+package info.gianlucacosta.eighthbridge.graphs
 
 package object features {
   //TODO! Replace "Long" with "Timestamp" whenever possible!

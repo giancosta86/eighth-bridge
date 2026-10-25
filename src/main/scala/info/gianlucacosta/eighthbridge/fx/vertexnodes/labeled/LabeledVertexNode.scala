@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode}
-import info.gianlucacosta.eighthbridge.theory.features.{Labeled, Named}
+import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
 import javafx.beans.property.SimpleStringProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings

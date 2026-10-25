@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controller
 
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.theory.features.Named
+import info.gianlucacosta.eighthbridge.graphs.features.Named
 import scalafx.geometry.Point2D
 
 trait VertexNaming

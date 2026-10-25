@@ -5,7 +5,7 @@ import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, LabeledVisualArc, VisualArc, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
-import info.gianlucacosta.eighthbridge.theory.features.{Labeled, Named}
+import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
 import info.gianlucacosta.helios.fx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.Includes._

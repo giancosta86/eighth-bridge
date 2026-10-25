@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.theory
+package info.gianlucacosta.eighthbridge.graphs
 
-import info.gianlucacosta.eighthbridge.theory.entities.IntBasedEntity
+import info.gianlucacosta.eighthbridge.graphs.entities.IntBasedEntity
 
 abstract class GraphCore[V <: Vertex](val vertexes: Set[V]) {
   override def equals(obj: Any): Boolean =

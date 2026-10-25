@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.controller
 
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualArc, VisualVertex}
-import info.gianlucacosta.eighthbridge.theory.features.Weighted
+import info.gianlucacosta.eighthbridge.graphs.features.Weighted
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
 /**

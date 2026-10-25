@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.Arc
-import info.gianlucacosta.eighthbridge.theory.features.{Named, Timestamped}
+import info.gianlucacosta.eighthbridge.graphs.Arc
+import info.gianlucacosta.eighthbridge.graphs.features.{Named, Timestamped}
 
 /**
   * An arc for VisualGraph

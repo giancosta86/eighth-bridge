@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.theory.features
+package info.gianlucacosta.eighthbridge.graphs.features
 
 import scala.language.implicitConversions
 

@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.features.{Labeled, Named}
+import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
 import scalafx.geometry.Point2D
 
 class LabeledVisualArc(

@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.theory.entities
+package info.gianlucacosta.eighthbridge.graphs.entities
 
 trait Entity {
   type EntityId

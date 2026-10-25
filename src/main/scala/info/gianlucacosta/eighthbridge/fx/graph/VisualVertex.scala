@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.Vertex
-import info.gianlucacosta.eighthbridge.theory.features.Timestamped
+import info.gianlucacosta.eighthbridge.graphs.Vertex
+import info.gianlucacosta.eighthbridge.graphs.features.Timestamped
 import scalafx.geometry.Point2D
 
 /**

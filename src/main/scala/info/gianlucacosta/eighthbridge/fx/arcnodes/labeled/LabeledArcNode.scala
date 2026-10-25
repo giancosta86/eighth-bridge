@@ -3,7 +3,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualArc, VisualArc}
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.theory.features.Labeled
+import info.gianlucacosta.eighthbridge.graphs.features.Labeled
 import info.gianlucacosta.helios.fx.geometry.Segment
 import scalafx.beans.binding.Bindings
 import scalafx.Includes._

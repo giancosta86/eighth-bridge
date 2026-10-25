@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.theory.features
+package info.gianlucacosta.eighthbridge.graphs.features
 
-import info.gianlucacosta.eighthbridge.theory.{Arc, DirectedGraph, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Arc, DirectedGraph, Vertex}
 
 trait Timestamped {
   protected def timestamp: Timestamp

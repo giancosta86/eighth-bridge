@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.features.Named
+import info.gianlucacosta.eighthbridge.graphs.features.Named
 import scalafx.geometry.Point2D
 
 class NamedVisualVertex(centerValue: Point2D, nameValue: String)

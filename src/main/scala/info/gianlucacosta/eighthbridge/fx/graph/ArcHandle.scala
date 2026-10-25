@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.theory.entities.{Entity, IntBasedEntity}
+import info.gianlucacosta.eighthbridge.graphs.entities.{Entity, IntBasedEntity}
 import scalafx.geometry.{Dimension2D, Point2D}
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 
