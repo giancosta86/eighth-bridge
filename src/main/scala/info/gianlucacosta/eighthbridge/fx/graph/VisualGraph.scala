@@ -11,11 +11,11 @@ import Math._
   * Graph dedicated to rendering within GraphCanvas.
   */
 class VisualGraph(
-                                                      val vertexes: Set[VisualVertex] =
+                                                      vertexes: Set[VisualVertex] =
                                                         Set[VisualVertex](),
-                                                      protected val arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]] =
+                                                      arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]] =
                                                         Map[(VisualVertex, VisualVertex), Set[VisualArc]]()
-) extends DirectedGraph[VisualVertex, VisualArc] {
+) extends DirectedGraph[VisualVertex, VisualArc](vertexes, arcsByVertexPair) {
   override protected def graphCopy(vertexes: Set[VisualVertex], arcsByVertexPair: Map[(VisualVertex, VisualVertex), Set[VisualArc]]): this.type =
     new VisualGraph(
       vertexes =
@@ -24,12 +24,6 @@ class VisualGraph(
       arcsByVertexPair =
         arcsByVertexPair
     ).asInstanceOf[this.type]
-
-  override def equals(obj: Any): Boolean =
-    false
-
-  override def hashCode(): Int =
-    0
 
   @transient
   lazy val selectedVertexes: Set[VisualVertex] =

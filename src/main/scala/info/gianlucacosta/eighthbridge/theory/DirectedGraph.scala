@@ -4,15 +4,20 @@ import info.gianlucacosta.eighthbridge.theory.entities.IntBasedEntity
 
 import scala.annotation.tailrec
 
-trait DirectedGraph[V <: Vertex, A <: Arc] {
-  val vertexes: Set[V]
-
-  protected val arcsByVertexPair: Map[(V, V), Set[A]]
-
+abstract class DirectedGraph[V <: Vertex, A <: Arc](
+                                                     val vertexes: Set[V],
+                                                     protected val arcsByVertexPair: Map[(V, V), Set[A]]
+                                                   ) {
   protected def graphCopy(
                            vertexes: Set[V] = vertexes,
                            arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
    ): this.type
+
+  override def equals(obj: Any): Boolean =
+    false
+
+  override def hashCode(): Int =
+    0
 
   @transient
   lazy val isEmpty: Boolean =
