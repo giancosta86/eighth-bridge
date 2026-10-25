@@ -258,29 +258,6 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   lazy val leafVertexes: Set[V] =
     vertexes -- exitingArcsByVertex.keySet
 
-  /**
-   * Topology information for a vertex in a directed graph.
-   */
-  case class VertexTopology(
-                             predecessors: Set[V],
-                             enteringArcs: Set[A],
-                             exitingArcs: Set[A],
-                             successors: Set[V]
-                           )
-
-  /**
-   * Function passed to fold(). Its signature must include:
-   * <ul>
-   * <li><b>cumulatedValue</b> - the value cumulated until now</li>
-   * <li><b>vertex</b> - the current vertex</li>
-   * <li><b>vertexTopology</b> - describes the vertex/arc connections for the current vertex</li>
-   * </ul>
-   *
-   * The function must return the next iteration value for <b>fold()</b>.
-   */
-
-  type VertexFoldProcessor[T] = (T, V, VertexTopology) => T
-
 
   /**
    * Takes an initial value and applies the given <b>VertexFoldProcessor</b> to every vertex
@@ -292,7 +269,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
    * <li>Any cycle in the graph will cause a CircularGraphException</li>
    * </ul>
    */
-  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T]): T = {
+  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T, V, A]): T = {
     /*
      * At the beginning of the algorithm, no vertex has been processed;
      * consequently, the fringe - i.e., the buffer of vertexes to process -
@@ -310,7 +287,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   @tailrec
   private final def fold[T](
                              cumulatedValue: T,
-                             vertexFoldProcessor: VertexFoldProcessor[T],
+                             vertexFoldProcessor: VertexFoldProcessor[T, V, A],
                              processedVertexes: Set[V],
                              fringe: List[V]
                            ): T = {
