@@ -10,24 +10,24 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
 
 //TODO! Move this to Helios FX?
 trait DragContext extends Node {
-  private var startPoint: Point2D = _
+  private var startEvent: MouseEvent = _
   private var latestSnapshot: Point2D = _
 
-  protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit
+  protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit
 
-  private def handleSinglePrimaryPressed(point: Point2D): Unit = {
-    startPoint =
-      point
+  private def handleSinglePrimaryPressed(event: MouseEvent): Unit = {
+    startEvent =
+      event
 
     latestSnapshot =
-      startPoint
+      startEvent.point
   }
 
-  private def handlePrimaryDragged(point: Point2D): Unit = {
-      handleDragMotion(point - latestSnapshot, point, startPoint)
+  private def handlePrimaryDragged(event: MouseEvent): Unit = {
+      handleDragMotion(event.point - latestSnapshot, event, startEvent)
 
       latestSnapshot =
-        point
+        event.point
   }
 
   handleEvent(MouseEvent.MousePressed) {
@@ -36,7 +36,7 @@ trait DragContext extends Node {
         case MouseButton.Primary =>
           mouseEvent.clickCount match {
             case 1 =>
-              handleSinglePrimaryPressed(mouseEvent.point)
+              handleSinglePrimaryPressed(mouseEvent)
 
             case _ =>
           }
@@ -51,7 +51,7 @@ trait DragContext extends Node {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          handlePrimaryDragged(mouseEvent.point)
+          handlePrimaryDragged(mouseEvent)
 
         case _ =>
       }

@@ -1,10 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes
 
+import info.gianlucacosta.eighthbridge.fx.graph.Delta
 import scalafx.geometry.Point2D
 
 package object labeled {
   type LabelDragHandler =
-    (Point2D) => Unit
+    (Delta) => Unit
 
   type LabelDoubleClickhandler =
     () => Unit

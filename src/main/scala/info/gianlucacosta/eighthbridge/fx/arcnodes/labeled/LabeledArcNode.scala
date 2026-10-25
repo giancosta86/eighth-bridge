@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{LabeledVisualArc, VisualArc}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualArc, VisualArc}
 import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
 import info.gianlucacosta.eighthbridge.theory.features.Labeled
 import info.gianlucacosta.helios.fx.geometry.Segment
@@ -9,6 +9,8 @@ import scalafx.beans.binding.Bindings
 import scalafx.Includes._
 import scalafx.geometry.Point2D
 import scalafx.scene.shape.Line
+import info.gianlucacosta.helios.fx.Includes._
+import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 
 class LabeledArcNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualArc)
 extends PlainArcNode(graphCanvas, initialArc) {
@@ -42,6 +44,7 @@ extends PlainArcNode(graphCanvas, initialArc) {
 
   private val label =
     new ArcLabel(
+      initialCenter = initialArc.customLabelCenter.getOrElse(labelAnchorPoint()),
       onDrag = handleDragOnLabel,
       onDoubleClick = handleDoubleClickOnLabel
     ) {
@@ -116,14 +119,23 @@ extends PlainArcNode(graphCanvas, initialArc) {
   children.add(labelConnector)
   children.add(label)
 
-  private def handleDragOnLabel(updatedCenter: Point2D): Unit = {
+  private def handleDragOnLabel(delta: Delta): Unit = {
     //TODO! Pass through the controller!
-    println(s"&&&&&&&&&&&&&&&&&&&&&&& THE UPDATED LABEL CENTER IS ${updatedCenter}")
+    val currentArc =
+      arc().asInstanceOf[LabeledVisualArc]
+
+    val currentCenter: Point2D =
+      currentArc
+        .customLabelCenter
+        .getOrElse(labelAnchorPoint())
 
     val updatedArc =
       arc()
         .asInstanceOf[LabeledVisualArc]
-        .setCustomLabelCenter(Some(updatedCenter))
+        .setCustomLabelCenter(
+
+          Some(currentCenter + delta)
+        )
 
     graph =
       graph.updateArc(updatedArc)

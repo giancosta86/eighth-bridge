@@ -140,10 +140,10 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     }
   }
 
-  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit = {
+  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
     if (vertex().selected) {
       controller
-        .dragSelectedVertexesBy(delta)
+        .dragSelectedVertexesBy(deltaFromLatest)
         .foreach(graph_=)
     }
   }

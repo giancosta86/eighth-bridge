@@ -110,14 +110,14 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       DefaultBackgroundNode.EmptySelectionBounds
   }
 
-  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit = {
+  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
     if (controller.canDrawSelectionRectangle) {
       val clippedMousePoint =
-        point.clip(graphCanvas.dimension)
+        event.point.clip(graphCanvas.dimension)
 
       if (controller.canDrawSelectionRectangle) {
         selectionBounds =
-          new DiagonalBounds(startPoint, clippedMousePoint)
+          new DiagonalBounds(startEvent.point, clippedMousePoint)
       }
     }
   }

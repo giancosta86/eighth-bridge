@@ -11,5 +11,5 @@ package object plain {
     (ArcHandle) => Unit
 
   type HandleNodeDragHandler =
-    (ArcHandle, Point2D) => Unit
+    (ArcHandle, Delta) => Unit
 }

@@ -11,6 +11,7 @@ import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
 private class ArcLabel(
+                        initialCenter: Point2D,
                         onDrag: LabelDragHandler,
                         onDoubleClick: LabelDoubleClickhandler
                       )
@@ -18,7 +19,7 @@ private class ArcLabel(
   styleClass.add("label")
 
   val center: ObjectProperty[Point2D] =
-    new SimpleObjectProperty[Point2D]
+    new SimpleObjectProperty[Point2D](initialCenter)
 
   layoutX <==
     Bindings.createDoubleBinding(
@@ -45,8 +46,8 @@ private class ArcLabel(
     }
   }
 
-  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit = {
-    onDrag(point)
+  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
+    onDrag(deltaFromLatest)
   }
 
   handleEvent(MouseEvent.MouseClicked) {
@@ -64,7 +65,5 @@ private class ArcLabel(
       }
     }
   }
-
-
 }
 

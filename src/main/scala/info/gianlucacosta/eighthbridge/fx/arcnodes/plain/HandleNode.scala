@@ -72,9 +72,10 @@ private class HandleNode(
     }
   }
 
-  override protected def handleDragMotion(delta: Delta, point: Point2D, startPoint: Point2D): Unit =
+  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
     onDrag(
       handle(),
-      point.nonNegative
+      deltaFromLatest
     )
+  }
 }

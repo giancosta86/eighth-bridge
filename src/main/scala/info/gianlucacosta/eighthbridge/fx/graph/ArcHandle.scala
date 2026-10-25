@@ -15,12 +15,12 @@ final class ArcHandle(
   def dimension: Dimension2D =
     _dimension
 
-  def moveTo(updatedCenter: Point2D): ArcHandle = {
+  def moveBy(delta: Delta): ArcHandle = {
     val result =
       clone().asInstanceOf[ArcHandle]
 
-    result._center =
-      updatedCenter
+    result._center +=
+      delta
 
     result
   }
