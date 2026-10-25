@@ -13,14 +13,6 @@ trait Named {
 
 
 object Named {
-  implicit class NamedIterableExtensions[T <: Named](self: Iterable[T]) {
-    val sortedByName: List[T] = {
-      self
-        .toList
-        .sortBy(_.name)
-    }
-  }
-
   implicit class NamedPairExtensions[T <: Named, U <: Named](self: (T, U)) {
     val namePair: (String, String) =
       (self._1.name, self._2.name)

@@ -16,7 +16,11 @@ trait Timestamped {
 }
 
 object Timestamped {
-  implicit class TimestampedGraphExtensions[V <: Vertex with Timestamped, A <: Link with Timestamped](self: DirectedGraph[V, A]) {
+  implicit class TimestampedDirectedGraphExtensions[
+    V <: Vertex with Timestamped,
+    A <: Link with Timestamped](
+                                                                                    self: DirectedGraph[V, A]
+                                                                                  ) {
     def getDiffSince(referenceGraph: DirectedGraph[V, A]): TimestampedGraphDiff[V, A] = {
       val addedVertexes =
         self.vertexes -- referenceGraph.vertexes

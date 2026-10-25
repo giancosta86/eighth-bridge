@@ -16,42 +16,7 @@ trait Weighted {
 
 
 object Weighted {
-  //TODO! Consider deleting this!
-  /*
-  implicit class WeightedIterableExtensions[T <: Weighted](self: Iterable[T]) {
-
-    val sortedByWeight: List[T] = {
-      self
-        .toList
-        .sortBy(_.weight)
-    }
-
-    def getMinWeightOr(default: Weight): Weight =
-      sortedByWeight
-        .headOption
-        .map(_.weight)
-        .getOrElse(default)
-
-    val minWeight: Weight =
-      getMinWeightOr(Weight.PositiveInfinity)
-
-    def getMaxWeightOr(default: Weight): Weight =
-      sortedByWeight
-        .lastOption
-        .map(_.weight)
-        .getOrElse(default)
-
-    val maxWeight: Weight =
-      getMaxWeightOr(Weight.NegativeInfinity)
-  }
-
-  implicit class IterableOfWeightedTupleExtensions[T](self: Iterable[(T, Weight)]) {
-    val sortedByWeight: List[(T, Weight)] =
-      self
-        .toList
-        .sortBy(_._2)
-  }
-  */
+  //TODO! Later, split these extensions!
   implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with Weighted](self: DirectedGraph[V, A]) {
     def getMinArcBetween(source: V, target: V): Option[A] =
       self
