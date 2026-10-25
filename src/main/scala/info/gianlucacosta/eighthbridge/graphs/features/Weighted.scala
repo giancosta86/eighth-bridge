@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
 import scala.language.implicitConversions
@@ -16,18 +17,10 @@ trait Weighted {
 
 
 object Weighted {
-  //TODO! Later, split these extensions!
   implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with Weighted](self: DirectedGraph[V, A]) {
     def getMinArcBetween(source: V, target: V): Option[A] =
       self
         .getArcsBetween(source, target)
-        .toList
-        .sortBy(_.weight)
-        .headOption
-
-    def getMinEdgeBetween(oneVertex: V, anotherVertex: V): Option[A] =
-      self
-        .getEdgesBetween(oneVertex, anotherVertex)
         .toList
         .sortBy(_.weight)
         .headOption
@@ -38,22 +31,9 @@ object Weighted {
         .map(_.weight)
         .getOrElse(Weight.PositiveInfinity)
 
-    def getMinEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
-      self
-        .getMinEdgeBetween(oneVertex, anotherVertex)
-        .map(_.weight)
-        .getOrElse(Weight.PositiveInfinity)
-
     def getMaxArcBetween(source: V, target: V): Option[A] =
       self
         .getArcsBetween(source, target)
-        .toList
-        .sortBy(_.weight)
-        .lastOption
-
-    def getMaxEdgeBetween(oneVertex: V, anotherVertex: V): Option[A] =
-      self
-        .getEdgesBetween(oneVertex, anotherVertex)
         .toList
         .sortBy(_.weight)
         .lastOption
@@ -63,6 +43,29 @@ object Weighted {
         .getMaxArcBetween(source, target)
         .map(_.weight)
         .getOrElse(Weight.NegativeInfinity)
+  }
+
+
+  implicit class WeightedUndirectedGraphExtensions[V <: Vertex, E <: Link with Weighted](self: UndirectedGraph[V, E]) {
+    def getMinEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
+      self
+        .getEdgesBetween(oneVertex, anotherVertex)
+        .toList
+        .sortBy(_.weight)
+        .headOption
+
+    def getMinEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
+      self
+        .getMinEdgeBetween(oneVertex, anotherVertex)
+        .map(_.weight)
+        .getOrElse(Weight.PositiveInfinity)
+
+    def getMaxEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
+      self
+        .getEdgesBetween(oneVertex, anotherVertex)
+        .toList
+        .sortBy(_.weight)
+        .lastOption
 
     def getMaxEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
       self

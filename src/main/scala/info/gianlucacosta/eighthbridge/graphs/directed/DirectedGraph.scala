@@ -1,12 +1,13 @@
 package info.gianlucacosta.eighthbridge.graphs.directed
 
+import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
 final class DirectedGraph[V <: Vertex, A <: Link] private(
                                                      vertexes: Set[V],
-                                                     protected val arcsByVertexPair: Map[(V, V), Set[A]]
+                                                     val arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
   extends GraphCore(vertexes) {
 
@@ -20,29 +21,29 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   //TODO! Strictly speaking, this could merely return "DirectedGraph" in lieu of "this.type" - which applies to the methods calling it, as well.
   private def copy(
-                           updatedVertexes: Set[V] = vertexes,
-                           updatedArcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
+                    vertexes: Set[V] = vertexes,
+                    arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
    ): this.type =
     new DirectedGraph(
       vertexes =
-        updatedVertexes,
+        vertexes,
 
       arcsByVertexPair =
-        updatedArcsByVertexPair
+        arcsByVertexPair
     ).asInstanceOf[this.type]
 
-  override protected def setVertexes(updatedVertexes: Set[V]): DirectedGraph.this.type =
+  override protected def setVertexes(updatedVertexes: Set[V]): this.type =
     copy(
-      updatedVertexes =
+      vertexes =
         updatedVertexes
     )
 
   def updateVertex(updatedVertex: V): this.type =
     copy(
-      updatedVertexes =
+      vertexes =
         vertexes.updateEntity(updatedVertex),
 
-      updatedArcsByVertexPair =
+      arcsByVertexPair =
         arcsByVertexPair.map {
           case (keyPair, arc) =>
             keyPair.updateEntity(updatedVertex) -> arc
@@ -53,10 +54,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type =
     copy(
-      updatedVertexes =
+      vertexes =
         vertexes -- vertexesToRemove,
 
-      updatedArcsByVertexPair =
+      arcsByVertexPair =
         arcsByVertexPair.filterKeys(
           !vertexesToRemove.intersectsPair(_)
         )
@@ -71,33 +72,33 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
 
       copy(
-        updatedArcsByVertexPair =
+        arcsByVertexPair =
           arcsByVertexPair + (vertexPair -> updatedArcSet)
       )
     } else
       this
   }
 
-  final def addArc(vertexPair: (V, V), arc: A): this.type =
+  def addArc(vertexPair: (V, V), arc: A): this.type =
     addArc(vertexPair._1, vertexPair._2, arc)
 
   def updateArc(updatedArc: A): this.type =
     copy(
-      updatedArcsByVertexPair =
+      arcsByVertexPair =
         arcsByVertexPair.mapValues(_.updateEntity(updatedArc))
     )
 
-  final def updateArcs(updatedArcs: Set[A]): this.type =
+  def updateArcs(updatedArcs: Set[A]): this.type =
     updatedArcs.foldLeft(this)((cumulatedGraph, arc) =>
       cumulatedGraph.updateArc(arc)
     ).asInstanceOf[this.type]
 
-  final def updateArcs(updatedArcs: A*): this.type =
+  def updateArcs(updatedArcs: A*): this.type =
     updateArcs(updatedArcs.toSet)
 
   def removeArcs(arcsToRemove: Set[A]): this.type =
     copy(
-      updatedArcsByVertexPair =
+      arcsByVertexPair =
         arcsByVertexPair
           .mapValues(
             _ -- arcsToRemove
@@ -107,10 +108,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
           }
     )
 
-  final def removeArcs(arcs: A*): this.type =
+  def removeArcs(arcs: A*): this.type =
     removeArcs(arcs.toSet)
 
-  final def removeArc(arc: A): this.type =
+  def removeArc(arc: A): this.type =
     removeArcs(Set(arc))
 
   @transient
@@ -222,18 +223,13 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       Set()
     )
 
-  final def getArcsBetween(sourceVertex: V, targetVertex: V): Set[A] =
+  def getArcsBetween(sourceVertex: V, targetVertex: V): Set[A] =
     getArcsBetween(sourceVertex -> targetVertex)
-
-  final def getEdgesBetween(oneVertex: V, anotherVertex: V): Set[A] = {
-    getArcsBetween(oneVertex -> anotherVertex) ++
-      getArcsBetween(anotherVertex -> oneVertex)
-  }
 
   def getAnchors(arc: A): Option[(V, V)] =
     vertexPairsByArc.get(arc)
 
-  def getAdjacent(vertex: V): Set[V] =
+  def getNeighbors(vertex: V): Set[V] =
     getSuccessors(vertex) ++ getPredecessors(vertex)
 
   @transient
@@ -285,7 +281,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
 
   @tailrec
-  private final def fold[T](
+  private def fold[T](
                              cumulatedValue: T,
                              vertexFoldProcessor: VertexFoldProcessor[T, V, A],
                              processedVertexes: Set[V],
@@ -375,4 +371,15 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
           throw new CircularGraphException
     }
   }
+
+  def toUndirected: UndirectedGraph[V, A] =
+    new UndirectedGraph[V, A](
+      vertexes =
+        vertexes,
+
+      edgesByAnchorSet =
+        arcsByVertexPair.map { case (vertexPair, arc) =>
+          Set(vertexPair._1, vertexPair._2) -> arc
+        }
+    )
 }
