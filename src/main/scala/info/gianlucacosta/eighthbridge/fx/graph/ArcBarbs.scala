@@ -18,7 +18,6 @@ object ArcBarbs {
    * @param targetSize The size of the rectangle.
    * @return The intersection point - which could be None if the source point is internal to the rectangle.
    */
-    //TODO! Simplify these formulas by unpacking the objects into plain parameters?
   def getIntersection(sourcePoint: Point2D, targetCenter: Point2D, targetSize: Dimension2D): Option[Point2D] = {
     val deltaX =
       sourcePoint.x - targetCenter.x

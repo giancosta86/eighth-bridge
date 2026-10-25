@@ -27,8 +27,6 @@ private class Shaft(
   private val self =
     this
 
-  //TODO: for private classes, just use private properties when change from outside is required
-
   val handles =
     new SimpleObjectProperty[List[ArcHandle]](initialHandles)
 

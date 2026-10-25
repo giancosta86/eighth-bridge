@@ -2,6 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.DragContext
 import info.gianlucacosta.eighthbridge.fx.graph.Delta
+import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.beans.property.{DoubleProperty, ObjectProperty}
 import scalafx.scene.control.Label
@@ -38,13 +39,8 @@ private class ArcLabel(
       center,
       height
     )
-
-  //TODO! Use .consumeMouseEvents!
-  handleEvent(MouseEvent.Any) {
-    (mouseEvent: MouseEvent) => {
-      mouseEvent.consume()
-    }
-  }
+  
+  this.consumeMouseEvents()
 
   override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
     onDrag(deltaFromLatest)
