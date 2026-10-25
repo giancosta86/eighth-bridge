@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.graphs
+package info.gianlucacosta.eighthbridge.graphs.directed
 
-import info.gianlucacosta.eighthbridge.graphs.entities.IntBasedEntity
+import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Vertex}
 
 import scala.annotation.tailrec
 

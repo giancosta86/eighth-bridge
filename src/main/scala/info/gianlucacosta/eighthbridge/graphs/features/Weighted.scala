@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
-import info.gianlucacosta.eighthbridge.graphs.{DirectedGraph, Arc, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, DirectedGraph}
+import info.gianlucacosta.eighthbridge.graphs.Vertex
 
 import scala.language.implicitConversions
 

@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.graphs
+package info.gianlucacosta.eighthbridge.graphs.directed
 
-import info.gianlucacosta.eighthbridge.graphs.entities.{Entity, IntBasedEntity}
+import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
 trait Arc extends Link
 

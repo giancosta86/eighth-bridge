@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.graphs.Arc
+import info.gianlucacosta.eighthbridge.graphs.directed.Arc
 import info.gianlucacosta.eighthbridge.graphs.features.{Named, Timestamped}
 
 /**
