@@ -9,7 +9,7 @@ import info.gianlucacosta.eighthbridge.graphs.features.{Named, Timestamp, Timest
 class VisualLink(barbsValue: Option[ArcBarbs])
   extends Link with Timestamped with Cloneable {
   private var _timestamp: Timestamp =
-    System.nanoTime()
+    Timestamp.now
 
   private var _selected: Boolean =
     false

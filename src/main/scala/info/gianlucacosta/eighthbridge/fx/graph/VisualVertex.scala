@@ -10,7 +10,7 @@ import scalafx.geometry.Point2D
 class VisualVertex(centerValue: Point2D)
   extends Vertex with Timestamped with Cloneable {
   private var _timestamp: Timestamp =
-    System.nanoTime()
+    Timestamp.now
 
   private var _center: Point2D =
     centerValue

@@ -9,7 +9,7 @@ trait Timestamped {
   protected def setTimestamp(timestamp: Timestamp): this.type
 
   def updateTimestamp(): this.type =
-    setTimestamp(System.nanoTime())
+    setTimestamp(Timestamp.now)
 
   def isNewerThan(other: Timestamped): Boolean =
     timestamp > other.timestamp
