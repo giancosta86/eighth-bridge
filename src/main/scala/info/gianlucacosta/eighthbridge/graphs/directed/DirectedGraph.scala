@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 
 final class DirectedGraph[V <: Vertex, A <: Link] private(
                                                      vertexes: Set[V],
-                                                     val arcsByVertexPair: Map[(V, V), Set[A]]
+                                                     private val arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
   extends GraphCore(vertexes) {
 
@@ -19,27 +19,17 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       Map[(V, V), Set[A]]()
   )
 
-  //TODO! Strictly speaking, this could merely return "DirectedGraph" in lieu of "this.type" - which applies to the methods calling it, as well.
-  private def copy(
-                    vertexes: Set[V] = vertexes,
-                    arcsByVertexPair: Map[(V, V), Set[A]] = arcsByVertexPair
-   ): this.type =
-    new DirectedGraph(
+  override protected def setVertexes(updatedVertexes: Set[V]): this.type =
+    new DirectedGraph[V, A](
       vertexes =
-        vertexes,
-
+        updatedVertexes,
       arcsByVertexPair =
         arcsByVertexPair
-    ).asInstanceOf[this.type]
-
-  override protected def setVertexes(updatedVertexes: Set[V]): this.type =
-    copy(
-      vertexes =
-        updatedVertexes
     )
+      .asInstanceOf[this.type]
 
   def updateVertex(updatedVertex: V): this.type =
-    copy(
+    new DirectedGraph[V, A](
       vertexes =
         vertexes.updateEntity(updatedVertex),
 
@@ -49,11 +39,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
             keyPair.updateEntity(updatedVertex) -> arc
         }
     )
-
-
+      .asInstanceOf[this.type]
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type =
-    copy(
+    new DirectedGraph[V, A](
       vertexes =
         vertexes -- vertexesToRemove,
 
@@ -62,8 +51,9 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
           !vertexesToRemove.intersectsPair(_)
         )
     )
+      .asInstanceOf[this.type]
 
-  def addArc(sourceVertex: V, targetVertex: V, arc: A): this.type = {
+  def addArc(sourceVertex: V, targetVertex: V, arc: A): DirectedGraph[V, A] = {
     val vertexPair =
       sourceVertex -> targetVertex
 
@@ -71,7 +61,9 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       val updatedArcSet =
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
 
-      copy(
+      new DirectedGraph[V, A](
+        vertexes =
+          vertexes,
         arcsByVertexPair =
           arcsByVertexPair + (vertexPair -> updatedArcSet)
       )
@@ -79,25 +71,29 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       this
   }
 
-  def addArc(vertexPair: (V, V), arc: A): this.type =
+  def addArc(vertexPair: (V, V), arc: A): DirectedGraph[V, A] =
     addArc(vertexPair._1, vertexPair._2, arc)
 
-  def updateArc(updatedArc: A): this.type =
-    copy(
+  def updateArc(updatedArc: A): DirectedGraph[V, A] =
+    new DirectedGraph[V, A](
+      vertexes =
+        vertexes,
       arcsByVertexPair =
         arcsByVertexPair.mapValues(_.updateEntity(updatedArc))
     )
 
-  def updateArcs(updatedArcs: Set[A]): this.type =
+  def updateArcs(updatedArcs: Set[A]): DirectedGraph[V, A] =
     updatedArcs.foldLeft(this)((cumulatedGraph, arc) =>
       cumulatedGraph.updateArc(arc)
-    ).asInstanceOf[this.type]
+    )
 
-  def updateArcs(updatedArcs: A*): this.type =
+  def updateArcs(updatedArcs: A*): DirectedGraph[V, A] =
     updateArcs(updatedArcs.toSet)
 
-  def removeArcs(arcsToRemove: Set[A]): this.type =
-    copy(
+  def removeArcs(arcsToRemove: Set[A]): DirectedGraph[V, A] =
+    new  DirectedGraph[V, A](
+      vertexes =
+        vertexes,
       arcsByVertexPair =
         arcsByVertexPair
           .mapValues(
@@ -108,10 +104,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
           }
     )
 
-  def removeArcs(arcs: A*): this.type =
+  def removeArcs(arcs: A*): DirectedGraph[V, A] =
     removeArcs(arcs.toSet)
 
-  def removeArc(arc: A): this.type =
+  def removeArc(arc: A): DirectedGraph[V, A] =
     removeArcs(Set(arc))
 
   @transient

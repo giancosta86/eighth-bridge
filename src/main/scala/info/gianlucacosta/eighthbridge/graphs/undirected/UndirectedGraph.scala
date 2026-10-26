@@ -19,85 +19,83 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
       Map[Set[V], Set[E]]()
   )
 
-  //TODO! Strictly speaking, this could merely return "UndirectedGraph" in lieu of "this.type" - which applies to the methods calling it, as well.
-  private def copy(
-                    vertexes: Set[V] = vertexes,
-                    edgesByVertexSet: Map[Set[V], Set[E]] = edgesByAnchorSet
-                  ): this.type =
-    new UndirectedGraph(
-      vertexes =
-        vertexes,
-
-      edgesByAnchorSet =
-        edgesByVertexSet
-    ).asInstanceOf[this.type]
-
   override protected def setVertexes(updatedVertexes: Set[V]): this.type =
-    copy(
+    new UndirectedGraph[V, E](
       vertexes =
-        updatedVertexes
+        updatedVertexes,
+      edgesByAnchorSet =
+        edgesByAnchorSet
     )
+      .asInstanceOf[this.type]
 
   def updateVertex(updatedVertex: V): this.type =
-    copy(
+    new UndirectedGraph[V, E](
       vertexes =
         vertexes.updateEntity(updatedVertex),
 
-      edgesByVertexSet =
+      edgesByAnchorSet =
         edgesByAnchorSet.map {
           case (vertexSet, edge) =>
             vertexSet.updateEntity(updatedVertex) -> edge
         }
     )
+      .asInstanceOf[this.type]
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type =
-    copy(
+    new UndirectedGraph[V, E](
       vertexes =
         vertexes -- vertexesToRemove,
 
-      edgesByVertexSet =
+      edgesByAnchorSet =
         edgesByAnchorSet.filterKeys(anchorSet =>
           (vertexesToRemove & anchorSet).isEmpty
         )
     )
+      .asInstanceOf[this.type]
 
-  def addEdge(anchorSet: Set[V], edge: E): this.type = {
+  def addEdge(anchorSet: Set[V], edge: E): UndirectedGraph[V, E] = {
     if (anchorSet.subsetOf(vertexes)) {
       val updatedEdgeSet =
         edgesByAnchorSet.getOrElse(anchorSet, Set()) + edge
 
-      copy(
-        edgesByVertexSet =
+      new UndirectedGraph[V, E](
+        vertexes =
+          vertexes,
+        edgesByAnchorSet =
           edgesByAnchorSet + (anchorSet -> updatedEdgeSet)
       )
     } else
       this
   }
 
-  def addEdge(oneVertex: V, anotherVertex: V, edge: E): this.type = {
+  def addEdge(oneVertex: V, anotherVertex: V, edge: E): UndirectedGraph[V, E] = {
     val anchorSet: Set[V] =
       Set(oneVertex, anotherVertex)
 
     addEdge(anchorSet, edge)
   }
 
-  def updateEdge(updatedEdge: E): this.type =
-    copy(
-      edgesByVertexSet =
+  def updateEdge(updatedEdge: E): UndirectedGraph[V, E] =
+    new UndirectedGraph[V, E](
+      vertexes =
+        vertexes,
+      edgesByAnchorSet =
         edgesByAnchorSet.mapValues(_.updateEntity(updatedEdge))
     )
 
-  def updateEdges(updatedEdges: Set[E]): this.type =
+  def updateEdges(updatedEdges: Set[E]): UndirectedGraph[V, E] =
     updatedEdges.foldLeft(this)((cumulatedGraph, edge) =>
       cumulatedGraph.updateEdge(edge)
-    ).asInstanceOf[this.type]
+    )
 
-  def updateEdges(updatedEdges: E*): this.type =
+  def updateEdges(updatedEdges: E*): UndirectedGraph[V, E] =
     updateEdges(updatedEdges.toSet)
 
-  def removeEdges(edgesToRemove: Set[E]): this.type =
-    copy(
-      edgesByVertexSet =
+  def removeEdges(edgesToRemove: Set[E]): UndirectedGraph[V, E] =
+    new UndirectedGraph[V, E](
+      vertexes =
+        vertexes,
+      edgesByAnchorSet =
         edgesByAnchorSet
           .mapValues(
             _ -- edgesToRemove
@@ -107,10 +105,10 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
           }
     )
 
-  def removeEdges(edges: E*): this.type =
+  def removeEdges(edges: E*): UndirectedGraph[V, E] =
     removeEdges(edges.toSet)
 
-  def removeEdge(edge: E): this.type =
+  def removeEdge(edge: E): UndirectedGraph[V, E] =
     removeEdges(Set(edge))
 
   @transient
