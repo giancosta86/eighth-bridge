@@ -133,7 +133,7 @@ class GraphCanvas(
       _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
     val danglingArcNodesByArc: Map[VisualLink, ArcNode] =
-      _arcNodesByArc.filterKeys(graphDiff.removedArcs.contains)
+      _arcNodesByArc.filterKeys(graphDiff.removedLinks.contains)
 
     _vertexNodesByVertex --=
       danglingVertexNodesByVertex.keySet
@@ -153,7 +153,7 @@ class GraphCanvas(
     }
 
     _arcNodesByArc.foreach { case (arc, arcNode) =>
-      if (graphDiff.updatedArcs.contains(arc)) {
+      if (graphDiff.updatedLinks.contains(arc)) {
         val updatedArc =
           updatedGraph.getArcById(arc.id).get
 
@@ -172,7 +172,7 @@ class GraphCanvas(
         .toMap
 
     val addedArcNodesByArc: Map[VisualLink, ArcNode] =
-      graphDiff.addedArcs.map(arc => {
+      graphDiff.addedLinks.map(arc => {
           val arcNode =
             controller.createArcNode(arc)
 

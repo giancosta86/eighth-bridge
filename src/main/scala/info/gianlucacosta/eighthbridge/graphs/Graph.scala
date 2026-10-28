@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs
 
 import info.gianlucacosta.eighthbridge.graphs.entities.IntBasedEntity
 
-abstract class GraphCore[V <: Vertex](val vertexes: Set[V]) {
+abstract class Graph[V <: Vertex, L <: Link](val vertexes: Set[V]) {
   override def equals(obj: Any): Boolean =
     false
 
@@ -57,4 +57,8 @@ abstract class GraphCore[V <: Vertex](val vertexes: Set[V]) {
 
   def getVertexById(id: Vertex#EntityId): Option[V] =
     vertexesById.get(id)
+
+  def links: Set[L]
+
+  def getLinkById(id: Link#EntityId): Option[L]
 }

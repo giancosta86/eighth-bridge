@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.directed
 
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, Graph, Link, Vertex}
 
 import scala.annotation.tailrec
 
@@ -9,7 +9,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
                                                      vertexes: Set[V],
                                                      private val arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
-  extends GraphCore(vertexes) {
+  extends Graph[V, A](vertexes) {
 
   def this() = this(
     vertexes =
@@ -275,7 +275,6 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
   }
 
-
   @tailrec
   private def fold[T](
                              cumulatedValue: T,
@@ -378,4 +377,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
           Set(vertexPair._1, vertexPair._2) -> arc
         }
     )
+
+  override def links: Set[A] =
+    arcs
+
+  override def getLinkById(id: Int): Option[A] =
+    getArcById(id)
 }

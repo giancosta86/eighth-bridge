@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.undirected
 
 import info.gianlucacosta.eighthbridge.graphs.directed.{DirectedGraph, VertexFoldProcessor, VertexTopology}
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, Graph, Link, Vertex}
 
 import scala.annotation.tailrec
 
@@ -9,7 +9,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
                                                               vertexes: Set[V],
                                                               private val edgesByAnchorSet: Map[Set[V], Set[E]]
                                                             )
-  extends GraphCore[V](vertexes) {
+  extends Graph[V, E](vertexes) {
 
   def this() = this(
     vertexes =
@@ -145,8 +145,6 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
   def getAnchorSet(edge: E): Option[Set[V]] =
     anchorSetByEdge.get(edge)
 
-
-
   @transient
   private lazy val connectedEdgesByVertex: Map[V, Set[E]] =
     edgesByAnchorSet
@@ -191,4 +189,10 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
 
   @transient
   lazy val isCyclic: Boolean = ???
+
+  override def links: Set[E] =
+    edges
+
+  override def getLinkById(id: Int): Option[E] =
+    getEdgeById(id)
 }

@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
 trait Timestamped {
   protected def timestamp: Timestamp
@@ -18,21 +18,21 @@ trait Timestamped {
 object Timestamped {
   implicit class TimestampedDirectedGraphExtensions[
     V <: Vertex with Timestamped,
-    A <: Link with Timestamped](
-                                                                                    self: DirectedGraph[V, A]
+    L <: Link with Timestamped](
+                                                                                    self: Graph[V, L]
                                                                                   ) {
-    def getDiffSince(referenceGraph: DirectedGraph[V, A]): TimestampedGraphDiff[V, A] = {
+    def getDiffSince(referenceGraph: Graph[V, L]): TimestampedGraphDiff[V, L] = {
       val addedVertexes =
         self.vertexes -- referenceGraph.vertexes
 
-      val addedArcs =
-        self.arcs -- referenceGraph.arcs
+      val addedLinks =
+        self.links -- referenceGraph.links
 
       val removedVertexes =
         referenceGraph.vertexes -- self.vertexes
 
-      val removedArcs =
-        referenceGraph.arcs -- self.arcs
+      val removedLinks =
+        referenceGraph.links -- self.links
 
       val keptVertexes =
         self.vertexes -- addedVertexes
@@ -46,36 +46,36 @@ object Timestamped {
             vertex.isNewerThan(referenceVertex)
           })
 
-      val keptArcs =
-        self.arcs -- addedArcs
+      val keptLinks =
+        self.links -- addedLinks
 
-      val updatedArcs =
-        keptArcs
-          .filter(arc => {
-            val referenceArc =
-              referenceGraph.getArcById(arc.id).get
+      val updatedLinks =
+        keptLinks
+          .filter(link => {
+            val referenceLink =
+              referenceGraph.getLinkById(link.id).get
 
-            arc.isNewerThan(referenceArc)
+            link.isNewerThan(referenceLink)
           })
 
       TimestampedGraphDiff(
         addedVertexes =
           addedVertexes,
 
-        addedArcs =
-          addedArcs,
+        addedLinks =
+          addedLinks,
 
         updatedVertexes =
           updatedVertexes,
 
-        updatedArcs =
-          updatedArcs,
+        updatedLinks =
+          updatedLinks,
 
         removedVertexes =
           removedVertexes,
 
-        removedArcs =
-          removedArcs
+        removedLinks =
+          removedLinks
       )
     }
   }
