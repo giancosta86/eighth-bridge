@@ -3,13 +3,22 @@ package info.gianlucacosta.eighthbridge.graphs.features
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.{Graph, GraphCore, Link, Vertex}
 
-trait Timestamped {
-  protected def timestamp: Timestamp
+trait Timestamped extends ConcreteCloneable {
+  private var _timestamp: Timestamp =
+    Timestamp.now
 
-  protected def setTimestamp(timestamp: Timestamp): this.type
+  protected def timestamp: Timestamp =
+    _timestamp
 
-  def updateTimestamp(): this.type =
-    setTimestamp(Timestamp.now)
+  def updateTimestamp(): this.type = {
+    val result =
+      clone()
+
+    result._timestamp =
+      Timestamp.now
+
+    result
+  }
 
   def isNewerThan(other: Timestamped): Boolean =
     timestamp > other.timestamp

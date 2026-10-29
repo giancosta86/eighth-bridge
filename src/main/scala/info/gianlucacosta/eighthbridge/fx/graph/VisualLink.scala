@@ -1,15 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.graphs.Link
-import info.gianlucacosta.eighthbridge.graphs.features.{Named, Timestamp, Timestamped}
+import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, Named, Timestamp, Timestamped}
 
 /**
   * A link for VisualGraph
   */
 class VisualLink(barbsValue: Option[ArcBarbs])
-  extends Link with Timestamped with Cloneable {
-  private var _timestamp: Timestamp =
-    Timestamp.now
+  extends ConcreteCloneable with Link with Timestamped {
 
   private var _selected: Boolean =
     false
@@ -22,19 +20,6 @@ class VisualLink(barbsValue: Option[ArcBarbs])
 
   private var _barbs: Option[ArcBarbs] =
     barbsValue
-
-  def timestamp: Timestamp =
-    _timestamp
-
-  def setTimestamp(timestamp: Timestamp): this.type = {
-    val result: this.type =
-      clone().asInstanceOf[this.type]
-
-    result._timestamp =
-      timestamp
-
-    result
-  }
 
   def selected: Boolean =
     _selected
