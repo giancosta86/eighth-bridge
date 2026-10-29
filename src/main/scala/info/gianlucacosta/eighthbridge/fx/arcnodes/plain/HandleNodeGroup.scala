@@ -1,19 +1,19 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.ReadOnlyProperties
-import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
+import info.gianlucacosta.eighthbridge.fx.graph.LinkHandle
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty}
 import scalafx.scene.Group
 import scalafx.Includes._
 
 private class HandleNodeGroup(
-                               initialHandles: List[ArcHandle],
+                               initialHandles: List[LinkHandle],
                                onHandleNodeRightClick: HandleNodeRightClickHandler,
                                onHandleNodeDrag: HandleNodeDragHandler
                              ) extends Group {
-  val handles: ObjectProperty[List[ArcHandle]] =
-    new SimpleObjectProperty[List[ArcHandle]]
+  val handles: ObjectProperty[List[LinkHandle]] =
+    new SimpleObjectProperty[List[LinkHandle]]
 
   private val _handleNodes =
     new SimpleObjectProperty[List[HandleNode]](Nil)
@@ -37,7 +37,7 @@ private class HandleNodeGroup(
 
     handleNodesToRemove.foreach(children.remove(_))
 
-    val keptHandleNodesByHandle: Map[ArcHandle, HandleNode] =
+    val keptHandleNodesByHandle: Map[LinkHandle, HandleNode] =
       (currentHandleNodes -- handleNodesToRemove)
         .map(handleNode =>
           handleNode.handle() -> handleNode

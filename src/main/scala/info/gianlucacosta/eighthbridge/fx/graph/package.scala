@@ -29,7 +29,6 @@ package object graph {
         self.arcs
       )
 
-
     def deselectAll: VisualGraph =
       self.setSelection(Set(), Set())
 

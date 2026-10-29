@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{Centered, VertexNode}
-import info.gianlucacosta.eighthbridge.fx.graph.ArcHandle
+import info.gianlucacosta.eighthbridge.fx.graph.LinkHandle
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.binding.{Bindings, ObjectBinding}
 import scalafx.scene.Group
@@ -12,7 +12,7 @@ import scalafx.geometry.Point2D
 private class Shaft(
                      sourceVertexNode: VertexNode,
                      targetVertexNode: VertexNode,
-                     initialHandles: List[ArcHandle],
+                     initialHandles: List[LinkHandle],
                      onSegmentRightClick: SegmentRightClickHandler,
                      onHandleNodeRightClick: HandleNodeRightClickHandler,
                      onHandleNodeDrag: HandleNodeDragHandler
@@ -28,7 +28,7 @@ private class Shaft(
     this
 
   val handles =
-    new SimpleObjectProperty[List[ArcHandle]](initialHandles)
+    new SimpleObjectProperty[List[LinkHandle]](initialHandles)
 
   private val handleNodeGroup =
     new HandleNodeGroup(

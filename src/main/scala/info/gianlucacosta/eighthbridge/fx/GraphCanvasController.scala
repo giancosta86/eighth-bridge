@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
 import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, ArcHandle, Delta, LabeledVisualLink, VisualLink, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, LinkHandle, Delta, LabeledVisualLink, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
@@ -117,19 +117,19 @@ abstract class GraphCanvasController {
     )
 
   //TODO! Should I replace these handle-related methods with merely an "updateArc()" function?
-  def addArcHandle(arc: VisualLink, index: Int, point: Point2D): Option[VisualGraph] = {
-    val arcHandle =
-      ArcHandle.makeCircle(point)
+  def addLinkHandle(arc: VisualLink, index: Int, point: Point2D): Option[VisualGraph] = {
+    val linkHandle =
+      LinkHandle.makeDefaultCircle(point)
 
     val updatedArc =
-      arc.addHandle(index, arcHandle)
+      arc.addHandle(index, linkHandle)
 
     Some(
       graph.updateArc(updatedArc)
     )
   }
 
-  def removeArcHandle(arc: VisualLink, handle: ArcHandle): Some[VisualGraph] = {
+  def removeLinkHandle(arc: VisualLink, handle: LinkHandle): Some[VisualGraph] = {
     val updatedArc =
       arc.removeHandle(handle)
 
@@ -138,10 +138,10 @@ abstract class GraphCanvasController {
     )
   }
 
-  def dragArcHandle(arc: VisualLink, arcHandle: ArcHandle, delta: Delta): Option[VisualGraph] = {
+  def dragLinkHandle(arc: VisualLink, linkHandle: LinkHandle, delta: Delta): Option[VisualGraph] = {
     val updatedArc =
       arc.updateHandle(
-        arcHandle.moveBy(delta)
+        linkHandle.moveBy(delta)
       )
 
     Some(

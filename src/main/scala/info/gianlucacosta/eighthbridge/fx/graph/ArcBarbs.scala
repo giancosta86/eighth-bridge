@@ -3,6 +3,15 @@ package info.gianlucacosta.eighthbridge.fx.graph
 import scalafx.geometry.{Dimension2D, Point2D}
 import Math._
 
+case class ArcBarbs(
+                     angleInDegrees: Double,
+                     length: Double
+                   ) {
+  require(0 < angleInDegrees && angleInDegrees < 90)
+
+  require(length > 0)
+}
+
 object ArcBarbs {
   val Default = ArcBarbs(
     angleInDegrees = 30,
@@ -117,13 +126,4 @@ object ArcBarbs {
       )
     )
   }
-}
-
-case class ArcBarbs(
-                     angleInDegrees: Double,
-                     length: Double
-                    ) {
-  require(0 < angleInDegrees && angleInDegrees < 90)
-
-  require(length > 0)
 }

@@ -14,7 +14,7 @@ class VisualLink(barbsValue: Option[ArcBarbs])
   private var _selected: Boolean =
     false
 
-  private var _handles: List[ArcHandle] =
+  private var _handles: List[LinkHandle] =
     List()
 
   private var _styleClasses: Set[String] =
@@ -50,10 +50,10 @@ class VisualLink(barbsValue: Option[ArcBarbs])
     } else
       this
 
-  def handles: List[ArcHandle] =
+  def handles: List[LinkHandle] =
     _handles
 
-  def setHandles(handles: List[ArcHandle]): this.type = {
+  def setHandles(handles: List[LinkHandle]): this.type = {
     if (handles.ne(this.handles)) {
       val result =
         updateTimestamp()
@@ -66,16 +66,16 @@ class VisualLink(barbsValue: Option[ArcBarbs])
       this
   }
 
-  def addHandle(index: Int, arcHandle: ArcHandle): this.type = {
-    val updatedHandles: List[ArcHandle] =
+  def addHandle(index: Int, linkHandle: LinkHandle): this.type = {
+    val updatedHandles: List[LinkHandle] =
       handles.take(index) ++
-        List(arcHandle) ++
+        List(linkHandle) ++
         handles.drop(index)
 
     setHandles(updatedHandles)
   }
 
-  def updateHandle(handle: ArcHandle): this.type = {
+  def updateHandle(handle: LinkHandle): this.type = {
     //println(s"UPDATING HANDLE: ${handle}")
 
     setHandles(
@@ -88,7 +88,7 @@ class VisualLink(barbsValue: Option[ArcBarbs])
     )
   }
 
-  def removeHandle(handle: ArcHandle): this.type =
+  def removeHandle(handle: LinkHandle): this.type =
     setHandles(
       handles.filter(_ != handle)
     )
