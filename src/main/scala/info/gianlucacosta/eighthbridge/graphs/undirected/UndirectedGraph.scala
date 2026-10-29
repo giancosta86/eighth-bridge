@@ -1,42 +1,42 @@
 package info.gianlucacosta.eighthbridge.graphs.undirected
 
 import info.gianlucacosta.eighthbridge.graphs.directed.{DirectedGraph, VertexFoldProcessor, VertexTopology}
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, Graph, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
-final class UndirectedGraph[V <: Vertex, E <: Link] (
+final class UndirectedGraph[V <: Vertex, E <: Link] private (
                                                               vertexes: Set[V],
-                                                              private val edgesByAnchorSet: Map[Set[V], Set[E]]
+                                                              private val edgesByAnchors: Map[UndirectedAnchors[V], Set[E]]
                                                             )
-  extends Graph[V, E](vertexes) {
+  extends GraphCore[V, E](vertexes) {
 
   def this() = this(
     vertexes =
       Set[V](),
 
-    edgesByAnchorSet =
-      Map[Set[V], Set[E]]()
+    edgesByAnchors =
+      Map[UndirectedAnchors[V], Set[E]]()
   )
 
   override protected def setVertexes(updatedVertexes: Set[V]): this.type =
     new UndirectedGraph[V, E](
       vertexes =
         updatedVertexes,
-      edgesByAnchorSet =
-        edgesByAnchorSet
+      edgesByAnchors =
+        edgesByAnchors
     )
       .asInstanceOf[this.type]
 
   def updateVertex(updatedVertex: V): this.type =
     new UndirectedGraph[V, E](
       vertexes =
-        vertexes.updateEntity(updatedVertex),
+        vertexes.update(updatedVertex),
 
-      edgesByAnchorSet =
-        edgesByAnchorSet.map {
-          case (vertexSet, edge) =>
-            vertexSet.updateEntity(updatedVertex) -> edge
+      edgesByAnchors =
+        edgesByAnchors.map {
+          case (anchors, edge) =>
+            anchors.update(updatedVertex) -> edge
         }
     )
       .asInstanceOf[this.type]
@@ -46,41 +46,41 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
       vertexes =
         vertexes -- vertexesToRemove,
 
-      edgesByAnchorSet =
-        edgesByAnchorSet.filterKeys(anchorSet =>
-          (vertexesToRemove & anchorSet).isEmpty
+      edgesByAnchors =
+        edgesByAnchors.filterKeys(anchors =>
+          (vertexesToRemove & anchors).isEmpty
         )
     )
       .asInstanceOf[this.type]
 
-  def addEdge(anchorSet: Set[V], edge: E): UndirectedGraph[V, E] = {
-    if (anchorSet.subsetOf(vertexes)) {
+  def addEdge(anchors: UndirectedAnchors[V], edge: E): UndirectedGraph[V, E] = {
+    if (anchors.toSet.subsetOf(vertexes)) {
       val updatedEdgeSet =
-        edgesByAnchorSet.getOrElse(anchorSet, Set()) + edge
+        edgesByAnchors.getOrElse(anchors, Set()) + edge
 
       new UndirectedGraph[V, E](
         vertexes =
           vertexes,
-        edgesByAnchorSet =
-          edgesByAnchorSet + (anchorSet -> updatedEdgeSet)
+        edgesByAnchors =
+          edgesByAnchors + (anchors -> updatedEdgeSet)
       )
     } else
       this
   }
 
   def addEdge(oneVertex: V, anotherVertex: V, edge: E): UndirectedGraph[V, E] = {
-    val anchorSet: Set[V] =
-      Set(oneVertex, anotherVertex)
+    val anchors =
+      UndirectedAnchors(oneVertex, anotherVertex)
 
-    addEdge(anchorSet, edge)
+    addEdge(anchors, edge)
   }
 
   def updateEdge(updatedEdge: E): UndirectedGraph[V, E] =
     new UndirectedGraph[V, E](
       vertexes =
         vertexes,
-      edgesByAnchorSet =
-        edgesByAnchorSet.mapValues(_.updateEntity(updatedEdge))
+      edgesByAnchors =
+        edgesByAnchors.mapValues(_.update(updatedEdge))
     )
 
   def updateEdges(updatedEdges: Set[E]): UndirectedGraph[V, E] =
@@ -95,8 +95,8 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
     new UndirectedGraph[V, E](
       vertexes =
         vertexes,
-      edgesByAnchorSet =
-        edgesByAnchorSet
+      edgesByAnchors =
+        edgesByAnchors
           .mapValues(
             _ -- edgesToRemove
           )
@@ -113,11 +113,10 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
 
   @transient
   lazy val edges: Set[E] =
-    edgesByAnchorSet
+    edgesByAnchors
       .values
       .flatten
       .toSet
-
 
   @transient
   protected lazy val edgesById: Map[Link#EntityId, E] =
@@ -128,29 +127,31 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
   def getEdgeById(id: Link#EntityId): Option[E] =
     edgesById.get(id)
 
-  def getEdgesBetween(anchorSet: Set[V]): Set[E] =
-    edgesByAnchorSet.get(anchorSet).getOrElse(Set[E]())
+  def getEdgesBetween(anchors: UndirectedAnchors[V]): Set[E] =
+    edgesByAnchors.getOrElse(anchors, Set[E]())
 
   def getEdgesBetween(oneVertex: V, anotherVertex: V): Set[E] =
-    getEdgesBetween(Set(oneVertex, anotherVertex))
+    getEdgesBetween(UndirectedAnchors(oneVertex, anotherVertex))
 
 
   @transient
-  protected lazy val anchorSetByEdge: Map[E, Set[V]] =
-    edgesByAnchorSet
+  protected lazy val anchorSetByEdge: Map[E, UndirectedAnchors[V]] =
+    edgesByAnchors
       .flatMap { case (anchorSet, edges) =>
         edges.map(_ -> anchorSet)
       }
 
-  def getAnchorSet(edge: E): Option[Set[V]] =
+  def getAnchorSet(edge: E): Option[UndirectedAnchors[V]] =
     anchorSetByEdge.get(edge)
 
   @transient
   private lazy val connectedEdgesByVertex: Map[V, Set[E]] =
-    edgesByAnchorSet
+    edgesByAnchors
       .toList
-      .flatMap { case (vertexes, edges) =>
-        vertexes.map(_ -> edges)
+      .flatMap { case (anchors, edges) =>
+        anchors.toSet[V].map(vertex =>
+          vertex -> edges
+        )
       }
       .groupBy(_._1)
       .mapValues(
@@ -166,11 +167,11 @@ final class UndirectedGraph[V <: Vertex, E <: Link] (
 
   @transient
   private lazy val neighborsByVertex: Map[V, Set[V]] =
-    edgesByAnchorSet
-      .keySet.flatMap(anchorSet =>
+    edgesByAnchors
+      .keySet.flatMap(anchors =>
         Seq(
-          anchorSet.head -> anchorSet.last,
-          anchorSet.last -> anchorSet.head
+          anchors.oneVertex -> anchors.anotherVertex,
+          anchors.anotherVertex -> anchors.oneVertex
         )
       )
       .groupBy(_._1)

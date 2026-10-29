@@ -9,8 +9,10 @@ trait Named {
   def name: String
 
   def setName(name: String): this.type
-}
 
+  override def toString: String =
+    name
+}
 
 object Named {
   implicit class NamedPairExtensions[T <: Named, U <: Named](self: (T, U)) {

@@ -28,12 +28,12 @@ object Entity {
   }
 
   implicit class EntitySetExtensions[E <: Entity](self: Set[E]) {
-    def updateEntity(updated: E): Set[E] =
+    def update(updated: E): Set[E] =
       self.map(_.update(updated))
   }
 
   implicit class EntityPairExtensions[E <: Entity](self: (E, E)) {
-    def updateEntity(updated: E): (E, E) =
+    def update(updated: E): (E, E) =
       (
         self._1.update(updated),
         self._2.update(updated)

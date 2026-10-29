@@ -17,4 +17,7 @@ case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Link with Tim
       addedLinks.nonEmpty ||
       removedVertexes.nonEmpty ||
       removedLinks.nonEmpty
+
+  def isEmpty: Boolean =
+    !nonEmpty
 }

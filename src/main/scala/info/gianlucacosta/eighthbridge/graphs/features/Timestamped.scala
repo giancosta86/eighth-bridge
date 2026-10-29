@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, GraphCore, Link, Vertex}
 
 trait Timestamped {
   protected def timestamp: Timestamp
@@ -19,8 +19,8 @@ object Timestamped {
   implicit class TimestampedDirectedGraphExtensions[
     V <: Vertex with Timestamped,
     L <: Link with Timestamped](
-                                                                                    self: Graph[V, L]
-                                                                                  ) {
+      self: Graph[V, L]
+  ) {
     def getDiffSince(referenceGraph: Graph[V, L]): TimestampedGraphDiff[V, L] = {
       val addedVertexes =
         self.vertexes -- referenceGraph.vertexes

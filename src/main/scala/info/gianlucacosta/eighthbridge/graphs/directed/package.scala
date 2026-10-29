@@ -11,8 +11,8 @@ package object directed {
    *
    * The function must return the next iteration value for <b>fold()</b>.
    */
-
-  type VertexFoldProcessor[T, V <: Vertex, A <: Link] = (T, V, VertexTopology[V, A]) => T
+  type VertexFoldProcessor[T, V <: Vertex, A <: Link] =
+    (T, V, VertexTopology[V, A]) => T
 
 
   implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Link](

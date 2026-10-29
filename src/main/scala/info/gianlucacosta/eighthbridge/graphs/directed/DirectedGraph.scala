@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.directed
 
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, Graph, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
@@ -9,7 +9,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
                                                      vertexes: Set[V],
                                                      private val arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
-  extends Graph[V, A](vertexes) {
+  extends GraphCore[V, A](vertexes) {
 
   def this() = this(
     vertexes =
@@ -23,6 +23,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     new DirectedGraph[V, A](
       vertexes =
         updatedVertexes,
+
       arcsByVertexPair =
         arcsByVertexPair
     )
@@ -31,12 +32,12 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   def updateVertex(updatedVertex: V): this.type =
     new DirectedGraph[V, A](
       vertexes =
-        vertexes.updateEntity(updatedVertex),
+        vertexes.update(updatedVertex),
 
       arcsByVertexPair =
         arcsByVertexPair.map {
           case (keyPair, arc) =>
-            keyPair.updateEntity(updatedVertex) -> arc
+            keyPair.update(updatedVertex) -> arc
         }
     )
       .asInstanceOf[this.type]
@@ -79,7 +80,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       vertexes =
         vertexes,
       arcsByVertexPair =
-        arcsByVertexPair.mapValues(_.updateEntity(updatedArc))
+        arcsByVertexPair.mapValues(_.update(updatedArc))
     )
 
   def updateArcs(updatedArcs: Set[A]): DirectedGraph[V, A] =
@@ -117,7 +118,6 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       .flatten
       .toSet
 
-
   @transient
   protected lazy val arcsById: Map[Link#EntityId, A] =
     arcs
@@ -142,12 +142,30 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
         }
       )
 
+  /**
+   * Returns the set of vertexes that are target of any arc exiting the given vertex.
+   */
+  def getSuccessors(vertex: V): Set[V] =
+    successorsByVertex.getOrElse(
+      vertex,
+      Set()
+    )
+
   @transient
   protected lazy val exitingArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
       .flattenToSingleVertexKey { case (sourceVertex, _) =>
         sourceVertex
       }
+
+  /**
+   * Returns the set of arcs whose source is the given vertex.
+   */
+  def getExitingArcs(vertex: V): Set[A] =
+    exitingArcsByVertex.getOrElse(
+      vertex,
+      Set()
+    )
 
   @transient
   protected lazy val predecessorsByVertex: Map[V, Set[V]] =
@@ -163,38 +181,6 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
         }
       )
 
-  @transient
-  protected lazy val enteringArcsByVertex: Map[V, Set[A]] =
-    arcsByVertexPair
-      .flattenToSingleVertexKey { case (_, targetVertex) =>
-        targetVertex
-      }
-
-  @transient
-  protected lazy val vertexPairsByArc: Map[A, (V, V)] =
-    arcsByVertexPair
-      .flatMap { case (vertexPair, arcs) =>
-        arcs.map(_ -> vertexPair)
-      }
-
-  /**
-   * Returns the set of vertexes that are target of any arc exiting the given vertex.
-   */
-  def getSuccessors(vertex: V): Set[V] =
-    successorsByVertex.getOrElse(
-      vertex,
-      Set()
-    )
-
-  /**
-   * Returns the set of arcs whose source is the given vertex.
-   */
-  def getExitingArcs(vertex: V): Set[A] =
-    exitingArcsByVertex.getOrElse(
-      vertex,
-      Set()
-    )
-
   /**
    * Returns the set of vertexes that are source of any arc entering the given vertex.
    */
@@ -203,6 +189,13 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       vertex,
       Set()
     )
+
+  @transient
+  protected lazy val enteringArcsByVertex: Map[V, Set[A]] =
+    arcsByVertexPair
+      .flattenToSingleVertexKey { case (_, targetVertex) =>
+        targetVertex
+      }
 
   /**
    * Returns the set of arcs whose target is the given vertex.
@@ -213,6 +206,17 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       Set()
     )
 
+  @transient
+  protected lazy val vertexPairByArc: Map[A, (V, V)] =
+    arcsByVertexPair
+      .flatMap { case (vertexPair, arcs) =>
+        arcs.map(_ -> vertexPair)
+      }
+
+  def getAnchors(arc: A): Option[(V, V)] =
+    vertexPairByArc.get(arc)
+
+
   def getArcsBetween(vertexPair: (V, V)): Set[A] =
     arcsByVertexPair.getOrElse(
       vertexPair,
@@ -221,9 +225,6 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   def getArcsBetween(sourceVertex: V, targetVertex: V): Set[A] =
     getArcsBetween(sourceVertex -> targetVertex)
-
-  def getAnchors(arc: A): Option[(V, V)] =
-    vertexPairsByArc.get(arc)
 
   def getNeighbors(vertex: V): Set[V] =
     getSuccessors(vertex) ++ getPredecessors(vertex)
@@ -367,16 +368,24 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     }
   }
 
-  def toUndirected: UndirectedGraph[V, A] =
-    new UndirectedGraph[V, A](
-      vertexes =
-        vertexes,
+  def toUndirected: UndirectedGraph[V, A] = {
+    var result =
+      new UndirectedGraph[V, A]()
 
-      edgesByAnchorSet =
-        arcsByVertexPair.map { case (vertexPair, arc) =>
-          Set(vertexPair._1, vertexPair._2) -> arc
-        }
+    vertexes.foreach(vertex =>
+      result =
+        result.addVertex(vertex)
     )
+
+    arcsByVertexPair.foreach { case ((sourceVertex, targetVertex), arcs) =>
+      arcs.foreach(arc =>
+        result =
+          result.addEdge(sourceVertex, targetVertex, arc)
+      )
+    }
+
+    result
+  }
 
   override def links: Set[A] =
     arcs
