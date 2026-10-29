@@ -1,9 +1,9 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
+import javafx.beans.property.{SimpleDoubleProperty, SimpleFloatProperty, SimpleIntegerProperty, SimpleLongProperty, SimpleObjectProperty, SimpleStringProperty}
 import scalafx.beans.Observable
 import scalafx.beans.binding.Bindings
-import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyDoubleWrapper, ReadOnlyObjectProperty, ReadOnlyObjectWrapper}
+import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyFloatProperty, ReadOnlyIntegerProperty, ReadOnlyLongProperty, ReadOnlyObjectProperty, ReadOnlyStringProperty}
 import scalafx.Includes._
 
 //TODO! Move this to Helios-FX!
@@ -14,6 +14,62 @@ object ReadOnlyProperties {
 
     backingProperty <==
       Bindings.createDoubleBinding(
+        expression,
+
+        dependencies:_*
+      )
+
+    backingProperty
+  }
+
+  def createInt(expression: () => Int, dependencies: Observable*): ReadOnlyIntegerProperty = {
+    val backingProperty =
+      new SimpleIntegerProperty
+
+    backingProperty <==
+      Bindings.createIntegerBinding(
+        expression,
+
+        dependencies:_*
+      )
+
+    backingProperty
+  }
+
+  def createLong(expression: () => Long, dependencies: Observable*): ReadOnlyLongProperty = {
+    val backingProperty =
+      new SimpleLongProperty
+
+    backingProperty <==
+      Bindings.createLongBinding(
+        expression,
+
+        dependencies:_*
+      )
+
+    backingProperty
+  }
+
+  def createFloat(expression: () => Float, dependencies: Observable*): ReadOnlyFloatProperty = {
+    val backingProperty =
+      new SimpleFloatProperty
+
+    backingProperty <==
+      Bindings.createFloatBinding(
+        expression,
+
+        dependencies:_*
+      )
+
+    backingProperty
+  }
+
+  def createString(expression: () => String, dependencies: Observable*): ReadOnlyStringProperty = {
+    val backingProperty =
+      new SimpleStringProperty
+
+    backingProperty <==
+      Bindings.createStringBinding(
         expression,
 
         dependencies:_*
