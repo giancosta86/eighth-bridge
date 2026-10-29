@@ -32,7 +32,6 @@ trait DragContext extends Node {
 
       handleDragMotion(deltaFromLatest, event, startEvent)
 
-
       latestSnapshot =
         event
   }
@@ -50,7 +49,6 @@ trait DragContext extends Node {
 
         case _ =>
       }
-      ()
     }
   }
 
