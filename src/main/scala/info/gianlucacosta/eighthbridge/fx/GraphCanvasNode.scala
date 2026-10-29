@@ -8,11 +8,9 @@ import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
 /**
-  * Generic JavaFX node rendering a graph element into GraphCanvas.
+  * JavaFX node rendering a graph element into GraphCanvas.
   */
 abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends Group {
-  private var _graphCanvas: GraphCanvas = _
-
   /**
     * The controller of the owning graph canvas
     *

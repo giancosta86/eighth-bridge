@@ -1,5 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import java.net.URL
+
 /**
   * Object providing default CSS stylesheet: you can employ it
   * as a starting point in your app by adding it to
@@ -7,6 +9,6 @@ package info.gianlucacosta.eighthbridge.fx
   * required by your GUI framework.
   */
 object Styles {
-  val resourceUrl =
+  val resourceUrl: URL =
     getClass.getResource("Styles.css")
 }
