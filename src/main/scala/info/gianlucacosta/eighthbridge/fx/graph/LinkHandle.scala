@@ -18,13 +18,16 @@ final class LinkHandle(
     _center
 
   def setCenter(center: Point2D): LinkHandle = {
-    val result =
-      clone().asInstanceOf[LinkHandle]
+    if (center != _center) {
+      val result =
+        clone().asInstanceOf[LinkHandle]
 
-    result._center =
-      center
+      result._center =
+        center
 
-    result
+      result
+    } else
+      this
   }
 
   def moveBy(delta: Delta): LinkHandle =
@@ -34,13 +37,16 @@ final class LinkHandle(
     _dimension
 
   def setDimension(dimension: Dimension2D): LinkHandle = {
-    val result =
-      clone().asInstanceOf[LinkHandle]
+    if (dimension != _dimension) {
+      val result =
+        clone().asInstanceOf[LinkHandle]
 
-    result._dimension =
-      dimension
+      result._dimension =
+        dimension
 
-    result
+      result
+    } else
+      this
   }
 }
 

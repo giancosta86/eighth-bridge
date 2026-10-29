@@ -4,7 +4,7 @@ import info.gianlucacosta.eighthbridge.graphs.Link
 import info.gianlucacosta.eighthbridge.graphs.features.{Named, Timestamp, Timestamped}
 
 /**
-  * An arc for VisualGraph
+  * A link for VisualGraph
   */
 class VisualLink(barbsValue: Option[ArcBarbs])
   extends Link with Timestamped with Cloneable {
