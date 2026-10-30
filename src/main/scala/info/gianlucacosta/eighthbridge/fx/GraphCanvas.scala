@@ -1,11 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.TimestampedGraphDiff
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
-import scalafx.beans.property.ReadOnlyObjectProperty
+import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.Node
 import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent, ScrollEvent}
@@ -27,14 +27,14 @@ import scalafx.scene.shape.Rectangle
 class GraphCanvas(
                    val controller: GraphCanvasController,
                    initialGraph: VisualGraph
-                 ) extends Pane {
+                 ) extends Pane with DragContext {
   controller.graphCanvas =
     this
 
   styleClass.add("graph")
 
   val graph =
-    new SimpleObjectProperty[VisualGraph]
+    new SimpleObjectProperty[VisualGraph](new VisualGraph())
 
   graph.onChange { (_, oldValue, newValue) =>
     val graphDiff =
@@ -90,10 +90,11 @@ class GraphCanvas(
   focusTraversable =
     true
 
-  private var dragAnchor: Point2D = _
+  private val _panning =
+    new SimpleBooleanProperty(false)
 
-  private var panning: Boolean =
-    false
+  private val panning: ReadOnlyBooleanProperty =
+    _panning
 
 
   private var _vertexNodesByVertex: Map[VisualVertex, VertexNode] =
@@ -198,11 +199,7 @@ class GraphCanvas(
     )
   }
 
-  private def handleDelKeyPressed(): Unit = {
-    controller.deleteSelection()
-  }
-
-  handleEvent(KeyEvent.KeyPressed) {
+  filterEvent(KeyEvent.KeyPressed) {
     (keyEvent: KeyEvent) => {
       keyEvent.code match {
         case KeyCode.Delete =>
@@ -213,112 +210,93 @@ class GraphCanvas(
     }
   }
 
+  private def handleDelKeyPressed(): Unit = {
+    controller.deleteSelection()
+  }
 
-  handleEvent(ScrollEvent.Scroll) {
+  filterEvent(ScrollEvent.Scroll) {
     (event: ScrollEvent) => {
-      if (zoomEnabled()) {
-        event.consume()
+      handleMouseScroll(event)
+    }
+  }
 
-        val oldScale =
-          scaleX()
+  private def handleMouseScroll(event: ScrollEvent): Unit = {
+    if (zoomEnabled()) {
+      event.consume()
 
-        val scaleFactor =
-          math.pow(1.01, event.deltaY / 5)
+      val oldScale =
+        scaleX()
 
-        val newScale = math.max(
-          minZoomScale(),
+      val scaleFactor =
+        math.pow(1.01, event.deltaY / 5)
 
-          math.min(
-            maxZoomScale(),
+      val newScale = math.max(
+        minZoomScale(),
 
-            oldScale * scaleFactor
-          )
+        math.min(
+          maxZoomScale(),
+
+          oldScale * scaleFactor
         )
+      )
 
-        scaleX() =
-          newScale
+      scaleX() =
+        newScale
 
-        scaleY() =
-          newScale
+      scaleY() =
+        newScale
 
-        val zoomFactor =
-          (newScale / oldScale) - 1
+      val zoomFactor =
+        (newScale / oldScale) - 1
 
-        val canvasBounds =
-          this.getBoundsInParent
+      val canvasBounds =
+        this.getBoundsInParent
 
+      val deltaX =
+        event.sceneX - (canvasBounds.width / 2 + canvasBounds.minX)
 
-        val deltaX =
-          event.sceneX - (canvasBounds.width / 2 + canvasBounds.minX)
+      val deltaY =
+        event.sceneY - (canvasBounds.height / 2 + canvasBounds.minY)
 
-        val deltaY =
-          event.sceneY - (canvasBounds.height / 2 + canvasBounds.minY)
+      translateX() -=
+        zoomFactor * deltaX
 
-        translateX() -=
-          zoomFactor * deltaX
-
-        translateY() -=
-          zoomFactor * deltaY
-
-        ()
-      }
+      translateY() -=
+        zoomFactor * deltaY
     }
   }
 
+  override protected def handleDragStart(event: MouseEvent): Unit = {
+    super.handleDragStart(event)
 
-  filterEvent(MouseEvent.MousePressed) {
-    (event: MouseEvent) => {
-      if (event.isShiftDown && panEnabled()) {
-        event.consume()
+    if (event.isShiftDown && panEnabled()) {
+      _panning() =
+        true
 
-        dragAnchor =
-          new Point2D(
-            event.sceneX,
-            event.sceneY
-          )
-
-        panning =
-          true
-      }
+      event.consume()
     }
   }
 
+  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
+    if (_panning()) {
+      event.consume()
 
-  filterEvent(MouseEvent.MouseDragged) {
-    (event: MouseEvent) => {
-      if (panning) {
-        event.consume()
+      translateX() +=
+        deltaFromLatest.x
 
-        val delta =
-          new Point2D(
-            event.sceneX - dragAnchor.x,
-            event.sceneY - dragAnchor.y
-          )
-
-        translateX() +=
-          delta.x
-
-        translateY() +=
-          delta.y
-
-        dragAnchor =
-          new Point2D(event.sceneX, event.sceneY)
-      }
+      translateY() +=
+        deltaFromLatest.y
     }
   }
 
+  override protected def handleDragEnd(event: MouseEvent): Unit = {
+    if (_panning()) {
+      event.consume()
 
-  filterEvent(MouseEvent.MouseReleased) {
-    (event: MouseEvent) => {
-      if (panning) {
-        event.consume()
-
-        dragAnchor =
-          null
-
-        panning =
-          false
-      }
+      _panning() =
+        false
     }
+
+    super.handleDragEnd(event)
   }
 }

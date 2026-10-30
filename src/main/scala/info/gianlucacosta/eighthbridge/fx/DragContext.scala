@@ -13,7 +13,7 @@ trait DragContext extends Node {
   private var startEvent: MouseEvent = _
   private var latestSnapshot: MouseEvent = _
 
-  private def handleSinglePrimaryPressed(event: MouseEvent): Unit = {
+  protected def handleDragStart(event: MouseEvent): Unit = {
     startEvent =
       event
 
@@ -36,13 +36,15 @@ trait DragContext extends Node {
 
   protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit
 
-  handleEvent(MouseEvent.MousePressed) {
+  protected def handleDragEnd(event: MouseEvent): Unit = { }
+
+  filterEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
           mouseEvent.clickCount match {
             case 1 =>
-              handleSinglePrimaryPressed(mouseEvent)
+              handleDragStart(mouseEvent)
 
             case _ =>
           }
@@ -52,7 +54,7 @@ trait DragContext extends Node {
     }
   }
 
-  handleEvent(MouseEvent.MouseDragged) {
+  filterEvent(MouseEvent.MouseDragged) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
@@ -60,6 +62,13 @@ trait DragContext extends Node {
 
         case _ =>
       }
+    }
+  }
+
+
+  filterEvent(MouseEvent.MouseReleased) {
+    (event: MouseEvent) => {
+      handleDragEnd(event)
     }
   }
 }
