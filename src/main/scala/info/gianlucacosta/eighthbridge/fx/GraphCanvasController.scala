@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledArcNode
-import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
+import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledLinkNode
+import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, LinkHandle, Delta, LabeledVisualLink, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
@@ -20,32 +20,45 @@ abstract class GraphCanvasController {
     _graphCanvas
 
   private[fx] final def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
-    require(_graphCanvas == null, "The controller must not be already associated with another GraphCanvas!")
+    require(
+      _graphCanvas == null,
+      "The controller must not be already associated with another GraphCanvas!"
+    )
+
     _graphCanvas = graphCanvas
   }
 
   protected final def graph: VisualGraph =
     graphCanvas.graph()
 
-  //
-  // NEW FUNCTIONS
-  //
+  protected final def graph_=(graph: VisualGraph): Unit = {
+    graphCanvas.graph() =
+      graph
+  }
+
   def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
-  def canDrawSelectionRectangle: Boolean =
-    true //TODO! False!
+  def createVertexNode(vertex: VisualVertex): VertexNode
 
-  def setSelection(selectedVertexes: Set[VisualVertex], selectedArcs: Set[VisualLink]):
-    Option[VisualGraph]
+  def createLinkNode(arc: VisualLink): LinkNode
 
-  //TODO! Make this abstract!
-  def createVertexNode(vertex: VisualVertex): VertexNode =
-    new LabeledVertexNode(graphCanvas, vertex)
+  def createVertex(center: Point2D): Unit = {}
 
-  //TODO! Make this abstract!
-  def createArcNode(arc: VisualLink): ArcNode =
-    new LabeledArcNode(graphCanvas, arc.asInstanceOf[LabeledVisualLink])
+  def createLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Unit = {}
+
+  def editVertex(vertex: VisualVertex): Unit = {}
+
+  def editLink(link: VisualLink): Unit = {}
+
+  def canDrawSelectingArea: Boolean =
+    false
+
+  def setSelection(selectedVertexes: Set[VisualVertex], selectedArcs: Set[VisualLink]): Unit = {}
+
+  def dragLinkLabel(link: LabeledVisualLink, actualCenter: Point2D, delta: Delta): Unit = {}
+
+  def resetLinkLabelCenter(link: LabeledVisualLink): Unit = {}
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
@@ -94,102 +107,15 @@ abstract class GraphCanvasController {
     }
   }
 
-  def createVertex(center: Point2D): Option[VisualGraph] =
-    None
-
-  def deleteSelection(): Option[VisualGraph] =
-    None
-
-  def editVertex(vertex: VisualVertex): Option[VisualGraph] =
-    None
-
-  //TODO! handle link editing on double click!
-
-  def dragSelectedVertexesBy(delta: Delta): Option[VisualGraph] =
-    None
-
-  //TODO: None!
-  def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[VisualGraph] =
-    Some(
-      graph.addArc(
-        sourceVertex, targetVertex, new LabeledVisualLink(Some(ArcBarbs.Default), "Dodo")
-      )
-    )
-
-  //TODO! Should I replace these handle-related methods with merely an "updateArc()" function?
-  def addLinkHandle(arc: VisualLink, index: Int, point: Point2D): Option[VisualGraph] = {
-    val linkHandle =
-      LinkHandle.makeDefaultCircle(point)
-
-    val updatedArc =
-      arc.addHandle(index, linkHandle)
-
-    Some(
-      graph.updateArc(updatedArc)
-    )
-  }
-
-  def removeLinkHandle(arc: VisualLink, handle: LinkHandle): Some[VisualGraph] = {
-    val updatedArc =
-      arc.removeHandle(handle)
-
-    Some(
-      graph.updateArc(updatedArc)
-    )
-  }
-
-  def dragLinkHandle(arc: VisualLink, linkHandle: LinkHandle, delta: Delta): Option[VisualGraph] = {
-    val updatedArc =
-      arc.updateHandle(
-        linkHandle.moveBy(delta)
-      )
-
-    Some(
-      graph.updateArc(updatedArc)
-    )
-  }
-
-  //
-  // ANCIENT FUNCTIONS
-  //
-
-  /*//TODO! Turn this into a function of VisualArc, that the 2 specific trait will implement by returning their related constants!
-  def renderDirected: Boolean
 
 
-  def createArc(sourceVertex: VisualVertex, targetVertex: VisualVertex): Option[VisualGraph] =
-    None
+  def deleteSelection(): Unit = {}
 
-  def editVertex(vertex: VisualVertex): Option[VisualGraph] =
-    None
+  def dragSelectedVertexes(delta: Delta): Unit = {}
 
-  def editArc(arc: VisualArc): Option[VisualGraph] =
-    None
+  def addLinkHandle(link: VisualLink, index: Int, point: Point2D): Unit = {}
 
-  def canDrawSelectionRectangle: Boolean =
-    false
+  def deleteLinkHandle(link: VisualLink, handle: LinkHandle): Unit = {}
 
-  def setVertexSelectedState(vertex: VisualVertex, selected: Boolean): Option[VisualGraph] =
-    None
-
-  def setArcSelectedState(arc: VisualArc, selected: Boolean): Option[VisualGraph] =
-    None
-
-  def setSelection(selectionVertexes: Set[VisualVertex], selectionArcs: Set[VisualArc]): Option[VisualGraph] =
-    None
-
-  def dragSelection(delta: Point2D): Option[VisualGraph] =
-    None
-
-  def createArcInternalPoint(arc: VisualArc, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[VisualGraph] =
-    None
-
-  def canDragArcInternalPoint(arc: VisualArc, updatedInternalPoints: List[Point2D], originalInternalPoint: Point2D, updatedInternalPoint: Point2D): Boolean =
-    false
-
-  def deleteArcInternalPoint(arc: VisualArc, updatedInternalPoints: List[Point2D], internalPoint: Point2D): Option[VisualGraph] =
-    None
-
-  def dragArcLabel(arc: VisualArc, originalCenter: Point2D, updatedCenter: Point2D): Option[VisualGraph] =
-    None*/
+  def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {}
 }

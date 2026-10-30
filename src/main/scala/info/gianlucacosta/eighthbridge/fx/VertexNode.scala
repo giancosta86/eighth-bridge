@@ -80,37 +80,29 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     )
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
-    val controllerResult =
-      if (controlPressed) {
-        val vertexesToSelect =
-          if (selected())
-            graph.selectedVertexes - vertex()
-          else
-            graph.selectedVertexes + vertex()
+    if (controlPressed) {
+      val vertexesToSelect =
+        if (selected())
+          graph.selectedVertexes - vertex()
+        else
+          graph.selectedVertexes + vertex()
 
-        controller.setSelection(
-          selectedVertexes =
-            vertexesToSelect,
+      controller.setSelection(
+        selectedVertexes =
+          vertexesToSelect,
 
-          selectedArcs =
-            graph.selectedArcs
-        )
-      } else {
-        if (selected()) {
-          None
-        } else {
-          controller.setSelection(
-            selectedVertexes =
-              Set(vertex()),
+        selectedArcs =
+          graph.selectedArcs
+      )
+    } else if (selected()) {
+      controller.setSelection(
+        selectedVertexes =
+          Set(vertex()),
 
-            selectedArcs =
-              Set()
-          )
-        }
-      }
-
-
-    controllerResult.foreach(graph_=)
+        selectedArcs =
+          Set()
+      )
+    }
   }
 
   protected override def handleDoublePrimaryPressed(point: Point2D): Unit = {
@@ -122,10 +114,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         selectedVertexes.head
 
       controller.editVertex(selectedVertex)
-        .foreach(newGraph =>
-          graph =
-            newGraph
-        )
     }
   }
 
@@ -135,19 +123,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       val selectedVertex =
         graph.selectedVertexes.head
 
-      controller.createArc(selectedVertex, vertex())
-        .foreach(newGraph =>
-          graph =
-            newGraph
-        )
+      controller.createLink(selectedVertex, vertex())
     }
   }
 
   override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
     if (vertex().selected) {
       controller
-        .dragSelectedVertexesBy(deltaFromLatest)
-        .foreach(graph_=)
+        .dragSelectedVertexes(deltaFromLatest)
     }
   }
 }

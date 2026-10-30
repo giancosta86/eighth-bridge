@@ -113,11 +113,11 @@ class GraphCanvas(
   def vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     _vertexNodesByVertex
 
-  private var _arcNodesByArc: Map[VisualLink, ArcNode] =
+  private var _arcNodesByLink: Map[VisualLink, LinkNode] =
     Map()
 
-  def arcNodesByArc: Map[VisualLink, ArcNode] =
-    _arcNodesByArc
+  def arcNodesByArc: Map[VisualLink, LinkNode] =
+    _arcNodesByLink
 
   render(
     initialGraph,
@@ -132,14 +132,14 @@ class GraphCanvas(
     val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
-    val danglingArcNodesByArc: Map[VisualLink, ArcNode] =
-      _arcNodesByArc.filterKeys(graphDiff.removedLinks.contains)
+    val danglingArcNodesByLink: Map[VisualLink, LinkNode] =
+      _arcNodesByLink.filterKeys(graphDiff.removedLinks.contains)
 
     _vertexNodesByVertex --=
       danglingVertexNodesByVertex.keySet
 
-    _arcNodesByArc --=
-      danglingArcNodesByArc.keySet
+    _arcNodesByLink --=
+      danglingArcNodesByLink.keySet
 
 
     _vertexNodesByVertex.foreach { case (vertex, vertexNode) =>
@@ -152,7 +152,7 @@ class GraphCanvas(
       }
     }
 
-    _arcNodesByArc.foreach { case (arc, arcNode) =>
+    _arcNodesByLink.foreach { case (arc, arcNode) =>
       if (graphDiff.updatedLinks.contains(arc)) {
         val updatedArc =
           updatedGraph.getArcById(arc.id).get
@@ -171,10 +171,10 @@ class GraphCanvas(
         })
         .toMap
 
-    val addedArcNodesByArc: Map[VisualLink, ArcNode] =
+    val addedArcNodesByLink: Map[VisualLink, LinkNode] =
       graphDiff.addedLinks.map(arc => {
           val arcNode =
-            controller.createArcNode(arc)
+            controller.createLinkNode(arc)
 
           arc -> arcNode
         })
@@ -183,12 +183,12 @@ class GraphCanvas(
     _vertexNodesByVertex ++=
       addedVertexNodesByVertex
 
-    _arcNodesByArc ++=
-      addedArcNodesByArc
+    _arcNodesByLink ++=
+      addedArcNodesByLink
 
     addedVertexNodesByVertex.values.foreach(children.add(_))
 
-    addedArcNodesByArc.values.foreach(addedArcNode =>
+    addedArcNodesByLink.values.foreach(addedArcNode =>
       /*
        * The first child node is always the background node.
        * Then, new arcs can be added so that newer ones will stay on top.
@@ -198,7 +198,7 @@ class GraphCanvas(
 
     danglingVertexNodesByVertex.values.foreach(children.remove(_))
 
-    danglingArcNodesByArc.values.foreach(children.remove(_))
+    danglingArcNodesByLink.values.foreach(children.remove(_))
 
     val newDimension =
       controller.canvasDimension
@@ -209,11 +209,8 @@ class GraphCanvas(
     )
   }
 
-  //TODO! Move to DefaultBackgroundNode and simplify
   private def handleDelKeyPressed(): Unit = {
-    controller.deleteSelection().foreach(
-      updatedGraph => graph() = updatedGraph
-    )
+    controller.deleteSelection()
   }
 
   handleEvent(KeyEvent.KeyPressed) {

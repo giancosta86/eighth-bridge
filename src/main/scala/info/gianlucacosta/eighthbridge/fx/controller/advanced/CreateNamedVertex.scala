@@ -1,11 +1,11 @@
-package info.gianlucacosta.eighthbridge.fx.controller
+package info.gianlucacosta.eighthbridge.fx.controller.advanced
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
+import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
 import info.gianlucacosta.eighthbridge.graphs.features.Named
 import scalafx.geometry.Point2D
 
-trait VertexNaming
+trait CreateNamedVertex
   extends GraphCanvasController {
   /**
    * The first index used when creating vertexes
@@ -22,16 +22,7 @@ trait VertexNaming
   protected def getVertexName(vertexIndex: Int): String =
     s"V${vertexIndex}"
 
-  /**
-   * Actually instantiate the vertex
-   *
-   * @param center
-   * @param vertexName
-   * @return
-   */
-  protected def createNamedVertex(center: Point2D, vertexName: String): VisualVertex with Named
-
-  override def createVertex(center: Point2D): Option[VisualGraph] = {
+  override def createVertex(center: Point2D): Unit = {
     val lastUsedVertexIndex = Stream.from(firstNameIndex)
       .takeWhile(vertexIndex => {
         val vertexName =
@@ -54,10 +45,18 @@ trait VertexNaming
     val newVertex =
       createNamedVertex(center, vertexName)
 
-    Some(
+    graph =
       graph.addVertex(
         newVertex
       )
-    )
   }
+
+  /**
+   * Actually instantiate the vertex
+   *
+   * @param center
+   * @param vertexName
+   * @return
+   */
+  protected def createNamedVertex(center: Point2D, vertexName: String): VisualVertex with Named
 }

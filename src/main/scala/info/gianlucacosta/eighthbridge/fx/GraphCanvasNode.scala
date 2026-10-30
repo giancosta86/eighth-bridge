@@ -19,6 +19,7 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
   protected final def controller: GraphCanvasController =
     graphCanvas.controller
 
+  //TODO! Can I delete this?
   /**
     * The current graph within the graph canvas
     *
@@ -26,14 +27,6 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
     */
   protected final def graph: VisualGraph =
     graphCanvas.graph()
-
-  /**
-    * Simple way to update the graph contained the graph canvas - thus triggering the rendering process.
-    * When migrating from older versions of EighthBridge, use this in lieu of notifyGraphChanged()
-    */
-  protected final def graph_=(newGraph: VisualGraph): Unit =
-    graphCanvas.graph() = newGraph
-
 
   this.consumeMouseEvents()
 
@@ -45,7 +38,7 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
 
   protected def handleSinglePrimaryReleased(point: Point2D): Unit = { }
 
-
+  //TODO! Is this still recommended?
   handleEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {

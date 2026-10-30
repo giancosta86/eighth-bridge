@@ -1,8 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainArcNode
+import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualLink}
-import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
+import info.gianlucacosta.eighthbridge.fx.{LinkNode, GraphCanvas}
 import info.gianlucacosta.eighthbridge.graphs.features.Labeled
 import info.gianlucacosta.helios.fx.geometry.Segment
 import scalafx.beans.binding.Bindings
@@ -15,8 +15,8 @@ import javafx.beans.property.SimpleObjectProperty
 
 import java.util.Date
 
-class LabeledArcNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualLink)
-extends PlainArcNode(graphCanvas, initialArc) {
+class LabeledLinkNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualLink)
+extends PlainLinkNode(graphCanvas, initialArc) {
   private val self =
     this
 
@@ -52,10 +52,10 @@ extends PlainArcNode(graphCanvas, initialArc) {
     )
 
   private val label =
-    new ArcLabel(
+    new LinkLabel(
       initialCenter = initialArc.customLabelCenter.getOrElse(labelAnchorPoint()),
       onDrag = handleDragOnLabel,
-      onDoubleClick = handleDoubleClickOnLabel
+      onSecondaryDoubleClick = handleSecondaryDoubleClickOnLabel
     ) {
       text <==
         Bindings.createStringBinding(
@@ -128,39 +128,18 @@ extends PlainArcNode(graphCanvas, initialArc) {
   children.add(label)
 
   private def handleDragOnLabel(delta: Delta): Unit = {
-    //TODO! Pass through the controller!
-    val currentArc =
+    val link =
       arc()
 
     val actualCenter: Point2D =
-      currentArc
+      link
         .customLabelCenter
         .getOrElse(labelAnchorPoint())
 
-    val updatedCenter =
-      actualCenter + delta
-
-    //println(s"!!!!!!!!!!!!! ${new Date()}: the delta is: ${delta} and the updated center is: ${updatedCenter}")
-
-    val updatedArc =
-      arc()
-        .asInstanceOf[LabeledVisualLink]
-        .setCustomLabelCenter(
-          Some(updatedCenter)
-        )
-
-    graph =
-      graph.updateArc(updatedArc)
+    controller.dragLinkLabel(link, actualCenter, delta)
   }
 
-  private def handleDoubleClickOnLabel(): Unit = {
-    //TODO! Pass through the controller!
-
-    val updatedArc =
-      arc()
-        .setCustomLabelCenter(None)
-
-    graph =
-      graph.updateArc(updatedArc)
+  private def handleSecondaryDoubleClickOnLabel(): Unit = {
+    controller.resetLinkLabelCenter(arc())
   }
 }

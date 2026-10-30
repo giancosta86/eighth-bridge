@@ -91,11 +91,11 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   )
 
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
-    controller.setSelection(Set(), Set()).foreach(graph_=)
+    controller.setSelection(Set(), Set())
   }
 
   protected override def handleSingleSecondaryPressed(point: Point2D): Unit = {
-    controller.setSelection(Set(), Set()).foreach(graph_=)
+    controller.setSelection(Set(), Set())
   }
 
   protected override def handleSinglePrimaryReleased(point: Point2D): Unit = {
@@ -111,11 +111,11 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   }
 
   override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
-    if (controller.canDrawSelectionRectangle) {
+    if (controller.canDrawSelectingArea) {
       val clippedMousePoint =
         event.point.clip(graphCanvas.dimension)
 
-      if (controller.canDrawSelectionRectangle) {
+      if (controller.canDrawSelectingArea) {
         selectionBounds =
           new DiagonalBounds(startEvent.point, clippedMousePoint)
       }
@@ -124,7 +124,6 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
 
   private def tryToCreateNewVertex(center: Point2D): Unit = {
     controller.createVertex(center)
-      .foreach(graph_=)
   }
 
   private def setSelectionFromRectangle(): Unit = {
@@ -140,10 +139,9 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
         .map(_.arc().asInstanceOf[VisualLink])
         .toSet
 
-      graph =
-        graph.setSelection(
-          selectionVertexes,
-          selectionArcs
-        )
+      controller.setSelection(
+        selectionVertexes,
+        selectionArcs
+      )
   }
 }

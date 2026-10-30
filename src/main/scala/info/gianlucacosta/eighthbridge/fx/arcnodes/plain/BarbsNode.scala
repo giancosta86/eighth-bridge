@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
-import info.gianlucacosta.eighthbridge.fx.{ArcNode, Centered, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.{LinkNode, Centered, VertexNode}
 import javafx.beans.binding.DoubleBinding
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.geometry.{Dimension2D, Point2D}

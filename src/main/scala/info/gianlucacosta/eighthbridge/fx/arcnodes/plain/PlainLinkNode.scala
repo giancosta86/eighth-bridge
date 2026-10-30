@@ -1,14 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{ArcNode, GraphCanvas}
+import info.gianlucacosta.eighthbridge.fx.{LinkNode, GraphCanvas}
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, LinkHandle, Delta, VisualLink}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
-class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
-  extends ArcNode(graphCanvas, initialArc) {
+class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
+  extends LinkNode(graphCanvas, initialArc) {
 
   private val (sourceVertex, targetVertex) =
     graph.getAnchors(arc()).get
@@ -66,18 +66,15 @@ class PlainArcNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE RIGHT-CLICKED ON SEGMENT #${shaftSegmentIndex}")
     controller.addLinkHandle(arc(), shaftSegmentIndex, point)
-      .foreach(graph_=)
   }
 
   private def handleRightClickOnHandleNode(handle: LinkHandle): Unit = {
     println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
-    controller.removeLinkHandle(arc(), handle)
-      .foreach(graph_=)
+    controller.deleteLinkHandle(arc(), handle)
   }
 
   private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta): Unit = {
     //println(s"///////////////// YOU ARE DRAGGING ${handle} to ${updatedCenter}")
     controller.dragLinkHandle(arc(), handle, delta)
-      .foreach(graph_=)
   }
 }

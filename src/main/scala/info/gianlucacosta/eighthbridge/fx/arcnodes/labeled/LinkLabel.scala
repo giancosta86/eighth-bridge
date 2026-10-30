@@ -11,10 +11,10 @@ import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
-private class ArcLabel(
+private class LinkLabel(
                         initialCenter: Point2D,
                         onDrag: LabelDragHandler,
-                        onDoubleClick: LabelDoubleClickhandler
+                        onSecondaryDoubleClick: LabelDoubleClickhandler
                       )
   extends Label with DragContext {
   styleClass.add("label")
@@ -49,10 +49,10 @@ private class ArcLabel(
   handleEvent(MouseEvent.MouseClicked) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
-        case MouseButton.Primary =>
+        case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 2 =>
-              onDoubleClick()
+              onSecondaryDoubleClick()
 
             case _ =>
           }
