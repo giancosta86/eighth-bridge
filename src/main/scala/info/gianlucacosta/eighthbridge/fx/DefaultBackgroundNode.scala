@@ -114,7 +114,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
     if (controller.canDrawSelectingArea) {
       val clippedMousePoint =
-        event.point.clip(graphCanvas.dimension)
+        event.point.clip(graphCanvas.dimension())
 
       selectionBounds() =
         new DiagonalBounds(startEvent.point, clippedMousePoint)

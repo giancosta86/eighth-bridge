@@ -1,10 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualLink, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.TimestampedGraphDiff
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
+import scalafx.beans.property.ReadOnlyObjectProperty
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.Node
 import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent, ScrollEvent}
@@ -27,12 +28,13 @@ class GraphCanvas(
                    val controller: GraphCanvasController,
                    initialGraph: VisualGraph
                  ) extends Pane {
-  controller.graphCanvas = this
+  controller.graphCanvas =
+    this
 
   styleClass.add("graph")
 
   val graph =
-    new SimpleObjectProperty[VisualGraph](initialGraph)
+    new SimpleObjectProperty[VisualGraph]
 
   graph.onChange { (_, oldValue, newValue) =>
     val graphDiff =
@@ -42,6 +44,9 @@ class GraphCanvas(
       render(newValue, graphDiff)
     }
   }
+
+  graph() =
+    initialGraph
 
   val zoomEnabled =
     new SimpleBooleanProperty(true)
@@ -55,32 +60,17 @@ class GraphCanvas(
   val panEnabled =
     new SimpleBooleanProperty(true)
 
+  def dimension: ReadOnlyObjectProperty[Dimension2D] =
+    ReadOnlyProperties.createObject(
+      () =>
+        new Dimension2D(
+          width(),
+          height()
+        ),
 
-  private var _dimension: Dimension2D =
-    new Dimension2D(
-      width(),
-      height()
+      width,
+      height
     )
-
-  //TODO! Is this really needed?
-  def dimension: Dimension2D =
-    _dimension
-
-  width.addListener((observable: javafx.beans.Observable) => {
-    _dimension =
-      new Dimension2D(
-        width(),
-        height()
-      )
-  })
-
-  height.addListener((observable: javafx.beans.Observable) => {
-    _dimension =
-      new Dimension2D(
-        width(),
-        height()
-      )
-  })
 
 
   clip = new Rectangle {
@@ -92,9 +82,8 @@ class GraphCanvas(
   }
 
 
-  val backgroundNode: BackgroundNode =
+  private val backgroundNode: BackgroundNode =
     controller.createBackgroundNode()
-
 
   children.add(backgroundNode)
 
