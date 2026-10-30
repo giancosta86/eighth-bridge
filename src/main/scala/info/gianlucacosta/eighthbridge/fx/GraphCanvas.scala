@@ -93,7 +93,7 @@ class GraphCanvas(
   private val _panning =
     new SimpleBooleanProperty(false)
 
-  private val panning: ReadOnlyBooleanProperty =
+  val panning: ReadOnlyBooleanProperty =
     _panning
 
 
