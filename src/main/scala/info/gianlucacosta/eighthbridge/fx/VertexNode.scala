@@ -29,7 +29,10 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     new SimpleObjectProperty[V]
 
   vertex.onInvalidate {
-    styleClass.setAll("vertex")
+    styleClass.setAll(
+      "entity",
+      "vertex"
+    )
     styleClass.addAll(vertex().styleClasses)
 
     this.pseudoClassStateChanged(

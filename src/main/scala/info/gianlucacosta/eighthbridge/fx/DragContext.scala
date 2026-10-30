@@ -13,8 +13,6 @@ trait DragContext extends Node {
   private var startEvent: MouseEvent = _
   private var latestSnapshot: MouseEvent = _
 
-  protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit
-
   private def handleSinglePrimaryPressed(event: MouseEvent): Unit = {
     startEvent =
       event
@@ -35,6 +33,8 @@ trait DragContext extends Node {
       latestSnapshot =
         event
   }
+
+  protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit
 
   handleEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {

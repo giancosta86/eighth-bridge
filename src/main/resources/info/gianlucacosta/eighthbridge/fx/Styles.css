@@ -2,14 +2,21 @@
  * BACKGROUND
  *------------*/
 
-
 .graph .backgroundRectangle {
     -fx-fill: white;
 }
 
-
 .graph .selectionRectangle {
     -fx-fill: #e5ffe0;
+}
+
+
+/*---------
+ * ENTITIES
+ *---------*/
+
+.graph .entity:hover {
+    -fx-opacity: 0.75;
 }
 
 
@@ -41,7 +48,6 @@
  * VERTEXES - SELECTED
  *---------------------*/
 
-
 .graph .vertex:selected .label {
     -fx-background-color: #ffce5a;
 
@@ -52,12 +58,10 @@
  * ARCS
  *-------*/
 
-
 .graph .arc .line {
     -fx-stroke: #9fecf3;
     -fx-stroke-width: 5;
 }
-
 
 .graph .arc .handle {
     -fx-fill: #9fecf3;
@@ -67,7 +71,6 @@
     -fx-stroke: maroon;
     -fx-stroke-dash-array: 15 10;
 }
-
 
 .graph .arc .label {
     -fx-font: 14 Arial;

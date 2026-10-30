@@ -25,7 +25,10 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
     new SimpleObjectProperty[A]
 
   arc.onInvalidate {
-    styleClass.setAll("arc")
+    styleClass.setAll(
+      "entity",
+      "arc"
+    )
     styleClass.addAll(arc().styleClasses)
 
     this.pseudoClassStateChanged(
