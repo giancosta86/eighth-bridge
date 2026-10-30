@@ -1,10 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, NamedVisualVertex, VisualLink, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.DefaultBackgroundNode.EmptySelectionBounds
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, NamedVisualVertex, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
-import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.geometry.{BoundingBox, Bounds, Point2D}
 import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
@@ -24,40 +26,20 @@ object DefaultBackgroundNode {
 class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   extends GraphCanvasNode(graphCanvas) with BackgroundNode with DragContext {
 
-  private val selectionBoundsX =
-    new SimpleDoubleProperty(0)
-
-  private val selectionBoundsY =
-    new SimpleDoubleProperty(0)
-
-  private val selectionBoundsWidth =
-    new SimpleDoubleProperty(0)
-
-  private val selectionBoundsHeight =
-    new SimpleDoubleProperty(0)
-
-
-  private def selectionBounds: Bounds =
-    new BoundingBox(
-      selectionBoundsX(),
-      selectionBoundsY(),
-      selectionBoundsWidth(),
-      selectionBoundsHeight()
+  private val selectionBounds =
+    new SimpleObjectProperty[BoundingBox](
+      EmptySelectionBounds
     )
-
-  private def selectionBounds_=(newValue: Bounds): Unit = {
-    selectionBoundsX() = newValue.minX
-    selectionBoundsY() = newValue.minY
-    selectionBoundsWidth() = newValue.width
-    selectionBoundsHeight() = newValue.height
-  }
-
 
   protected val backgroundRectangle =
     new Rectangle {
       styleClass.add("backgroundRectangle")
-      x = 0
-      y = 0
+
+      x =
+        0
+
+      y =
+        0
 
       width <==
         graphCanvas.width
@@ -71,16 +53,36 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       styleClass.add("selectionRectangle")
 
       x <==
-        selectionBoundsX
+        Bindings.createDoubleBinding(
+          () =>
+            selectionBounds().minX,
+
+          selectionBounds
+        )
 
       y <==
-        selectionBoundsY
+        Bindings.createDoubleBinding(
+          () =>
+            selectionBounds().minY,
+
+          selectionBounds
+        )
 
       width <==
-        selectionBoundsWidth
+        Bindings.createDoubleBinding(
+          () =>
+            selectionBounds().width,
+
+          selectionBounds
+        )
 
       height <==
-        selectionBoundsHeight
+        Bindings.createDoubleBinding(
+          () =>
+            selectionBounds().height,
+
+          selectionBounds
+        )
     }
 
 
@@ -98,14 +100,14 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   }
 
   protected override def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = {
-    if (selectionBounds.width < DefaultBackgroundNode.SelectionBoundsMinSize
-      && selectionBounds.height < DefaultBackgroundNode.SelectionBoundsMinSize) {
+    if (selectionBounds().width < DefaultBackgroundNode.SelectionBoundsMinSize
+      && selectionBounds().height < DefaultBackgroundNode.SelectionBoundsMinSize) {
       tryToCreateNewVertex(mouseEvent.point)
     } else {
       setSelectionFromRectangle()
     }
 
-    selectionBounds =
+    selectionBounds() =
       DefaultBackgroundNode.EmptySelectionBounds
   }
 
@@ -114,10 +116,8 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       val clippedMousePoint =
         event.point.clip(graphCanvas.dimension)
 
-      if (controller.canDrawSelectingArea) {
-        selectionBounds =
-          new DiagonalBounds(startEvent.point, clippedMousePoint)
-      }
+      selectionBounds() =
+        new DiagonalBounds(startEvent.point, clippedMousePoint)
     }
   }
 
@@ -128,13 +128,13 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   private def setSelectionFromRectangle(): Unit = {
     val selectionVertexes = graphCanvas.vertexNodesByVertex
         .values
-        .filter(_.intersects(selectionBounds))
+        .filter(_.intersects(selectionBounds()))
         .map(_.vertex().asInstanceOf[VisualVertex])
         .toSet
 
       val selectionArcs = graphCanvas.arcNodesByArc
         .values
-        .filter(_.intersects(selectionBounds))
+        .filter(_.intersects(selectionBounds()))
         .map(_.arc().asInstanceOf[VisualLink])
         .toSet
 
