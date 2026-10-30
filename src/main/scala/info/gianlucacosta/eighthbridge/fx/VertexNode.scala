@@ -73,13 +73,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   def width: ReadOnlyDoubleProperty
   def height: ReadOnlyDoubleProperty
 
-  private val selected =
-    Bindings.createBooleanBinding(
-      () => vertex().selected,
-
-      vertex
-    )
-
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
     if (mouseEvent.controlDown) {
       val vertexesToSelect =
@@ -92,7 +85,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         selectedVertexes =
           vertexesToSelect,
 
-        selectedArcs =
+        selectedLinks =
           graph.selectedArcs
       )
     } else if (!vertex().selected) {
@@ -100,27 +93,26 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         selectedVertexes =
           Set(vertex()),
 
-        selectedArcs =
+        selectedLinks =
           Set()
       )
     }
   }
 
   protected override def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {
-    val selectedVertexes =
-      graph.selectedVertexes
+    controller.setSelection(
+      selectedVertexes = Set(vertex()),
+      selectedLinks = Set()
+    )
 
-    if (selectedVertexes.size == 1 && graph.selectedArcs.isEmpty) {
-      val selectedVertex =
-        selectedVertexes.head
-
-      controller.editVertex(selectedVertex)
-    }
+    controller.editVertex(vertex())
   }
 
-
   protected override def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = {
-    if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(initialVertex) && graph.selectedArcs.isEmpty) {
+    val canStartCreatingLink =
+      graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex())
+
+    if (canStartCreatingLink) {
       val selectedVertex =
         graph.selectedVertexes.head
 
@@ -129,9 +121,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
   override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
-    if (vertex().selected) {
-      controller
-        .dragSelectedVertexes(deltaFromLatest)
-    }
+    controller
+      .dragSelectedVertexes(deltaFromLatest)
   }
 }

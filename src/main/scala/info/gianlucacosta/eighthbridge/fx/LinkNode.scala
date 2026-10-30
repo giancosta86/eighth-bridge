@@ -54,7 +54,7 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
         selectedVertexes =
           graph.selectedVertexes,
 
-        selectedArcs =
+        selectedLinks =
           arcsToSelect
       )
     } else if (!arc().selected) {
@@ -62,7 +62,7 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
         selectedVertexes =
           Set(),
 
-        selectedArcs =
+        selectedLinks =
           Set(arc())
       )
     }

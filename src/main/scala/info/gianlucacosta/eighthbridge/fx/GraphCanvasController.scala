@@ -54,7 +54,7 @@ abstract class GraphCanvasController {
   def canDrawSelectingArea: Boolean =
     false
 
-  def setSelection(selectedVertexes: Set[VisualVertex], selectedArcs: Set[VisualLink]): Unit = {}
+  def setSelection(selectedVertexes: Set[VisualVertex], selectedLinks: Set[VisualLink]): Unit = {}
 
   def dragLinkLabel(link: LabeledVisualLink, actualCenter: Point2D, delta: Delta): Unit = {}
 
