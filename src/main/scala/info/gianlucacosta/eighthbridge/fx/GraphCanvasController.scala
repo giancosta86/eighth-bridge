@@ -39,13 +39,13 @@ abstract class GraphCanvasController {
   def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
-  def createVertexNode(vertex: VisualVertex): VertexNode
+  def addVertex(center: Point2D): Unit = {}
 
-  def createLinkNode(arc: VisualLink): LinkNode
+  def addLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Unit = {}
 
-  def createVertex(center: Point2D): Unit = {}
+  def createVertexNode(vertex: VisualVertex): VertexNode = ???
 
-  def createLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Unit = {}
+  def createLinkNode(link: VisualLink): LinkNode = ???
 
   def editVertex(vertex: VisualVertex): Unit = {}
 

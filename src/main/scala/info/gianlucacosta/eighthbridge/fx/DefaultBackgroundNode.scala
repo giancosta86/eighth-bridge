@@ -11,7 +11,7 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
 import scalafx.scene.shape.Rectangle
 
 object DefaultBackgroundNode {
-  private val SelectionRectangleMinSize =
+  private val SelectionBoundsMinSize =
     2
 
   private val EmptySelectionBounds =
@@ -23,7 +23,6 @@ object DefaultBackgroundNode {
   */
 class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   extends GraphCanvasNode(graphCanvas) with BackgroundNode with DragContext {
-  styleClass.add("graph")
 
   private val selectionBoundsX =
     new SimpleDoubleProperty(0)
@@ -99,8 +98,8 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   }
 
   protected override def handleSinglePrimaryReleased(point: Point2D): Unit = {
-    if (selectionBounds.width < DefaultBackgroundNode.SelectionRectangleMinSize
-      && selectionBounds.height < DefaultBackgroundNode.SelectionRectangleMinSize) {
+    if (selectionBounds.width < DefaultBackgroundNode.SelectionBoundsMinSize
+      && selectionBounds.height < DefaultBackgroundNode.SelectionBoundsMinSize) {
       tryToCreateNewVertex(point)
     } else {
       setSelectionFromRectangle()
@@ -123,7 +122,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   }
 
   private def tryToCreateNewVertex(center: Point2D): Unit = {
-    controller.createVertex(center)
+    controller.addVertex(center)
   }
 
   private def setSelectionFromRectangle(): Unit = {

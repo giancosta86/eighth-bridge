@@ -82,7 +82,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
     if (controlPressed) {
       val vertexesToSelect =
-        if (selected())
+        if (vertex().selected)
           graph.selectedVertexes - vertex()
         else
           graph.selectedVertexes + vertex()
@@ -94,7 +94,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         selectedArcs =
           graph.selectedArcs
       )
-    } else if (selected()) {
+    } else if (!vertex().selected) {
       controller.setSelection(
         selectedVertexes =
           Set(vertex()),
@@ -123,7 +123,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       val selectedVertex =
         graph.selectedVertexes.head
 
-      controller.createLink(selectedVertex, vertex())
+      controller.addLink(selectedVertex, vertex())
     }
   }
 

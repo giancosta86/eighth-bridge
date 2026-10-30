@@ -17,7 +17,7 @@
  * VERTEXES
  *----------*/
 
-.vertex .label {
+.graph .vertex .label {
     -fx-font-family: Arial;
     -fx-font-size: 14px;
 
@@ -42,7 +42,7 @@
  *---------------------*/
 
 
-.vertex:selected .label {
+.graph .vertex:selected .label {
     -fx-background-color: #ffce5a;
 
 }
@@ -53,23 +53,23 @@
  *-------*/
 
 
-.arc .line {
+.graph .arc .line {
     -fx-stroke: #9fecf3;
     -fx-stroke-width: 5;
 }
 
 
-.arc .handle {
+.graph .arc .handle {
     -fx-fill: #9fecf3;
 }
 
-.arc .labelConnector {
+.graph .arc .labelConnector {
     -fx-stroke: maroon;
     -fx-stroke-dash-array: 15 10;
 }
 
 
-.arc .label {
+.graph .arc .label {
     -fx-font: 14 Arial;
     -fx-fill: black;
 }
@@ -79,10 +79,10 @@
  * ARCS - SELECTED
  *------------------*/
 
- .arc:selected .line {
+.graph .arc:selected .line {
      -fx-stroke: #18ab00;
  }
 
- .arc:selected .handle {
+.graph .arc:selected .handle {
      -fx-fill: #18ab00;
  }

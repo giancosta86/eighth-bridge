@@ -1,5 +1,3 @@
 package info.gianlucacosta.eighthbridge.fx
 
-trait BackgroundNode extends GraphCanvasNode {
-
-}
+trait BackgroundNode extends GraphCanvasNode

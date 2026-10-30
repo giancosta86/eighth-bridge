@@ -22,7 +22,7 @@ trait CreateNamedVertex
   protected def getVertexName(vertexIndex: Int): String =
     s"V${vertexIndex}"
 
-  override def createVertex(center: Point2D): Unit = {
+  override def addVertex(center: Point2D): Unit = {
     val lastUsedVertexIndex = Stream.from(firstNameIndex)
       .takeWhile(vertexIndex => {
         val vertexName =

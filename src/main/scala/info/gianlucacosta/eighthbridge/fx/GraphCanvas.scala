@@ -29,7 +29,7 @@ class GraphCanvas(
                  ) extends Pane {
   controller.graphCanvas = this
 
-  styleClass.add("graphCanvas")
+  styleClass.add("graph")
 
   val graph =
     new SimpleObjectProperty[VisualGraph](initialGraph)
