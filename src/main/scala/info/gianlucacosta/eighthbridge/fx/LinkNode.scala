@@ -42,8 +42,8 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
 
   //TODO! Remove all println() calls!
 
-  protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
-    if (controlPressed) {
+  protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
+    if (mouseEvent.controlDown) {
       val arcsToSelect =
         if (arc().selected)
           graph.selectedArcs - arc()

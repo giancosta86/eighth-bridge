@@ -1,8 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.Delta.Point2DDeltaExtensions
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink, VisualGraph, VisualVertex}
-import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.binding.DoubleBinding
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
@@ -82,8 +80,8 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       vertex
     )
 
-  protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
-    if (controlPressed) {
+  protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
+    if (mouseEvent.controlDown) {
       val vertexesToSelect =
         if (vertex().selected)
           graph.selectedVertexes - vertex()
@@ -108,7 +106,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     }
   }
 
-  protected override def handleDoublePrimaryPressed(point: Point2D): Unit = {
+  protected override def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {
     val selectedVertexes =
       graph.selectedVertexes
 
@@ -121,7 +119,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
 
-  protected override def handleSingleSecondaryPressed(point: Point2D): Unit = {
+  protected override def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = {
     if (graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(initialVertex) && graph.selectedArcs.isEmpty) {
       val selectedVertex =
         graph.selectedVertexes.head

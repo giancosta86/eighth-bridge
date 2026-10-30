@@ -19,7 +19,6 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
   protected final def controller: GraphCanvasController =
     graphCanvas.controller
 
-  //TODO! Can I delete this?
   /**
     * The current graph within the graph canvas
     *
@@ -30,13 +29,13 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
 
   this.consumeMouseEvents()
 
-  protected def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = { }
+  protected def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = { }
 
-  protected def handleDoublePrimaryPressed(point: Point2D): Unit = { }
+  protected def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = { }
 
-  protected def handleSingleSecondaryPressed(point: Point2D): Unit = { }
+  protected def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = { }
 
-  protected def handleSinglePrimaryReleased(point: Point2D): Unit = { }
+  protected def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = { }
 
   //TODO! Is this still recommended?
   handleEvent(MouseEvent.MousePressed) {
@@ -45,10 +44,10 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
         case MouseButton.Primary =>
           mouseEvent.clickCount match {
             case 1 =>
-              handleSinglePrimaryPressed(mouseEvent.point, controlPressed = mouseEvent.controlDown)
+              handlePrimaryPressed(mouseEvent)
 
             case 2 =>
-              handleDoublePrimaryPressed(mouseEvent.point)
+              handlePrimaryDoublePressed(mouseEvent)
 
             case _ =>
           }
@@ -56,7 +55,7 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
         case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 1 =>
-              handleSingleSecondaryPressed(mouseEvent.point)
+              handleSecondaryPressed(mouseEvent)
           }
 
         case _ =>
@@ -69,7 +68,7 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
         case MouseButton.Primary =>
-          handleSinglePrimaryReleased(mouseEvent.point)
+          handlePrimaryReleased(mouseEvent)
 
         case _ =>
       }

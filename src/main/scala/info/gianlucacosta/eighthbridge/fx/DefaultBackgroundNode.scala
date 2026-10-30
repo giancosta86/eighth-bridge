@@ -89,18 +89,18 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     selectionRectangle
   )
 
-  protected override def handleSinglePrimaryPressed(point: Point2D, controlPressed: Boolean): Unit = {
+  protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
     controller.setSelection(Set(), Set())
   }
 
-  protected override def handleSingleSecondaryPressed(point: Point2D): Unit = {
+  protected override def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = {
     controller.setSelection(Set(), Set())
   }
 
-  protected override def handleSinglePrimaryReleased(point: Point2D): Unit = {
+  protected override def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = {
     if (selectionBounds.width < DefaultBackgroundNode.SelectionBoundsMinSize
       && selectionBounds.height < DefaultBackgroundNode.SelectionBoundsMinSize) {
-      tryToCreateNewVertex(point)
+      tryToCreateNewVertex(mouseEvent.point)
     } else {
       setSelectionFromRectangle()
     }

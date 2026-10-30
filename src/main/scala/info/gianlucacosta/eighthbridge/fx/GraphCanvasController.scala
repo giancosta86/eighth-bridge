@@ -66,6 +66,7 @@ abstract class GraphCanvasController {
       600
     )
 
+  //TODO! Move the margin and the min size to GraphCanvas
   def graphMargin: Int =
     20
 
