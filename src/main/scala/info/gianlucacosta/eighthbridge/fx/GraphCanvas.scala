@@ -27,7 +27,7 @@ import scalafx.scene.shape.Rectangle
 class GraphCanvas(
                    val controller: GraphCanvasController,
                    initialGraph: VisualGraph
-                 ) extends Pane with DragContext {
+                 ) extends Pane with PanContext with ZoomContext {
   controller.graphCanvas =
     this
 
@@ -44,18 +44,6 @@ class GraphCanvas(
       render(newValue, graphDiff)
     }
   }
-
-  val zoomEnabled =
-    new SimpleBooleanProperty(true)
-
-  val minZoomScale =
-    new SimpleDoubleProperty(0.2)
-
-  val maxZoomScale =
-    new SimpleDoubleProperty(Double.PositiveInfinity)
-
-  val panEnabled =
-    new SimpleBooleanProperty(true)
 
   def dimension: ReadOnlyObjectProperty[Dimension2D] =
     ReadOnlyProperties.createObject(
@@ -84,12 +72,6 @@ class GraphCanvas(
 
   focusTraversable =
     true
-
-  private val _panning =
-    new SimpleBooleanProperty(false)
-
-  def panning: ReadOnlyBooleanProperty =
-    _panning
 
   private var _vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     Map()
@@ -205,91 +187,5 @@ class GraphCanvas(
 
   private def handleDelKeyPressed(): Unit = {
     controller.deleteSelection()
-  }
-
-  filterEvent(ScrollEvent.Scroll) {
-    (event: ScrollEvent) => {
-      handleMouseScroll(event)
-    }
-  }
-
-  private def handleMouseScroll(event: ScrollEvent): Unit = {
-    if (zoomEnabled()) {
-      event.consume()
-
-      val oldScale =
-        scaleX()
-
-      val scaleFactor =
-        math.pow(1.01, event.deltaY / 5)
-
-      val newScale = math.max(
-        minZoomScale(),
-
-        math.min(
-          maxZoomScale(),
-
-          oldScale * scaleFactor
-        )
-      )
-
-      scaleX() =
-        newScale
-
-      scaleY() =
-        newScale
-
-      val zoomFactor =
-        (newScale / oldScale) - 1
-
-      val canvasBounds =
-        this.getBoundsInParent
-
-      val deltaX =
-        event.sceneX - (canvasBounds.width / 2 + canvasBounds.minX)
-
-      val deltaY =
-        event.sceneY - (canvasBounds.height / 2 + canvasBounds.minY)
-
-      translateX() -=
-        zoomFactor * deltaX
-
-      translateY() -=
-        zoomFactor * deltaY
-    }
-  }
-
-  override protected def handleDragStart(event: MouseEvent): Unit = {
-    super.handleDragStart(event)
-
-    if (event.isShiftDown && panEnabled()) {
-      _panning() =
-        true
-
-      event.consume()
-    }
-  }
-
-  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
-    if (_panning()) {
-      event.consume()
-
-      translateX() +=
-        deltaFromLatest.x
-
-      translateY() +=
-        deltaFromLatest.y
-    }
-  }
-
-  override protected def handleDragEnd(event: MouseEvent): Unit = {
-    if (_panning()) {
-      event.consume()
-
-      _panning() =
-        false
-    }
-
-    super.handleDragEnd(event)
   }
 }
