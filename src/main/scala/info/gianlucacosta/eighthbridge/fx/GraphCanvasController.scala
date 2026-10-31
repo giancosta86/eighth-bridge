@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.arcnodes.labeled.LabeledLinkNode
-import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainLinkNode
+import info.gianlucacosta.eighthbridge.fx.linknodes.labeled.LabeledLinkNode
+import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, LinkHandle, Delta, LabeledVisualLink, VisualLink, VisualGraph, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode

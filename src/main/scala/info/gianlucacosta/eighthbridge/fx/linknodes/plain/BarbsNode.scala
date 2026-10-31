@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
+package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
 import info.gianlucacosta.eighthbridge.fx.{LinkNode, Centered, VertexNode}

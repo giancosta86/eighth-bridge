@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
+package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
 import scalafx.scene.shape.Line
 

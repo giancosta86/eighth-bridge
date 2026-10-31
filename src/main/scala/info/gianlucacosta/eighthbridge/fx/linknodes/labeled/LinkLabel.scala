@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
+package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.DragContext
 import info.gianlucacosta.eighthbridge.fx.graph.Delta

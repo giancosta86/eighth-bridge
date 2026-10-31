@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
+package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.property.ObjectProperty

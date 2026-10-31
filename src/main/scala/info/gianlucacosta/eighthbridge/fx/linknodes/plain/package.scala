@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes
+package info.gianlucacosta.eighthbridge.fx.linknodes
 
 import info.gianlucacosta.eighthbridge.fx.graph.{LinkHandle, Delta}
 import scalafx.geometry.Point2D

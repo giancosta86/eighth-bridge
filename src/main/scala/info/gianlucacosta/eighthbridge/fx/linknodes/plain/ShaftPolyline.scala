@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes.plain
+package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.Centered
 import javafx.beans.property.SimpleObjectProperty

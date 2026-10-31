@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.arcnodes.labeled
+package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.arcnodes.plain.PlainLinkNode
+import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.{LinkNode, GraphCanvas}
 import info.gianlucacosta.eighthbridge.graphs.features.Labeled
