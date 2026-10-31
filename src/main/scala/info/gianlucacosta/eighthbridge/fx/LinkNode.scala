@@ -18,37 +18,37 @@ import scalafx.scene.input.MouseEvent
 abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends GraphCanvasNode(graphCanvas) {
 
-  type A <:
+  type L <:
     VisualLink
 
-  val arc =
-    new SimpleObjectProperty[A]
+  val link =
+    new SimpleObjectProperty[L]
 
-  arc.onInvalidate {
+  link.onInvalidate {
     styleClass.setAll(
       "entity",
-      "arc"
+      "link"
     )
-    styleClass.addAll(arc().styleClasses)
+    styleClass.addAll(link().styleClasses)
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      arc().selected
+      link().selected
     )
   }
 
-  arc() =
-    initialArc.asInstanceOf[A]
+  link() =
+    initialArc.asInstanceOf[L]
 
   //TODO! Remove all println() calls!
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
     if (mouseEvent.controlDown) {
       val arcsToSelect =
-        if (arc().selected)
-          graph.selectedArcs - arc()
+        if (link().selected)
+          graph.selectedArcs - link()
         else
-          graph.selectedArcs + arc()
+          graph.selectedArcs + link()
 
       controller.setSelection(
         selectedVertexes =
@@ -57,13 +57,13 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
         selectedLinks =
           arcsToSelect
       )
-    } else if (!arc().selected) {
+    } else if (!link().selected) {
       controller.setSelection(
         selectedVertexes =
           Set(),
 
         selectedLinks =
-          Set(arc())
+          Set(link())
       )
     }
   }

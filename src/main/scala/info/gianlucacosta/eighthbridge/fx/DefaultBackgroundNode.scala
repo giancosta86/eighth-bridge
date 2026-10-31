@@ -132,10 +132,10 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
         .map(_.vertex().asInstanceOf[VisualVertex])
         .toSet
 
-      val selectionArcs = graphCanvas.arcNodesByArc
+      val selectionArcs = graphCanvas.linkNodesByLink
         .values
         .filter(_.intersects(selectionBounds()))
-        .map(_.arc().asInstanceOf[VisualLink])
+        .map(_.link().asInstanceOf[VisualLink])
         .toSet
 
       controller.setSelection(

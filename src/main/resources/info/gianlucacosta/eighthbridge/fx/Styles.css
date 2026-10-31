@@ -55,37 +55,37 @@
 
 
 /*-------
- * ARCS
+ * LINKS
  *-------*/
 
-.graph .arc .line {
+.graph .link .line {
     -fx-stroke: #9fecf3;
     -fx-stroke-width: 5;
 }
 
-.graph .arc .handle {
+.graph .link .handle {
     -fx-fill: #9fecf3;
 }
 
-.graph .arc .labelConnector {
+.graph .link .labelConnector {
     -fx-stroke: maroon;
     -fx-stroke-dash-array: 15 10;
 }
 
-.graph .arc .label {
+.graph .link .label {
     -fx-font: 14 Arial;
     -fx-fill: black;
 }
 
 
 /*------------------
- * ARCS - SELECTED
+ * LINKS - SELECTED
  *------------------*/
 
-.graph .arc:selected .line {
+.graph .link:selected .line {
      -fx-stroke: #18ab00;
  }
 
-.graph .arc:selected .handle {
+.graph .link:selected .handle {
      -fx-fill: #18ab00;
  }

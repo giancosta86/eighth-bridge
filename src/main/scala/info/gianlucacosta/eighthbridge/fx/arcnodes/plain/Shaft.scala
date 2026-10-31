@@ -24,6 +24,7 @@ private class Shaft(
   children.add(line)
   */
 
+  //TODO! Remove self! Use EnclosingClass.this!
   private val self =
     this
 

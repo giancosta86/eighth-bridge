@@ -65,7 +65,7 @@ trait DragContext extends Node {
     }
   }
 
-
+  //TODO! Use filterEvent() whenever required, in lieu of handleEvent()!
   filterEvent(MouseEvent.MouseReleased) {
     (event: MouseEvent) => {
       handleDragEnd(event)

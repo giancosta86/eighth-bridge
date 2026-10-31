@@ -20,15 +20,15 @@ extends PlainLinkNode(graphCanvas, initialArc) {
   private val self =
     this
 
-  override type A <:
+  override type L <:
     LabeledVisualLink
 
   private val firstHandlePoint =
     Bindings.createObjectBinding[Option[Point2D]](
       () =>
-        arc().handles.headOption.map(_.center),
+        link().handles.headOption.map(_.center),
 
-      arc
+      link
     )
 
   private val labelAnchorPoint =
@@ -61,19 +61,19 @@ extends PlainLinkNode(graphCanvas, initialArc) {
         Bindings.createStringBinding(
           () =>
             //TODO! Introduce a custom type and apply it to the arc property, so as to skip these casts
-            arc().asInstanceOf[Labeled].label,
+            link().asInstanceOf[Labeled].label,
 
-          arc
+          link
         )
 
       center <==
         Bindings.createObjectBinding[Point2D](
           () =>
-            arc()
+            link()
               .customLabelCenter
               .getOrElse(labelAnchorPoint()),
 
-          arc,
+          link,
           labelAnchorPoint
         )
     }
@@ -116,10 +116,10 @@ extends PlainLinkNode(graphCanvas, initialArc) {
       visible <==
         Bindings.createBooleanBinding(
           () =>
-            self.hover() && arc().customLabelCenter.isDefined,
+            self.hover() && link().customLabelCenter.isDefined,
 
           self.hover,
-          arc
+          link
         )
     }
   }
@@ -128,18 +128,15 @@ extends PlainLinkNode(graphCanvas, initialArc) {
   children.add(label)
 
   private def handleDragOnLabel(delta: Delta): Unit = {
-    val link =
-      arc()
-
     val actualCenter: Point2D =
-      link
+      link()
         .customLabelCenter
         .getOrElse(labelAnchorPoint())
 
-    controller.dragLinkLabel(link, actualCenter, delta)
+    controller.dragLinkLabel(link(), actualCenter, delta)
   }
 
   private def handleSecondaryDoubleClickOnLabel(): Unit = {
-    controller.resetLinkLabelCenter(arc())
+    controller.resetLinkLabelCenter(link())
   }
 }

@@ -11,7 +11,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends LinkNode(graphCanvas, initialArc) {
 
   private val (sourceVertex, targetVertex) =
-    graph.getAnchors(arc()).get
+    graph.getAnchors(link()).get
 
   protected val sourceVertexNode =
     graphCanvas.vertexNodesByVertex(sourceVertex)
@@ -34,9 +34,9 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
       handles <==
         Bindings.createObjectBinding(
           () =>
-            arc().handles,
+            link().handles,
 
-          arc
+          link
         )
     }
 
@@ -55,9 +55,9 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
       arcBarbs <==
         Bindings.createObjectBinding(
           () =>
-            arc().barbs,
+            link().barbs,
 
-          arc
+          link
     )
   }
 
@@ -65,16 +65,16 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
 
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE RIGHT-CLICKED ON SEGMENT #${shaftSegmentIndex}")
-    controller.addLinkHandle(arc(), shaftSegmentIndex, point)
+    controller.addLinkHandle(link(), shaftSegmentIndex, point)
   }
 
   private def handleRightClickOnHandleNode(handle: LinkHandle): Unit = {
     println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
-    controller.deleteLinkHandle(arc(), handle)
+    controller.deleteLinkHandle(link(), handle)
   }
 
   private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta): Unit = {
     //println(s"///////////////// YOU ARE DRAGGING ${handle} to ${updatedCenter}")
-    controller.dragLinkHandle(arc(), handle, delta)
+    controller.dragLinkHandle(link(), handle, delta)
   }
 }
