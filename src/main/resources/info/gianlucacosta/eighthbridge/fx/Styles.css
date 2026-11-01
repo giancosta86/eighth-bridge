@@ -30,17 +30,22 @@
 
     -fx-text-fill: black;
 
+    -fx-padding: 5px 7px;
+
     -fx-background-color: #fbf6ce;
     -fx-background-radius: 16px;
 
     -fx-border-color: black;
     -fx-border-width: 2px;
-
-    -fx-padding: 5px;
-
     -fx-border-radius: 16px;
 
     -fx-clip: true;
+}
+
+.graph .vertex .ellipse {
+    -fx-fill: #fbf6ce;
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
 }
 
 
@@ -50,9 +55,11 @@
 
 .graph .vertex:selected .label {
     -fx-background-color: #ffce5a;
-
 }
 
+.graph .vertex:selected .ellipse {
+    -fx-fill: #ffce5a;
+}
 
 /*-------
  * LINKS

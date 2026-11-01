@@ -13,7 +13,7 @@ class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends VertexNode(graphCanvas, initialVertex) {
 
   override type V <:
-    LabeledVisualVertex
+    VisualVertex with Labeled
 
   private val label =
     new VertexLabel(this)
