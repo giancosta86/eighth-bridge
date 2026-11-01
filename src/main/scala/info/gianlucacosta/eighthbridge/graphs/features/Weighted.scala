@@ -10,11 +10,23 @@ import scala.language.implicitConversions
  * Object having a weight
  */
 trait Weighted {
+  def minWeight: Weight
+
   def weight: Weight
 
-  def setWeight(weight: Weight): this.type
-}
+  def maxWeight: Weight
 
+  def setWeight(weight: Weight): this.type =
+    setWeight(
+      minWeight, weight, maxWeight
+    )
+
+  def setWeight(
+               minWeight: Weight,
+               weight: Weight,
+               maxWeight: Weight
+               ): this.type
+}
 
 object Weighted {
   implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with Weighted](self: DirectedGraph[V, A]) {
