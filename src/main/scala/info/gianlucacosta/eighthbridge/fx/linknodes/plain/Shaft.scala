@@ -17,17 +17,6 @@ private class Shaft(
                      onHandleNodeRightClick: HandleNodeRightClickHandler,
                      onHandleNodeDrag: HandleNodeDragHandler
                    ) extends Group {
-  /*
-  private val line =
-    new ShaftSegment(sourceVertexNode, targetVertexNode, _ => {})
-
-  children.add(line)
-  */
-
-  //TODO! Remove self! Use EnclosingClass.this!
-  private val self =
-    this
-
   val handles =
     new SimpleObjectProperty[List[LinkHandle]](initialHandles)
 
@@ -40,7 +29,7 @@ private class Shaft(
         onHandleNodeDrag
     ) {
       handles <==
-        self.handles
+        Shaft.this.handles
     }
 
   private val pointProviders =
@@ -58,7 +47,7 @@ private class Shaft(
         onSegmentRightClick
     ) {
       pointProviders <==
-        self.pointProviders
+        Shaft.this.pointProviders
     }
 
   val arrowSourcePointProvider: ObjectBinding[Centered] =

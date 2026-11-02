@@ -1,16 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
-import info.gianlucacosta.eighthbridge.fx.{LinkNode, Centered, VertexNode}
-import javafx.beans.binding.DoubleBinding
-import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
+import info.gianlucacosta.eighthbridge.fx.{Centered, Segments, VertexNode}
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.Group
-import scalafx.scene.shape.Line
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
-import scalafx.beans.property.ObjectProperty
-import scalafx.collections.ObservableBuffer
 import scalafx.Includes._
 
 //TODO! All over the codebase, ensure that GUI stuff are as private as possible!
@@ -40,7 +36,7 @@ private class BarbsNode(
   intersectionPoint <==
     Bindings.createObjectBinding(
       () =>
-        ArcBarbs.getIntersection(
+        Segments.getIntersectionWithRectangle(
           sourcePoint(),
 
           targetVertexNode.center(),

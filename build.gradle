@@ -41,3 +41,8 @@ aurora {
         url = 'http://gianlucacosta.info/'
     }
 }
+
+
+tasks.withType(ScalaDoc) {
+    enabled = false
+}

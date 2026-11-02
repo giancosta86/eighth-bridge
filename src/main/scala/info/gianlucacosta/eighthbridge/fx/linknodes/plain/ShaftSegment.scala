@@ -33,11 +33,12 @@ private class ShaftSegment(
           mouseEvent.clickCount match {
             case 1 =>
               onRightClick(mouseEvent.point)
+
+            case _ =>
           }
 
         case _ =>
       }
-      ()
     }
   }
 }

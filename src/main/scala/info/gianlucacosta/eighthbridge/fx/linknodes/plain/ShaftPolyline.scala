@@ -44,7 +44,6 @@ private class ShaftPolyline(
   updateSegmentNodes()
 
   private def updateSegmentNodes(): Unit = {
-    println(s"############## The segments are: ${segments().size}")
     children.clear()
 
     segments().foreach(children.add(_))

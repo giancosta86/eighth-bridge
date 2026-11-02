@@ -17,9 +17,6 @@ import java.util.Date
 
 class LabeledLinkNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualLink)
 extends PlainLinkNode(graphCanvas, initialArc) {
-  private val self =
-    this
-
   override type L <:
     LabeledVisualLink
 
@@ -116,9 +113,9 @@ extends PlainLinkNode(graphCanvas, initialArc) {
       visible <==
         Bindings.createBooleanBinding(
           () =>
-            self.hover() && link().customLabelCenter.isDefined,
+            LabeledLinkNode.this.hover() && link().customLabelCenter.isDefined,
 
-          self.hover,
+          LabeledLinkNode.this.hover,
           link
         )
     }
