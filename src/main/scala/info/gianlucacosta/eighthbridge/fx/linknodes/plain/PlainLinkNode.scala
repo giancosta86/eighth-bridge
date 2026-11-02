@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{LinkNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, LinkHandle, Delta, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, LinkNode, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, Delta, LinkHandle, VisualLink}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
@@ -10,13 +10,13 @@ import scalafx.geometry.Point2D
 class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends LinkNode(graphCanvas, initialArc) {
 
-  private val (sourceVertex, targetVertex) =
+  protected val (sourceVertex, targetVertex) =
     graph.getAnchors(link()).get
 
-  protected val sourceVertexNode =
+  protected val sourceVertexNode: VertexNode =
     graphCanvas.vertexNodesByVertex(sourceVertex)
 
-  protected val targetVertexNode =
+  protected val targetVertexNode: VertexNode =
     graphCanvas.vertexNodesByVertex(targetVertex)
 
   private val shaft =
@@ -63,7 +63,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
 
   children.add(barbsNode)
 
-  private def handleRightClickOnShaftSegment(shaftSegmentIndex: Int, point: Point2D): Unit = {
+  private def handleRightClickOnShaftSegment(shaftSegmentIndex: SegmentIndex, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE RIGHT-CLICKED ON SEGMENT #${shaftSegmentIndex}")
     controller.addLinkHandle(link(), shaftSegmentIndex, point)
   }
@@ -74,7 +74,6 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   }
 
   private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta): Unit = {
-    //println(s"///////////////// YOU ARE DRAGGING ${handle} to ${updatedCenter}")
     controller.dragLinkHandle(link(), handle, delta)
   }
 }
