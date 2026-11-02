@@ -32,20 +32,20 @@ extends PlainLinkNode(graphCanvas, initialArc) {
     Bindings.createObjectBinding[Point2D](
       () => {
         val sourcePoint =
-          sourceVertexNode.center()
+          sourceVertexNode.vertex().center
 
         val targetPoint =
           firstHandlePoint().getOrElse {
-            targetVertexNode.center()
+            targetVertexNode.vertex().center
           }
 
         Segment(sourcePoint, targetPoint)
           .center
       },
 
-      sourceVertexNode.center,
+      sourceVertexNode.vertex,
       firstHandlePoint,
-      targetVertexNode.center
+      targetVertexNode.vertex
     )
 
   private val label =

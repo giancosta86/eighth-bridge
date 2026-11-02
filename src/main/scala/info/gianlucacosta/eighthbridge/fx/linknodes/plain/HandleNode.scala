@@ -38,6 +38,22 @@ private class HandleNode(
       handle
     )
 
+  centerX <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().center.x,
+
+      handle
+    )
+
+  centerY <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().center.y,
+
+      handle
+    )
+
   this.consumeMouseEvents()
 
   handleEvent(MouseEvent.MouseClicked) {

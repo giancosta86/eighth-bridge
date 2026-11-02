@@ -11,10 +11,24 @@ private class VertexLabel(vertexNode: LabeledVertexNode)
   styleClass.add("label")
 
   layoutX <==
-    vertexNode.centerX - width / 2
+    Bindings.createDoubleBinding(
+      () =>
+        vertexNode.vertex().center.x - width() / 2,
+
+      vertexNode.vertex,
+      width
+    )
+
 
   layoutY <==
-    vertexNode.centerY - height / 2
+    Bindings.createDoubleBinding(
+      () =>
+        vertexNode.vertex().center.y - height() / 2,
+
+      vertexNode.vertex,
+      height
+    )
+
 
   text <== Bindings.createStringBinding(
     () =>
