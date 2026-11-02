@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.Centered
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ObjectProperty
@@ -9,24 +8,24 @@ import scalafx.scene.Group
 import scalafx.Includes._
 
 private class ShaftPolyline(
-                             initialPointProviders: List[Centered],
+                             initialSegmentPoints: List[Point2D],
                              onSegmentRightClick: SegmentRightClickHandler
                            ) extends Group {
 
-  val pointProviders: ObjectProperty[List[Centered]] =
-    new SimpleObjectProperty[List[Centered]](initialPointProviders)
+  val segmentPoints: ObjectProperty[List[Point2D]] =
+    new SimpleObjectProperty[List[Point2D]](initialSegmentPoints)
 
   private val segments =
     Bindings.createObjectBinding[List[ShaftSegment]](
       () =>
-        pointProviders()
+        segmentPoints()
           .sliding(2)
           .zipWithIndex
           .map {
-            case (startProvider::endProvider::Nil, index) =>
+            case (startPoint::endPoint::Nil, index) =>
               new ShaftSegment(
-                startProvider,
-                endProvider,
+                startPoint,
+                endPoint,
                 onRightClick = (point) => {
                   onSegmentRightClick(index, point)
                 }
@@ -36,7 +35,7 @@ private class ShaftPolyline(
           }
           .toList,
 
-      pointProviders
+      segmentPoints
     )
 
   segments.onChange(updateSegmentNodes())

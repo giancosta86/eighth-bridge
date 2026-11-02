@@ -9,7 +9,7 @@ import scalafx.beans.binding.Bindings
 
 import scala.collection.JavaConversions._
 import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, ReadOnlyDoubleWrapper, ReadOnlyObjectProperty}
-import scalafx.geometry.Point2D
+import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
 import scalafx.scene.layout.Region
@@ -18,7 +18,7 @@ import scalafx.scene.layout.Region
   * JavaFX node rendering a VisualVertex
   */
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
-  extends GraphCanvasNode(graphCanvas) with Centered with DragContext {
+  extends GraphCanvasNode(graphCanvas) with DragContext {
 
   type V <:
     VisualVertex
@@ -41,34 +41,6 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
 
   vertex() =
     initialVertex.asInstanceOf[V]
-
-  val centerX: ReadOnlyDoubleProperty =
-    ReadOnlyProperties.createDouble(
-      () =>
-        vertex().center.x,
-
-      vertex
-    )
-
-  val centerY: ReadOnlyDoubleProperty =
-    ReadOnlyProperties.createDouble(
-      () =>
-        vertex().center.y,
-
-      vertex
-    )
-
-  val center: ReadOnlyObjectProperty[Point2D] =
-    ReadOnlyProperties.createObject[Point2D](
-      () =>
-        new Point2D(
-          centerX(),
-          centerY()
-        ),
-
-      centerX,
-      centerY
-    )
 
   def width: ReadOnlyDoubleProperty
   def height: ReadOnlyDoubleProperty

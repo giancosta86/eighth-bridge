@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
-import info.gianlucacosta.eighthbridge.fx.{Centered, Segments, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.{VertexNode}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.Group
@@ -11,31 +11,14 @@ import scalafx.Includes._
 
 private class BarbsNode(
                           initialSourcePoint: Point2D,
-                         targetVertexNode: VertexNode,
+                          initialIntersectionPoint: Option[Point2D],
                           initialArcBarbs: Option[ArcBarbs]
                        ) extends Group {
   val sourcePoint =
     new SimpleObjectProperty[Point2D](initialSourcePoint)
 
-  private val intersectionPoint =
-    Bindings.createObjectBinding(
-      () =>
-        Segments.getIntersectionWithRectangle(
-          sourcePoint(),
-
-          targetVertexNode.center(),
-
-          new Dimension2D(
-            targetVertexNode.width(),
-            targetVertexNode.height()
-          )
-        ),
-
-      sourcePoint,
-      targetVertexNode.center,
-      targetVertexNode.width,
-      targetVertexNode.height
-    )
+  val intersectionPoint =
+    new SimpleObjectProperty[Option[Point2D]](initialIntersectionPoint)
 
   val arcBarbs =
     new SimpleObjectProperty[Option[ArcBarbs]](initialArcBarbs)

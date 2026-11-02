@@ -45,12 +45,18 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
 
   private val barbsNode =
     new BarbsNode(
-      shaft.arrowSourcePoint(),
-      targetVertexNode,
-      initialArc.barbs
+      initialSourcePoint =
+        shaft.lastPointBeforeTargetVertex(),
+      initialIntersectionPoint =
+        shaft.intersectionWithTargetVertexNode(),
+      initialArcBarbs =
+        initialArc.barbs
     ) {
       sourcePoint <==
-        shaft.arrowSourcePoint
+        shaft.lastPointBeforeTargetVertex
+
+      intersectionPoint <==
+        shaft.intersectionWithTargetVertexNode
 
       arcBarbs <==
         Bindings.createObjectBinding(

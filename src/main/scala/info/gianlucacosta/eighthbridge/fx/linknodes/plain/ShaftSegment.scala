@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{Centered, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.{VertexNode}
 import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
@@ -8,23 +8,23 @@ import scalafx.scene.shape.Line
 import scalafx.Includes._
 
 private class ShaftSegment(
-                            start: Centered,
-                            end: Centered,
+                            start: Point2D,
+                            end: Point2D,
                             onRightClick: (Point2D) => Unit
                           ) extends Line {
   styleClass.add("line")
 
   startX <==
-    start.centerX
+    start.x
 
   startY <==
-    start.centerY
+    start.y
 
   endX <==
-    end.centerX
+    end.x
 
   endY <==
-    end.centerY
+    end.y
 
   handleEvent(MouseEvent.MouseClicked) {
     (mouseEvent: MouseEvent) => {

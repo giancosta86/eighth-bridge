@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{Centered, DragContext}
+import info.gianlucacosta.eighthbridge.fx.{DragContext}
 import info.gianlucacosta.eighthbridge.fx.graph.{LinkHandle, Delta}
 import info.gianlucacosta.helios.fx.Includes.{extendNode, extendPoint2D}
 import javafx.beans.property.SimpleObjectProperty
@@ -15,7 +15,7 @@ private class HandleNode(
                           initialHandle: LinkHandle,
                           onRightClick: HandleNodeRightClickHandler,
                           onDrag: HandleNodeDragHandler
-                        ) extends Ellipse with Centered with DragContext {
+                        ) extends Ellipse with DragContext {
   styleClass.add("handle")
 
   //TODO! Choose a style for typing properties
@@ -34,22 +34,6 @@ private class HandleNode(
     Bindings.createDoubleBinding(
       () =>
         handle().dimension.height / 2,
-
-      handle
-    )
-
-  centerX <==
-    Bindings.createDoubleBinding(
-      () =>
-        handle().center.x,
-
-      handle
-    )
-
-  centerY <==
-    Bindings.createDoubleBinding(
-      () =>
-        handle().center.y,
 
       handle
     )
