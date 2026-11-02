@@ -50,12 +50,24 @@ private class Shaft(
         Shaft.this.pointProviders
     }
 
-  val arrowSourcePointProvider: ObjectBinding[Centered] =
+  private val arrowSourcePointProvider =
     Bindings.createObjectBinding[Centered](
       () =>
         pointProviders().takeRight(2).head,
 
       pointProviders
+    )
+
+  val arrowSourcePoint: ObjectBinding[Point2D] =
+    Bindings.createObjectBinding[Point2D](
+      () => new Point2D(
+        arrowSourcePointProvider().centerX(),
+        arrowSourcePointProvider().centerY()
+      ),
+
+      arrowSourcePointProvider,
+      arrowSourcePointProvider().centerX,
+      arrowSourcePointProvider().centerY
     )
 
   children.add(polyline)

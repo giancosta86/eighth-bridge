@@ -10,24 +10,12 @@ import scalafx.beans.binding.Bindings
 import scalafx.Includes._
 
 private class BarbsNode(
-                          initialSourcePointProvider: Centered,
+                          initialSourcePoint: Point2D,
                          targetVertexNode: VertexNode,
                           initialArcBarbs: Option[ArcBarbs]
                        ) extends Group {
-  val sourcePointProvider =
-    new SimpleObjectProperty[Centered](initialSourcePointProvider)
-
-  private val sourcePoint =
-    Bindings.createObjectBinding[Point2D](
-      () => new Point2D(
-        sourcePointProvider().centerX(),
-        sourcePointProvider().centerY()
-      ),
-
-      sourcePointProvider,
-      sourcePointProvider().centerX,
-      sourcePointProvider().centerY
-    )
+  val sourcePoint =
+    new SimpleObjectProperty[Point2D](initialSourcePoint)
 
   private val intersectionPoint =
     Bindings.createObjectBinding(
