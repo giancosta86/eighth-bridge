@@ -9,7 +9,6 @@ import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.Includes._
 
-//TODO! All over the codebase, ensure that GUI stuff are as private as possible!
 private class BarbsNode(
                           initialSourcePointProvider: Centered,
                          targetVertexNode: VertexNode,
@@ -31,9 +30,6 @@ private class BarbsNode(
     )
 
   private val intersectionPoint =
-    new SimpleObjectProperty[Option[Point2D]]
-
-  intersectionPoint <==
     Bindings.createObjectBinding(
       () =>
         Segments.getIntersectionWithRectangle(
