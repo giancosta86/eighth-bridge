@@ -50,15 +50,17 @@ extends PlainLinkNode(graphCanvas, initialArc) {
 
   private val label =
     new LinkLabel(
-      initialCenter = initialArc.customLabelCenter.getOrElse(labelAnchorPoint()),
-      onDrag = handleDragOnLabel,
-      onSecondaryDoubleClick = handleSecondaryDoubleClickOnLabel
+      initialCenter =
+        initialArc.customLabelCenter.getOrElse(labelAnchorPoint()),
+      onDrag =
+        handleDragOnLabel,
+      onSecondaryDoubleClick =
+        handleSecondaryDoubleClickOnLabel
     ) {
       text <==
         Bindings.createStringBinding(
           () =>
-            //TODO! Introduce a custom type and apply it to the arc property, so as to skip these casts
-            link().asInstanceOf[Labeled].label,
+            link().label,
 
           link
         )

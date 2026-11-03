@@ -7,6 +7,6 @@ package object labeled {
   type LabelDragHandler =
     (Delta) => Unit
 
-  type LabelDoubleClickhandler =
+  type LabelSecondaryDoubleClickHandler =
     () => Unit
 }

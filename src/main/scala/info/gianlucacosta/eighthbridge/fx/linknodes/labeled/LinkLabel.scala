@@ -14,7 +14,7 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
 private class LinkLabel(
                         initialCenter: Point2D,
                         onDrag: LabelDragHandler,
-                        onSecondaryDoubleClick: LabelDoubleClickhandler
+                        onSecondaryDoubleClick: LabelSecondaryDoubleClickHandler
                       )
   extends Label with DragContext {
   styleClass.add("label")
