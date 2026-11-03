@@ -8,23 +8,9 @@ import scalafx.scene.shape.Line
 import scalafx.Includes._
 
 private class ShaftSegment(
-                            start: Point2D,
-                            end: Point2D,
                             onRightClick: (Point2D) => Unit
                           ) extends Line {
   styleClass.add("line")
-
-  startX <==
-    start.x
-
-  startY <==
-    start.y
-
-  endX <==
-    end.x
-
-  endY <==
-    end.y
 
   handleEvent(MouseEvent.MouseClicked) {
     (mouseEvent: MouseEvent) => {

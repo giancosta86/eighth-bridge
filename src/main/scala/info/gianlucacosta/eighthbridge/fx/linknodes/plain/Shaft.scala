@@ -72,7 +72,7 @@ private class Shaft(
       targetVertexNode.height
     )
 
-  private val segmentPoints =
+  private val segmentExtremes =
     Bindings.createObjectBinding[List[Point2D]](
       () =>
         intersectionWithSourceVertexNode().flatMap(intersectionWithSourceVertexNode =>
@@ -92,19 +92,19 @@ private class Shaft(
   visible <==
     Bindings.createBooleanBinding(
       () =>
-        segmentPoints().nonEmpty,
+        segmentExtremes().nonEmpty,
 
-      segmentPoints
+      segmentExtremes
     )
 
   private val polyline =
     new ShaftPolyline(
-      segmentPoints(),
+      segmentExtremes(),
       onSegmentRightClick =
         onSegmentRightClick
     ) {
-      segmentPoints <==
-        Shaft.this.segmentPoints
+      segmentExtremes <==
+        Shaft.this.segmentExtremes
     }
 
   children.add(polyline)
