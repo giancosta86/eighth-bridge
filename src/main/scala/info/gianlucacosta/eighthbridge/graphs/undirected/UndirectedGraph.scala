@@ -189,7 +189,20 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
     vertexes -- connectedVertexes
 
   @transient
-  lazy val isCyclic: Boolean = ???
+  lazy val isCyclic: Boolean = {
+    var unionFind =
+      new UnionFind[V, E](this)
+
+    edges
+      .view
+      .takeWhile(_ => !unionFind.hasCycles)
+      .foreach(edge =>
+        unionFind =
+          unionFind.add(edge)
+      )
+
+    unionFind.hasCycles
+  }
 
   override def links: Set[E] =
     edges
