@@ -1,56 +1,88 @@
-/*§
-  ===========================================================================
-  EighthBridge
-  ===========================================================================
-  Copyright (C) 2016 Gianluca Costa
-  ===========================================================================
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+package info.gianlucacosta.eighthbridge.graphs.features
 
-       http://www.apache.org/licenses/LICENSE-2.0
+import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  ===========================================================================
-*/
-
-package info.gianlucacosta.eighthbridge.graphs.point2point.specific
-
-import info.gianlucacosta.helios.mathutils.Numbers
+import scala.language.implicitConversions
 
 /**
-  * Object having a weight
-  */
-trait Weighted[T <: Weighted[T]] {
-  this: T =>
-  def minWeight: Double
+ * Object having a weight
+ */
+trait Weighted {
+  def minWeight: Weight
 
-  def maxWeight: Double
+  def weight: Weight
 
-  def weight: Double
+  def maxWeight: Weight
 
-
-  /**
-    * Ensures the weight is in the range [minWeight; maxWeight], throwing an IllegalArgumentException in case of errors
-    */
-  protected def checkWeight(): Unit = {
-    require(
-      minWeight <= weight && weight <= maxWeight,
-      s"Weight must be in [${Numbers.smartString(minWeight)}; ${Numbers.smartString(maxWeight)}"
+  def setWeight(weight: Weight): this.type =
+    setWeight(
+      minWeight, weight, maxWeight
     )
+
+  def setWeight(
+               minWeight: Weight,
+               weight: Weight,
+               maxWeight: Weight
+               ): this.type
+}
+
+object Weighted {
+  implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with Weighted](self: DirectedGraph[V, A]) {
+    def getMinArcBetween(source: V, target: V): Option[A] =
+      self
+        .getArcsBetween(source, target)
+        .toList
+        .sortBy(_.weight)
+        .headOption
+
+    def getMinArcWeightBetween(source: V, target: V): Weight =
+      self
+        .getMinArcBetween(source, target)
+        .map(_.weight)
+        .getOrElse(Weight.PositiveInfinity)
+
+    def getMaxArcBetween(source: V, target: V): Option[A] =
+      self
+        .getArcsBetween(source, target)
+        .toList
+        .sortBy(_.weight)
+        .lastOption
+
+    def getMaxArcWeightBetween(source: V, target: V): Weight =
+      self
+        .getMaxArcBetween(source, target)
+        .map(_.weight)
+        .getOrElse(Weight.NegativeInfinity)
   }
 
-  /**
-    * Copies the current object, giving it a new weight.
-    *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method.
-    *
-    * @param weight The new weight
-    * @return The resulting new object
-    */
-  def weightCopy(weight: Double): T
+
+  implicit class WeightedUndirectedGraphExtensions[V <: Vertex, E <: Link with Weighted](self: UndirectedGraph[V, E]) {
+    def getMinEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
+      self
+        .getEdgesBetween(oneVertex, anotherVertex)
+        .toList
+        .sortBy(_.weight)
+        .headOption
+
+    def getMinEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
+      self
+        .getMinEdgeBetween(oneVertex, anotherVertex)
+        .map(_.weight)
+        .getOrElse(Weight.PositiveInfinity)
+
+    def getMaxEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
+      self
+        .getEdgesBetween(oneVertex, anotherVertex)
+        .toList
+        .sortBy(_.weight)
+        .lastOption
+
+    def getMaxEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
+      self
+        .getMaxEdgeBetween(oneVertex, anotherVertex)
+        .map(_.weight)
+        .getOrElse(Weight.NegativeInfinity)
+  }
 }
