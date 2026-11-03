@@ -6,5 +6,7 @@ package info.gianlucacosta.eighthbridge.graphs.features
  */
 class ConcreteCloneable extends Cloneable {
   override def clone(): this.type =
-    super.clone().asInstanceOf[this.type]
+    super
+      .clone()
+      .asInstanceOf[this.type]
 }

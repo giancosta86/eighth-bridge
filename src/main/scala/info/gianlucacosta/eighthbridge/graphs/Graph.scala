@@ -17,7 +17,6 @@ trait Graph[V <: Vertex, L <: Link] {
   def isEmpty: Boolean =
     vertexes.isEmpty
 
-  @transient
   def nonEmpty: Boolean =
     vertexes.nonEmpty
 

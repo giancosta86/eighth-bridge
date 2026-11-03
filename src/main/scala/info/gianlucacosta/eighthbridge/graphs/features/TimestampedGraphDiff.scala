@@ -10,14 +10,14 @@ case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Link with Tim
                                                                                            removedVertexes: Set[V] = Set[V](),
                                                                                            removedLinks: Set[A] = Set[A]()
                                ) {
-  def nonEmpty: Boolean =
-    updatedVertexes.nonEmpty ||
-      updatedLinks.nonEmpty ||
-      addedVertexes.nonEmpty ||
-      addedLinks.nonEmpty ||
-      removedVertexes.nonEmpty ||
-      removedLinks.nonEmpty
-
   def isEmpty: Boolean =
-    !nonEmpty
+    updatedVertexes.isEmpty &&
+      updatedLinks.isEmpty &&
+      addedVertexes.isEmpty &&
+      addedLinks.isEmpty &&
+      removedVertexes.isEmpty &&
+      removedLinks.isEmpty
+
+  def nonEmpty: Boolean =
+    !isEmpty
 }
