@@ -43,40 +43,42 @@ private class BarbsNode(
       sourcePoint
     )
 
-  private val sideSegments =
-    Bindings.createObjectBinding[Option[(BarbSegment, BarbSegment)]](
-      () =>
-        intersectionPoint().flatMap(intersectionPoint =>
-          sidePoints().map(sidePoints =>
-            (
-              new BarbSegment(
-                intersectionPoint =
-                  intersectionPoint,
+  sidePoints.onChange {
+    updateSegments()
+  }
 
-                sidePoint =
-                  sidePoints._1
-              ),
+  private val leftSegment =
+    new BarbSegment
 
-              new BarbSegment(
-                intersectionPoint =
-                  intersectionPoint,
+  private val rightSegment =
+    new BarbSegment
 
-                sidePoint =
-                  sidePoints._2
-              )
-            )
-          )
-        ),
+  updateSegments()
 
-      intersectionPoint,
-      sidePoints
-    )
+  private def updateSegments(): Unit = {
+    sidePoints() match {
+      case Some((leftPoint, rightPoint)) =>
+        val actualIntersectionPoint =
+          intersectionPoint().get
 
-  sideSegments.onChange {
-    children.clear()
+        leftSegment.sidePoint() =
+          leftPoint
 
-    sideSegments().foreach { case (leftSegment, rightSegment) =>
-      children.addAll(leftSegment, rightSegment)
+        leftSegment.intersectionPoint() =
+          actualIntersectionPoint
+
+        rightSegment.sidePoint() =
+          rightPoint
+
+        rightSegment.intersectionPoint() =
+          actualIntersectionPoint
+
+        if (children.isEmpty) {
+          children.addAll(leftSegment, rightSegment)
+        }
+
+      case None =>
+        children.clear()
     }
   }
 }

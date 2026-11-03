@@ -11,7 +11,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   extends LinkNode(graphCanvas, initialArc) {
 
   protected val (sourceVertex, targetVertex) =
-    graph.getAnchors(link()).get
+    graph.vertexPairByArc(link())
 
   protected val sourceVertexNode: VertexNode =
     graphCanvas.vertexNodesByVertex(sourceVertex)
