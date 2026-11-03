@@ -390,6 +390,6 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   override def links: Set[A] =
     arcs
 
-  override def getLinkById(id: Int): Option[A] =
-    getArcById(id)
+  override def linksById: Map[Int, A] =
+    arcsById
 }

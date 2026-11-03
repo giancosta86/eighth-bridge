@@ -207,6 +207,6 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
   override def links: Set[E] =
     edges
 
-  override def getLinkById(id: Int): Option[E] =
-    getEdgeById(id)
+  override def linksById: Map[Link#EntityId, E] =
+    edgesById
 }

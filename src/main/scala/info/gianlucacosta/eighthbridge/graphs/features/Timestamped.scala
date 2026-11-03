@@ -50,7 +50,7 @@ object Timestamped {
         keptVertexes
           .filter(vertex => {
             val referenceVertex =
-              referenceGraph.getVertexById(vertex.id).get
+              referenceGraph.vertexesById(vertex.id)
 
             vertex.isNewerThan(referenceVertex)
           })
@@ -62,7 +62,7 @@ object Timestamped {
         keptLinks
           .filter(link => {
             val referenceLink =
-              referenceGraph.getLinkById(link.id).get
+              referenceGraph.linksById(link.id)
 
             link.isNewerThan(referenceLink)
           })

@@ -4,15 +4,12 @@ trait Graph[V <: Vertex, L <: Link] {
   val vertexes: Set[V]
 
   @transient
-  protected lazy val vertexesById: Map[Vertex#EntityId, V] =
+  lazy val vertexesById: Map[Vertex#EntityId, V] =
     vertexes
       .map(vertex =>
         vertex.id -> vertex
       )
       .toMap
-
-  def getVertexById(id: Vertex#EntityId): Option[V] =
-    vertexesById.get(id)
 
   def isEmpty: Boolean =
     vertexes.isEmpty
@@ -22,7 +19,7 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def links: Set[L]
 
-  def getLinkById(id: Link#EntityId): Option[L]
+  def linksById: Map[Link#EntityId, L]
 
   override def equals(obj: Any): Boolean = {
     obj match {

@@ -107,7 +107,7 @@ class GraphCanvas(
 
     graphDiff.updatedVertexes.foreach(vertex => {
       val updatedVertex =
-        updatedGraph.getVertexById(vertex.id).get
+        updatedGraph.vertexesById(vertex.id)
 
       val vertexNode =
         _vertexNodesByVertex(vertex)
@@ -118,7 +118,7 @@ class GraphCanvas(
 
     graphDiff.updatedLinks.foreach(link => {
       val updatedLink =
-        updatedGraph.getLinkById(link.id).get
+        updatedGraph.linksById(link.id)
 
       val linkNode =
         _linkNodesByLink(link)
