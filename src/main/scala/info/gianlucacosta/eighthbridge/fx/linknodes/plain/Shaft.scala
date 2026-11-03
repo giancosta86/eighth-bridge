@@ -26,7 +26,9 @@ private class Shaft(
         handles()
           .headOption
           .map(_.center)
-          .getOrElse(targetVertexNode.vertex().center),
+          .getOrElse(
+            targetVertexNode.vertex().center
+          ),
 
       handles,
       targetVertexNode.vertex
