@@ -119,17 +119,15 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       .toSet
 
   @transient
-  protected lazy val arcsById: Map[Link#EntityId, A] =
+  lazy val arcsById: Map[Link#EntityId, A] =
     arcs
       .map(arc => arc.id -> arc)
       .toMap
 
-  def getArcById(id: Link#EntityId): Option[A] =
-    arcsById.get(id)
 
 
   @transient
-  protected lazy val successorsByVertex: Map[V, Set[V]] =
+  lazy val successorsByVertex: Map[V, Set[V]] =
     arcsByVertexPair
       .keySet
       .groupBy {
@@ -152,7 +150,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
   @transient
-  protected lazy val exitingArcsByVertex: Map[V, Set[A]] =
+  lazy val exitingArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
       .flattenToSingleVertexKey { case (sourceVertex, _) =>
         sourceVertex
@@ -168,7 +166,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
   @transient
-  protected lazy val predecessorsByVertex: Map[V, Set[V]] =
+  lazy val predecessorsByVertex: Map[V, Set[V]] =
     arcsByVertexPair
       .keySet
       .groupBy {
@@ -191,7 +189,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
   @transient
-  protected lazy val enteringArcsByVertex: Map[V, Set[A]] =
+  lazy val enteringArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
       .flattenToSingleVertexKey { case (_, targetVertex) =>
         targetVertex
@@ -207,7 +205,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
   @transient
-  protected lazy val vertexPairByArc: Map[A, (V, V)] =
+  lazy val vertexPairByArc: Map[A, (V, V)] =
     arcsByVertexPair
       .flatMap { case (vertexPair, arcs) =>
         arcs.map(_ -> vertexPair)
@@ -378,9 +376,9 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
     arcsByVertexPair.foreach { case ((sourceVertex, targetVertex), arcs) =>
-      arcs.foreach(arc =>
+      arcs.foreach(link =>
         result =
-          result.addEdge(sourceVertex, targetVertex, arc)
+          result.addEdge(sourceVertex, targetVertex, link)
       )
     }
 

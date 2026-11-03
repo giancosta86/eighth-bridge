@@ -119,7 +119,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
       .toSet
 
   @transient
-  protected lazy val edgesById: Map[Link#EntityId, E] =
+  lazy val edgesById: Map[Link#EntityId, E] =
     edges
       .map(edge => edge.id -> edge)
       .toMap
@@ -135,7 +135,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
 
 
   @transient
-  protected lazy val anchorSetByEdge: Map[E, UndirectedAnchors[V]] =
+  lazy val anchorSetByEdge: Map[E, UndirectedAnchors[V]] =
     edgesByAnchors
       .flatMap { case (anchorSet, edges) =>
         edges.map(_ -> anchorSet)
@@ -145,7 +145,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
     anchorSetByEdge.get(edge)
 
   @transient
-  private lazy val connectedEdgesByVertex: Map[V, Set[E]] =
+  lazy val connectedEdgesByVertex: Map[V, Set[E]] =
     edgesByAnchors
       .toList
       .flatMap { case (anchors, edges) =>
@@ -166,7 +166,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
     )
 
   @transient
-  private lazy val neighborsByVertex: Map[V, Set[V]] =
+  lazy val neighborsByVertex: Map[V, Set[V]] =
     edgesByAnchors
       .keySet.flatMap(anchors =>
         Seq(

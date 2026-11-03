@@ -25,6 +25,9 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def isolatedVertexes: Set[V]
 
+  def getNeighbors(vertex: V): Set[V]
+
+
   override def equals(obj: Any): Boolean = {
     obj match {
       case other: AnyRef =>
