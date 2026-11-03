@@ -21,6 +21,10 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def linksById: Map[Link#EntityId, L]
 
+  def connectedVertexes: Set[V]
+
+  def isolatedVertexes: Set[V]
+
   override def equals(obj: Any): Boolean = {
     obj match {
       case other: AnyRef =>
