@@ -96,4 +96,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     controller
       .dragSelectedVertexes(deltaFromLatest)
   }
+
+  def getIntersectionWithSegmentFromPoint(sourcePoint: Point2D): Option[Point2D] =
+    Segments.getIntersectionWithRectangle(
+      sourcePoint,
+      vertex().center,
+      new Dimension2D(
+        width(),
+        height()
+      )
+    )
 }

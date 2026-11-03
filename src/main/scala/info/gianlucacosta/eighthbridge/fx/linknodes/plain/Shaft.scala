@@ -35,13 +35,8 @@ private class Shaft(
   private val intersectionWithSourceVertexNode =
     Bindings.createObjectBinding[Option[Point2D]](
       () =>
-        Segments.getIntersectionWithRectangle(
-          firstPointAfterSourceVertex(),
-          sourceVertexNode.vertex().center,
-          new Dimension2D(
-            sourceVertexNode.width(),
-            sourceVertexNode.height()
-          )
+        sourceVertexNode.getIntersectionWithSegmentFromPoint(
+          firstPointAfterSourceVertex()
         ),
 
       firstPointAfterSourceVertex,
@@ -65,13 +60,8 @@ private class Shaft(
   val intersectionWithTargetVertexNode: ObjectBinding[Option[Point2D]] =
     Bindings.createObjectBinding[Option[Point2D]](
       () =>
-        Segments.getIntersectionWithRectangle(
-          lastPointBeforeTargetVertex(),
-          targetVertexNode.vertex().center,
-          new Dimension2D(
-            targetVertexNode.width(),
-            targetVertexNode.height()
-          )
+        targetVertexNode.getIntersectionWithSegmentFromPoint(
+          lastPointBeforeTargetVertex()
         ),
 
       lastPointBeforeTargetVertex,
