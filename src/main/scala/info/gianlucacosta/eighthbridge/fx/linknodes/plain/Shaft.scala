@@ -89,6 +89,14 @@ private class Shaft(
       intersectionWithTargetVertexNode
     )
 
+  visible <==
+    Bindings.createBooleanBinding(
+      () =>
+        segmentPoints().nonEmpty,
+
+      segmentPoints
+    )
+
   private val polyline =
     new ShaftPolyline(
       segmentPoints(),
@@ -98,7 +106,6 @@ private class Shaft(
       segmentPoints <==
         Shaft.this.segmentPoints
     }
-
 
   children.add(polyline)
 
