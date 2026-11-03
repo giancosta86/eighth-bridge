@@ -69,6 +69,14 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
 
   children.add(barbsNode)
 
+  visible <==
+    Bindings.createBooleanBinding(
+      () =>
+        shaft.intersectionWithTargetVertexNode().isDefined,
+
+      shaft.intersectionWithTargetVertexNode
+    )
+
   private def handleRightClickOnShaftSegment(shaftSegmentIndex: SegmentIndex, point: Point2D): Unit = {
     println(s"%%%%%%%%%%%% YOU HAVE RIGHT-CLICKED ON SEGMENT #${shaftSegmentIndex}")
     controller.addLinkHandle(link(), shaftSegmentIndex, point)
