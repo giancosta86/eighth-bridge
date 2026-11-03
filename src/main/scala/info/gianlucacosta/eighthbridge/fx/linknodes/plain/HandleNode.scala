@@ -18,7 +18,6 @@ private class HandleNode(
                         ) extends Ellipse with DragContext {
   styleClass.add("handle")
 
-  //TODO! Choose a style for typing properties
   val handle: ObjectProperty[LinkHandle] =
     new SimpleObjectProperty[LinkHandle](initialHandle)
 
@@ -62,13 +61,13 @@ private class HandleNode(
         case MouseButton.Secondary =>
           mouseEvent.clickCount match {
             case 1 =>
-              mouseEvent.consume()
               onRightClick(handle())
+
+            case _ =>
           }
 
         case _ =>
       }
-      ()
     }
   }
 

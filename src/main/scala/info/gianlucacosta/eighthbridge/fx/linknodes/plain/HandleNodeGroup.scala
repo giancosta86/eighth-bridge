@@ -15,20 +15,15 @@ private class HandleNodeGroup(
   val handles: ObjectProperty[List[LinkHandle]] =
     new SimpleObjectProperty[List[LinkHandle]]
 
-  private val _handleNodes =
+  private val handleNodes =
     new SimpleObjectProperty[List[HandleNode]](Nil)
-
-  val handleNodes: ReadOnlyObjectProperty[List[HandleNode]] =
-    _handleNodes
 
   handles.onInvalidate {
     val updatedHandles =
       handles()
 
-    //println(s"/////////////// The updated handles are: ${updatedHandles}")
-
     val currentHandleNodes =
-      _handleNodes().toSet
+      handleNodes().toSet
 
     val handleNodesToRemove =
       currentHandleNodes.filter(handleNode =>
@@ -45,7 +40,7 @@ private class HandleNodeGroup(
         .toMap
 
 
-    _handleNodes() =
+    handleNodes() =
       updatedHandles.map(handle => {
         val foundHandleNode =
           keptHandleNodesByHandle
