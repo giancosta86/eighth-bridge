@@ -11,10 +11,12 @@ trait Graph[V <: Vertex, L <: Link] {
       )
       .toMap
 
-  def isEmpty: Boolean =
+  @transient
+  val isEmpty: Boolean =
     vertexes.isEmpty
 
-  def nonEmpty: Boolean =
+  @transient
+  val nonEmpty: Boolean =
     vertexes.nonEmpty
 
   def links: Set[L]
@@ -27,6 +29,7 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def getNeighbors(vertex: V): Set[V]
 
+  def getConnectedLinks(vertex: V): Set[L]
 
   override def equals(obj: Any): Boolean = {
     obj match {

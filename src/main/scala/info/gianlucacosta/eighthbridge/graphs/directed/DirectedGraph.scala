@@ -204,6 +204,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       Set()
     )
 
+  def getConnectedArcs(vertex: V): Set[A] =
+    getEnteringArcs(vertex) ++
+      getExitingArcs(vertex)
+
   @transient
   lazy val vertexPairByArc: Map[A, (V, V)] =
     arcsByVertexPair
@@ -390,4 +394,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   override def linksById: Map[Int, A] =
     arcsById
+
+  override def getConnectedLinks(vertex: V): Set[A] =
+    getConnectedArcs(vertex)
 }

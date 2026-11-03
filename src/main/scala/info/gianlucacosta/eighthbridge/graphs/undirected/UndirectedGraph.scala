@@ -209,4 +209,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
 
   override def linksById: Map[Link#EntityId, E] =
     edgesById
+
+  override def getConnectedLinks(vertex: V): Set[E] =
+    getConnectedEdges(vertex)
 }
