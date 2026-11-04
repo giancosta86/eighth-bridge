@@ -87,11 +87,12 @@ class GraphCanvas(
 
   render(
     initialGraph,
-    new TimestampedGraphDiff[VisualVertex, VisualLink]()
+    TimestampedGraphDiff.forNewGraph(initialGraph)
   )
 
-  private def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
+  protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     println(s"${new java.util.Date}: NOW RENDERING")
+    println(s"GraphDiff is: ${graphDiff}")
 
     val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)

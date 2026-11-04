@@ -1,14 +1,14 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
-case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Link with Timestamped](
-                                                                                           addedVertexes: Set[V] = Set[V](),
-                                                                                           addedLinks: Set[A] = Set[A](),
-                                                                                           updatedVertexes: Set[V] = Set[V](),
-                                                                                           updatedLinks: Set[A] = Set[A](),
-                                                                                           removedVertexes: Set[V] = Set[V](),
-                                                                                           removedLinks: Set[A] = Set[A]()
+case class TimestampedGraphDiff[V <: Vertex with Timestamped, L <: Link with Timestamped](
+                                                                                           addedVertexes: Set[V],
+                                                                                           addedLinks: Set[L],
+                                                                                           updatedVertexes: Set[V],
+                                                                                           updatedLinks: Set[L],
+                                                                                           removedVertexes: Set[V],
+                                                                                           removedLinks: Set[L]
                                ) {
   def isEmpty: Boolean =
     updatedVertexes.isEmpty &&
@@ -20,4 +20,23 @@ case class TimestampedGraphDiff[V <: Vertex with Timestamped, A <: Link with Tim
 
   def nonEmpty: Boolean =
     !isEmpty
+}
+
+object TimestampedGraphDiff {
+  def forNewGraph[V <: Vertex with Timestamped, L <: Link with Timestamped](graph: Graph[V, L]):
+  TimestampedGraphDiff[V, L] =
+    TimestampedGraphDiff(
+      addedVertexes =
+        graph.vertexes,
+      addedLinks =
+        graph.links,
+      updatedVertexes =
+        Set[V](),
+      updatedLinks =
+        Set[L](),
+      removedVertexes =
+        Set[V](),
+      removedLinks =
+        Set[L]()
+    )
 }
