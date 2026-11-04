@@ -20,6 +20,16 @@ case class TimestampedGraphDiff[V <: Vertex with Timestamped, L <: Link with Tim
 
   def nonEmpty: Boolean =
     !isEmpty
+
+  override def toString: String =
+    Map(
+      "addedVertexes" -> addedVertexes.size,
+      "addedLinks" -> addedLinks.size,
+      "updatedVertexes" -> updatedVertexes.size,
+      "updatedLinks" -> updatedLinks.size,
+      "removedVertexes" -> removedVertexes.size,
+      "removedLinks" -> removedLinks.size
+    ).toString
 }
 
 object TimestampedGraphDiff {
