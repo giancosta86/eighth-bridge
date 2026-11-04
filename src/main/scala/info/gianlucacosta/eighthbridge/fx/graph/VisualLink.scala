@@ -111,13 +111,13 @@ class VisualLink(barbsValue: Option[ArcBarbs])
 }
 
 object VisualLink {
-  val DefaultDirected =
+  def DefaultDirected =
     new VisualLink(
       barbsValue =
         Some(ArcBarbs.Default)
     )
 
-  val DefaultUndirected =
+  def DefaultUndirected =
     new VisualLink(
       barbsValue =
         None

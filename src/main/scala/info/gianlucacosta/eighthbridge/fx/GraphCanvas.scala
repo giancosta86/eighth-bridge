@@ -7,7 +7,7 @@ import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, Simpl
 import scalafx.Includes._
 import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.{Dimension2D, Point2D}
-import scalafx.scene.Node
+import scalafx.scene.{Group, Node}
 import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent, ScrollEvent}
 import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
@@ -85,6 +85,15 @@ class GraphCanvas(
   def linkNodesByLink: Map[VisualLink, LinkNode] =
     _linkNodesByLink
 
+  private val linkNodes =
+    new Group
+  children.add(linkNodes)
+
+  private val vertexNodes =
+    new Group
+  children.add(vertexNodes)
+
+
   render(
     initialGraph,
     TimestampedGraphDiff.forNewGraph(initialGraph)
@@ -94,17 +103,45 @@ class GraphCanvas(
     println(s"${new java.util.Date}: NOW RENDERING")
     println(s"GraphDiff is: ${graphDiff}")
 
-    val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
-      _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
-
     val danglingLinkNodesByLink: Map[VisualLink, LinkNode] =
       _linkNodesByLink.filterKeys(graphDiff.removedLinks.contains)
+
+    _linkNodesByLink --=
+      danglingLinkNodesByLink.keySet
+
+
+    val danglingVertexNodesByVertex: Map[VisualVertex, VertexNode] =
+      _vertexNodesByVertex.filterKeys(graphDiff.removedVertexes.contains)
 
     _vertexNodesByVertex --=
       danglingVertexNodesByVertex.keySet
 
-    _linkNodesByLink --=
-      danglingLinkNodesByLink.keySet
+
+    val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
+      graphDiff.addedVertexes.map(vertex => {
+          val vertexNode =
+            controller.createVertexNode(vertex)
+
+          vertex -> vertexNode
+        })
+        .toMap
+
+    _vertexNodesByVertex ++=
+      addedVertexNodesByVertex
+
+
+    val addedLinkNodesByLink: Map[VisualLink, LinkNode] =
+      graphDiff.addedLinks.map(link => {
+          val linkNode =
+            controller.createLinkNode(link)
+
+          link -> linkNode
+        })
+        .toMap
+
+    _linkNodesByLink ++=
+      addedLinkNodesByLink
+
 
     graphDiff.updatedVertexes.foreach(vertex => {
       val updatedVertex =
@@ -128,43 +165,16 @@ class GraphCanvas(
         updatedLink.asInstanceOf[linkNode.L]
     })
 
-    val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
-      graphDiff.addedVertexes.map(vertex => {
-          val vertexNode =
-            controller.createVertexNode(vertex)
 
-          vertex -> vertexNode
-        })
-        .toMap
+    addedVertexNodesByVertex.values.foreach(vertexNodes.children.add(_))
 
-    val addedLinkNodesByLink: Map[VisualLink, LinkNode] =
-      graphDiff.addedLinks.map(link => {
-          val linkNode =
-            controller.createLinkNode(link)
+    addedLinkNodesByLink.values.foreach(linkNodes.children.add(_))
 
-          link -> linkNode
-        })
-        .toMap
 
-    _vertexNodesByVertex ++=
-      addedVertexNodesByVertex
+    danglingLinkNodesByLink.values.foreach(linkNodes.children.remove(_))
 
-    _linkNodesByLink ++=
-      addedLinkNodesByLink
+    danglingVertexNodesByVertex.values.foreach(vertexNodes.children.remove(_))
 
-    addedVertexNodesByVertex.values.foreach(children.add(_))
-
-    addedLinkNodesByLink.values.foreach(addedArcNode =>
-      /*
-       * The first child node is always the background node.
-       * Then, new links can be added so that newer ones will stay on top.
-       */
-      children.add(updatedGraph.links.size, addedArcNode)
-    )
-
-    danglingVertexNodesByVertex.values.foreach(children.remove(_))
-
-    danglingLinkNodesByLink.values.foreach(children.remove(_))
 
     val newDimension =
       controller.canvasDimension
