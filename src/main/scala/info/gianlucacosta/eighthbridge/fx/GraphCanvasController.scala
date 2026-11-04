@@ -43,9 +43,9 @@ abstract class GraphCanvasController {
 
   def addLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Unit = {}
 
-  def createVertexNode(vertex: VisualVertex): VertexNode = ???
+  def createVertexNode(vertex: VisualVertex): VertexNode
 
-  def createLinkNode(link: VisualLink): LinkNode = ???
+  def createLinkNode(link: VisualLink): LinkNode
 
   def editVertex(vertex: VisualVertex): Unit = {}
 
