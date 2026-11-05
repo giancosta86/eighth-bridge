@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.directed
 
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
@@ -276,10 +276,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
    * <ul>
    * <li>Each node will be processed <b>only</b> if all of its <i>predecessors</i> have been processed</li>
    *
-   * <li>Any cycle in the graph will cause a CircularGraphException</li>
+   * <li>Any cycle in the graph will return None</li>
    * </ul>
    */
-  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T, V]): T = {
+  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T, V]): Option[T] = {
     /*
      * At the beginning of the algorithm, no vertex has been processed;
      * consequently, the fringe - i.e., the buffer of vertexes to process -
@@ -299,7 +299,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
                              vertexFoldProcessor: VertexFoldProcessor[T, V],
                              processedVertexes: Set[V],
                              fringe: List[V]
-                           ): T = {
+                           ): Option[T] = {
     fringe match {
       /*
        * If the fringe contains at least one vertex to consider, the algorithm can go on.
@@ -363,9 +363,9 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
          * otherwise, it means that we are stuck in a cycle.
          */
         if (processedVertexes.size == vertexes.size)
-          cumulatedValue
+          Some(cumulatedValue)
         else
-          throw new CircularGraphException
+          None
     }
   }
 

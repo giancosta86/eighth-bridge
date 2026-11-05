@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.undirected
 
 import info.gianlucacosta.eighthbridge.graphs.directed.{DirectedGraph, VertexFoldProcessor}
-import info.gianlucacosta.eighthbridge.graphs.{CircularGraphException, GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
