@@ -402,5 +402,5 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     fold[Unit](())(
       (_, _) => ()
     )
-      .isDefined
+      .isEmpty
 }
