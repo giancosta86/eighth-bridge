@@ -396,4 +396,11 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   override def getConnectedLinks(vertex: V): Set[A] =
     getConnectedArcs(vertex)
+
+  @transient
+  lazy val isCyclic: Boolean =
+    fold[Unit](())(
+      (_, _) => ()
+    )
+      .isDefined
 }

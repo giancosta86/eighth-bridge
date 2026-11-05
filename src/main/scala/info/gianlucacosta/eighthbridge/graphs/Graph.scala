@@ -31,6 +31,8 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def getConnectedLinks(vertex: V): Set[L]
 
+  def isCyclic: Boolean
+
   override def equals(obj: Any): Boolean = {
     obj match {
       case other: AnyRef =>
