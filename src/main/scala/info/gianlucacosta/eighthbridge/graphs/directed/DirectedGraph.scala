@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 
 final class DirectedGraph[V <: Vertex, A <: Link] private(
                                                      vertexes: Set[V],
-                                                     private val arcsByVertexPair: Map[(V, V), Set[A]]
+                                                     arcsByVertexPair: Map[(V, V), Set[A]]
                                                    )
   extends GraphCore[V, A](vertexes) {
 
@@ -54,10 +54,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
       .asInstanceOf[this.type]
 
-  def addArc(sourceVertex: V, targetVertex: V, arc: A): DirectedGraph[V, A] = {
-    val vertexPair =
-      sourceVertex -> targetVertex
-
+  def addArc(vertexPair: (V, V), arc: A): DirectedGraph[V, A] =
     if (vertexes.containsPair(vertexPair)) {
       val updatedArcSet =
         arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
@@ -70,10 +67,12 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       )
     } else
       this
-  }
 
-  def addArc(vertexPair: (V, V), arc: A): DirectedGraph[V, A] =
-    addArc(vertexPair._1, vertexPair._2, arc)
+  def addArc(sourceVertex: V, targetVertex: V, arc: A): DirectedGraph[V, A] =
+    addArc(
+      sourceVertex -> targetVertex,
+      arc
+    )
 
   def updateArc(updatedArc: A): DirectedGraph[V, A] =
     new DirectedGraph[V, A](
