@@ -6,13 +6,12 @@ package object directed {
    * <ul>
    * <li><b>cumulatedValue</b> - the value cumulated until now</li>
    * <li><b>vertex</b> - the current vertex</li>
-   * <li><b>vertexTopology</b> - describes the vertex/arc connections for the current vertex</li>
    * </ul>
    *
    * The function must return the next iteration value for <b>fold()</b>.
    */
   type VertexFoldProcessor[T, V <: Vertex, A <: Link] =
-    (T, V, VertexTopology[V, A]) => T
+    (T, V) => T
 
 
   implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Link](

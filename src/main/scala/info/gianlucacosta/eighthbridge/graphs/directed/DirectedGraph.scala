@@ -300,26 +300,10 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
           val currentSuccessors =
             getSuccessors(currentVertex)
 
-          val vertexTopology =
-            VertexTopology(
-              predecessors =
-                currentPredecessors,
-
-              enteringArcs =
-                getEnteringArcs(currentVertex),
-
-              exitingArcs =
-                getExitingArcs(currentVertex),
-
-              successors =
-                currentSuccessors
-            )
-
           val newCumulatedValue =
             vertexFoldProcessor(
               cumulatedValue,
-              currentVertex,
-              vertexTopology
+              currentVertex
             )
 
           /**
