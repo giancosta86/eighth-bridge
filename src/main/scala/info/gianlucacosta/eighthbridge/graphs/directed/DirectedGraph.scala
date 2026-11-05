@@ -151,9 +151,17 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   @transient
   lazy val exitingArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
-      .flattenToSingleVertexKey { case (sourceVertex, _) =>
+      .view
+      .groupBy { case ((sourceVertex, _), _) =>
         sourceVertex
       }
+      .mapValues(
+        _.map( {
+            case (_, arcs) => arcs
+          })
+          .flatten
+          .toSet
+      )
 
   /**
    * Returns the set of arcs whose source is the given vertex.
@@ -190,9 +198,17 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   @transient
   lazy val enteringArcsByVertex: Map[V, Set[A]] =
     arcsByVertexPair
-      .flattenToSingleVertexKey { case (_, targetVertex) =>
+      .view
+      .groupBy { case ((_, targetVertex), _) =>
         targetVertex
       }
+      .mapValues(
+        _.map( {
+            case (_, arcs) => arcs
+          })
+          .flatten
+          .toSet
+      )
 
   /**
    * Returns the set of arcs whose target is the given vertex.
@@ -263,7 +279,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
    * <li>Any cycle in the graph will cause a CircularGraphException</li>
    * </ul>
    */
-  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T, V, A]): T = {
+  def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T, V]): T = {
     /*
      * At the beginning of the algorithm, no vertex has been processed;
      * consequently, the fringe - i.e., the buffer of vertexes to process -
@@ -280,7 +296,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   @tailrec
   private def fold[T](
                              cumulatedValue: T,
-                             vertexFoldProcessor: VertexFoldProcessor[T, V, A],
+                             vertexFoldProcessor: VertexFoldProcessor[T, V],
                              processedVertexes: Set[V],
                              fringe: List[V]
                            ): T = {

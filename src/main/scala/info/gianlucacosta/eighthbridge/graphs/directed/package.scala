@@ -10,27 +10,6 @@ package object directed {
    *
    * The function must return the next iteration value for <b>fold()</b>.
    */
-  type VertexFoldProcessor[T, V <: Vertex, A <: Link] =
+  type VertexFoldProcessor[T, V <: Vertex] =
     (T, V) => T
-
-
-  implicit class ArcsByVertexPairMapExtensions[V <: Vertex, A <: Link](
-                                                                        self: Map[(V, V), Set[A]]
-                                                                      ) {
-    def flattenToSingleVertexKey(
-                                  vertexSelector: ((V, V)) => V
-                                ): Map[V, Set[A]] =
-      self
-        .view
-        .groupBy { case (vertexPair, _) =>
-          vertexSelector(vertexPair)
-        }
-        .mapValues(
-          _.map( {
-              case (_, arcs) => arcs
-            })
-            .flatten
-            .toSet
-        )
-  }
 }
