@@ -32,5 +32,5 @@ abstract class AdjustingGraphCanvas(
     }
   }
 
-  protected def adjustGraph(currentGraph: VisualGraph): VisualGraph
+  protected def adjustGraph(graph: VisualGraph): VisualGraph
 }
