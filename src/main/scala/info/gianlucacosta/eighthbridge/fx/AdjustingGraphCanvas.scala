@@ -17,9 +17,7 @@ abstract class AdjustingGraphCanvas(
     super.render(updatedGraph, graphDiff)
 
     if (!adjustmentRequested) {
-      println("%%%% ADJUSTMENT REQUESTED!")
-      adjustmentRequested =
-        true
+      println("%%%% REQUESTING ADJUSTMENT!")
 
       Platform.runLater {
         val adjustedGraph =
@@ -28,6 +26,9 @@ abstract class AdjustingGraphCanvas(
         graph() =
           adjustedGraph
       }
+
+      adjustmentRequested =
+        true
     }
   }
 

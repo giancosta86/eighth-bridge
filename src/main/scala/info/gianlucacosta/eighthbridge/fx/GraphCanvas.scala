@@ -5,6 +5,7 @@ import info.gianlucacosta.eighthbridge.graphs.features.TimestampedGraphDiff
 import javafx.beans.Observable
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
+import scalafx.application.Platform
 import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.{Group, Node}
@@ -97,11 +98,12 @@ class GraphCanvas(
     new Group
   children.add(vertexNodes)
 
-
-  render(
-    initialGraph,
-    TimestampedGraphDiff.forNewGraph(initialGraph)
-  )
+  Platform.runLater {
+    render(
+      initialGraph,
+      TimestampedGraphDiff.forNewGraph(initialGraph)
+    )
+  }
 
   protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     println(s"${new java.util.Date}: NOW RENDERING")
