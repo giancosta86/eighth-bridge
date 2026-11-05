@@ -37,8 +37,12 @@ class GraphCanvas(
     new SimpleObjectProperty[VisualGraph](initialGraph)
 
   graph.onChange { (_, oldValue, newValue) =>
+    println(s"${new java.util.Date}: THE GRAPH PROPERTY HAS CHANGED")
+
     val graphDiff =
       newValue.getDiffSince(oldValue)
+
+    println(s"The GraphDiff is: ${graphDiff}")
 
     if (graphDiff.nonEmpty) {
       render(newValue, graphDiff)
@@ -101,7 +105,6 @@ class GraphCanvas(
 
   protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     println(s"${new java.util.Date}: NOW RENDERING")
-    println(s"GraphDiff is: ${graphDiff}")
 
     val danglingLinkNodesByLink: Map[VisualLink, LinkNode] =
       _linkNodesByLink.filterKeys(graphDiff.removedLinks.contains)
