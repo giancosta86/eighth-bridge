@@ -2,17 +2,13 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.binding.DoubleBinding
-import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
-import scalafx.beans.binding.Bindings
+import scalafx.beans.property.ReadOnlyDoubleProperty
+import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.scene.input.MouseEvent
 
 import scala.collection.JavaConversions._
-import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, ReadOnlyDoubleWrapper, ReadOnlyObjectProperty}
-import scalafx.geometry.{Dimension2D, Point2D}
-import scalafx.scene.Group
-import scalafx.scene.input.{MouseButton, MouseEvent}
-import scalafx.scene.layout.Region
 
 /**
   * JavaFX node rendering a VisualVertex

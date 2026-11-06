@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
 //import info.gianlucacosta.helios.fx.Includes._
-import scalafx.Includes._
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D

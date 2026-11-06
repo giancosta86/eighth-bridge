@@ -1,10 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.Delta
-import info.gianlucacosta.eighthbridge.fx.graph.Delta.Point2DDeltaExtensions
-import info.gianlucacosta.helios.fx.Includes.extendMouseEvent
 import scalafx.Includes._
-import scalafx.geometry.Point2D
 import scalafx.scene.Node
 import scalafx.scene.input.{MouseButton, MouseEvent}
 

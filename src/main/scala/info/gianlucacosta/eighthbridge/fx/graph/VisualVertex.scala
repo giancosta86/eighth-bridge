@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.graphs.Vertex
-import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, Timestamp, Timestamped}
+import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, Timestamped}
 import scalafx.geometry.Point2D
 
 /**

@@ -1,19 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
+import info.gianlucacosta.eighthbridge.fx.GraphCanvas
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualLink}
-import info.gianlucacosta.eighthbridge.fx.{LinkNode, GraphCanvas}
-import info.gianlucacosta.eighthbridge.graphs.features.Labeled
 import info.gianlucacosta.helios.fx.geometry.Segment
-import scalafx.beans.binding.Bindings
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
-import scalafx.scene.shape.Line
-import info.gianlucacosta.helios.fx.Includes._
-import info.gianlucacosta.eighthbridge.fx.graph.Delta._
-import javafx.beans.property.SimpleObjectProperty
-
-import java.util.Date
 
 class LabeledLinkNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualLink)
 extends PlainLinkNode(graphCanvas, initialArc) {

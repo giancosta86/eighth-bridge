@@ -1,10 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import javafx.beans.property.SimpleObjectProperty
+import scalafx.Includes._
 import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
-import scalafx.Includes._
 
 private object ShaftPolyline {
   private def buildSegmentsFromExtremes(

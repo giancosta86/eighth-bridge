@@ -3,12 +3,12 @@ package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 import info.gianlucacosta.eighthbridge.fx.DragContext
 import info.gianlucacosta.eighthbridge.fx.graph.Delta
 import info.gianlucacosta.helios.fx.Includes.extendNode
-import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
-import scalafx.beans.property.{DoubleProperty, ObjectProperty}
-import scalafx.scene.control.Label
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
+import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
+import scalafx.scene.control.Label
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
 private class LinkLabel(

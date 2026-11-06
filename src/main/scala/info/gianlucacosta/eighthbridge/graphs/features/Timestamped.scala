@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
-import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{Graph, GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
 trait Timestamped extends ConcreteCloneable {
   private var _timestamp: Timestamp =

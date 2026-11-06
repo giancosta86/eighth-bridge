@@ -1,11 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import javafx.beans.property.SimpleObjectProperty
+import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
 import scalafx.scene.shape.Line
-import scalafx.Includes._
-import scalafx.beans.binding.Bindings
 
 private class BarbSegment extends Line {
   styleClass.add("line")

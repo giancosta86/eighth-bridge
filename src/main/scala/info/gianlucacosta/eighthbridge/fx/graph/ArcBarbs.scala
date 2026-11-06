@@ -1,7 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import scalafx.geometry.{Dimension2D, Point2D}
-import Math._
+import scalafx.geometry.Point2D
+
+import java.lang.Math._
 
 case class ArcBarbs(
                      angleInDegrees: Double,

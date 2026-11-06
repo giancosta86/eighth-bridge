@@ -1,13 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
-import info.gianlucacosta.eighthbridge.fx.{VertexNode}
 import javafx.beans.property.SimpleObjectProperty
-import scalafx.geometry.{Dimension2D, Point2D}
-import scalafx.scene.Group
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
-import scalafx.Includes._
+import scalafx.geometry.Point2D
+import scalafx.scene.Group
 
 private class BarbsNode(
                           initialSourcePoint: Point2D,

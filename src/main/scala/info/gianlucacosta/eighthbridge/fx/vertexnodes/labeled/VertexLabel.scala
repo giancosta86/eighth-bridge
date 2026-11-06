@@ -1,10 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 
-import info.gianlucacosta.eighthbridge.graphs.Vertex
-import info.gianlucacosta.eighthbridge.graphs.features.Labeled
+import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.scene.control.Label
-import scalafx.Includes._
 
 private class VertexLabel(vertexNode: LabeledVertexNode)
   extends Label {

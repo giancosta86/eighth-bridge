@@ -1,15 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.DefaultBackgroundNode.EmptySelectionBounds
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, NamedVisualVertex, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
-import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
-import scalafx.geometry.{BoundingBox, Bounds, Point2D}
-import scalafx.scene.Group
-import scalafx.scene.input.{MouseButton, MouseEvent}
+import scalafx.geometry.{BoundingBox, Point2D}
+import scalafx.scene.input.MouseEvent
 import scalafx.scene.shape.Rectangle
 
 object DefaultBackgroundNode {

@@ -1,9 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.undirected
 
-import info.gianlucacosta.eighthbridge.graphs.directed.{DirectedGraph, VertexFoldProcessor}
 import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
-
-import scala.annotation.tailrec
 
 final class UndirectedGraph[V <: Vertex, E <: Link] private (
                                                               vertexes: Set[V],

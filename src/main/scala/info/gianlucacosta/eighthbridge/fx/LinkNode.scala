@@ -1,16 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, VisualLink, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.VisualLink
 import info.gianlucacosta.helios.fx.css.PseudoClasses
-import javafx.beans.property.{SimpleObjectProperty}
+import javafx.beans.property.SimpleObjectProperty
+import scalafx.Includes._
+import scalafx.scene.input.MouseEvent
 
 import scala.collection.JavaConversions._
-import scalafx.Includes._
-import scalafx.beans.binding.Bindings
-import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty}
-import scalafx.geometry.Point2D
-import scalafx.scene.Group
-import scalafx.scene.input.MouseEvent
 
 /**
   * JavaFX node rendering a VisualArc

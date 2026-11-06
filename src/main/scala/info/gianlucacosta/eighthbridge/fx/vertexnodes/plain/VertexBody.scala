@@ -2,9 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.vertexnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.ReadOnlyProperties
 import scalafx.Includes._
-import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyDoubleProperty
-import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Ellipse
 
 private class VertexBody(vertexNode: PlainVertexNode) extends Ellipse {

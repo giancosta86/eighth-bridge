@@ -1,15 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.features.TimestampedGraphDiff
-import javafx.beans.Observable
-import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleObjectProperty}
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.application.Platform
-import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyObjectProperty}
-import scalafx.geometry.{Dimension2D, Point2D}
-import scalafx.scene.{Group, Node}
-import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent, ScrollEvent}
+import scalafx.beans.property.ReadOnlyObjectProperty
+import scalafx.geometry.Dimension2D
+import scalafx.scene.Group
+import scalafx.scene.input.{KeyCode, KeyEvent}
 import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
 

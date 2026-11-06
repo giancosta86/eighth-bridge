@@ -1,9 +1,9 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty}
+import scalafx.Includes._
 import scalafx.scene.Node
 import scalafx.scene.input.ScrollEvent
-import scalafx.Includes._
 
 trait ZoomContext extends Node {
   val zoomEnabled =

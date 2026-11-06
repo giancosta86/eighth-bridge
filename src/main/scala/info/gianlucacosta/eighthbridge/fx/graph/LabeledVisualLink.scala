@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
+import info.gianlucacosta.eighthbridge.graphs.features.Labeled
 import scalafx.geometry.Point2D
 
 class LabeledVisualLink(

@@ -1,11 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.ReadOnlyProperties
 import info.gianlucacosta.eighthbridge.fx.graph.LinkHandle
 import javafx.beans.property.SimpleObjectProperty
-import scalafx.beans.property.{ObjectProperty, ReadOnlyObjectProperty}
-import scalafx.scene.Group
 import scalafx.Includes._
+import scalafx.beans.property.ObjectProperty
+import scalafx.scene.Group
 
 private class HandleNodeGroup(
                                initialHandles: List[LinkHandle],

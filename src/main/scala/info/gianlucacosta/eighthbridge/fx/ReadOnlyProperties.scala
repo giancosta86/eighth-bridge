@@ -1,10 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import javafx.beans.property.{SimpleBooleanProperty, SimpleDoubleProperty, SimpleFloatProperty, SimpleIntegerProperty, SimpleLongProperty, SimpleObjectProperty, SimpleStringProperty}
+import javafx.beans.property._
+import scalafx.Includes._
 import scalafx.beans.Observable
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, ReadOnlyFloatProperty, ReadOnlyIntegerProperty, ReadOnlyLongProperty, ReadOnlyObjectProperty, ReadOnlyStringProperty}
-import scalafx.Includes._
 
 //TODO! Move this to Helios-FX!
 object ReadOnlyProperties {

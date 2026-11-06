@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes
 
-import info.gianlucacosta.eighthbridge.fx.graph.{LinkHandle, Delta}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LinkHandle}
 import scalafx.geometry.Point2D
 
 package object plain {

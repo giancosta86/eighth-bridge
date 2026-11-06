@@ -1,13 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{Segments, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.VertexNode
 import info.gianlucacosta.eighthbridge.fx.graph.LinkHandle
 import javafx.beans.property.SimpleObjectProperty
-import scalafx.beans.binding.{Bindings, ObjectBinding}
-import scalafx.scene.Group
 import scalafx.Includes._
-import scalafx.beans.property.{ObjectProperty, ReadOnlyDoubleProperty, ReadOnlyObjectProperty, ReadOnlyObjectWrapper}
-import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.beans.binding.{Bindings, ObjectBinding}
+import scalafx.geometry.Point2D
+import scalafx.scene.Group
 
 private class Shaft(
                      sourceVertexNode: VertexNode,

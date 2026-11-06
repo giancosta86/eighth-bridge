@@ -1,8 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LinkHandle, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, LinkNode, VertexNode}
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, Delta, LinkHandle, VisualLink}
-import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D

@@ -1,14 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.linknodes.labeled.LabeledLinkNode
-import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
-import info.gianlucacosta.eighthbridge.fx.graph.{ArcBarbs, LinkHandle, Delta, LabeledVisualLink, VisualLink, VisualGraph, VisualVertex}
-import info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled.LabeledVertexNode
-import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
-import info.gianlucacosta.eighthbridge.graphs.features.{Labeled, Named}
-import info.gianlucacosta.helios.fx.Includes._
-import scalafx.geometry.{Dimension2D, Point2D}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, LinkHandle, VisualGraph, VisualLink, VisualVertex}
 import scalafx.Includes._
+import scalafx.geometry.{Dimension2D, Point2D}
 
 /**
   * Controller providing behavior for GraphCanvas

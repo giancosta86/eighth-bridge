@@ -1,15 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{DragContext}
-import info.gianlucacosta.eighthbridge.fx.graph.{LinkHandle, Delta}
-import info.gianlucacosta.helios.fx.Includes.{extendNode, extendPoint2D}
+import info.gianlucacosta.eighthbridge.fx.DragContext
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LinkHandle}
+import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.SimpleObjectProperty
-import scalafx.scene.shape.Ellipse
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ObjectProperty
-import scalafx.geometry.Point2D
 import scalafx.scene.input.{MouseButton, MouseEvent}
+import scalafx.scene.shape.Ellipse
 
 private class HandleNode(
                           initialHandle: LinkHandle,
