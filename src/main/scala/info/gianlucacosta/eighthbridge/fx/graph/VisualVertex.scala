@@ -1,14 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.graphs.Vertex
-import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, Timestamped}
+import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, HasSettableTimestamp}
 import scalafx.geometry.Point2D
 
 /**
   * A vertex for VisualGraph
   */
 class VisualVertex(centerValue: Point2D)
-  extends ConcreteCloneable with Vertex with Timestamped {
+  extends ConcreteCloneable with Vertex with HasSettableTimestamp {
   private var _center: Point2D =
     centerValue
 

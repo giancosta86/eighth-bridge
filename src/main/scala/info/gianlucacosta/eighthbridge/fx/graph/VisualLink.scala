@@ -1,13 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.graphs.Link
-import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, Timestamped}
+import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, HasSettableTimestamp}
 
 /**
   * A link for VisualGraph
   */
 class VisualLink(barbsValue: Option[ArcBarbs])
-  extends ConcreteCloneable with Link with Timestamped {
+  extends ConcreteCloneable with Link with HasSettableTimestamp {
 
   private var _selected: Boolean =
     false

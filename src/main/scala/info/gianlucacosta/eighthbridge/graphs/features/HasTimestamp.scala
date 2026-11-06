@@ -2,33 +2,19 @@ package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
-trait Timestamped extends ConcreteCloneable {
-  private var _timestamp: Timestamp =
-    Timestamp.now
+trait HasTimestamp {
+  def timestamp: Timestamp
 
-  protected def timestamp: Timestamp =
-    _timestamp
-
-  def updateTimestamp(): this.type = {
-    val result =
-      clone()
-
-    result._timestamp =
-      Timestamp.now
-
-    result
-  }
-
-  def isNewerThan(other: Timestamped): Boolean =
+  def isNewerThan(other: HasTimestamp): Boolean =
     timestamp > other.timestamp
 }
 
-object Timestamped {
+object HasTimestamp {
   implicit class TimestampedDirectedGraphExtensions[
-    V <: Vertex with Timestamped,
-    L <: Link with Timestamped](
-      self: Graph[V, L]
-  ) {
+    V <: Vertex with HasTimestamp,
+    L <: Link with HasTimestamp](
+                                          self: Graph[V, L]
+                                        ) {
     def getDiffSince(referenceGraph: Graph[V, L]): TimestampedGraphDiff[V, L] = {
       val addedVertexes =
         self.vertexes -- referenceGraph.vertexes

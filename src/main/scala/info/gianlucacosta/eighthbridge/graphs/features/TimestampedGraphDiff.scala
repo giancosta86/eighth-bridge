@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.features
 
 import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
-case class TimestampedGraphDiff[V <: Vertex with Timestamped, L <: Link with Timestamped](
+case class TimestampedGraphDiff[V <: Vertex with HasTimestamp, L <: Link with HasTimestamp](
                                                                                            addedVertexes: Set[V],
                                                                                            addedLinks: Set[L],
                                                                                            updatedVertexes: Set[V],
@@ -33,7 +33,7 @@ case class TimestampedGraphDiff[V <: Vertex with Timestamped, L <: Link with Tim
 }
 
 object TimestampedGraphDiff {
-  def forNewGraph[V <: Vertex with Timestamped, L <: Link with Timestamped](graph: Graph[V, L]):
+  def forNewGraph[V <: Vertex with HasSettableTimestamp, L <: Link with HasSettableTimestamp](graph: Graph[V, L]):
   TimestampedGraphDiff[V, L] =
     TimestampedGraphDiff(
       addedVertexes =
