@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
-trait HasTimestampSettable extends ConcreteCloneable with HasTimestamp {
+trait HasTimestampSettable extends Prototype with HasTimestamp {
   private var _timestamp: Timestamp =
     Timestamp.now
 

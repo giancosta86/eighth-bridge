@@ -1,9 +1,9 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
 import info.gianlucacosta.eighthbridge.graphs.Link
-import info.gianlucacosta.eighthbridge.graphs.features.{ConcreteCloneable, HasHandlesSettable, HasOptionalArcBarbsSettable, HasSelectedSettable, HasStyleClassesSettable, HasTimestampSettable}
+import info.gianlucacosta.eighthbridge.graphs.features.{Prototype, HasHandlesSettable, HasOptionalArcBarbsSettable, HasSelectedSettable, HasStyleClassesSettable, HasTimestampSettable}
 
-class VisualLink extends ConcreteCloneable
+class VisualLink extends Prototype
   with Link
   with HasSelectedSettable
   with HasHandlesSettable
