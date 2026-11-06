@@ -1,35 +1,25 @@
 package info.gianlucacosta.eighthbridge.graphs.features
 
+import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
+import info.gianlucacosta.helios.mathutils.Numbers
 
-import scala.language.implicitConversions
-
-/**
- * Object having a weight
- */
-trait Weighted {
-  def minWeight: Weight
-
+trait HasWeight {
   def weight: Weight
-
-  def maxWeight: Weight
-
-  def setWeight(weight: Weight): this.type =
-    setWeight(
-      minWeight, weight, maxWeight
-    )
-
-  def setWeight(
-               minWeight: Weight,
-               weight: Weight,
-               maxWeight: Weight
-               ): this.type
 }
 
-object Weighted {
-  implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with Weighted](self: DirectedGraph[V, A]) {
+//TODO!
+/*
+private def formatLabel(weight: Weight, maxWeight: Weight): String =
+  if (maxWeight < Weight.PositiveInfinity)
+    s"(${Numbers.smartString(weight)}; ${Numbers.smartString(maxWeight)}"
+  else
+    Numbers.smartString(weight)
+*/
+
+object HasWeight {
+  implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with HasWeight](self: DirectedGraph[V, A]) {
     def getMinArcBetween(source: V, target: V): Option[A] =
       self
         .getArcsBetween(source, target)
@@ -58,7 +48,7 @@ object Weighted {
   }
 
 
-  implicit class WeightedUndirectedGraphExtensions[V <: Vertex, E <: Link with Weighted](self: UndirectedGraph[V, E]) {
+  implicit class WeightedUndirectedGraphExtensions[V <: Vertex, E <: Link with HasWeight](self: UndirectedGraph[V, E]) {
     def getMinEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
       self
         .getEdgesBetween(oneVertex, anotherVertex)

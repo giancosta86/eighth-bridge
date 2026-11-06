@@ -33,7 +33,7 @@ case class TimestampedGraphDiff[V <: Vertex with HasTimestamp, L <: Link with Ha
 }
 
 object TimestampedGraphDiff {
-  def forNewGraph[V <: Vertex with HasSettableTimestamp, L <: Link with HasSettableTimestamp](graph: Graph[V, L]):
+  def forNewGraph[V <: Vertex with HasTimestampSettable, L <: Link with HasTimestampSettable](graph: Graph[V, L]):
   TimestampedGraphDiff[V, L] =
     TimestampedGraphDiff(
       addedVertexes =

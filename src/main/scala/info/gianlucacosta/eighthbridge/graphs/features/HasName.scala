@@ -5,17 +5,15 @@ import scala.language.implicitConversions
 /**
  * Object having a name
  */
-trait Named {
+trait HasName {
   def name: String
-
-  def setName(name: String): this.type
 
   override def toString: String =
     name
 }
 
-object Named {
-  implicit class NamedPairExtensions[T <: Named, U <: Named](self: (T, U)) {
+object HasName {
+  implicit class NamedPairExtensions[T <: HasName, U <: HasName](self: (T, U)) {
     val namePair: (String, String) =
       (self._1.name, self._2.name)
 

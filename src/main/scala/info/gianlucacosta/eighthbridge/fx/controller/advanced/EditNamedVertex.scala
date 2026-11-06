@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controller.advanced
 
 import info.gianlucacosta.eighthbridge.fx.controller.primitive.EditVertex
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
-import info.gianlucacosta.eighthbridge.graphs.features.Named
+import info.gianlucacosta.eighthbridge.graphs.features.{HasName, HasNameSettable}
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
 /**
@@ -12,10 +12,10 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
   * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
   * </ul>
   */
-trait EditNamedVertex
+trait EditNamedVertex //TODO! Setting the name must also set the vertex!
   extends EditVertex {
   override type V <:
-    VisualVertex with Named
+    VisualVertex with HasNameSettable
 
   override protected def doEditVertex(vertex: V): Option[V] = {
     val newNameInput =
@@ -35,7 +35,7 @@ trait EditNamedVertex
     val nameAssignedToAnotherVertex =
       graph
         .vertexes
-        .exists(otherVertex => otherVertex.asInstanceOf[Named].name == newName && otherVertex != vertex)
+        .exists(otherVertex => otherVertex.asInstanceOf[HasName].name == newName && otherVertex != vertex)
 
     require(
       !nameAssignedToAnotherVertex,

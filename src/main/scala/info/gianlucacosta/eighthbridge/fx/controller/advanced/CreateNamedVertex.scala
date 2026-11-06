@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controller.advanced
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
-import info.gianlucacosta.eighthbridge.graphs.features.Named
+import info.gianlucacosta.eighthbridge.graphs.features.HasName
 import scalafx.geometry.Point2D
 
 trait CreateNamedVertex
@@ -29,7 +29,7 @@ trait CreateNamedVertex
           getVertexName(vertexIndex)
 
         val vertexNameExists =
-          graph.vertexes.exists(_.asInstanceOf[Named].name == vertexName)
+          graph.vertexes.exists(_.asInstanceOf[HasName].name == vertexName)
 
         vertexNameExists
       })
@@ -58,5 +58,5 @@ trait CreateNamedVertex
    * @param vertexName
    * @return
    */
-  protected def createNamedVertex(center: Point2D, vertexName: String): VisualVertex with Named
+  protected def createNamedVertex(center: Point2D, vertexName: String): VisualVertex with HasName
 }

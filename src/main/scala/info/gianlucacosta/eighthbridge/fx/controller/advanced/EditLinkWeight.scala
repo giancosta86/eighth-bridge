@@ -2,13 +2,14 @@ package info.gianlucacosta.eighthbridge.fx.controller.advanced
 
 import info.gianlucacosta.eighthbridge.fx.controller.primitive.EditLink
 import info.gianlucacosta.eighthbridge.fx.graph.VisualLink
-import info.gianlucacosta.eighthbridge.graphs.features.Weighted
+import info.gianlucacosta.eighthbridge.graphs.features.HasWeightSettable
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
+//TODO! Editing a link weight should also update its label?!
 trait EditLinkWeight
   extends EditLink {
   override type L <:
-    VisualLink with Weighted
+    VisualLink with HasWeightSettable
 
   override protected def doEditLink(link: L): Option[L] = {
     InputDialogs.askForDouble(
