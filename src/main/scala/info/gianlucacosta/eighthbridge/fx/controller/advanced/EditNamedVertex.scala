@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controller.advanced
 
 import info.gianlucacosta.eighthbridge.fx.controller.primitive.EditVertex
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
-import info.gianlucacosta.eighthbridge.graphs.features.{HasName, HasNameSettable}
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasName, HasNameSettable}
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
 /**

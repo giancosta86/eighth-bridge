@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.graphs.features.{HasLabelSettable, HasOptionalCustomLabelCenterSettable}
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasLabelSettable, HasOptionalCustomLabelCenterSettable}
 
 class LabeledVisualLink
   extends VisualLink

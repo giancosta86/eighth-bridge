@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
-import info.gianlucacosta.eighthbridge.graphs.features.TimestampedGraphDiff
+import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedGraphDiff
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.application.Platform

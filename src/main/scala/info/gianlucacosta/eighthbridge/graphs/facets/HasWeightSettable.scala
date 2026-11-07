@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.features
+package info.gianlucacosta.eighthbridge.graphs.facets
 
 import info.gianlucacosta.eighthbridge.fx.graph.WeightedVisualLink
 import info.gianlucacosta.helios.mathutils.Numbers

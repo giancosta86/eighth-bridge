@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.features
+package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasTimestampSettable extends Prototype with HasTimestamp {
   private var _timestamp: Timestamp =

@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.features
+package info.gianlucacosta.eighthbridge.graphs.facets
 
 import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 

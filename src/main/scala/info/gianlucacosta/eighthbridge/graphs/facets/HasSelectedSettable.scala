@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.features
+package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasSelectedSettable extends HasTimestampSettable with HasSelected {
   protected val initialSelected: Boolean =

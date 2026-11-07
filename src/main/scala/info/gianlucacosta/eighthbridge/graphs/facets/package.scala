@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs
 
-package object features {
+package object facets {
   type Timestamp =
     Long
 
