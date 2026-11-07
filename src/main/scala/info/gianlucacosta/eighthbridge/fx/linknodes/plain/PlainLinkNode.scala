@@ -1,7 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LinkHandle, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, LinkNode, VertexNode}
+import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
@@ -49,7 +50,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
       initialIntersectionPoint =
         shaft.intersectionWithTargetVertexNode(),
       initialArcBarbs =
-        initialArc.barbs
+        initialArc.arcBarbs
     ) {
       sourcePoint <==
         shaft.lastPointBeforeTargetVertex
@@ -60,7 +61,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
       arcBarbs <==
         Bindings.createObjectBinding(
           () =>
-            link().barbs,
+            link().arcBarbs,
 
           link
     )

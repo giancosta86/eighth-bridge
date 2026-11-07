@@ -2,23 +2,22 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 
 import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
 
-//TODO! Rename the property to "arcBarbs", here and in the read-only interface!
 trait HasOptionalArcBarbsSettable extends HasTimestampSettable with HasOptionalArcBarbs {
-  protected val initialBarbs: Option[ArcBarbs] =
+  protected val initialArcBarbs: Option[ArcBarbs] =
     None
 
-  private var _barbs: Option[ArcBarbs] =
-    initialBarbs
+  private var _arcBarbs: Option[ArcBarbs] =
+    initialArcBarbs
 
-  override def barbs: Option[ArcBarbs] =
-    _barbs
+  override def arcBarbs: Option[ArcBarbs] =
+    _arcBarbs
 
-  def setBarbs(barbs: Option[ArcBarbs]): this.type =
-    if (barbs != _barbs) {
+  def setArcBarbs(barbs: Option[ArcBarbs]): this.type =
+    if (barbs != _arcBarbs) {
       val result =
         updateTimestamp()
 
-      result._barbs =
+      result._arcBarbs =
         barbs
 
       result

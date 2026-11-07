@@ -6,7 +6,9 @@ import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.helios.mathutils.Numbers
 
 trait HasWeight {
+  def minWeight: Weight
   def weight: Weight
+  def maxWeight: Weight
 }
 
 //TODO!
@@ -27,7 +29,7 @@ object HasWeight {
         .sortBy(_.weight)
         .headOption
 
-    def getMinArcWeightBetween(source: V, target: V): Weight =
+    def getMinWeightBetween(source: V, target: V): Weight =
       self
         .getMinArcBetween(source, target)
         .map(_.weight)
@@ -40,7 +42,7 @@ object HasWeight {
         .sortBy(_.weight)
         .lastOption
 
-    def getMaxArcWeightBetween(source: V, target: V): Weight =
+    def getMaxWeightBetween(source: V, target: V): Weight =
       self
         .getMaxArcBetween(source, target)
         .map(_.weight)
@@ -56,7 +58,7 @@ object HasWeight {
         .sortBy(_.weight)
         .headOption
 
-    def getMinEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
+    def getMinWeightBetween(oneVertex: V, anotherVertex: V): Weight =
       self
         .getMinEdgeBetween(oneVertex, anotherVertex)
         .map(_.weight)
@@ -69,7 +71,7 @@ object HasWeight {
         .sortBy(_.weight)
         .lastOption
 
-    def getMaxEdgeWeightBetween(oneVertex: V, anotherVertex: V): Weight =
+    def getMaxWeightBetween(oneVertex: V, anotherVertex: V): Weight =
       self
         .getMaxEdgeBetween(oneVertex, anotherVertex)
         .map(_.weight)

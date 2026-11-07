@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.fx.graph.WeightedVisualLink
 import info.gianlucacosta.helios.mathutils.Numbers
 
 trait HasWeightSettable extends HasTimestampSettable with HasWeight {
@@ -22,13 +21,13 @@ trait HasWeightSettable extends HasTimestampSettable with HasWeight {
   private var _maxWeight: Weight =
     initialMaxWeight
 
-  def minWeight: Weight =
+  override def minWeight: Weight =
     _minWeight
 
   override def weight: Weight =
     _weight
 
-  def maxWeight: Weight =
+  override def maxWeight: Weight =
     _maxWeight
 
   def setWeight(weight: Weight): this.type =

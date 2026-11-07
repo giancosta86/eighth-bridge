@@ -13,13 +13,13 @@ class VisualLink extends Prototype
 object VisualLink {
   def DefaultDirected: VisualLink =
     new VisualLink {
-      protected override val initialBarbs: Option[ArcBarbs] =
+      protected override val initialArcBarbs: Option[ArcBarbs] =
         Some(ArcBarbs.Default)
     }
 
   def DefaultUndirected: VisualLink =
     new VisualLink {
-      protected override val initialBarbs: Option[ArcBarbs] =
+      protected override val initialArcBarbs: Option[ArcBarbs] =
         None
     }
 }

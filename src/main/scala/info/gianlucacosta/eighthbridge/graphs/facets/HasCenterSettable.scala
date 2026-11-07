@@ -4,7 +4,6 @@ import info.gianlucacosta.eighthbridge.fx.graph.Delta
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 import scalafx.geometry.Point2D
 
-
 trait HasCenterSettable extends HasTimestampSettable with HasCenter {
   protected val initialCenter: Point2D =
     new Point2D(0,0)

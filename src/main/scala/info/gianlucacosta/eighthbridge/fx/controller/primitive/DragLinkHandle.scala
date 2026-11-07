@@ -1,7 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.controller.primitive
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LinkHandle, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
+import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 
 trait DragLinkHandle extends GraphCanvasController {
   override def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {

@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.VertexNode
-import info.gianlucacosta.eighthbridge.fx.graph.LinkHandle
+import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.{Bindings, ObjectBinding}

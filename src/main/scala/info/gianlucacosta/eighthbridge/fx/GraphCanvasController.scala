@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, LinkHandle, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 

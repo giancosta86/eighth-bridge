@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.graph.LinkHandle
+import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.property.ObjectProperty
