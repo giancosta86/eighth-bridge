@@ -23,17 +23,26 @@ case class TimestampedGraphDiff[V <: Vertex with HasTimestamp, L <: Link with Ha
 
   override def toString: String =
     Map(
-      "addedVertexes" -> addedVertexes.size,
-      "addedLinks" -> addedLinks.size,
-      "updatedVertexes" -> updatedVertexes.size,
-      "updatedLinks" -> updatedLinks.size,
-      "removedVertexes" -> removedVertexes.size,
-      "removedLinks" -> removedLinks.size
+      "addedVertexes" ->
+        addedVertexes.size,
+      "addedLinks" ->
+        addedLinks.size,
+      "updatedVertexes" ->
+        updatedVertexes.size,
+      "updatedLinks" ->
+        updatedLinks.size,
+      "removedVertexes" ->
+        removedVertexes.size,
+      "removedLinks" ->
+        removedLinks.size
     ).toString
 }
 
 object TimestampedGraphDiff {
-  def forNewGraph[V <: Vertex with HasTimestampSettable, L <: Link with HasTimestampSettable](graph: Graph[V, L]):
+  def forNewGraph[
+    V <: Vertex with HasTimestamp,
+    L <: Link with HasTimestamp
+  ](graph: Graph[V, L]):
   TimestampedGraphDiff[V, L] =
     TimestampedGraphDiff(
       addedVertexes =
