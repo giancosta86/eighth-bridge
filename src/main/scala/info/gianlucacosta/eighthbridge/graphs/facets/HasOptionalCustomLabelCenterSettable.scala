@@ -3,11 +3,8 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import scalafx.geometry.Point2D
 
 trait HasOptionalCustomLabelCenterSettable extends HasTimestampSettable with HasOptionalCustomLabelCenter {
-  protected val initialCustomLabelCenter: Option[Point2D] =
-    None
-
   private var _customLabelCenter: Option[Point2D] =
-    initialCustomLabelCenter
+    None
 
   override def customLabelCenter: Option[Point2D] =
     _customLabelCenter

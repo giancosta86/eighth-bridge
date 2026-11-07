@@ -1,11 +1,8 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasSelectedSettable extends HasTimestampSettable with HasSelected {
-  protected val initialSelected: Boolean =
-    false
-
   private var _selected: Boolean =
-    initialSelected
+    false
 
   override def selected: Boolean =
     _selected

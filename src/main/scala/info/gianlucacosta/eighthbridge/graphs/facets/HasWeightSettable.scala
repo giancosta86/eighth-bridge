@@ -3,23 +3,14 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import info.gianlucacosta.helios.mathutils.Numbers
 
 trait HasWeightSettable extends HasTimestampSettable with HasWeight {
-  protected val initialMinWeight: Weight =
+  private var _minWeight: Weight =
     0
 
-  private var _minWeight: Weight =
-    initialMinWeight
-
-  protected val initialWeight: Weight =
-    initialMinWeight
-
   private var _weight: Weight =
-    initialWeight
-
-  protected val initialMaxWeight: Weight =
-    Weight.PositiveInfinity
+    _minWeight
 
   private var _maxWeight: Weight =
-    initialMaxWeight
+    Weight.PositiveInfinity
 
   override def minWeight: Weight =
     _minWeight

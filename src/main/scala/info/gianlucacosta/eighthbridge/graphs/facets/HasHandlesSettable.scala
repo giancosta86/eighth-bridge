@@ -1,11 +1,8 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasHandlesSettable extends HasTimestampSettable with HasHandles {
-  protected val initialHandles: List[LinkHandle] =
-    List()
-
   private var _handles: List[LinkHandle] =
-    initialHandles
+    Nil
 
   def handles: List[LinkHandle] =
     _handles

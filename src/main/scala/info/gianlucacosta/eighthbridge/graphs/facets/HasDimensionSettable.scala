@@ -3,11 +3,8 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import scalafx.geometry.Dimension2D
 
 trait HasDimensionSettable extends HasTimestampSettable with HasDimension {
-  protected val initialDimension: Dimension2D =
-    new Dimension2D(0, 0)
-
   private var _dimension: Dimension2D =
-    initialDimension
+    new Dimension2D(0, 0)
 
   def dimension: Dimension2D =
     _dimension
@@ -24,4 +21,12 @@ trait HasDimensionSettable extends HasTimestampSettable with HasDimension {
     } else
       this
   }
+
+  def setDimension(width: Double, height: Double): this.type =
+    setDimension(
+      new Dimension2D(
+        width,
+        height
+      )
+    )
 }

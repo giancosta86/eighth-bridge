@@ -9,17 +9,3 @@ class VisualLink extends Prototype
   with HasHandlesSettable
   with HasStyleClassesSettable
   with HasOptionalArcBarbsSettable
-
-object VisualLink {
-  def DefaultDirected: VisualLink =
-    new VisualLink {
-      protected override val initialArcBarbs: Option[ArcBarbs] =
-        Some(ArcBarbs.Default)
-    }
-
-  def DefaultUndirected: VisualLink =
-    new VisualLink {
-      protected override val initialArcBarbs: Option[ArcBarbs] =
-        None
-    }
-}

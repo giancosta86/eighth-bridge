@@ -1,11 +1,8 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasLabelSettable extends HasTimestampSettable with HasLabel {
-  protected val initialLabel: String =
-    ""
-
   private var _label: String =
-    initialLabel
+    ""
 
   override def label: String =
     _label

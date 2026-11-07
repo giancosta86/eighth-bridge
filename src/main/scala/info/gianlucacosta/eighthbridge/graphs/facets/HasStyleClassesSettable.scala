@@ -1,11 +1,8 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasStyleClassesSettable extends HasTimestampSettable with HasStyleClasses {
-  protected val initialStyleClasses: Set[String] =
-    Set()
-
   private var _styleClasses: Set[String] =
-    initialStyleClasses
+    Set()
 
   def styleClasses: Set[String] =
     _styleClasses

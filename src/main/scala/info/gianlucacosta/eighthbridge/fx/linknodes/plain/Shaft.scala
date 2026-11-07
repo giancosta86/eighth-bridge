@@ -19,6 +19,7 @@ private class Shaft(
   val handles =
     new SimpleObjectProperty[List[LinkHandle]](initialHandles)
 
+
   private val firstPointAfterSourceVertex =
     Bindings.createObjectBinding[Point2D](
       () =>
