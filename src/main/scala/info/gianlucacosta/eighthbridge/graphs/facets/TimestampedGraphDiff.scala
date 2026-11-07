@@ -3,10 +3,10 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
 case class TimestampedGraphDiff[V <: Vertex with HasTimestamp, L <: Link with HasTimestamp](
-                                                                                           addedVertexes: Set[V],
-                                                                                           addedLinks: Set[L],
                                                                                            updatedVertexes: Set[V],
                                                                                            updatedLinks: Set[L],
+                                                                                           addedVertexes: Set[V],
+                                                                                           addedLinks: Set[L],
                                                                                            removedVertexes: Set[V],
                                                                                            removedLinks: Set[L]
                                ) {
@@ -23,14 +23,14 @@ case class TimestampedGraphDiff[V <: Vertex with HasTimestamp, L <: Link with Ha
 
   override def toString: String =
     Map(
-      "addedVertexes" ->
-        addedVertexes.size,
-      "addedLinks" ->
-        addedLinks.size,
       "updatedVertexes" ->
         updatedVertexes.size,
       "updatedLinks" ->
         updatedLinks.size,
+      "addedVertexes" ->
+        addedVertexes.size,
+      "addedLinks" ->
+        addedLinks.size,
       "removedVertexes" ->
         removedVertexes.size,
       "removedLinks" ->
