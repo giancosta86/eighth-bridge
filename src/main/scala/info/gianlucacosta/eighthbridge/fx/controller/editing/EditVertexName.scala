@@ -12,7 +12,7 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
   * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
   * </ul>
   */
-trait EditVertexName //TODO! Setting the name must also set the vertex!
+trait EditVertexName //TODO! Setting the name must also set the label!
   extends EditVertex {
   override type V <:
     VisualVertex with HasNameSettable

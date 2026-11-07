@@ -3,7 +3,7 @@ package info.gianlucacosta.eighthbridge.fx
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
-import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasOptionalCustomLabelCenterSettable, LinkHandle}
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 
@@ -62,9 +62,9 @@ class GraphCanvasController {
 
   def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {}
 
-  def dragLinkLabel(link: LabeledVisualLink, actualCenter: Point2D, delta: Delta): Unit = {}
+  def dragLinkLabel(link: VisualLink with HasOptionalCustomLabelCenterSettable, actualCenter: Point2D, delta: Delta): Unit = {}
 
-  def resetLinkLabelCenter(link: LabeledVisualLink): Unit = {}
+  def resetLinkLabelCenter(link: VisualLink with HasOptionalCustomLabelCenterSettable): Unit = {}
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
