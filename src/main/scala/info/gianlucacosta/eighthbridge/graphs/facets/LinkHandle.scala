@@ -17,6 +17,9 @@ final class LinkHandle(
 
   override protected val initialDimension: Dimension2D =
     dimensionValue
+
+  override def toString: String =
+    s"(${dimension.width} x ${dimension.height}) @ (${center.x}; ${center.y})"
 }
 
 object LinkHandle {
