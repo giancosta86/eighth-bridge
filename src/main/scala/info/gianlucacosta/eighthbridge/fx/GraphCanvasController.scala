@@ -1,6 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
+import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
@@ -8,19 +10,16 @@ import scalafx.geometry.{Dimension2D, Point2D}
 /**
   * Controller providing behavior for GraphCanvas
   */
-abstract class GraphCanvasController {
-  private var _graphCanvas: GraphCanvas = _
+class GraphCanvasController {
+  private var _graphCanvas: GraphCanvas =
+    _
 
   protected[fx] final def graphCanvas: GraphCanvas =
     _graphCanvas
 
-  private[fx] final def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
-    require(
-      _graphCanvas == null,
-      "The controller must not be already associated with another GraphCanvas!"
-    )
-
-    _graphCanvas = graphCanvas
+  private[fx] def graphCanvas_=(graphCanvas: GraphCanvas): Unit = {
+    _graphCanvas =
+      graphCanvas
   }
 
   protected final def graph: VisualGraph =
@@ -34,13 +33,15 @@ abstract class GraphCanvasController {
   def createBackgroundNode(): BackgroundNode =
     new DefaultBackgroundNode(graphCanvas)
 
+  def createVertexNode(vertex: VisualVertex): VertexNode =
+    new PlainVertexNode(graphCanvas, vertex)
+
+  def createLinkNode(link: VisualLink): LinkNode =
+    new PlainLinkNode(graphCanvas, link)
+
   def addVertex(center: Point2D): Unit = {}
 
   def addLink(sourceVertex: VisualVertex, targetVertex: VisualVertex): Unit = {}
-
-  def createVertexNode(vertex: VisualVertex): VertexNode
-
-  def createLinkNode(link: VisualLink): LinkNode
 
   def editVertex(vertex: VisualVertex): Unit = {}
 
@@ -50,6 +51,16 @@ abstract class GraphCanvasController {
     false
 
   def setSelection(selectedVertexes: Set[VisualVertex], selectedLinks: Set[VisualLink]): Unit = {}
+
+  def deleteSelection(): Unit = {}
+
+  def dragSelectedVertexes(delta: Delta): Unit = {}
+
+  def addLinkHandle(link: VisualLink, index: Int, point: Point2D): Unit = {}
+
+  def deleteLinkHandle(link: VisualLink, handle: LinkHandle): Unit = {}
+
+  def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {}
 
   def dragLinkLabel(link: LabeledVisualLink, actualCenter: Point2D, delta: Delta): Unit = {}
 
@@ -102,16 +113,4 @@ abstract class GraphCanvasController {
       )
     }
   }
-
-
-
-  def deleteSelection(): Unit = {}
-
-  def dragSelectedVertexes(delta: Delta): Unit = {}
-
-  def addLinkHandle(link: VisualLink, index: Int, point: Point2D): Unit = {}
-
-  def deleteLinkHandle(link: VisualLink, handle: LinkHandle): Unit = {}
-
-  def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {}
 }

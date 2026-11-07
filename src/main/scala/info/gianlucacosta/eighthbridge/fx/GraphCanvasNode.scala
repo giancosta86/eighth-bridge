@@ -16,7 +16,7 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
     * @return
     */
   protected final def controller: GraphCanvasController =
-    graphCanvas.controller
+    graphCanvas.controller()
 
   /**
     * The current graph within the graph canvas

@@ -7,8 +7,8 @@ import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
-class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
-  extends LinkNode(graphCanvas, initialArc) {
+class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
+  extends LinkNode(graphCanvas, initialLink) {
 
   protected val (sourceVertex, targetVertex) =
     graph.vertexPairByArc(link())
@@ -23,7 +23,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
     new Shaft(
       sourceVertexNode,
       targetVertexNode,
-      initialArc.handles,
+      initialLink.handles,
       onSegmentRightClick =
         handleRightClickOnShaftSegment,
       onHandleNodeRightClick =
@@ -50,7 +50,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
       initialIntersectionPoint =
         shaft.intersectionWithTargetVertexNode(),
       initialArcBarbs =
-        initialArc.arcBarbs
+        initialLink.arcBarbs
     ) {
       sourcePoint <==
         shaft.lastPointBeforeTargetVertex

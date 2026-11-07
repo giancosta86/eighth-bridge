@@ -1,10 +1,12 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedGraphDiff
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.application.Platform
+import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyObjectProperty
 import scalafx.geometry.Dimension2D
 import scalafx.scene.Group
@@ -20,21 +22,54 @@ import scalafx.scene.shape.Rectangle
   * <li>Render graph components using different JavaFX nodes</li>
   * <li>Support a given set of operations - for example: graph definition via user interaction</li>
   * </ul>
-  *
-  * @param controller   The controller telling the canvas how to render components and how to react to user input
-  * @param initialGraph The initial graph shown by the canvas
   */
-class GraphCanvas(
-                   val controller: GraphCanvasController,
-                   initialGraph: VisualGraph
-                 ) extends Pane with PanContext with ZoomContext {
-  controller.graphCanvas =
-    this
-
+class GraphCanvas extends Pane with PanContext with ZoomContext {
   styleClass.add("graph")
 
+  val controller =
+    new SimpleObjectProperty[GraphCanvasController](
+      new GraphCanvasController {
+        graphCanvas =
+          GraphCanvas.this
+      }
+    )
+
+  controller.onInvalidate {
+    controller().graphCanvas =
+      GraphCanvas.this
+
+    scheduleFullRender()
+  }
+
+  private val backgroundNode =
+    new SimpleObjectProperty[BackgroundNode](
+      controller().createBackgroundNode()
+    )
+
+  backgroundNode <==
+    Bindings.createObjectBinding[BackgroundNode](
+      () =>
+        controller().createBackgroundNode(),
+
+      controller
+    )
+
+  private val backgroundSlot =
+    new Group {
+      children.setAll(backgroundNode())
+    }
+
+  children.add(backgroundSlot)
+
+  backgroundNode.onInvalidate {
+    backgroundSlot.children.setAll(backgroundNode())
+    ()
+  }
+
   val graph =
-    new SimpleObjectProperty[VisualGraph](initialGraph)
+    new SimpleObjectProperty[VisualGraph](
+      new DirectedGraph[VisualVertex, VisualLink]
+    )
 
   graph.onChange { (_, oldValue, newValue) =>
     println(s"${new java.util.Date}: THE GRAPH PROPERTY HAS CHANGED")
@@ -45,7 +80,9 @@ class GraphCanvas(
     println(s"The GraphDiff is: ${graphDiff}")
 
     if (graphDiff.nonEmpty) {
-      render(newValue, graphDiff)
+      Platform.runLater {
+        render(newValue, graphDiff)
+      }
     }
   }
 
@@ -68,11 +105,6 @@ class GraphCanvas(
     height <==
       GraphCanvas.this.height
   }
-
-  private val backgroundNode: BackgroundNode =
-    controller.createBackgroundNode()
-
-  children.add(backgroundNode)
 
   focusTraversable =
     true
@@ -97,12 +129,20 @@ class GraphCanvas(
     new Group
   children.add(vertexNodes)
 
-  Platform.runLater {
-    render(
-      initialGraph,
-      TimestampedGraphDiff.forNewGraph(initialGraph)
-    )
+
+  private def scheduleFullRender(): Unit = {
+    Platform.runLater {
+      val currentGraph =
+        graph()
+
+      render(
+        currentGraph,
+        TimestampedGraphDiff.forNewGraph(currentGraph)
+      )
+    }
   }
+
+  scheduleFullRender()
 
   protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     println(s"${new java.util.Date}: NOW RENDERING")
@@ -124,7 +164,7 @@ class GraphCanvas(
     val addedVertexNodesByVertex: Map[VisualVertex, VertexNode] =
       graphDiff.addedVertexes.map(vertex => {
           val vertexNode =
-            controller.createVertexNode(vertex)
+            controller().createVertexNode(vertex)
 
           vertex -> vertexNode
         })
@@ -137,7 +177,7 @@ class GraphCanvas(
     val addedLinkNodesByLink: Map[VisualLink, LinkNode] =
       graphDiff.addedLinks.map(link => {
           val linkNode =
-            controller.createLinkNode(link)
+            controller().createLinkNode(link)
 
           link -> linkNode
         })
@@ -147,41 +187,51 @@ class GraphCanvas(
       addedLinkNodesByLink
 
 
-    graphDiff.updatedVertexes.foreach(vertex => {
-      val updatedVertex =
-        updatedGraph.vertexesById(vertex.id)
-
+    graphDiff.updatedVertexes.foreach(updatedVertex => {
       val vertexNode =
-        _vertexNodesByVertex(vertex)
+        _vertexNodesByVertex(updatedVertex)
 
       vertexNode.vertex() =
         updatedVertex.asInstanceOf[vertexNode.V]
     })
 
-    graphDiff.updatedLinks.foreach(link => {
-      val updatedLink =
-        updatedGraph.linksById(link.id)
-
+    graphDiff.updatedLinks.foreach(updatedLink => {
       val linkNode =
-        _linkNodesByLink(link)
+        _linkNodesByLink(updatedLink)
 
       linkNode.link() =
         updatedLink.asInstanceOf[linkNode.L]
     })
 
 
-    addedVertexNodesByVertex.values.foreach(vertexNodes.children.add(_))
+    addedVertexNodesByVertex
+      .values
+      .foreach(
+        vertexNodes.children.add(_)
+      )
 
-    addedLinkNodesByLink.values.foreach(linkNodes.children.add(_))
+    addedLinkNodesByLink
+      .values
+      .foreach(
+        linkNodes.children.add(_)
+      )
 
 
-    danglingLinkNodesByLink.values.foreach(linkNodes.children.remove(_))
+    danglingLinkNodesByLink
+      .values
+      .foreach(
+        linkNodes.children.remove(_)
+      )
 
-    danglingVertexNodesByVertex.values.foreach(vertexNodes.children.remove(_))
+    danglingVertexNodesByVertex
+      .values
+      .foreach(
+        vertexNodes.children.remove(_)
+      )
 
 
     val newDimension =
-      controller.canvasDimension
+      controller().canvasDimension
 
     this.resize(
       newDimension.width,
@@ -201,6 +251,6 @@ class GraphCanvas(
   }
 
   private def handleDelKeyPressed(): Unit = {
-    controller.deleteSelection()
+    controller().deleteSelection()
   }
 }

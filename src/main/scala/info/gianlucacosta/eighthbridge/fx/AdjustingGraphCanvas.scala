@@ -5,10 +5,7 @@ import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedGraphDiff
 import scalafx.Includes._
 import scalafx.application.Platform
 
-abstract class AdjustingGraphCanvas(
-                            controller: GraphCanvasController,
-                            initialGraph: VisualGraph
-                           ) extends GraphCanvas(controller, initialGraph) {
+abstract class AdjustingGraphCanvas extends GraphCanvas {
 
   private var adjustmentRequested =
     false
