@@ -1,11 +1,11 @@
-package info.gianlucacosta.eighthbridge.fx.controller.advanced
+package info.gianlucacosta.eighthbridge.fx.controller.creation
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
 import info.gianlucacosta.eighthbridge.graphs.facets.HasName
 import scalafx.geometry.Point2D
 
-trait CreateNamedVertex
+trait CreateVertexWithName
   extends GraphCanvasController {
   /**
    * The first index used when creating vertexes

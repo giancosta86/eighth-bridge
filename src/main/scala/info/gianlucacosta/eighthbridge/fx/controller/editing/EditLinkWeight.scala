@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.controller.advanced
+package info.gianlucacosta.eighthbridge.fx.controller.editing
 
 import info.gianlucacosta.eighthbridge.fx.controller.primitive.EditLink
 import info.gianlucacosta.eighthbridge.fx.graph.VisualLink

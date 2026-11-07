@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.controller.advanced
+package info.gianlucacosta.eighthbridge.fx.controller.editing
 
 import info.gianlucacosta.eighthbridge.fx.controller.primitive.EditVertex
 import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
@@ -12,7 +12,7 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
   * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
   * </ul>
   */
-trait EditNamedVertex //TODO! Setting the name must also set the vertex!
+trait EditVertexName //TODO! Setting the name must also set the vertex!
   extends EditVertex {
   override type V <:
     VisualVertex with HasNameSettable
