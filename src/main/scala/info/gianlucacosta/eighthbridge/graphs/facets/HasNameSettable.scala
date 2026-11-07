@@ -1,7 +1,5 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.fx.graph.NamedVisualVertex
-
 trait HasNameSettable extends HasTimestampSettable with HasName {
   private var _name: String =
     ""

@@ -1,17 +1,18 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvas
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasLabel, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.helios.fx.geometry.Segment
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
-class LabeledLinkNode(graphCanvas: GraphCanvas, initialArc: LabeledVisualLink)
+class LabeledLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink with HasLabel with HasOptionalCustomLabelCenterSettable)
 extends PlainLinkNode(graphCanvas, initialArc) {
   override type L <:
-    LabeledVisualLink
+    VisualLink with HasLabel with HasOptionalCustomLabelCenterSettable
 
   private val firstHandlePoint =
     Bindings.createObjectBinding[Option[Point2D]](

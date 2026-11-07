@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, LabeledVisualLink, VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasOptionalCustomLabelCenterSettable, LinkHandle}

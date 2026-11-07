@@ -1,7 +1,5 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.fx.graph.ArcBarbs
-
 trait HasOptionalArcBarbsSettable extends HasTimestampSettable with HasOptionalArcBarbs {
   private var _arcBarbs: Option[ArcBarbs] =
     None
