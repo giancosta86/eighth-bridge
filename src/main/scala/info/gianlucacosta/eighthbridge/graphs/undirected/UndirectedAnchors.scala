@@ -14,7 +14,7 @@ case class UndirectedAnchors[V <: Vertex](oneVertex: V, anotherVertex: V) {
         anotherVertex.update(updatedVertex)
     )
 
-  def getDual(vertex: V): Option[V] = {
+  def getPairedWith(vertex: V): Option[V] = {
     if (vertex == oneVertex)
       Some(anotherVertex)
     else if (vertex == anotherVertex)
@@ -25,9 +25,9 @@ case class UndirectedAnchors[V <: Vertex](oneVertex: V, anotherVertex: V) {
 
   override def equals(obj: Any): Boolean =
     obj match {
-      case other: UndirectedAnchors[V] =>
-        (oneVertex == other.oneVertex && anotherVertex == other.anotherVertex) ||
-          (oneVertex == other.anotherVertex && anotherVertex == other.oneVertex)
+      case operand: UndirectedAnchors[V] =>
+        (oneVertex == operand.oneVertex && anotherVertex == operand.anotherVertex) ||
+          (oneVertex == operand.anotherVertex && anotherVertex == operand.oneVertex)
 
       case _ =>
         false

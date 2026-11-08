@@ -4,14 +4,13 @@ import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
 
 final class UndirectedGraph[V <: Vertex, E <: Link] private (
                                                               vertexes: Set[V],
-                                                              private val edgesByAnchors: Map[UndirectedAnchors[V], Set[E]]
+                                                              edgesByAnchors: Map[UndirectedAnchors[V], Set[E]]
                                                             )
   extends GraphCore[V, E](vertexes) {
 
   def this() = this(
     vertexes =
       Set[V](),
-
     edgesByAnchors =
       Map[UndirectedAnchors[V], Set[E]]()
   )

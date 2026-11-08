@@ -6,8 +6,8 @@ import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
 import scala.annotation.tailrec
 
 final class DirectedGraph[V <: Vertex, A <: Link] private(
-                                                     vertexes: Set[V],
-                                                     arcsByVertexPair: Map[(V, V), Set[A]]
+                                                           vertexes: Set[V],
+                                                           arcsByAnchors: Map[(V, V), Set[A]]
                                                    )
   extends GraphCore[V, A](vertexes) {
 
@@ -15,7 +15,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     vertexes =
       Set[V](),
 
-    arcsByVertexPair =
+    arcsByAnchors =
       Map[(V, V), Set[A]]()
   )
 
@@ -24,8 +24,8 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       vertexes =
         updatedVertexes,
 
-      arcsByVertexPair =
-        arcsByVertexPair
+      arcsByAnchors =
+        arcsByAnchors
     )
       .asInstanceOf[this.type]
 
@@ -34,8 +34,8 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       vertexes =
         vertexes.update(updatedVertex),
 
-      arcsByVertexPair =
-        arcsByVertexPair.map {
+      arcsByAnchors =
+        arcsByAnchors.map {
           case (keyPair, arc) =>
             keyPair.update(updatedVertex) -> arc
         }
@@ -47,8 +47,8 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       vertexes =
         vertexes -- vertexesToRemove,
 
-      arcsByVertexPair =
-        arcsByVertexPair.filterKeys(
+      arcsByAnchors =
+        arcsByAnchors.filterKeys(
           !vertexesToRemove.intersectsPair(_)
         )
     )
@@ -57,13 +57,13 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
   def addArc(vertexPair: (V, V), arc: A): DirectedGraph[V, A] =
     if (vertexes.containsPair(vertexPair)) {
       val updatedArcSet =
-        arcsByVertexPair.getOrElse(vertexPair, Set()) + arc
+        arcsByAnchors.getOrElse(vertexPair, Set()) + arc
 
       new DirectedGraph[V, A](
         vertexes =
           vertexes,
-        arcsByVertexPair =
-          arcsByVertexPair + (vertexPair -> updatedArcSet)
+        arcsByAnchors =
+          arcsByAnchors + (vertexPair -> updatedArcSet)
       )
     } else
       this
@@ -78,8 +78,8 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     new DirectedGraph[V, A](
       vertexes =
         vertexes,
-      arcsByVertexPair =
-        arcsByVertexPair.mapValues(_.update(updatedArc))
+      arcsByAnchors =
+        arcsByAnchors.mapValues(_.update(updatedArc))
     )
 
   def updateArcs(updatedArcs: Set[A]): DirectedGraph[V, A] =
@@ -94,8 +94,8 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     new  DirectedGraph[V, A](
       vertexes =
         vertexes,
-      arcsByVertexPair =
-        arcsByVertexPair
+      arcsByAnchors =
+        arcsByAnchors
           .mapValues(
             _ -- arcsToRemove
           )
@@ -112,7 +112,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   @transient
   lazy val arcs: Set[A] =
-    arcsByVertexPair
+    arcsByAnchors
       .values
       .flatten
       .toSet
@@ -127,7 +127,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   @transient
   lazy val successorsByVertex: Map[V, Set[V]] =
-    arcsByVertexPair
+    arcsByAnchors
       .keySet
       .groupBy {
         case (sourceVertex, _) =>
@@ -150,7 +150,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   @transient
   lazy val exitingArcsByVertex: Map[V, Set[A]] =
-    arcsByVertexPair
+    arcsByAnchors
       .view
       .groupBy { case ((sourceVertex, _), _) =>
         sourceVertex
@@ -174,7 +174,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   @transient
   lazy val predecessorsByVertex: Map[V, Set[V]] =
-    arcsByVertexPair
+    arcsByAnchors
       .keySet
       .groupBy {
         case (_, targetVertex) =>
@@ -197,7 +197,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   @transient
   lazy val enteringArcsByVertex: Map[V, Set[A]] =
-    arcsByVertexPair
+    arcsByAnchors
       .view
       .groupBy { case ((_, targetVertex), _) =>
         targetVertex
@@ -225,7 +225,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
   @transient
   lazy val vertexPairByArc: Map[A, (V, V)] =
-    arcsByVertexPair
+    arcsByAnchors
       .flatMap { case (vertexPair, arcs) =>
         arcs.map(_ -> vertexPair)
       }
@@ -235,7 +235,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
 
 
   def getArcsBetween(vertexPair: (V, V)): Set[A] =
-    arcsByVertexPair.getOrElse(
+    arcsByAnchors.getOrElse(
       vertexPair,
       Set()
     )
@@ -378,7 +378,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
         result.addVertex(vertex)
     )
 
-    arcsByVertexPair.foreach { case ((sourceVertex, targetVertex), arcs) =>
+    arcsByAnchors.foreach { case ((sourceVertex, targetVertex), arcs) =>
       arcs.foreach(link =>
         result =
           result.addEdge(sourceVertex, targetVertex, link)
