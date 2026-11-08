@@ -116,12 +116,12 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
       .toSet
 
   @transient
-  lazy val edgesById: Map[Link#EntityId, E] =
+  lazy val edgesById: Map[Link#Id, E] =
     edges
       .map(edge => edge.id -> edge)
       .toMap
 
-  def getEdgeById(id: Link#EntityId): Option[E] =
+  def getEdgeById(id: Link#Id): Option[E] =
     edgesById.get(id)
 
   def getEdgesBetween(anchors: UndirectedAnchors[V]): Set[E] =
@@ -204,7 +204,7 @@ final class UndirectedGraph[V <: Vertex, E <: Link] private (
   override def links: Set[E] =
     edges
 
-  override def linksById: Map[Link#EntityId, E] =
+  override def linksById: Map[Link#Id, E] =
     edgesById
 
   override def getConnectedLinks(vertex: V): Set[E] =

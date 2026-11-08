@@ -1,10 +1,18 @@
 package info.gianlucacosta.eighthbridge.graphs.entities
 
+trait IntBasedEntity extends Entity {
+  override type Id =
+    Int
+
+  val id: Id =
+    IntBasedEntity.nextId
+}
+
 object IntBasedEntity {
-  private var _nextId: IntBasedEntity#EntityId =
+  private var _nextId: IntBasedEntity#Id =
     0
 
-  private def nextId: IntBasedEntity#EntityId = {
+  private def nextId: IntBasedEntity#Id = {
     val result =
       _nextId
 
@@ -15,10 +23,4 @@ object IntBasedEntity {
   }
 }
 
-trait IntBasedEntity extends Entity {
-  override type EntityId =
-    Int
 
-  val id: EntityId =
-    IntBasedEntity.nextId
-}

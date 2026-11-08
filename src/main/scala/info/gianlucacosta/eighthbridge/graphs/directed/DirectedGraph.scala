@@ -118,7 +118,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       .toSet
 
   @transient
-  lazy val arcsById: Map[Link#EntityId, A] =
+  lazy val arcsById: Map[Link#Id, A] =
     arcs
       .map(arc => arc.id -> arc)
       .toMap

@@ -1,9 +1,9 @@
 package info.gianlucacosta.eighthbridge.graphs.entities
 
 trait Entity {
-  type EntityId
+  type Id
 
-  val id: EntityId
+  val id: Id
 
   final override def equals(obj: Any): Boolean =
     obj match {

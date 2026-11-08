@@ -4,7 +4,7 @@ trait Graph[V <: Vertex, L <: Link] {
   val vertexes: Set[V]
 
   @transient
-  lazy val vertexesById: Map[Vertex#EntityId, V] =
+  lazy val vertexesById: Map[Vertex#Id, V] =
     vertexes
       .map(vertex =>
         vertex.id -> vertex
@@ -21,7 +21,7 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def links: Set[L]
 
-  def linksById: Map[Link#EntityId, L]
+  def linksById: Map[Link#Id, L]
 
   def connectedVertexes: Set[V]
 
