@@ -1,9 +1,8 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.helios.mathutils.Numbers
+import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
 trait HasWeight {
   def minWeight: Weight

@@ -1,9 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.fx.graph.Delta
-import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 import info.gianlucacosta.eighthbridge.graphs.entities.IntBasedEntity
-import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.geometry.Point2D
 
 final class LinkHandle extends Prototype
     with IntBasedEntity
