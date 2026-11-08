@@ -22,7 +22,8 @@ abstract class GraphCore[V <: Vertex, L <: Link](val vertexes: Set[V])
   final def updateVertexes(updatedVertexes: Set[V]): this.type =
     updatedVertexes.foldLeft(this)((cumulatedGraph, vertex) =>
       cumulatedGraph.updateVertex(vertex)
-    ).asInstanceOf[this.type]
+    )
+      .asInstanceOf[this.type]
 
   final def updateVertexes(updatedVertexes: V*): this.type =
     updateVertexes(updatedVertexes.toSet)
