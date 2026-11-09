@@ -137,7 +137,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
       render(
         currentGraph,
-        TimestampedGraphDiff.forNewGraph(currentGraph)
+        TimestampedGraphDiff.forSingleGraph(currentGraph)
       )
     }
   }
