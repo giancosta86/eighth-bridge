@@ -10,7 +10,7 @@ trait HasTimestamp {
 }
 
 object HasTimestamp {
-  implicit class TimestampedDirectedGraphExtensions[
+  implicit class TimestampedGraphExtensions[
     V <: Vertex with HasTimestamp,
     L <: Link with HasTimestamp](
                                           self: Graph[V, L]
