@@ -26,12 +26,9 @@ private class BarbsNode(
       () =>
         arcBarbs().flatMap(arcBarbs =>
           intersectionPoint().flatMap(intersectionPoint =>
-            ArcBarbs.getSidePoints(
+            arcBarbs.getSidePoints(
               sourcePoint(),
-
-              intersectionPoint,
-
-              arcBarbs
+              intersectionPoint
             )
           )
         ),
