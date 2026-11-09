@@ -3,7 +3,7 @@ package info.gianlucacosta.eighthbridge.graphs
 //TODO! Move to Helios!
 object MapUtils {
   implicit class MapOfListExtensions[K, V](self: Map[K, List[V]]) {
-    def +(entry: (K, V)): Map[K, List[V]] = {
+    def :+(entry: (K, V)): Map[K, List[V]] = {
       val (key, value) =
         entry
 

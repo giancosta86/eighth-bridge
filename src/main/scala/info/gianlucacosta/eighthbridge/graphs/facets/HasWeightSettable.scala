@@ -2,31 +2,38 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 
 import info.gianlucacosta.helios.mathutils.Numbers
 
-trait HasWeightSettable extends HasTimestampSettable with HasWeight {
+trait HasWeightSettable extends TimestampedPrototype
+  with HasWeight
+  with HasWeightBounds {
   private var _minWeight: Weight =
     0
-
-  private var _weight: Weight =
-    _minWeight
-
-  private var _maxWeight: Weight =
-    Weight.PositiveInfinity
 
   override def minWeight: Weight =
     _minWeight
 
+  private var _weight: Weight =
+    _minWeight
+
   override def weight: Weight =
     _weight
+
+  private var _maxWeight: Weight =
+    Weight.PositiveInfinity
 
   override def maxWeight: Weight =
     _maxWeight
 
   def setWeight(weight: Weight): this.type =
     setWeight(
-      minWeight, weight, maxWeight
+      minWeight=
+        _minWeight,
+      weight=
+        weight,
+      maxWeight=
+        _maxWeight
     )
 
-  def setWeight(minWeight: Weight, weight: Weight, maxWeight: Weight): this.type = {
+  def setWeight(minWeight: Weight, weight: Weight, maxWeight: Weight): this.type =
     if (minWeight != _minWeight ||
       weight != _weight ||
       maxWeight != _maxWeight
@@ -42,7 +49,7 @@ trait HasWeightSettable extends HasTimestampSettable with HasWeight {
       )
 
       val result =
-        updateTimestamp()
+        clone()
 
       result._minWeight =
         minWeight
@@ -56,5 +63,4 @@ trait HasWeightSettable extends HasTimestampSettable with HasWeight {
       result
     } else
       this
-  }
 }

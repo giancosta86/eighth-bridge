@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasNameSettable extends HasTimestampSettable with HasName {
+trait HasNameSettable extends TimestampedPrototype with HasName {
   private var _name: String =
     ""
 
@@ -12,8 +12,7 @@ trait HasNameSettable extends HasTimestampSettable with HasName {
         require(name.nonEmpty, "The name cannot be empty!")
 
         val result =
-          this
-            .updateTimestamp()
+          clone()
 
         result._name =
           name

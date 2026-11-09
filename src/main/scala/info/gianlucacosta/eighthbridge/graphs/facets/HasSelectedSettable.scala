@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasSelectedSettable extends HasTimestampSettable with HasSelected {
+trait HasSelectedSettable extends TimestampedPrototype with HasSelected {
   private var _selected: Boolean =
     false
 
@@ -10,7 +10,7 @@ trait HasSelectedSettable extends HasTimestampSettable with HasSelected {
   def setSelected(selected: Boolean): this.type =
     if (selected != _selected) {
       val result =
-        updateTimestamp()
+        clone()
 
       result._selected =
         selected

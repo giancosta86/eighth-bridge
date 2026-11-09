@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasStyleClassesSettable extends HasTimestampSettable with HasStyleClasses {
+trait HasStyleClassesSettable extends TimestampedPrototype with HasStyleClasses {
   private var _styleClasses: Set[String] =
     Set()
 
@@ -10,7 +10,7 @@ trait HasStyleClassesSettable extends HasTimestampSettable with HasStyleClasses 
   def setStyleClasses(styleClasses: Set[String]): this.type =
     if (styleClasses != _styleClasses) {
       val result =
-        updateTimestamp()
+        clone()
 
       result._styleClasses =
         styleClasses

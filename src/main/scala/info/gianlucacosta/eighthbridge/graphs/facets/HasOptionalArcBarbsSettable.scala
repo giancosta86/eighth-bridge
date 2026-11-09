@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasOptionalArcBarbsSettable extends HasTimestampSettable with HasOptionalArcBarbs {
+trait HasOptionalArcBarbsSettable extends TimestampedPrototype with HasOptionalArcBarbs {
   private var _arcBarbs: Option[ArcBarbs] =
     None
 
@@ -10,7 +10,7 @@ trait HasOptionalArcBarbsSettable extends HasTimestampSettable with HasOptionalA
   def setArcBarbs(barbs: Option[ArcBarbs]): this.type =
     if (barbs != _arcBarbs) {
       val result =
-        updateTimestamp()
+        clone()
 
       result._arcBarbs =
         barbs

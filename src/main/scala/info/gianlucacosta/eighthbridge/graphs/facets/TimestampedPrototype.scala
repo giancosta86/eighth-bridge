@@ -1,15 +1,18 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasTimestampSettable extends Prototype with HasTimestamp {
+class TimestampedPrototype extends Prototype with HasTimestamp {
   private var _timestamp: Timestamp =
     Timestamp.now
 
   override def timestamp: Timestamp =
     _timestamp
 
-  def updateTimestamp(): this.type = {
+  /**
+   * Clones the object, updating the timestamp of the copy.
+   */
+  override def clone(): this.type = {
     val result =
-      clone()
+      super.clone()
 
     result._timestamp =
       Timestamp.now

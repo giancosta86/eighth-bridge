@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 
 import scalafx.geometry.Dimension2D
 
-trait HasDimensionSettable extends HasTimestampSettable with HasDimension {
+trait HasDimensionSettable extends TimestampedPrototype with HasDimension {
   private var _dimension: Dimension2D =
     new Dimension2D(0, 0)
 
@@ -12,7 +12,7 @@ trait HasDimensionSettable extends HasTimestampSettable with HasDimension {
   def setDimension(dimension: Dimension2D): this.type = {
     if (dimension != _dimension) {
       val result =
-        updateTimestamp()
+        clone()
 
       result._dimension =
         dimension

@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasHandlesSettable extends HasTimestampSettable with HasHandles {
+trait HasHandlesSettable extends TimestampedPrototype with HasHandles {
   private var _handles: List[LinkHandle] =
     Nil
 
@@ -10,7 +10,7 @@ trait HasHandlesSettable extends HasTimestampSettable with HasHandles {
   def setHandles(handles: List[LinkHandle]): this.type = {
     if (handles.ne(_handles)) {
       val result =
-        updateTimestamp()
+        clone()
 
       result._handles =
         handles
@@ -29,18 +29,19 @@ trait HasHandlesSettable extends HasTimestampSettable with HasHandles {
     setHandles(updatedHandles)
   }
 
-  def updateHandle(updatedHandle: LinkHandle): this.type =
-    setHandles(
-      handles.map(handle =>
-        if (handle == updatedHandle)
-          updatedHandle
-        else
-          handle
-      )
-    )
+  def updateHandle(updatedHandle: LinkHandle): this.type = {
+    val updatedHandles =
+      handles.update(updatedHandle)
 
-  def removeHandle(handle: LinkHandle): this.type =
-    setHandles(
+    setHandles(updatedHandles)
+  }
+
+  def removeHandle(handle: LinkHandle): this.type = {
+    val updatedHandles =
       handles.filter(_ != handle)
+
+    setHandles(
+      updatedHandles
     )
+  }
 }

@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-trait HasLabelSettable extends HasTimestampSettable with HasLabel {
+trait HasLabelSettable extends TimestampedPrototype with HasLabel {
   private var _label: String =
     ""
 
@@ -10,7 +10,7 @@ trait HasLabelSettable extends HasTimestampSettable with HasLabel {
   def setLabel(label: String): this.type =
     if (label != _label) {
       val result =
-        updateTimestamp()
+        clone()
 
       result._label =
         label
