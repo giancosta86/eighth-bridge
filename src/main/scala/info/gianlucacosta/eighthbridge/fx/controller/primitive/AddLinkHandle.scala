@@ -14,6 +14,6 @@ trait AddLinkHandle extends GraphCanvasController {
       link.addHandle(index, linkHandle)
 
     graph =
-      graph.updateArc(updatedLink)
+      graph.updateLink(updatedLink)
   }
 }

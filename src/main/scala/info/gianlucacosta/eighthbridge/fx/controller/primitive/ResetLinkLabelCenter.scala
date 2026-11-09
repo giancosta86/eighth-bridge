@@ -11,6 +11,6 @@ trait ResetLinkLabelCenter extends GraphCanvasController {
         .setCustomLabelCenter(None)
 
     graph =
-      graph.updateArc(updatedLink)
+      graph.updateLink(updatedLink)
   }
 }

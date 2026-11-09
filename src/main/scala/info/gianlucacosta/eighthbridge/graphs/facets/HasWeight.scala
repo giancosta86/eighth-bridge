@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
 trait HasWeight {
   def minWeight: Weight
@@ -20,59 +20,30 @@ private def formatLabel(weight: Weight, maxWeight: Weight): String =
 */
 
 object HasWeight {
-  implicit class WeightedDirectedGraphExtensions[V <: Vertex, A <: Link with HasWeight](self: DirectedGraph[V, A]) {
-    def getMinArcBetween(source: V, target: V): Option[A] =
+  implicit class WeightedGraphExtensions[V <: Vertex, A <: Link with HasWeight](self: Graph[V, A]) {
+    def getMinLinkBetween(source: V, target: V): Option[A] =
       self
-        .getArcsBetween(source, target)
+        .getLinksBetween(source, target)
         .toList
         .sortBy(_.weight)
         .headOption
 
     def getMinWeightBetween(source: V, target: V): Weight =
       self
-        .getMinArcBetween(source, target)
+        .getMinLinkBetween(source, target)
         .map(_.weight)
         .getOrElse(Weight.PositiveInfinity)
 
-    def getMaxArcBetween(source: V, target: V): Option[A] =
+    def getMaxLinkBetween(source: V, target: V): Option[A] =
       self
-        .getArcsBetween(source, target)
+        .getLinksBetween(source, target)
         .toList
         .sortBy(_.weight)
         .lastOption
 
     def getMaxWeightBetween(source: V, target: V): Weight =
       self
-        .getMaxArcBetween(source, target)
-        .map(_.weight)
-        .getOrElse(Weight.NegativeInfinity)
-  }
-
-
-  implicit class WeightedUndirectedGraphExtensions[V <: Vertex, E <: Link with HasWeight](self: UndirectedGraph[V, E]) {
-    def getMinEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
-      self
-        .getEdgesBetween(oneVertex, anotherVertex)
-        .toList
-        .sortBy(_.weight)
-        .headOption
-
-    def getMinWeightBetween(oneVertex: V, anotherVertex: V): Weight =
-      self
-        .getMinEdgeBetween(oneVertex, anotherVertex)
-        .map(_.weight)
-        .getOrElse(Weight.PositiveInfinity)
-
-    def getMaxEdgeBetween(oneVertex: V, anotherVertex: V): Option[E] =
-      self
-        .getEdgesBetween(oneVertex, anotherVertex)
-        .toList
-        .sortBy(_.weight)
-        .lastOption
-
-    def getMaxWeightBetween(oneVertex: V, anotherVertex: V): Weight =
-      self
-        .getMaxEdgeBetween(oneVertex, anotherVertex)
+        .getMaxLinkBetween(source, target)
         .map(_.weight)
         .getOrElse(Weight.NegativeInfinity)
   }

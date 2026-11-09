@@ -14,18 +14,18 @@ package object graph {
       self.vertexes.filter(vertex => vertex.selected)
 
 
-    def selectedArcs: Set[VisualLink] =
-      self.arcs.filter(arc => arc.selected)
+    def selectedLinks: Set[VisualLink] =
+      self.links.filter(link => link.selected)
 
 
     def selectionEmpty: Boolean =
-      self.selectedVertexes.isEmpty && selectedArcs.isEmpty
+      self.selectedVertexes.isEmpty && selectedLinks.isEmpty
 
 
     def selectAll: VisualGraph =
       self.setSelection(
         self.vertexes,
-        self.arcs
+        self.links
       )
 
     def deselectAll: VisualGraph =
@@ -43,16 +43,16 @@ package object graph {
           )
         )
 
-      val updatedArcs: Set[VisualLink] =
-        self.arcs.map(arc =>
-          arc.setSelected(
-            selectedArcs.contains(arc)
+      val updatedLinks: Set[VisualLink] =
+        self.links.map(link =>
+          link.setSelected(
+            selectedArcs.contains(link)
           )
         )
 
       self
         .updateVertexes(updatedVertexes)
-        .updateArcs(updatedArcs)
+        .updateLinks(updatedLinks)
     }
 
     def moveSelectedVertexesBy(delta: Delta): VisualGraph = {

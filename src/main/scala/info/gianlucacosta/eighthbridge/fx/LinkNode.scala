@@ -42,9 +42,9 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
     if (mouseEvent.controlDown) {
       val arcsToSelect =
         if (link().selected)
-          graph.selectedArcs - link()
+          graph.selectedLinks - link()
         else
-          graph.selectedArcs + link()
+          graph.selectedLinks + link()
 
       controller.setSelection(
         selectedVertexes =

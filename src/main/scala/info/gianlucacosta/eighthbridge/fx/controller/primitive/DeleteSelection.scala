@@ -6,7 +6,7 @@ trait DeleteSelection extends GraphCanvasController {
   override def deleteSelection(): Unit = {
     graph =
       graph
-        .removeArcs(graph.selectedArcs)
+        .removeLinks(graph.selectedLinks)
         .removeVertexes(graph.selectedVertexes)
   }
 }

@@ -12,7 +12,7 @@ trait EditLink extends GraphCanvasController {
     while (true) {
       try {
         doEditLink(link.asInstanceOf[L])
-          .map(graph.updateArc)
+          .map(graph.updateLink)
           .foreach(graph_=)
 
         return

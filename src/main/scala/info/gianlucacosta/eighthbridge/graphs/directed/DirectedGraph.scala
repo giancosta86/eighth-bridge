@@ -5,142 +5,58 @@ import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
 
-final class DirectedGraph[V <: Vertex, A <: Link] private(
-                                                           vertexes: Set[V],
-                                                           arcsByAnchors: Map[(V, V), Set[A]]
-                                                   )
-  extends GraphCore[V, A](vertexes) {
-
+final class DirectedGraph[
+  V <: Vertex,
+  L <: Link
+] private(
+   vertexes: Set[V],
+   linksByAnchors: Map[DirectedAnchors[V], Set[L]]
+ ) extends GraphCore[V, L, DirectedAnchors[V]](
+  vertexes,
+  linksByAnchors
+) {
   def this() = this(
     vertexes =
       Set[V](),
-
-    arcsByAnchors =
-      Map[(V, V), Set[A]]()
+    linksByAnchors =
+      Map[DirectedAnchors[V], Set[L]]()
   )
 
-  override protected def setVertexes(updatedVertexes: Set[V]): this.type =
-    new DirectedGraph[V, A](
+  override protected def copy(
+                               updatedVertexes: Set[V],
+                               updatedLinksByAnchors: Map[DirectedAnchors[V], Set[L]]
+                             ): this.type =
+    new DirectedGraph[V, L](
       vertexes =
         updatedVertexes,
-
-      arcsByAnchors =
-        arcsByAnchors
+      linksByAnchors =
+        updatedLinksByAnchors
     )
       .asInstanceOf[this.type]
 
-  def updateVertex(updatedVertex: V): this.type =
-    new DirectedGraph[V, A](
-      vertexes =
-        vertexes.update(updatedVertex),
+  override protected def createAnchors(first: V, second: V): DirectedAnchors[V] =
+    new DirectedAnchors[V](first, second)
 
-      arcsByAnchors =
-        arcsByAnchors.map {
-          case (keyPair, arc) =>
-            keyPair.update(updatedVertex) -> arc
-        }
-    )
-      .asInstanceOf[this.type]
-
-  def removeVertexes(vertexesToRemove: Set[V]): this.type =
-    new DirectedGraph[V, A](
-      vertexes =
-        vertexes -- vertexesToRemove,
-
-      arcsByAnchors =
-        arcsByAnchors.filterKeys(
-          !vertexesToRemove.intersectsPair(_)
-        )
-    )
-      .asInstanceOf[this.type]
-
-  def addArc(vertexPair: (V, V), arc: A): DirectedGraph[V, A] =
-    if (vertexes.containsPair(vertexPair)) {
-      val updatedArcSet =
-        arcsByAnchors.getOrElse(vertexPair, Set()) + arc
-
-      new DirectedGraph[V, A](
-        vertexes =
-          vertexes,
-        arcsByAnchors =
-          arcsByAnchors + (vertexPair -> updatedArcSet)
-      )
-    } else
-      this
-
-  def addArc(sourceVertex: V, targetVertex: V, arc: A): DirectedGraph[V, A] =
-    addArc(
-      sourceVertex -> targetVertex,
-      arc
-    )
-
-  def updateArc(updatedArc: A): DirectedGraph[V, A] =
-    new DirectedGraph[V, A](
-      vertexes =
-        vertexes,
-      arcsByAnchors =
-        arcsByAnchors.mapValues(_.update(updatedArc))
-    )
-
-  def updateArcs(updatedArcs: Set[A]): DirectedGraph[V, A] =
-    updatedArcs.foldLeft(this)((cumulatedGraph, arc) =>
-      cumulatedGraph.updateArc(arc)
-    )
-
-  def updateArcs(updatedArcs: A*): DirectedGraph[V, A] =
-    updateArcs(updatedArcs.toSet)
-
-  def removeArcs(arcsToRemove: Set[A]): DirectedGraph[V, A] =
-    new  DirectedGraph[V, A](
-      vertexes =
-        vertexes,
-      arcsByAnchors =
-        arcsByAnchors
-          .mapValues(
-            _ -- arcsToRemove
-          )
-          .filter { case (_, arcSet) =>
-            arcSet.nonEmpty
-          }
-    )
-
-  def removeArcs(arcs: A*): DirectedGraph[V, A] =
-    removeArcs(arcs.toSet)
-
-  def removeArc(arc: A): DirectedGraph[V, A] =
-    removeArcs(Set(arc))
-
-  @transient
-  lazy val arcs: Set[A] =
-    arcsByAnchors
-      .values
-      .flatten
-      .toSet
-
-  @transient
-  lazy val arcsById: Map[Link#Id, A] =
-    arcs
-      .map(arc => arc.id -> arc)
-      .toMap
-
-
+  override def addLink(source: V, target: V, link: L): this.type =
+    super.addLink(source, target, link)
 
   @transient
   lazy val successorsByVertex: Map[V, Set[V]] =
-    arcsByAnchors
+    linksByAnchors
       .keySet
+      .map(_.toPair)
       .groupBy {
         case (sourceVertex, _) =>
           sourceVertex
       }
       .mapValues(
-        _.map { case (_, targetVertex ) =>
+        _.map { case (_, targetVertex) =>
           targetVertex
         }
       )
 
   /**
-   * Returns the set of vertexes that are target of any arc exiting the given vertex.
+   * Returns the set of vertexes that are target of any link exiting the given vertex.
    */
   def getSuccessors(vertex: V): Set[V] =
     successorsByVertex.getOrElse(
@@ -149,45 +65,47 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
   @transient
-  lazy val exitingArcsByVertex: Map[V, Set[A]] =
-    arcsByAnchors
+  lazy val exitingLinksByVertex: Map[V, Set[L]] =
+    linksByAnchors
       .view
-      .groupBy { case ((sourceVertex, _), _) =>
-        sourceVertex
+      .groupBy { case (anchors, _) =>
+        anchors
+          .toPair
+          ._1
       }
       .mapValues(
-        _.map( {
-            case (_, arcs) => arcs
+        _.flatMap({
+            case (_, links) => links
           })
-          .flatten
           .toSet
       )
 
   /**
-   * Returns the set of arcs whose source is the given vertex.
+   * Returns the set of links whose source is the given vertex.
    */
-  def getExitingArcs(vertex: V): Set[A] =
-    exitingArcsByVertex.getOrElse(
+  def getExitingLinks(vertex: V): Set[L] =
+    exitingLinksByVertex.getOrElse(
       vertex,
       Set()
     )
 
   @transient
   lazy val predecessorsByVertex: Map[V, Set[V]] =
-    arcsByAnchors
+    linksByAnchors
       .keySet
+      .map(_.toPair)
       .groupBy {
         case (_, targetVertex) =>
           targetVertex
       }
       .mapValues(
-        _.map { case (sourceVertex, _ ) =>
+        _.map { case (sourceVertex, _) =>
           sourceVertex
         }
       )
 
   /**
-   * Returns the set of vertexes that are source of any arc entering the given vertex.
+   * Returns the set of vertexes that are source of any link entering the given vertex.
    */
   def getPredecessors(vertex: V): Set[V] =
     predecessorsByVertex.getOrElse(
@@ -196,77 +114,43 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
     )
 
   @transient
-  lazy val enteringArcsByVertex: Map[V, Set[A]] =
-    arcsByAnchors
+  lazy val enteringLinksByVertex: Map[V, Set[L]] =
+    linksByAnchors
       .view
-      .groupBy { case ((_, targetVertex), _) =>
-        targetVertex
+      .groupBy { case (anchors, _) =>
+        anchors
+          .toPair
+          ._2
       }
       .mapValues(
-        _.map( {
-            case (_, arcs) => arcs
+        _.flatMap({
+            case (_, links) => links
           })
-          .flatten
           .toSet
       )
 
   /**
-   * Returns the set of arcs whose target is the given vertex.
+   * Returns the set of links whose target is the given vertex.
    */
-  def getEnteringArcs(vertex: V): Set[A] =
-    enteringArcsByVertex.getOrElse(
+  def getEnteringLinks(vertex: V): Set[L] =
+    enteringLinksByVertex.getOrElse(
       vertex,
       Set()
     )
 
-  def getConnectedArcs(vertex: V): Set[A] =
-    getEnteringArcs(vertex) ++
-      getExitingArcs(vertex)
-
-  @transient
-  lazy val vertexPairByArc: Map[A, (V, V)] =
-    arcsByAnchors
-      .flatMap { case (vertexPair, arcs) =>
-        arcs.map(_ -> vertexPair)
-      }
-
-  def getAnchors(arc: A): Option[(V, V)] =
-    vertexPairByArc.get(arc)
-
-
-  def getArcsBetween(vertexPair: (V, V)): Set[A] =
-    arcsByAnchors.getOrElse(
-      vertexPair,
-      Set()
-    )
-
-  def getArcsBetween(sourceVertex: V, targetVertex: V): Set[A] =
-    getArcsBetween(sourceVertex -> targetVertex)
-
-  def getNeighbors(vertex: V): Set[V] =
-    getSuccessors(vertex) ++ getPredecessors(vertex)
-
-  @transient
-  lazy val connectedVertexes: Set[V] =
-    exitingArcsByVertex.keySet ++ enteringArcsByVertex.keySet
-
-  @transient
-  lazy val isolatedVertexes: Set[V] =
-    vertexes -- connectedVertexes
-
   /**
-   * The vertexes having no entering arcs
+   * The vertexes having no entering links
    */
   @transient
   lazy val rootVertexes: Set[V] =
-    vertexes -- enteringArcsByVertex.keySet
+    vertexes -- enteringLinksByVertex.keySet
 
   /**
-   * The vertexes having no exiting arcs
+   * The vertexes having no exiting links
    */
   @transient
   lazy val leafVertexes: Set[V] =
-    vertexes -- exitingArcsByVertex.keySet
+    vertexes -- exitingLinksByVertex.keySet
 
 
   /**
@@ -276,7 +160,7 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
    * <ul>
    * <li>Each node will be processed <b>only</b> if all of its <i>predecessors</i> have been processed</li>
    *
-   * <li>Any cycle in the graph will return None</li>
+   * <li>Any cycle in the graph will immediately return None</li>
    * </ul>
    */
   def fold[T](initialValue: T)(vertexFoldProcessor: VertexFoldProcessor[T, V]): Option[T] = {
@@ -286,20 +170,24 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
      * coincides with the root vertexes, having no predecessors by definition.
      */
     fold(
-      initialValue,
-      vertexFoldProcessor,
-      Set(),
-      rootVertexes.toList
+      cumulatedResult =
+        initialValue,
+      vertexFoldProcessor =
+        vertexFoldProcessor,
+      processedVertexes =
+        Set(),
+      fringe =
+        rootVertexes.toList
     )
   }
 
   @tailrec
   private def fold[T](
-                             cumulatedValue: T,
-                             vertexFoldProcessor: VertexFoldProcessor[T, V],
-                             processedVertexes: Set[V],
-                             fringe: List[V]
-                           ): Option[T] = {
+                       cumulatedResult: T,
+                       vertexFoldProcessor: VertexFoldProcessor[T, V],
+                       processedVertexes: Set[V],
+                       fringe: List[V]
+                     ): Option[T] = {
     fringe match {
       /*
        * If the fringe contains at least one vertex to consider, the algorithm can go on.
@@ -313,44 +201,46 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
          * such vertex conceptually behaves now like a root vertex and can be processed.
          */
         if (currentPredecessors.subsetOf(processedVertexes)) {
-          val currentSuccessors =
-            getSuccessors(currentVertex)
-
           val newCumulatedValue =
             vertexFoldProcessor(
-              cumulatedValue,
+              cumulatedResult,
               currentVertex
             )
 
-          /**
-           * The next step can occur, notifying that the current vertex has been processed
+          val currentSuccessors =
+            getSuccessors(currentVertex)
+
+          /*
+           * The next step can occur, remembering that the current vertex has been processed
            * in particular, the fringe tail, after losing the current node,
            * can now include all the node's successors, except the ones already in the fringe.
            */
           fold(
-            newCumulatedValue,
-
-            vertexFoldProcessor,
-
-            processedVertexes + currentVertex,
-
-            (fringeTail ++ currentSuccessors).distinct
+            cumulatedResult =
+              newCumulatedValue,
+            vertexFoldProcessor =
+              vertexFoldProcessor,
+            processedVertexes =
+              processedVertexes + currentVertex,
+            fringe =
+              (fringeTail ++ currentSuccessors).distinct
           )
         } else {
           /*
            * If the current vertex has at least a predecessor that was not already explored,
-           * which is the case when a vertex is the target of arcs from 2 or more distinct sources,
+           * which is the case when a vertex is the target of links from 2 or more distinct sources,
            * it must be removed from the fringe: it will be re-added later, after processing
            * one of its predecessors, as seen in the tail call above - provided the graph has no cycles.
            */
           fold(
-            cumulatedValue,
-
-            vertexFoldProcessor,
-
-            processedVertexes,
-
-            fringeTail
+            cumulatedResult =
+              cumulatedResult,
+            vertexFoldProcessor =
+              vertexFoldProcessor,
+            processedVertexes =
+              processedVertexes,
+            fringe =
+              fringeTail
           )
         }
 
@@ -363,39 +253,11 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
          * otherwise, it means that we are stuck in a cycle.
          */
         if (processedVertexes.size == vertexes.size)
-          Some(cumulatedValue)
+          Some(cumulatedResult)
         else
           None
     }
   }
-
-  def toUndirected: UndirectedGraph[V, A] = {
-    var result =
-      new UndirectedGraph[V, A]()
-
-    vertexes.foreach(vertex =>
-      result =
-        result.addVertex(vertex)
-    )
-
-    arcsByAnchors.foreach { case ((sourceVertex, targetVertex), arcs) =>
-      arcs.foreach(link =>
-        result =
-          result.addEdge(sourceVertex, targetVertex, link)
-      )
-    }
-
-    result
-  }
-
-  override def links: Set[A] =
-    arcs
-
-  override def linksById: Map[Int, A] =
-    arcsById
-
-  override def getConnectedLinks(vertex: V): Set[A] =
-    getConnectedArcs(vertex)
 
   @transient
   lazy val isCyclic: Boolean =
@@ -403,4 +265,26 @@ final class DirectedGraph[V <: Vertex, A <: Link] private(
       (_, _) => ()
     )
       .isEmpty
+
+  def toUndirected: UndirectedGraph[V, L] = {
+    var result =
+      new UndirectedGraph[V, L]
+
+    vertexes.foreach(vertex =>
+      result =
+        result.addVertex(vertex)
+    )
+
+    linksByAnchors.foreach { case (anchors, links) =>
+      val (sourceVertex, targetVertex) =
+        anchors.toPair
+
+      links.foreach(link =>
+        result =
+          result.addLink(sourceVertex, targetVertex, link)
+      )
+    }
+
+    result
+  }
 }

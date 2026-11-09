@@ -54,7 +54,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
           vertexesToSelect,
 
         selectedLinks =
-          graph.selectedArcs
+          graph.selectedLinks
       )
     } else if (!vertex().selected) {
       controller.setSelection(

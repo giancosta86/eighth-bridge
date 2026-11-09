@@ -65,10 +65,10 @@ class UnionFind[V <: Vertex, E <: Link] private (
       )
     else
       graph
-        .getAnchorSet(edge)
-        .map(anchorSet => {
+        .getAnchors(edge)
+        .map(anchors => {
           val (vi, vj): (V, V) =
-            anchorSet
+            anchors.toPair
 
           val (iRoot, updatedRootByVertexAfterI) =
             UnionFind.findRootAndCompress(vi, rootByVertex)

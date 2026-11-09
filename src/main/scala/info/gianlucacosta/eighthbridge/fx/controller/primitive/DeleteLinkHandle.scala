@@ -10,6 +10,6 @@ trait DeleteLinkHandle extends GraphCanvasController {
       link.removeHandle(handle)
 
     graph =
-      graph.updateArc(updatedLink)
+      graph.updateLink(updatedLink)
   }
 }

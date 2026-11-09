@@ -12,6 +12,6 @@ trait DragLinkHandle extends GraphCanvasController {
       )
 
     graph =
-      graph.updateArc(updatedLink)
+      graph.updateLink(updatedLink)
   }
 }
