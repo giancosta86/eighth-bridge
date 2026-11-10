@@ -38,7 +38,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     controller().graphCanvas =
       GraphCanvas.this
 
-    scheduleFullRender()
+    fullRender()
   }
 
   private val backgroundNode =
@@ -80,9 +80,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     println(s"The GraphDiff is: ${graphDiff}")
 
     if (graphDiff.nonEmpty) {
-      Platform.runLater {
-        render(newValue, graphDiff)
-      }
+      render(newValue, graphDiff)
     }
   }
 
@@ -129,20 +127,19 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     new Group
   children.add(vertexNodes)
 
+  private def fullRender(): Unit = {
+    val currentGraph =
+      graph()
 
-  private def scheduleFullRender(): Unit = {
-    Platform.runLater {
-      val currentGraph =
-        graph()
-
-      render(
-        currentGraph,
-        TimestampedGraphDiff.forSingleGraph(currentGraph)
-      )
-    }
+    render(
+      currentGraph,
+      TimestampedGraphDiff.forSingleGraph(currentGraph)
+    )
   }
 
-  scheduleFullRender()
+  Platform.runLater {
+    fullRender()
+  }
 
   protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     println(s"${new java.util.Date}: NOW RENDERING")
