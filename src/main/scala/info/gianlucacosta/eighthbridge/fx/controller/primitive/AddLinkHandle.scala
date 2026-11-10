@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controller.primitive
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 import info.gianlucacosta.eighthbridge.fx.graph.VisualLink
-import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, HasHandlesSettable, LinkHandle}
 import scalafx.geometry.Point2D
 
 trait AddLinkHandle extends GraphCanvasController {
@@ -11,7 +11,9 @@ trait AddLinkHandle extends GraphCanvasController {
       LinkHandle.makeDefaultCircle(point)
 
     val updatedLink =
-      link.addHandle(index, linkHandle)
+      link
+        .asInstanceOf[VisualLink with HasHandlesSettable]
+        .addHandle(index, linkHandle)
 
     graph =
       graph.updateLink(updatedLink)

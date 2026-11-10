@@ -3,6 +3,7 @@ package info.gianlucacosta.eighthbridge.fx
 //import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelectedSettable}
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
 package object graph {
@@ -38,14 +39,18 @@ package object graph {
                     ): VisualGraph = {
       val updatedVertexes: Set[VisualVertex] =
         self.vertexes.map(vertex =>
-          vertex.setSelected(
-            selectedVertexes.contains(vertex)
-          )
+          vertex
+            .asInstanceOf[VisualVertex with HasSelectedSettable]
+            .setSelected(
+              selectedVertexes.contains(vertex)
+            )
         )
 
       val updatedLinks: Set[VisualLink] =
         self.links.map(link =>
-          link.setSelected(
+          link
+            .asInstanceOf[VisualLink with HasSelectedSettable]
+            .setSelected(
             selectedLinks.contains(link)
           )
         )
@@ -58,7 +63,9 @@ package object graph {
     def moveSelectedVertexesBy(delta: Delta): VisualGraph = {
       val movedVertexes: Set[VisualVertex] =
         self.selectedVertexes.map(vertex =>
-          vertex.setCenter(
+          vertex
+            .asInstanceOf[VisualVertex with HasCenterSettable]
+            .setCenter(
             (vertex.center + delta).nonNegative
           )
         )
