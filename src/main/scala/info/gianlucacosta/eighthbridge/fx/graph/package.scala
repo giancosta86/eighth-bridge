@@ -34,7 +34,7 @@ package object graph {
 
     def setSelection(
                       selectedVertexes: Set[VisualVertex],
-                      selectedArcs: Set[VisualLink]
+                      selectedLinks: Set[VisualLink]
                     ): VisualGraph = {
       val updatedVertexes: Set[VisualVertex] =
         self.vertexes.map(vertex =>
@@ -46,7 +46,7 @@ package object graph {
       val updatedLinks: Set[VisualLink] =
         self.links.map(link =>
           link.setSelected(
-            selectedArcs.contains(link)
+            selectedLinks.contains(link)
           )
         )
 

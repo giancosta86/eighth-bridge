@@ -9,8 +9,8 @@ import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
-class LabeledLinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink with HasLabel with HasOptionalCustomLabelCenterSettable)
-extends PlainLinkNode(graphCanvas, initialArc) {
+class LabeledLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink with HasLabel with HasOptionalCustomLabelCenterSettable)
+extends PlainLinkNode(graphCanvas, initialLink) {
   override type L <:
     VisualLink with HasLabel with HasOptionalCustomLabelCenterSettable
 
@@ -45,7 +45,7 @@ extends PlainLinkNode(graphCanvas, initialArc) {
   private val label =
     new LinkLabel(
       initialCenter =
-        initialArc.customLabelCenter.getOrElse(labelAnchorPoint()),
+        initialLink.customLabelCenter.getOrElse(labelAnchorPoint()),
       onDrag =
         handleDragOnLabel,
       onSecondaryDoubleClick =

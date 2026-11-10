@@ -9,9 +9,9 @@ import scalafx.scene.input.MouseEvent
 import scala.collection.JavaConversions._
 
 /**
-  * JavaFX node rendering a VisualArc
+  * JavaFX node rendering a VisualLink
   */
-abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
+abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   extends GraphCanvasNode(graphCanvas) {
 
   type L <:
@@ -34,13 +34,13 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
   }
 
   link() =
-    initialArc.asInstanceOf[L]
+    initialLink.asInstanceOf[L]
 
   //TODO! Remove all println() calls!
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
     if (mouseEvent.controlDown) {
-      val arcsToSelect =
+      val linksToSelect =
         if (link().selected)
           graph.selectedLinks - link()
         else
@@ -51,7 +51,7 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialArc: VisualLink)
           graph.selectedVertexes,
 
         selectedLinks =
-          arcsToSelect
+          linksToSelect
       )
     } else if (!link().selected) {
       controller.setSelection(
