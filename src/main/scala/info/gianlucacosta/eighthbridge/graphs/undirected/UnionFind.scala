@@ -3,39 +3,41 @@ package info.gianlucacosta.eighthbridge.graphs.undirected
 import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
 
 object UnionFind {
-  private def findRootAndCompress[V <: Vertex](vertex: V, rootByVertex: Map[V, V]): (V, Map[V,V]) = {
+  private def findRootAndCompress[V <: Vertex](
+                                                vertex: V, rootByVertex: Map[V, V]
+                                              ): (V, Map[V, V]) = {
     val root =
       rootByVertex(vertex)
 
     if (root == vertex)
       (vertex, rootByVertex)
     else {
-      val (actualRoot, updatedRootByVertex) =
+      val (actualRoot, compressedRootByVertex) =
         findRootAndCompress(root, rootByVertex)
 
       (
         actualRoot,
 
-        updatedRootByVertex +
+        compressedRootByVertex +
           (vertex -> actualRoot)
       )
     }
   }
 }
 
-class UnionFind[V <: Vertex, E <: Link] private (
-                                                       graph: UndirectedGraph[V, E],
-                                                       val edges: Set[E],
-                                                       val hasCycles: Boolean,
-                                                       rootByVertex: Map[V, V],
-                                                       rankByVertex: Map[V, Int]
+class UnionFind[V <: Vertex, L <: Link] private(
+                                                 graph: UndirectedGraph[V, L],
+                                                 val links: Set[L],
+                                                 val hasCycles: Boolean,
+                                                 rootByVertex: Map[V, V],
+                                                 rankByVertex: Map[V, Int]
                                                ) {
-  def this(graph: UndirectedGraph[V, E]) =
+  def this(graph: UndirectedGraph[V, L]) =
     this(
       graph =
         graph,
-      edges =
-        Set[E](),
+      links =
+        Set[L](),
       hasCycles =
         false,
       rootByVertex =
@@ -52,29 +54,32 @@ class UnionFind[V <: Vertex, E <: Link] private (
           .toMap
     )
 
-
-
-  def add(edge: E): UnionFind[V, E] = {
-    if (hasCycles && graph.links.contains(edge))
-      new UnionFind[V, E](
+  def add(link: L): UnionFind[V, L] =
+    if (hasCycles)
+      new UnionFind[V, L](
         graph,
-        edges + edge,
+        links + link,
         hasCycles,
         rootByVertex,
         rankByVertex
       )
     else
       graph
-        .getAnchors(edge)
+        .getAnchors(link)
         .map(anchors => {
-          val (vi, vj): (V, V) =
+          val (vi, vj) =
             anchors.toPair
 
-          val (iRoot, updatedRootByVertexAfterI) =
-            UnionFind.findRootAndCompress(vi, rootByVertex)
+          val (iRoot, jRoot, compressedRootByVertex) = {
+            val (iRoot, compressedRootByVertexAfterI) =
+              UnionFind.findRootAndCompress(vi, rootByVertex)
 
-          val (jRoot, updatedRootByVertexAfterJ) =
-            UnionFind.findRootAndCompress(vj, updatedRootByVertexAfterI)
+            val (jRoot, compressedRootByVertexAfterJ) = {
+              UnionFind.findRootAndCompress(vj, compressedRootByVertexAfterI)
+            }
+
+            (iRoot, jRoot, compressedRootByVertexAfterJ)
+          }
 
           val cyclesIntroduced =
             iRoot == jRoot
@@ -82,32 +87,34 @@ class UnionFind[V <: Vertex, E <: Link] private (
           val (updatedRootByVertex, updatedRankByVertex): (Map[V, V], Map[V, Int]) =
             if (rankByVertex(iRoot) < rankByVertex(jRoot))
               (
-                updatedRootByVertexAfterJ +
+                compressedRootByVertex +
                   (iRoot -> jRoot),
 
                 rankByVertex
               )
             else if (rankByVertex(iRoot) > rankByVertex(jRoot))
               (
-                updatedRootByVertexAfterJ +
+                compressedRootByVertex +
                   (jRoot -> iRoot),
 
                 rankByVertex
               )
             else
               (
-                updatedRootByVertexAfterJ +
+                compressedRootByVertex +
                   (jRoot -> iRoot),
 
                 rankByVertex +
-                  (iRoot -> (rankByVertex(iRoot) + 1))
+                  (iRoot ->
+                    (rankByVertex(iRoot) + 1)
+                  )
               )
 
-          new UnionFind[V, E](
+          new UnionFind[V, L](
             graph =
               graph,
-            edges =
-              edges + edge,
+            links =
+              links + link,
             hasCycles =
               cyclesIntroduced,
             rootByVertex =
@@ -115,9 +122,6 @@ class UnionFind[V <: Vertex, E <: Link] private (
             rankByVertex =
               updatedRankByVertex
           )
-
-          this
         })
         .getOrElse(this)
-  }
 }
