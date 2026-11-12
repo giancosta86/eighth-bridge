@@ -15,7 +15,7 @@ private class VertexBody extends Ellipse {
     10
 
   val width: ReadOnlyDoubleProperty =
-    ReadOnlyProperties.createDouble(
+    ReadOnlyProperties.forDouble(
       () =>
         radiusX() * 2,
 
@@ -23,7 +23,7 @@ private class VertexBody extends Ellipse {
     )
 
   val height: ReadOnlyDoubleProperty =
-    ReadOnlyProperties.createDouble(
+    ReadOnlyProperties.forDouble(
       () =>
         radiusY() * 2,
 

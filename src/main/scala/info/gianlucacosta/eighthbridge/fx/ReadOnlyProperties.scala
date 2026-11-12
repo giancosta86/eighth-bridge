@@ -8,7 +8,7 @@ import scalafx.beans.property.{ReadOnlyBooleanProperty, ReadOnlyDoubleProperty, 
 
 //TODO! Move this to Helios-FX!
 object ReadOnlyProperties {
-  def createDouble(expression: () => Double, dependencies: Observable*): ReadOnlyDoubleProperty = {
+  def forDouble(expression: () => Double, dependencies: Observable*): ReadOnlyDoubleProperty = {
     val backingProperty =
       new SimpleDoubleProperty
 
@@ -22,7 +22,7 @@ object ReadOnlyProperties {
     backingProperty
   }
 
-  def createBoolean(expression: () => Boolean, dependencies: Observable*): ReadOnlyBooleanProperty = {
+  def forBoolean(expression: () => Boolean, dependencies: Observable*): ReadOnlyBooleanProperty = {
     val backingProperty =
       new SimpleBooleanProperty()
 
@@ -36,7 +36,7 @@ object ReadOnlyProperties {
     backingProperty
   }
 
-  def createInt(expression: () => Int, dependencies: Observable*): ReadOnlyIntegerProperty = {
+  def forInt(expression: () => Int, dependencies: Observable*): ReadOnlyIntegerProperty = {
     val backingProperty =
       new SimpleIntegerProperty
 
@@ -50,7 +50,7 @@ object ReadOnlyProperties {
     backingProperty
   }
 
-  def createLong(expression: () => Long, dependencies: Observable*): ReadOnlyLongProperty = {
+  def forLong(expression: () => Long, dependencies: Observable*): ReadOnlyLongProperty = {
     val backingProperty =
       new SimpleLongProperty
 
@@ -64,7 +64,7 @@ object ReadOnlyProperties {
     backingProperty
   }
 
-  def createFloat(expression: () => Float, dependencies: Observable*): ReadOnlyFloatProperty = {
+  def forFloat(expression: () => Float, dependencies: Observable*): ReadOnlyFloatProperty = {
     val backingProperty =
       new SimpleFloatProperty
 
@@ -78,7 +78,7 @@ object ReadOnlyProperties {
     backingProperty
   }
 
-  def createString(expression: () => String, dependencies: Observable*): ReadOnlyStringProperty = {
+  def forString(expression: () => String, dependencies: Observable*): ReadOnlyStringProperty = {
     val backingProperty =
       new SimpleStringProperty
 
@@ -92,7 +92,7 @@ object ReadOnlyProperties {
     backingProperty
   }
 
-  def createObject[T](expression: () => T, dependencies: Observable*): ReadOnlyObjectProperty[T] = {
+  def forObject[T](expression: () => T, dependencies: Observable*): ReadOnlyObjectProperty[T] = {
     val backingProperty =
       new SimpleObjectProperty[T]
 

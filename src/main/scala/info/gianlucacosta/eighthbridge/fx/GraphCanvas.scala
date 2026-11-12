@@ -85,7 +85,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   }
 
   def dimension: ReadOnlyObjectProperty[Dimension2D] =
-    ReadOnlyProperties.createObject(
+    ReadOnlyProperties.forObject(
       () =>
         new Dimension2D(
           width(),
