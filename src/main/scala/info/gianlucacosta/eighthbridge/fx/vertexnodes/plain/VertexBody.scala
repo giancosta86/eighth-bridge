@@ -5,7 +5,7 @@ import scalafx.Includes._
 import scalafx.beans.property.ReadOnlyDoubleProperty
 import scalafx.scene.shape.Ellipse
 
-private class VertexBody(vertexNode: PlainVertexNode) extends Ellipse {
+private class VertexBody extends Ellipse {
   styleClass.add("ellipse")
 
   radiusX() =
@@ -13,12 +13,6 @@ private class VertexBody(vertexNode: PlainVertexNode) extends Ellipse {
 
   radiusY() =
     10
-
-  layoutX <==
-    vertexNode.vertex().center.x
-
-  layoutY <==
-    vertexNode.vertex().center.y
 
   val width: ReadOnlyDoubleProperty =
     ReadOnlyProperties.createDouble(
