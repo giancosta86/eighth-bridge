@@ -41,7 +41,8 @@ class VerticalTreeLayout(
         vertexNode.width()
 
       val successors =
-        graph.getSuccessors(vertex)
+        graph
+          .getSuccessors(vertex)
 
       val minAggregateSuccessorBand =
         if (successors.nonEmpty) {
@@ -54,8 +55,13 @@ class VerticalTreeLayout(
 
           val jammedSuccessorBand =
             successors
+              .toList
               .map(bandByVertex)
               .sum
+
+          println(s"??????? SUCCESSORS FOR ${vertex}: ${successors}")
+
+          println(s"======= JAMMED SUCCESSOR BAND FOR ${vertex}: ${jammedSuccessorBand}")
 
           val minGapSpace =
             minHorizontalGap * (successors.size - 1)
@@ -85,6 +91,10 @@ class VerticalTreeLayout(
         maxHeightByLevel +=
           (level -> height)
       }
+
+      println(s"%%%%%%%%% VERTEX NODE FOR ${vertex} @ ${level}: ${width} x ${height}")
+      println (s"!!!!!!!!! BAND FOR VERTEX ${vertex}: ${band}")
+      println()
     }
 
     graph
@@ -92,6 +102,8 @@ class VerticalTreeLayout(
       .foreach(rootVertex =>
         registerTreeMetrics(0, rootVertex)
       )
+
+    println(s"*****> MAX HEIGHT BY LEVEL: ${maxHeightByLevel}")
 
     val levelCount =
       maxHeightByLevel.size
@@ -121,6 +133,8 @@ class VerticalTreeLayout(
           level -> verticalCenter
         })
         .toMap
+
+    println(s"*****> VERTICAL CENTER BY LEVEL: ${verticalCenterByLevel}")
 
     var updatedGraph =
       graph
@@ -191,24 +205,27 @@ class VerticalTreeLayout(
       })
     }
 
-    val rootVertexes =
-      graph.rootVertexes
+    val sortedRootVertexes =
+      rootSorter(
+        graph.rootVertexes
+      )
 
     val jammedRootBand =
-      rootVertexes
+      sortedRootVertexes
         .map(bandByVertex)
         .sum
 
     val rootSpace =
-      minHorizontalGap * (rootVertexes.size - 1)
+      minHorizontalGap * (sortedRootVertexes.size - 1)
 
     val aggregateRootBand =
       jammedRootBand + rootSpace
 
-    val sortedRootVertexes =
-      rootSorter(rootVertexes)
+    println(s"*****> AGGREGATE ROOT BAND: ${aggregateRootBand}")
 
-    require(sortedRootVertexes.toSet == rootVertexes)
+
+
+    require(sortedRootVertexes.toSet == graph.rootVertexes)
 
     positionVertexes(
       level =
