@@ -44,15 +44,9 @@ final class DirectedGraph[
   lazy val successorsByVertex: Map[V, Set[V]] =
     linksByAnchors
       .keySet
-      .map(_.toPair)
-      .groupBy {
-        case (sourceVertex, _) =>
-          sourceVertex
-      }
+      .groupBy(_.source)
       .mapValues(
-        _.map { case (_, targetVertex) =>
-          targetVertex
-        }
+        _.map(_.target)
       )
 
   /**
@@ -67,11 +61,8 @@ final class DirectedGraph[
   @transient
   lazy val exitingLinksByVertex: Map[V, Set[L]] =
     linksByAnchors
-      .view
       .groupBy { case (anchors, _) =>
-        anchors
-          .toPair
-          ._1
+        anchors.source
       }
       .mapValues(
         _.flatMap({
@@ -93,15 +84,9 @@ final class DirectedGraph[
   lazy val predecessorsByVertex: Map[V, Set[V]] =
     linksByAnchors
       .keySet
-      .map(_.toPair)
-      .groupBy {
-        case (_, targetVertex) =>
-          targetVertex
-      }
+      .groupBy(_.target)
       .mapValues(
-        _.map { case (sourceVertex, _) =>
-          sourceVertex
-        }
+        _.map(_.source)
       )
 
   /**
@@ -118,9 +103,7 @@ final class DirectedGraph[
     linksByAnchors
       .view
       .groupBy { case (anchors, _) =>
-        anchors
-          .toPair
-          ._2
+        anchors.target
       }
       .mapValues(
         _.flatMap({

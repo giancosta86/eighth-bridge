@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.directed
 
 import info.gianlucacosta.eighthbridge.graphs.{Anchors, Vertex}
 
-class DirectedAnchors[V <: Vertex](source: V, target: V)
+class DirectedAnchors[V <: Vertex](val source: V, val target: V)
   extends Anchors[V](source, target) {
 
   override def update(updatedVertex: V): this.type =
