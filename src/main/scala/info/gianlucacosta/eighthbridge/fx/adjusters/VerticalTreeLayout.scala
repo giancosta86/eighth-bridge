@@ -30,6 +30,9 @@ class VerticalTreeLayout(
     var bandByVertex: Map[VisualVertex, Double] =
       Map[VisualVertex, Double]()
 
+    var heightByVertex: Map[VisualVertex, Double] =
+      Map[VisualVertex, Double]()
+
     var maxHeightByLevel: Map[Level, Double] =
       Map[Level, Double]()
 
@@ -87,6 +90,9 @@ class VerticalTreeLayout(
       val height =
         vertexNode.height()
 
+      heightByVertex +=
+        (vertex -> height)
+
       if (height >= maxHeightByLevel.getOrElse(level, 0.0)) {
         maxHeightByLevel +=
           (level -> height)
@@ -124,18 +130,6 @@ class VerticalTreeLayout(
         })
         .toMap
 
-    val verticalCenterByLevel: Map[Level, Double] =
-      Range(0, levelCount)
-        .map(level => {
-          val verticalCenter =
-            topByLevel(level) + maxHeightByLevel(level) / 2
-
-          level -> verticalCenter
-        })
-        .toMap
-
-    println(s"*****> VERTICAL CENTER BY LEVEL: ${verticalCenterByLevel}")
-
     var updatedGraph =
       graph
 
@@ -145,9 +139,6 @@ class VerticalTreeLayout(
                           parentBand: Double,
                           vertexes: List[VisualVertex]
                         ): Unit = {
-      val verticalCenter =
-        verticalCenterByLevel(level)
-
       val jammedBand: Double =
         vertexes.map(bandByVertex).sum
 
@@ -166,6 +157,12 @@ class VerticalTreeLayout(
 
         val horizontalCenter =
           vertexBandLeft + vertexBand / 2
+
+        val levelTop =
+          topByLevel(level)
+
+        val verticalCenter =
+          levelTop + heightByVertex(vertex) / 2
 
         val updatedVertex =
           vertex
