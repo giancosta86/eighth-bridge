@@ -127,6 +127,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     new Group
   children.add(vertexNodes)
 
+  fullRender()
+
   private def fullRender(): Unit = {
     val currentGraph =
       graph()
@@ -135,10 +137,6 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
       currentGraph,
       TimestampedGraphDiff.forSingleGraph(currentGraph)
     )
-  }
-
-  Platform.runLater {
-    fullRender()
   }
 
   protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
