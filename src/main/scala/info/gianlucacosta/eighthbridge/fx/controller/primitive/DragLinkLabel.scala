@@ -7,12 +7,13 @@ import info.gianlucacosta.eighthbridge.graphs.facets.HasOptionalCustomLabelCente
 import scalafx.geometry.Point2D
 
 trait DragLinkLabel extends GraphCanvasController {
-  override def dragLinkLabel(link: VisualLink with HasOptionalCustomLabelCenterSettable, actualCenter: Point2D, delta: Delta): Unit = {
+  override def dragLinkLabel(link: VisualLink, actualCenter: Point2D, delta: Delta): Unit = {
     val updatedCenter =
       actualCenter + delta
 
     val updatedLink =
       link
+        .asInstanceOf[VisualLink with HasOptionalCustomLabelCenterSettable]
         .setCustomLabelCenter(
           Some(updatedCenter)
         )

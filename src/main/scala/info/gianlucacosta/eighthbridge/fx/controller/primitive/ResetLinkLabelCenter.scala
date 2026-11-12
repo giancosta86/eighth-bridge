@@ -5,9 +5,10 @@ import info.gianlucacosta.eighthbridge.fx.graph.VisualLink
 import info.gianlucacosta.eighthbridge.graphs.facets.HasOptionalCustomLabelCenterSettable
 
 trait ResetLinkLabelCenter extends GraphCanvasController {
-  override def resetLinkLabelCenter(link: VisualLink with HasOptionalCustomLabelCenterSettable): Unit = {
+  override def resetLinkLabelCenter(link: VisualLink): Unit = {
     val updatedLink =
       link
+        .asInstanceOf[VisualLink with HasOptionalCustomLabelCenterSettable]
         .setCustomLabelCenter(None)
 
     graph =

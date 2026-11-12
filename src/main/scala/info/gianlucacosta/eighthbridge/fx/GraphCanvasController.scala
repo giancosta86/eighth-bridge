@@ -62,9 +62,9 @@ class GraphCanvasController {
 
   def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {}
 
-  def dragLinkLabel(link: VisualLink with HasOptionalCustomLabelCenterSettable, actualCenter: Point2D, delta: Delta): Unit = {}
+  def dragLinkLabel(link: VisualLink, actualCenter: Point2D, delta: Delta): Unit = {}
 
-  def resetLinkLabelCenter(link: VisualLink with HasOptionalCustomLabelCenterSettable): Unit = {}
+  def resetLinkLabelCenter(link: VisualLink): Unit = {}
 
   def minCanvasDimension: Dimension2D =
     new Dimension2D(
