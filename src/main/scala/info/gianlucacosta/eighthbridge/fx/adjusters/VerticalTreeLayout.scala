@@ -43,7 +43,7 @@ class VerticalTreeLayout(
       val successors =
         graph.getSuccessors(vertex)
 
-      val aggregateSuccessorBand =
+      val minAggregateSuccessorBand =
         if (successors.nonEmpty) {
           successors.foreach(successor =>
             registerTreeMetrics(
@@ -67,7 +67,7 @@ class VerticalTreeLayout(
       val band =
         Math.max(
           width,
-          aggregateSuccessorBand
+          minAggregateSuccessorBand
         )
 
       require(
@@ -127,7 +127,7 @@ class VerticalTreeLayout(
 
     def positionVertexes(
                           level: Level,
-                          parentLeft: Double,
+                          parentBandLeft: Double,
                           parentBand: Double,
                           vertexes: List[VisualVertex]
                         ): Unit = {
@@ -143,15 +143,15 @@ class VerticalTreeLayout(
       val actualHorizontalGap =
         freeSpaceInParentBand / (vertexes.size - 1)
 
-      vertexes.foldLeft(parentLeft)((cumulatedLeft, vertex) => {
-        val vertexLeft =
+      vertexes.foldLeft(parentBandLeft)((cumulatedLeft, vertex) => {
+        val vertexBandLeft =
           cumulatedLeft
 
         val vertexBand =
           bandByVertex(vertex)
 
         val horizontalCenter =
-          vertexLeft + vertexBand / 2
+          vertexBandLeft + vertexBand / 2
 
         val updatedVertex =
           vertex
@@ -178,9 +178,10 @@ class VerticalTreeLayout(
           positionVertexes(
             level =
               level + 1,
-            parentLeft =
-              vertexLeft,
-            parentBand = vertexBand,
+            parentBandLeft =
+              vertexBandLeft,
+            parentBand =
+              vertexBand,
             vertexes =
               sortedSuccessors
           )
@@ -212,7 +213,7 @@ class VerticalTreeLayout(
     positionVertexes(
       level =
         0,
-      parentLeft =
+      parentBandLeft =
         0,
       parentBand =
         aggregateRootBand,
