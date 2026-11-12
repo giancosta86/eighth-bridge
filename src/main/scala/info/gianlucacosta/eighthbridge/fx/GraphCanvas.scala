@@ -80,7 +80,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     println(s"The GraphDiff is: ${graphDiff}")
 
     if (graphDiff.nonEmpty) {
-      render(newValue, graphDiff)
+      render(graphDiff)
     }
   }
 
@@ -134,12 +134,11 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
       graph()
 
     render(
-      currentGraph,
       TimestampedGraphDiff.forSingleGraph(currentGraph)
     )
   }
 
-  protected def render(updatedGraph: VisualGraph, graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
+  protected def render(graphDiff: TimestampedGraphDiff[VisualVertex, VisualLink]): Unit = {
     println(s"${new java.util.Date}: NOW RENDERING")
 
     val danglingLinkNodesByLink: Map[VisualLink, LinkNode] =
@@ -234,12 +233,12 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     )
   }
 
-  def adjust(graphAdjuster: () => VisualGraph): Unit = {
+  def adjustGraph(adjuster: GraphAdjuster): Unit = {
     println(s"---> REQUESTING AN ADJUSTMENT! First root center: ${graph().rootVertexes.head.center}")
 
     Platform.runLater {
       val adjustedGraph =
-        graphAdjuster()
+        adjuster.adjustGraph(this)
 
       println(s"---> ADJUSTMENT PERFORMED! First root center: ${adjustedGraph.rootVertexes.head.center}")
 
