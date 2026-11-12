@@ -234,6 +234,20 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     )
   }
 
+  def adjust(graphAdjuster: () => VisualGraph): Unit = {
+    println(s"---> REQUESTING AN ADJUSTMENT! First root center: ${graph().rootVertexes.head.center}")
+
+    Platform.runLater {
+      val adjustedGraph =
+        graphAdjuster()
+
+      println(s"---> ADJUSTMENT PERFORMED! First root center: ${adjustedGraph.rootVertexes.head.center}")
+
+      graph() =
+        adjustedGraph
+    }
+  }
+
   filterEvent(KeyEvent.KeyPressed) {
     (keyEvent: KeyEvent) => {
       keyEvent.code match {
