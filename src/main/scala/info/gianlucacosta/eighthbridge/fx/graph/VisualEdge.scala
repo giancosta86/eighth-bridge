@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx.graph
 
-import info.gianlucacosta.eighthbridge.graphs.Link
 import info.gianlucacosta.eighthbridge.graphs.undirected.Edge
 
 trait VisualEdge
