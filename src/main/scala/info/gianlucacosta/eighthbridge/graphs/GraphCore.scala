@@ -139,8 +139,7 @@ abstract class GraphCore[
     if (anchors.toSet.subsetOf(vertexes))
       copy(
         updatedLinksByAnchors =
-          linksByAnchors +
-            (anchors -> link)
+          linksByAnchors.safeAdd(anchors -> link)
       )
     else
       this
