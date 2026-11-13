@@ -25,19 +25,19 @@ object UnionFind {
   }
 }
 
-class UnionFind[V <: Vertex, L <: Link] private(
-                                                 graph: UndirectedGraph[V, L],
-                                                 val links: Set[L],
+class UnionFind[V <: Vertex, E <: Edge] private(
+                                                 graph: UndirectedGraph[V, E],
+                                                 val edges: Set[E],
                                                  val hasCycles: Boolean,
                                                  rootByVertex: Map[V, V],
                                                  rankByVertex: Map[V, Int]
                                                ) {
-  def this(graph: UndirectedGraph[V, L]) =
+  def this(graph: UndirectedGraph[V, E]) =
     this(
       graph =
         graph,
-      links =
-        Set[L](),
+      edges =
+        Set[E](),
       hasCycles =
         false,
       rootByVertex =
@@ -54,18 +54,18 @@ class UnionFind[V <: Vertex, L <: Link] private(
           .toMap
     )
 
-  def add(link: L): UnionFind[V, L] =
+  def add(edge: E): UnionFind[V, E] =
     if (hasCycles)
-      new UnionFind[V, L](
+      new UnionFind[V, E](
         graph,
-        links + link,
+        edges + edge,
         hasCycles,
         rootByVertex,
         rankByVertex
       )
     else
       graph
-        .getAnchors(link)
+        .getAnchors(edge)
         .map(anchors => {
           val (vi, vj) =
             anchors.toPair
@@ -110,11 +110,11 @@ class UnionFind[V <: Vertex, L <: Link] private(
                   )
               )
 
-          new UnionFind[V, L](
+          new UnionFind[V, E](
             graph =
               graph,
-            links =
-              links + link,
+            edges =
+              edges + edge,
             hasCycles =
               cyclesIntroduced,
             rootByVertex =
