@@ -8,6 +8,8 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSele
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
+import scala.language.implicitConversions
+
 package object graph {
   type VisualGraph =
     Graph[VisualVertex, VisualLink]
@@ -17,6 +19,12 @@ package object graph {
 
   type VisualDirectedGraph =
     DirectedGraph[VisualVertex, VisualArc]
+
+  implicit def toVisualGraph(self: VisualDirectedGraph): VisualGraph =
+    self.asInstanceOf[VisualGraph]
+
+  implicit def toVisualGraph(self: VisualUndirectedGraph): VisualGraph =
+    self.asInstanceOf[VisualGraph]
 
   implicit class VisualGraphExtensions(self: VisualGraph) {
     def selectedVertexes: Set[VisualVertex] =

@@ -26,7 +26,6 @@ class VerticalTreeLayout(
 
     if (graph.isEmpty) {
       return graph
-        .asInstanceOf[VisualGraph]
     }
 
     var bandByVertex: Map[VisualVertex, Double] =
@@ -238,6 +237,5 @@ class VerticalTreeLayout(
     )
 
     updatedGraph
-      .asInstanceOf[VisualGraph]
   }
 }

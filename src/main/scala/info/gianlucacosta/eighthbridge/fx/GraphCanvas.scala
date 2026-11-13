@@ -68,8 +68,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
   val graph =
     new SimpleObjectProperty[VisualGraph](
-      new VisualDirectedGraph()
-        .asInstanceOf[VisualGraph] //TODO! Can I avoid these casts?
+      new VisualDirectedGraph
     )
 
   graph.onChange { (_, oldValue, newValue) =>
