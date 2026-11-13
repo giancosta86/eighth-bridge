@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.adjusters
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualVertex}
-import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, GraphAdjuster}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualDirectedGraph, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas}
 import info.gianlucacosta.eighthbridge.graphs.facets.HasCenterSettable
 import scalafx.Includes._
 
@@ -22,9 +22,11 @@ class VerticalTreeLayout(
   override def adjustGraph(graphCanvas: GraphCanvas): VisualGraph = {
     val graph =
       graphCanvas.graph()
+        .asInstanceOf[VisualDirectedGraph]
 
     if (graph.isEmpty) {
       return graph
+        .asInstanceOf[VisualGraph]
     }
 
     var bandByVertex: Map[VisualVertex, Double] =
@@ -236,5 +238,6 @@ class VerticalTreeLayout(
     )
 
     updatedGraph
+      .asInstanceOf[VisualGraph]
   }
 }

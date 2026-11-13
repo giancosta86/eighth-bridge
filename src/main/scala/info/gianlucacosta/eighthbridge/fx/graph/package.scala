@@ -5,11 +5,18 @@ import info.gianlucacosta.eighthbridge.fx.graph.Delta._
 import info.gianlucacosta.eighthbridge.graphs.Graph
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelectedSettable}
+import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
 package object graph {
   type VisualGraph =
     Graph[VisualVertex, VisualLink]
+
+  type VisualUndirectedGraph =
+    UndirectedGraph[VisualVertex, VisualEdge]
+
+  type VisualDirectedGraph =
+    DirectedGraph[VisualVertex, VisualArc]
 
   implicit class VisualGraphExtensions(self: VisualGraph) {
     def selectedVertexes: Set[VisualVertex] =

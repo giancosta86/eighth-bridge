@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualGraph, VisualLink, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.graph.{VisualDirectedGraph, VisualGraph, VisualLink, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedGraphDiff
 import javafx.beans.property.SimpleObjectProperty
@@ -68,7 +68,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
   val graph =
     new SimpleObjectProperty[VisualGraph](
-      new DirectedGraph[VisualVertex, VisualLink]
+      new VisualDirectedGraph()
+        .asInstanceOf[VisualGraph] //TODO! Can I avoid these casts?
     )
 
   graph.onChange { (_, oldValue, newValue) =>
@@ -234,13 +235,9 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   }
 
   def adjustGraph(adjuster: GraphAdjuster): Unit = {
-    println(s"---> REQUESTING AN ADJUSTMENT! First root center: ${graph().rootVertexes.head.center}")
-
     Platform.runLater {
       val adjustedGraph =
         adjuster.adjustGraph(this)
-
-      println(s"---> ADJUSTMENT PERFORMED! First root center: ${adjustedGraph.rootVertexes.head.center}")
 
       graph() =
         adjustedGraph
