@@ -125,6 +125,11 @@ abstract class GraphCore[
       getLinksBetween(anchors)
   }
 
+  override def getAnchorPair(link: L): Option[(V, V)] =
+    anchorsByLink
+      .get(link)
+      .map(_.toPair)
+
   @transient
   lazy val anchorsByLink: Map[L, A] =
     linksByAnchors

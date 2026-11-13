@@ -37,6 +37,8 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def getLinksBetween(firstAnchor: V, secondAnchor: V): Set[L]
 
+  def getAnchorPair(link: L): Option[(V, V)]
+
   def addLink(firstAnchor: V, secondAnchor: V, linkToAdd: L): this.type
 
   def addLink(vertexPair: (V, V), linkToAdd: L): this.type
