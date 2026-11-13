@@ -34,8 +34,8 @@ final class UndirectedGraph[
   override protected def createAnchors(first: V, second: V): UndirectedAnchors[V] =
     new UndirectedAnchors[V](first, second)
 
-  override def addLink(oneVertex: V, anotherVertex: V, link: L): this.type =
-    super.addLink(oneVertex, anotherVertex, link)
+  override def addLink(oneVertex: V, anotherVertex: V, linkToAdd: L): this.type =
+    super.addLink(oneVertex, anotherVertex, linkToAdd)
 
   @transient
   override lazy val isCyclic: Boolean = {

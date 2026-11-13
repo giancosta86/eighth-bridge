@@ -48,10 +48,10 @@ abstract class GraphCore[
   def addVertexes(vertexesToAdd: V*): this.type =
     addVertexes(vertexesToAdd.toSet)
 
-  def addVertex(vertex: V): this.type =
+  def addVertex(vertexToAdd: V): this.type =
     copy(
       updatedVertexes =
-        vertexes + vertex
+        vertexes + vertexToAdd
     )
 
   def updateVertex(updatedVertex: V): this.type =
@@ -89,11 +89,11 @@ abstract class GraphCore[
         )
     )
 
-  def removeVertexes(vertexes: V*): this.type =
-    removeVertexes(vertexes.toSet)
+  def removeVertexes(vertexesToRemove: V*): this.type =
+    removeVertexes(vertexesToRemove.toSet)
 
-  def removeVertex(vertex: V): this.type =
-    removeVertexes(Set(vertex))
+  def removeVertex(vertexToRemove: V): this.type =
+    removeVertexes(Set(vertexToRemove))
 
   @transient
   lazy val links: Set[L] =
@@ -118,9 +118,9 @@ abstract class GraphCore[
       Set[L]()
     )
 
-  def getLinksBetween(first: V, second: V): Set[L] = {
+  def getLinksBetween(firstAnchor: V, secondAnchor: V): Set[L] = {
     val anchors =
-      createAnchors(first, second)
+      createAnchors(firstAnchor, secondAnchor)
 
       getLinksBetween(anchors)
   }
@@ -146,21 +146,21 @@ abstract class GraphCore[
       this
 
 
-  def addLink(first: V, second: V, link: L): this.type = {
+  def addLink(firstAnchor: V, secondAnchor: V, linkToAdd: L): this.type = {
     val anchors =
-      createAnchors(first, second)
+      createAnchors(firstAnchor, secondAnchor)
 
-    addLink(anchors, link)
+    addLink(anchors, linkToAdd)
   }
 
-  def addLink(vertexPair: (V, V), link: L): this.type = {
+  def addLink(vertexPair: (V, V), linkToAdd: L): this.type = {
     val anchors =
       createAnchors(
         vertexPair._1,
         vertexPair._2
       )
 
-    addLink(anchors, link)
+    addLink(anchors, linkToAdd)
   }
 
   def updateLink(updatedLink: L): this.type =
@@ -192,11 +192,11 @@ abstract class GraphCore[
           }
     )
 
-  def removeLinks(links: L*): this.type =
-    removeLinks(links.toSet)
+  def removeLinks(linksToRemove: L*): this.type =
+    removeLinks(linksToRemove.toSet)
 
-  def removeLink(link: L): this.type =
-    removeLinks(Set(link))
+  def removeLink(linkToRemove: L): this.type =
+    removeLinks(Set(linkToRemove))
 
   @transient
   lazy val neighborsByVertex: Map[V, Set[V]] =

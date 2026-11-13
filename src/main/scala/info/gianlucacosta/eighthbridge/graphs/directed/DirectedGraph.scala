@@ -37,8 +37,8 @@ final class DirectedGraph[
   override protected def createAnchors(first: V, second: V): DirectedAnchors[V] =
     new DirectedAnchors[V](first, second)
 
-  override def addLink(source: V, target: V, link: L): this.type =
-    super.addLink(source, target, link)
+  override def addLink(source: V, target: V, linkToAdd: L): this.type =
+    super.addLink(source, target, linkToAdd)
 
   @transient
   lazy val successorsByVertex: Map[V, Set[V]] =
