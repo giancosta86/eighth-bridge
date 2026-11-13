@@ -1,6 +1,16 @@
 package info.gianlucacosta.eighthbridge.graphs.undirected
 
-import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, GraphCore, Link, Vertex}
+
+import scala.language.implicitConversions
+
+object UndirectedGraph {
+  implicit def toUndirectedGraph[V <: Vertex, L <: Link, E <: L with Edge](self: Graph[V, L]): UndirectedGraph[V, E] =
+    self.asInstanceOf[UndirectedGraph[V, E]]
+
+  implicit def toGraph[V <: Vertex, L <: Link, E <: L with Edge](self: UndirectedGraph[V, E]): Graph[V, L] =
+    self.asInstanceOf[Graph[V, L]]
+}
 
 final class UndirectedGraph[
   V <: Vertex,

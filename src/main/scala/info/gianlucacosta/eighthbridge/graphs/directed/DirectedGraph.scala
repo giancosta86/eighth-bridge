@@ -1,9 +1,17 @@
 package info.gianlucacosta.eighthbridge.graphs.directed
 
-import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.{Graph, GraphCore, Link, Vertex}
 
 import scala.annotation.tailrec
+import scala.language.implicitConversions
+
+object DirectedGraph {
+  implicit def toDirectedGraph[V <: Vertex, L <: Link, A <: L with Arc](self: Graph[V, L]): DirectedGraph[V, A] =
+    self.asInstanceOf[DirectedGraph[V, A]]
+
+  implicit def toGraph[V <: Vertex, L <: Link, A <: L with Arc](self: DirectedGraph[V, A]): Graph[V, L] =
+    self.asInstanceOf[Graph[V, L]]
+}
 
 final class DirectedGraph[
   V <: Vertex,
