@@ -27,7 +27,6 @@ object Entity {
         self
   }
 
-  //TODO: Can this be generalized, for example, to Seq?
   implicit class EntityListExtensions[E <: Entity](self: List[E]) {
     def update(updated: E): List[E] =
       self.map(_.update(updated))
