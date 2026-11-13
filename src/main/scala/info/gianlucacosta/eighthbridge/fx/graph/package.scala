@@ -2,13 +2,14 @@ package info.gianlucacosta.eighthbridge.fx
 
 //import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.eighthbridge.fx.graph.Delta._
+import info.gianlucacosta.eighthbridge.graphs.Graph
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelectedSettable}
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
 package object graph {
   type VisualGraph =
-    DirectedGraph[VisualVertex, VisualLink]
+    Graph[VisualVertex, VisualLink]
 
   implicit class VisualGraphExtensions(self: VisualGraph) {
     def selectedVertexes: Set[VisualVertex] =
