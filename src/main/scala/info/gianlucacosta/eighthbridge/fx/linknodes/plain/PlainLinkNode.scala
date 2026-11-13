@@ -1,11 +1,26 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, LinkNode, VertexNode}
+import info.gianlucacosta.eighthbridge.graphs.Link
+import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, ArcBarbs}
 import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
+import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
+
+object PlainLinkNode {
+  def getActualBarbs(link: Link): Option[ArcBarbs] =
+      link match {
+        case arc: Arc =>
+          Some(arc.barbs)
+
+        case _ =>
+          None
+      }
+}
 
 class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   extends LinkNode(graphCanvas, initialLink) {
@@ -42,6 +57,10 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
 
   children.add(shaft)
 
+  private val actualBarbs =
+    new SimpleObjectProperty[Option[ArcBarbs]](
+
+    )
 
   private val barbsNode =
     new BarbsNode(
@@ -50,7 +69,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
       initialIntersectionPoint =
         shaft.intersectionWithTargetVertexNode(),
       initialArcBarbs =
-        initialLink.arcBarbs
+        getActualBarbs(initialLink)
     ) {
       sourcePoint <==
         shaft.lastPointBeforeTargetVertex
@@ -61,11 +80,11 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
       arcBarbs <==
         Bindings.createObjectBinding(
           () =>
-            link().arcBarbs,
+            getActualBarbs(link()),
 
           link
-    )
-  }
+        )
+    }
 
   children.add(barbsNode)
 

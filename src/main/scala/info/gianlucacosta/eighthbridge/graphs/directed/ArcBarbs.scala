@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.graphs.facets
+package info.gianlucacosta.eighthbridge.graphs.directed
 
 import scalafx.geometry.Point2D
 

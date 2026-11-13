@@ -7,11 +7,11 @@ import scala.annotation.tailrec
 
 final class DirectedGraph[
   V <: Vertex,
-  L <: Link
+  A <: Arc
 ] private(
    vertexes: Set[V],
-   linksByAnchors: Map[DirectedAnchors[V], Set[L]]
- ) extends GraphCore[V, L, DirectedAnchors[V]](
+   linksByAnchors: Map[DirectedAnchors[V], Set[A]]
+ ) extends GraphCore[V, A, DirectedAnchors[V]](
   vertexes,
   linksByAnchors
 ) {
@@ -19,14 +19,14 @@ final class DirectedGraph[
     vertexes =
       Set[V](),
     linksByAnchors =
-      Map[DirectedAnchors[V], Set[L]]()
+      Map[DirectedAnchors[V], Set[A]]()
   )
 
   override protected def copy(
                                updatedVertexes: Set[V],
-                               updatedLinksByAnchors: Map[DirectedAnchors[V], Set[L]]
+                               updatedLinksByAnchors: Map[DirectedAnchors[V], Set[A]]
                              ): this.type =
-    new DirectedGraph[V, L](
+    new DirectedGraph[V, A](
       vertexes =
         updatedVertexes,
       linksByAnchors =
@@ -37,7 +37,7 @@ final class DirectedGraph[
   override protected def createAnchors(first: V, second: V): DirectedAnchors[V] =
     new DirectedAnchors[V](first, second)
 
-  override def addLink(source: V, target: V, linkToAdd: L): this.type =
+  override def addLink(source: V, target: V, linkToAdd: A): this.type =
     super.addLink(source, target, linkToAdd)
 
   @transient
@@ -59,7 +59,7 @@ final class DirectedGraph[
     )
 
   @transient
-  lazy val exitingLinksByVertex: Map[V, Set[L]] =
+  lazy val exitingLinksByVertex: Map[V, Set[A]] =
     linksByAnchors
       .groupBy { case (anchors, _) =>
         anchors.source
@@ -74,7 +74,7 @@ final class DirectedGraph[
   /**
    * Returns the set of links whose source is the given vertex.
    */
-  def getExitingLinks(vertex: V): Set[L] =
+  def getExitingLinks(vertex: V): Set[A] =
     exitingLinksByVertex.getOrElse(
       vertex,
       Set()
@@ -99,7 +99,7 @@ final class DirectedGraph[
     )
 
   @transient
-  lazy val enteringLinksByVertex: Map[V, Set[L]] =
+  lazy val enteringLinksByVertex: Map[V, Set[A]] =
     linksByAnchors
       .view
       .groupBy { case (anchors, _) =>
@@ -115,7 +115,7 @@ final class DirectedGraph[
   /**
    * Returns the set of links whose target is the given vertex.
    */
-  def getEnteringLinks(vertex: V): Set[L] =
+  def getEnteringLinks(vertex: V): Set[A] =
     enteringLinksByVertex.getOrElse(
       vertex,
       Set()
@@ -248,26 +248,4 @@ final class DirectedGraph[
       (_, _) => ()
     )
       .isEmpty
-
-  def toUndirected: UndirectedGraph[V, L] = {
-    var result =
-      new UndirectedGraph[V, L]
-
-    vertexes.foreach(vertex =>
-      result =
-        result.addVertex(vertex)
-    )
-
-    linksByAnchors.foreach { case (anchors, links) =>
-      val (sourceVertex, targetVertex) =
-        anchors.toPair
-
-      links.foreach(link =>
-        result =
-          result.addLink(sourceVertex, targetVertex, link)
-      )
-    }
-
-    result
-  }
 }

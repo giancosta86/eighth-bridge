@@ -4,11 +4,11 @@ import info.gianlucacosta.eighthbridge.graphs.{GraphCore, Link, Vertex}
 
 final class UndirectedGraph[
   V <: Vertex,
-  L <: Link
+  E <: Edge
 ] private(
   vertexes: Set[V],
-  linksByAnchors: Map[UndirectedAnchors[V], Set[L]]
-) extends GraphCore[V, L, UndirectedAnchors[V]](
+  linksByAnchors: Map[UndirectedAnchors[V], Set[E]]
+) extends GraphCore[V, E, UndirectedAnchors[V]](
   vertexes,
   linksByAnchors
 ) {
@@ -16,14 +16,14 @@ final class UndirectedGraph[
     vertexes =
       Set[V](),
     linksByAnchors =
-      Map[UndirectedAnchors[V], Set[L]]()
+      Map[UndirectedAnchors[V], Set[E]]()
   )
 
   override protected def copy(
      updatedVertexes: Set[V],
-     updatedLinksByAnchors: Map[UndirectedAnchors[V], Set[L]]
+     updatedLinksByAnchors: Map[UndirectedAnchors[V], Set[E]]
   ): this.type =
-    new UndirectedGraph[V, L](
+    new UndirectedGraph[V, E](
       vertexes =
         updatedVertexes,
       linksByAnchors =
@@ -34,13 +34,13 @@ final class UndirectedGraph[
   override protected def createAnchors(first: V, second: V): UndirectedAnchors[V] =
     new UndirectedAnchors[V](first, second)
 
-  override def addLink(oneVertex: V, anotherVertex: V, linkToAdd: L): this.type =
+  override def addLink(oneVertex: V, anotherVertex: V, linkToAdd: E): this.type =
     super.addLink(oneVertex, anotherVertex, linkToAdd)
 
   @transient
   override lazy val isCyclic: Boolean = {
     var unionFind =
-      new UnionFind[V, L](this)
+      new UnionFind[V, E](this)
 
     links
       .view

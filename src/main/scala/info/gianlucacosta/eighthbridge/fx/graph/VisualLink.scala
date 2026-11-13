@@ -7,6 +7,5 @@ trait VisualLink extends TimestampedPrototype
   with Link
   with HasSelected
   with HasStyleClasses
-  with HasOptionalArcBarbs
   with HasHandles
 
