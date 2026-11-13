@@ -17,11 +17,11 @@ package object graph {
   type VisualUndirectedGraph =
     UndirectedGraph[VisualVertex, VisualEdge]
 
-  type VisualDirectedGraph =
-    DirectedGraph[VisualVertex, VisualArc]
-
   implicit def toVisualGraph(self: VisualDirectedGraph): VisualGraph =
     self.asInstanceOf[VisualGraph]
+
+  type VisualDirectedGraph =
+    DirectedGraph[VisualVertex, VisualArc]
 
   implicit def toVisualGraph(self: VisualUndirectedGraph): VisualGraph =
     self.asInstanceOf[VisualGraph]
