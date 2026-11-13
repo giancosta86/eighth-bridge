@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.directed
 
 import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedPrototype
 
-trait HasArcBarbsSettable extends TimestampedPrototype with Arc {
+trait HasBarbsSettable extends TimestampedPrototype with Arc {
   private var _barbs: ArcBarbs =
     ArcBarbs.Default
 
