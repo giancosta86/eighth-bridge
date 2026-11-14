@@ -1,0 +1,98 @@
+/*------------
+ * BACKGROUND
+ *------------*/
+
+.backgroundRectangle {
+    -fx-fill: white;
+}
+
+.selectionRectangle {
+    -fx-fill: #e5ffe0;
+}
+
+
+/*---------
+ * ENTITIES
+ *---------*/
+
+.entity:hover {
+    -fx-opacity: 0.75;
+}
+
+
+/*----------
+ * VERTEXES
+ *----------*/
+
+.vertex .label {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+
+    -fx-text-fill: black;
+
+    -fx-padding: 5px 7px;
+
+    -fx-background-color: #fbf6ce;
+    -fx-background-radius: 16px;
+
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 16px;
+
+    -fx-clip: true;
+}
+
+.vertex .ellipse {
+    -fx-fill: #fbf6ce;
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
+}
+
+
+/*---------------------
+ * VERTEXES - SELECTED
+ *---------------------*/
+
+.vertex:selected .label {
+    -fx-background-color: #ffce5a;
+}
+
+.vertex:selected .ellipse {
+    -fx-fill: #ffce5a;
+}
+
+/*-------
+ * LINKS
+ *-------*/
+
+.link .line {
+    -fx-stroke: #9fecf3;
+    -fx-stroke-width: 5;
+}
+
+.link .handle {
+    -fx-fill: #9fecf3;
+}
+
+.link .labelConnector {
+    -fx-stroke: maroon;
+    -fx-stroke-dash-array: 15 10;
+}
+
+.link .label {
+    -fx-font: 14 Arial;
+    -fx-fill: black;
+}
+
+
+/*------------------
+ * LINKS - SELECTED
+ *------------------*/
+
+.link:selected .line {
+     -fx-stroke: #18ab00;
+ }
+
+.link:selected .handle {
+     -fx-fill: #18ab00;
+ }

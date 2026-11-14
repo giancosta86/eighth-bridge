@@ -1,313 +1,71 @@
-/*§
-  ===========================================================================
-  EighthBridge
-  ===========================================================================
-  Copyright (C) 2016 Gianluca Costa
-  ===========================================================================
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  ===========================================================================
-*/
-
 package info.gianlucacosta.eighthbridge.graphs
 
-import java.util.UUID
+trait Graph[V <: Vertex, L <: Link] {
+  val vertexes: Set[V]
 
-/**
-  * A general-purpose, read-only graph.
-  *
-  * Every status-changing operation returns a new graph.
-  *
-  * @tparam V Vertex type
-  * @tparam L Link type
-  * @tparam B Binding type
-  */
-trait Graph[V <: Vertex, L <: Link, B <: Binding, G <: Graph[V, L, B, G]] {
-  this: G =>
-  def vertexes: Set[V]
+  val vertexesById: Map[Vertex#Id, V]
 
-  def links: Set[L]
+  def getVertexById(id: Vertex#Id): Option[V]
 
-  def bindings: Set[B]
+  val isEmpty: Boolean
 
-  /**
-    * Copies the graph.
-    *
-    * If you implement this trait as a "case class", you can implement this method just by using the Scala-provided copy() method.
-    *
-    * @param vertexes The new vertexes
-    * @param links    The new links
-    * @param bindings The new bindings
-    * @return The resulting new graph
-    */
-  protected def graphCopy(vertexes: Set[V] = vertexes, links: Set[L] = links, bindings: Set[B] = bindings): G
+  val nonEmpty: Boolean
 
-  @transient
-  private lazy val vertexMap =
-    vertexes.map(vertex =>
-      vertex.id -> vertex
-    )
-      .toMap
+  def addVertexes(vertexesToAdd: Set[V]): this.type
 
+  def addVertexes(vertexesToAdd: V*): this.type
 
-  @transient
-  private lazy val linkMap =
-    links.map(
-      link => link.id -> link
-    )
-      .toMap
+  def addVertex(vertexToAdd: V): this.type
 
+  def updateVertex(updatedVertex: V): this.type
 
-  def addVertexes(vertexesToAdd: Set[V]): G = {
-    val newVertexes =
-      vertexes ++ vertexesToAdd
+  def updateVertexes(updatedVertexes: Set[V]): this.type
 
-    require(
-      newVertexes.size == vertexes.size + vertexesToAdd.size,
-      "The vertexes to add must not belong to the graph"
-    )
+  def updateVertexes(updatedVertexes: V*): this.type
 
-    graphCopy(vertexes = newVertexes)
-  }
+  def removeVertexes(vertexesToRemove: Set[V]): this.type
 
+  def removeVertexes(vertexesToRemove: V*): this.type
 
-  def addVertex(vertex: V) =
-    addVertexes(Set(vertex))
+  def removeVertex(vertexToRemove: V): this.type
 
+  val links: Set[L]
 
-  def replaceVertexes(replacingVertexes: Set[V]): G = {
-    val newVertexes =
-      vertexes.diff(replacingVertexes) ++ replacingVertexes
+  val linksById: Map[Link#Id, L]
 
-    require(
-      newVertexes.size == vertexes.size,
-      "The replacing vertexes must match vertexes belonging to the graph"
-    )
+  def getLinkById(id: Link#Id): Option[L]
 
-    graphCopy(vertexes = newVertexes)
-  }
+  def getLinksBetween(firstAnchor: V, secondAnchor: V): Set[L]
 
+  def getAnchorPair(link: L): Option[(V, V)]
 
-  def replaceVertex(vertex: V) =
-    replaceVertexes(Set(vertex))
+  def addLink(firstAnchor: V, secondAnchor: V, linkToAdd: L): this.type
 
+  def addLink(vertexPair: (V, V), linkToAdd: L): this.type
 
-  def removeVertexes(vertexesToRemove: Set[V]): G = {
-    val newVertexes =
-      vertexes.diff(vertexesToRemove)
+  def updateLink(updatedLink: L): this.type
 
-    require(
-      newVertexes.size == vertexes.size - vertexesToRemove.size,
-      "All the vertexes to remove must belong to the graph"
-    )
+  def updateLinks(updatedLinks: Set[L]): this.type
 
-    val vertexIdsToRemove =
-      vertexesToRemove.map(_.id)
+  def updateLinks(updatedLinks: L*): this.type
 
+  def removeLinks(linksToRemove: Set[L]): this.type
 
-    val (newBindings, bindingsToRemove) = bindings.partition(
-      binding => binding.vertexIds.intersect(vertexIdsToRemove).isEmpty
-    )
+  def removeLinks(linksToRemove: L*): this.type
 
+  def removeLink(linkToRemove: L): this.type
 
-    val linkIdsToRemove =
-      bindingsToRemove.map(_.linkId)
+  val neighborsByVertex: Map[V, Set[V]]
 
-    val newLinks =
-      links.filter(link =>
-        !linkIdsToRemove.contains(link.id)
-      )
+  def getNeighbors(vertex: V): Set[V]
 
+  val connectedVertexes: Set[V]
 
-    graphCopy(
-      vertexes = newVertexes,
-      links = newLinks,
-      bindings = newBindings
-    )
-  }
+  val isolatedVertexes: Set[V]
 
+  val connectedLinksByVertex: Map[V, Set[L]]
 
-  def removeVertex(vertex: V) =
-    removeVertexes(Set(vertex))
+  def getConnectedLinks(vertex: V): Set[L]
 
-
-  def addLinks(bindingMapToAdd: Map[L, B]): G = {
-    bindingMapToAdd.foreach {
-      case (link, binding) =>
-        require(
-          link.id == binding.linkId,
-          "Each binding must reference its associated link"
-        )
-    }
-
-    val linksToAdd =
-      bindingMapToAdd.keySet
-
-    val bindingsToAdd =
-      bindingMapToAdd.values.toSet
-
-    require(
-      linksToAdd.size == bindingsToAdd.size,
-      "The bindings must be distinct"
-    )
-
-    bindingsToAdd.foreach(binding => {
-      binding.vertexIds.foreach(vertexId =>
-        require(
-          vertexMap.contains(vertexId),
-          "Each binding's vertexes must belong to the graph"
-        )
-      )
-    })
-
-
-    val newLinks =
-      links.union(linksToAdd)
-
-    val newBindings =
-      bindings.union(bindingsToAdd)
-
-    require(
-      newLinks.size == links.size + linksToAdd.size,
-      "The links to add must not belong to the graph"
-    )
-
-    require(
-      newBindings.size == bindings.size + bindingsToAdd.size,
-      "The bindings to add must not belong to the graph"
-    )
-
-    graphCopy(
-      links = newLinks,
-      bindings = newBindings
-    )
-  }
-
-
-  def addLink(linkToAdd: L, bindingToAdd: B) =
-    addLinks(
-      Map(linkToAdd -> bindingToAdd)
-    )
-
-
-  def replaceLinks(replacingLinks: Set[L]): G = {
-    val newLinks =
-      links.diff(replacingLinks) ++ replacingLinks
-
-    require(
-      newLinks.size == links.size,
-      "The replacing links must match links belonging to the graph"
-    )
-
-    graphCopy(links = newLinks)
-  }
-
-
-  def replaceLink(replacingLink: L) =
-    replaceLinks(Set(replacingLink))
-
-
-  def removeLinks(linksToRemove: Set[L]): G = {
-    val newLinks =
-      links.diff(linksToRemove)
-
-    require(
-      newLinks.size == links.size - linksToRemove.size,
-      "All the links to remove must belong to the graph"
-    )
-
-    val linkIdsToRemove =
-      linksToRemove.map(_.id)
-
-    val newBindings = bindings.filter(binding =>
-      !linkIdsToRemove.contains(binding.linkId)
-    )
-
-    graphCopy(
-      links = newLinks,
-      bindings = newBindings
-    )
-  }
-
-
-  def removeLink(linkToRemove: L) =
-    removeLinks(Set(linkToRemove))
-
-
-  def getVertex(id: UUID): Option[V] =
-    vertexMap.get(id)
-
-
-  def containsVertex(id: UUID): Boolean =
-    getVertex(id).isDefined
-
-
-  def getLink(id: UUID): Option[L] =
-    linkMap.get(id)
-
-
-  def containsLink(id: UUID): Boolean =
-    getLink(id).isDefined
-
-
-  @transient
-  lazy val linkedVertexes: Set[V] =
-    bindings
-      .flatMap(binding =>
-        binding.vertexIds.map(vertexId =>
-          getVertex(vertexId).get
-        )
-      )
-
-  @transient
-  lazy val unlinkedVertexes: Set[V] =
-    vertexes.diff(linkedVertexes)
-
-
-  /**
-    * Returns the set of links connecting the given vertexes
-    *
-    * @param linkVertexes A set of vertexes
-    * @return A set of links connecting the vertexes
-    */
-  def getLinksBetween(linkVertexes: Set[V]): Set[L] = {
-    val linkVertexIds =
-      linkVertexes.map(_.id)
-
-    bindings
-      .filter(binding =>
-        linkVertexIds.subsetOf(binding.vertexIds)
-      )
-      .map(binding =>
-        getLink(binding.linkId).get
-      )
-  }
-
-
-  def getLinksBetween(linkVertexes: V*): Set[L] =
-    getLinksBetween(linkVertexes.toSet)
-
-
-  /**
-    * Returns a set of vertexes connected to the given vertex
-    *
-    * @param vertex A vertex in the graph
-    * @return The set of all the vertexes connected to the given vertex
-    */
-  def getLinkedVertexes(vertex: V): Set[V] =
-    bindings
-      .filter(binding => binding.vertexIds.contains(vertex.id))
-      .flatMap(binding => binding.vertexIds - vertex.id)
-      .map(vertexId => getVertex(vertexId).get)
-
-
+  val isCyclic: Boolean
 }
