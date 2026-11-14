@@ -9,16 +9,16 @@ object UndirectedGraph {
     TGraphVertex <: Vertex,
     TGraphLink <: Link,
     TUndirectedGraphVertex <: TGraphVertex,
-    TUndirectedGraphArc <: TGraphLink with Edge
-  ](self: Graph[TGraphVertex, TGraphLink]): UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphArc] =
-    self.asInstanceOf[UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphArc]]
+    TUndirectedGraphEdge <: TGraphLink with Edge
+  ](self: Graph[TGraphVertex, TGraphLink]): UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphEdge] =
+    self.asInstanceOf[UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphEdge]]
 
   implicit def toGraph[
     TGraphVertex <: Vertex,
     TGraphLink <: Link,
     TUndirectedGraphVertex <: TGraphVertex,
-    TUndirectedGraphArc <: TGraphLink with Edge
-  ](self: UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphArc]): Graph[TGraphVertex, TGraphLink] =
+    TUndirectedGraphEdge <: TGraphLink with Edge
+  ](self: UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphEdge]): Graph[TGraphVertex, TGraphLink] =
     self.asInstanceOf[Graph[TGraphVertex, TGraphLink]]
 
   implicit def toParent[

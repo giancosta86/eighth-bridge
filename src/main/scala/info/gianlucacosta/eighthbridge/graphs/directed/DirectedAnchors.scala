@@ -14,6 +14,6 @@ class DirectedAnchors[V <: Vertex](val source: V, val target: V)
     )
       .asInstanceOf[this.type]
 
-  override protected def checkEquality(other: Anchors[V]): Boolean =
+  override protected def actualEquals(other: Anchors[V]): Boolean =
     toPair == other.toPair
 }

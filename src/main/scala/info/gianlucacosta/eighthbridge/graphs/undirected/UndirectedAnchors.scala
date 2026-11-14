@@ -17,7 +17,7 @@ class UndirectedAnchors[V <: Vertex](oneVertex: V, anotherVertex: V)
     )
       .asInstanceOf[this.type]
 
-  override protected def checkEquality(other: Anchors[V]): Boolean =
+  override protected def actualEquals(other: Anchors[V]): Boolean =
     toSet == other.toSet
 
   def getPairedWith(vertex: V): Option[V] = {
