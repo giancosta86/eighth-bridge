@@ -33,6 +33,7 @@ object Entity {
   }
 
   implicit class EntitySetExtensions[E <: Entity](self: Set[E]) {
+    //TODO! Can this be optimized?
     def update(updated: E): Set[E] =
       self.map(_.update(updated))
   }
