@@ -17,11 +17,11 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def addVertex(vertexToAdd: V): this.type
 
-  def updateVertex(updatedVertex: V): this.type
-
   def updateVertexes(updatedVertexes: Set[V]): this.type
 
   def updateVertexes(updatedVertexes: V*): this.type
+
+  def updateVertex(updatedVertex: V): this.type
 
   def removeVertexes(vertexesToRemove: Set[V]): this.type
 
@@ -41,13 +41,13 @@ trait Graph[V <: Vertex, L <: Link] {
 
   def addLink(firstAnchor: V, secondAnchor: V, linkToAdd: L): this.type
 
-  def addLink(vertexPair: (V, V), linkToAdd: L): this.type
-
-  def updateLink(updatedLink: L): this.type
+  def addLink(anchorPair: (V, V), linkToAdd: L): this.type
 
   def updateLinks(updatedLinks: Set[L]): this.type
 
   def updateLinks(updatedLinks: L*): this.type
+
+  def updateLink(updatedLink: L): this.type
 
   def removeLinks(linksToRemove: Set[L]): this.type
 
