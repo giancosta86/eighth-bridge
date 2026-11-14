@@ -5,62 +5,59 @@ import info.gianlucacosta.eighthbridge.graphs.MapUtils._
 abstract class GraphCore[
   V <: Vertex,
   L <: Link,
-  A <: Anchors[V]
+  TAnchors <: Anchors[V]
 ](
-  val vertexes: Set[V],
-  val linksByAnchors: Map[A, Set[L]]
+  override val vertexes: Set[V],
+  val linksByAnchors: Map[TAnchors, Set[L]]
 )
   extends Graph[V, L] {
   @transient
-  lazy val vertexesById: Map[Vertex#Id, V] =
+  override lazy val vertexesById: Map[Vertex#Id, V] =
     vertexes
       .map(vertex =>
         vertex.id -> vertex
       )
       .toMap
 
-  def getVertexById(id: Vertex#Id): Option[V] =
+  override def getVertexById(id: Vertex#Id): Option[V] =
     vertexesById.get(id)
 
   @transient
-  lazy val isEmpty: Boolean =
+  override lazy val isEmpty: Boolean =
     vertexes.isEmpty
 
   @transient
-  lazy val nonEmpty: Boolean =
+  override lazy val nonEmpty: Boolean =
     vertexes.nonEmpty
 
   protected def copy(
                       updatedVertexes: Set[V] =
                         vertexes,
-                      updatedLinksByAnchors: Map[A, Set[L]] =
+                      updatedLinksByAnchors: Map[TAnchors, Set[L]] =
                         linksByAnchors
                     ): this.type
 
-  protected def createAnchors(first: V, second: V): A
+  protected def createAnchors(first: V, second: V): TAnchors
 
-  def addVertexes(vertexesToAdd: Set[V]): this.type =
+  override def addVertexes(vertexesToAdd: Set[V]): this.type =
     copy(
       updatedVertexes =
         vertexes ++ vertexesToAdd
     )
 
-  def addVertexes(vertexesToAdd: V*): this.type =
+  override def addVertexes(vertexesToAdd: V*): this.type =
     addVertexes(vertexesToAdd.toSet)
 
-  def addVertex(vertexToAdd: V): this.type =
+  override def addVertex(vertexToAdd: V): this.type =
     copy(
       updatedVertexes =
         vertexes + vertexToAdd
     )
 
-  def updateVertex(updatedVertex: V): this.type =
+  override def updateVertex(updatedVertex: V): this.type =
     copy(
       updatedVertexes =
-        vertexes
-          .map(
-            _.update(updatedVertex)
-          ),
+        vertexes.update(updatedVertex),
 
       updatedLinksByAnchors =
         linksByAnchors.map {
@@ -69,16 +66,16 @@ abstract class GraphCore[
         }
     )
 
-  def updateVertexes(updatedVertexes: Set[V]): this.type =
+  override def updateVertexes(updatedVertexes: Set[V]): this.type =
     updatedVertexes.foldLeft(this)((cumulatedGraph, vertex) =>
       cumulatedGraph.updateVertex(vertex)
     )
       .asInstanceOf[this.type]
 
-  def updateVertexes(updatedVertexes: V*): this.type =
+  override def updateVertexes(updatedVertexes: V*): this.type =
     updateVertexes(updatedVertexes.toSet)
 
-  def removeVertexes(vertexesToRemove: Set[V]): this.type =
+  override def removeVertexes(vertexesToRemove: Set[V]): this.type =
     copy(
       updatedVertexes =
         vertexes -- vertexesToRemove,
@@ -89,40 +86,40 @@ abstract class GraphCore[
         )
     )
 
-  def removeVertexes(vertexesToRemove: V*): this.type =
+  override def removeVertexes(vertexesToRemove: V*): this.type =
     removeVertexes(vertexesToRemove.toSet)
 
-  def removeVertex(vertexToRemove: V): this.type =
+  override def removeVertex(vertexToRemove: V): this.type =
     removeVertexes(Set(vertexToRemove))
 
   @transient
-  lazy val links: Set[L] =
+  override lazy val links: Set[L] =
     linksByAnchors
       .flatMap(_._2)
       .toSet
 
   @transient
-  lazy val linksById: Map[Link#Id, L] =
+  override lazy val linksById: Map[Link#Id, L] =
     links
       .map(link =>
         link.id -> link
       )
       .toMap
 
-  def getLinkById(id: Link#Id): Option[L] =
+  override def getLinkById(id: Link#Id): Option[L] =
     linksById.get(id)
 
-  def getLinksBetween(anchors: A): Set[L] =
+  def getLinksBetween(anchors: TAnchors): Set[L] =
     linksByAnchors.getOrElse(
       anchors,
       Set[L]()
     )
 
-  def getLinksBetween(firstAnchor: V, secondAnchor: V): Set[L] = {
+  override def getLinksBetween(firstAnchor: V, secondAnchor: V): Set[L] = {
     val anchors =
       createAnchors(firstAnchor, secondAnchor)
 
-      getLinksBetween(anchors)
+    getLinksBetween(anchors)
   }
 
   override def getAnchorPair(link: L): Option[(V, V)] =
@@ -131,16 +128,16 @@ abstract class GraphCore[
       .map(_.toPair)
 
   @transient
-  lazy val anchorsByLink: Map[L, A] =
+  lazy val anchorsByLink: Map[L, TAnchors] =
     linksByAnchors
       .flatMap { case (anchors, edges) =>
         edges.map(_ -> anchors)
       }
 
-  def getAnchors(link: L): Option[A] =
+  def getAnchors(link: L): Option[TAnchors] =
     anchorsByLink.get(link)
 
-  def addLink(anchors: A, link: L): this.type =
+  def addLink(anchors: TAnchors, link: L): this.type =
     if (anchors.toSet.subsetOf(vertexes))
       copy(
         updatedLinksByAnchors =
@@ -149,25 +146,24 @@ abstract class GraphCore[
     else
       this
 
-
-  def addLink(firstAnchor: V, secondAnchor: V, linkToAdd: L): this.type = {
+  override def addLink(firstAnchor: V, secondAnchor: V, linkToAdd: L): this.type = {
     val anchors =
       createAnchors(firstAnchor, secondAnchor)
 
     addLink(anchors, linkToAdd)
   }
 
-  def addLink(vertexPair: (V, V), linkToAdd: L): this.type = {
+  override def addLink(anchorPair: (V, V), linkToAdd: L): this.type = {
     val anchors =
       createAnchors(
-        vertexPair._1,
-        vertexPair._2
+        anchorPair._1,
+        anchorPair._2
       )
 
     addLink(anchors, linkToAdd)
   }
 
-  def updateLink(updatedLink: L): this.type =
+  override def updateLink(updatedLink: L): this.type =
     copy(
       updatedLinksByAnchors =
         linksByAnchors.mapValues(
@@ -175,16 +171,16 @@ abstract class GraphCore[
         )
     )
 
-  def updateLinks(updatedLinks: Set[L]): this.type =
+  override def updateLinks(updatedLinks: Set[L]): this.type =
     updatedLinks.foldLeft(this)((cumulatedGraph, link) =>
       cumulatedGraph.updateLink(link)
     )
       .asInstanceOf[this.type]
 
-  def updateLinks(updatedLinks: L*): this.type =
+  override def updateLinks(updatedLinks: L*): this.type =
     updateLinks(updatedLinks.toSet)
 
-  def removeLinks(linksToRemove: Set[L]): this.type =
+  override def removeLinks(linksToRemove: Set[L]): this.type =
     copy(
       updatedLinksByAnchors =
         linksByAnchors
@@ -196,14 +192,14 @@ abstract class GraphCore[
           }
     )
 
-  def removeLinks(linksToRemove: L*): this.type =
+  override def removeLinks(linksToRemove: L*): this.type =
     removeLinks(linksToRemove.toSet)
 
-  def removeLink(linkToRemove: L): this.type =
+  override def removeLink(linkToRemove: L): this.type =
     removeLinks(Set(linkToRemove))
 
   @transient
-  lazy val neighborsByVertex: Map[V, Set[V]] =
+  override lazy val neighborsByVertex: Map[V, Set[V]] =
     linksByAnchors
       .keys
       .flatMap(anchors => {
@@ -227,22 +223,22 @@ abstract class GraphCore[
           .toSet
       )
 
-  def getNeighbors(vertex: V): Set[V] =
+  override def getNeighbors(vertex: V): Set[V] =
     neighborsByVertex.getOrElse(
       vertex,
       Set[V]()
     )
 
   @transient
-  lazy val connectedVertexes: Set[V] =
+  override lazy val connectedVertexes: Set[V] =
     neighborsByVertex.keySet
 
   @transient
-  lazy val isolatedVertexes: Set[V] =
+  override lazy val isolatedVertexes: Set[V] =
     vertexes -- connectedVertexes
 
   @transient
-  lazy val connectedLinksByVertex: Map[V, Set[L]] =
+  override lazy val connectedLinksByVertex: Map[V, Set[L]] =
     linksByAnchors
       .toList
       .flatMap {
@@ -262,13 +258,13 @@ abstract class GraphCore[
           .toSet
       )
 
-  def getConnectedLinks(vertex: V): Set[L] =
+  override def getConnectedLinks(vertex: V): Set[L] =
     connectedLinksByVertex.getOrElse(
       vertex,
       Set[L]()
     )
 
-  val isCyclic: Boolean
+  override val isCyclic: Boolean
 
   override def equals(obj: Any): Boolean = {
     obj match {
