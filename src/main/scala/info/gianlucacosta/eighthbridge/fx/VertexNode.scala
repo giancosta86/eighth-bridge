@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualVertex}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._

@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.vertexnodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
-import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode, VisualVertex}
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyDoubleProperty
 import scalafx.Includes._

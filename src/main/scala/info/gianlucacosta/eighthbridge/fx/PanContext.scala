@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.Delta
 import javafx.beans.property.SimpleBooleanProperty
 import scalafx.Includes._
 import scalafx.beans.property.ReadOnlyBooleanProperty

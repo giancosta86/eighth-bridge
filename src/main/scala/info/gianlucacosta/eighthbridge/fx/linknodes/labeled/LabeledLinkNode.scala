@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.GraphCanvas
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvas, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasLabel, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.helios.fx.geometry.Segment

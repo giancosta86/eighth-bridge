@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.adjusters
 
-import info.gianlucacosta.eighthbridge.fx.graph.{VisualDirectedGraph, VisualGraph, VisualVertex}
-import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas}
+import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas, VisualVertex,VisualDirectedGraph, VisualGraph}
 import info.gianlucacosta.eighthbridge.graphs.facets.HasCenterSettable
 import scalafx.Includes._
 

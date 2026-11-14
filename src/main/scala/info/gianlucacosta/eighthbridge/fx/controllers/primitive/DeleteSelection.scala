@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.fx.controller.primitive
+package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
 

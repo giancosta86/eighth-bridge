@@ -1,9 +1,8 @@
-package info.gianlucacosta.eighthbridge.fx.controller.primitive
+package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
-import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvasController, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandlesSettable, LinkHandle}
-import info.gianlucacosta.eighthbridge.fx.graph.Delta._
+import Delta._
 import info.gianlucacosta.helios.fx.Includes._
 
 trait DragLinkHandle extends GraphCanvasController {

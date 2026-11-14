@@ -1,7 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.controller.primitive
+package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
-import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualVertex}
 import info.gianlucacosta.helios.fx.dialogs.Alerts
 
 trait EditVertex extends GraphCanvasController {

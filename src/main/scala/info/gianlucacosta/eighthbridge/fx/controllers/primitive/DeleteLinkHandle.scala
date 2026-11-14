@@ -1,7 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.controller.primitive
+package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
-import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.fx.graph.VisualLink
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandlesSettable, LinkHandle}
 
 trait DeleteLinkHandle extends GraphCanvasController {

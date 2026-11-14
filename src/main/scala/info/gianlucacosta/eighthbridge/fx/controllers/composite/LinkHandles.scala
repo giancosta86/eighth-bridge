@@ -1,7 +1,7 @@
-package info.gianlucacosta.eighthbridge.fx.controller.composite
+package info.gianlucacosta.eighthbridge.fx.controllers.composite
 
 import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.fx.controller.primitive.{AddLinkHandle, DeleteLinkHandle, DragLinkHandle}
+import info.gianlucacosta.eighthbridge.fx.controllers.primitive.{AddLinkHandle, DeleteLinkHandle, DragLinkHandle}
 
 trait LinkHandles extends GraphCanvasController
   with AddLinkHandle

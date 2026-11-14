@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.VisualGraph
 import info.gianlucacosta.helios.fx.Includes.extendNode
 import scalafx.Includes._
 import scalafx.scene.Group

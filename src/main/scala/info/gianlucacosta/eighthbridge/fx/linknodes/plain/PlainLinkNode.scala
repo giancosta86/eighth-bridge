@@ -1,8 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
-import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, LinkNode, VertexNode}
+import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvas, LinkNode, VertexNode, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.Link
 import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, ArcBarbs}
 import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle

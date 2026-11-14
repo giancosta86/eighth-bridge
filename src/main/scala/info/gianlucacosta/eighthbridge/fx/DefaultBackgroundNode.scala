@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.DefaultBackgroundNode.EmptySelectionBounds
-import info.gianlucacosta.eighthbridge.fx.graph.{Delta, VisualLink, VisualVertex}
 import info.gianlucacosta.helios.fx.Includes._
 import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import javafx.beans.property.SimpleObjectProperty

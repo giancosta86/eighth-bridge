@@ -1,7 +1,6 @@
-package info.gianlucacosta.eighthbridge.fx.controller.creation
+package info.gianlucacosta.eighthbridge.fx.controllers.creation
 
-import info.gianlucacosta.eighthbridge.fx.GraphCanvasController
-import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
+import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualVertex}
 import info.gianlucacosta.eighthbridge.graphs.facets.HasName
 import scalafx.geometry.Point2D
 

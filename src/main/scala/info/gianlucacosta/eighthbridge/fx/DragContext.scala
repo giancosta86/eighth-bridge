@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.Delta
 import scalafx.Includes._
 import scalafx.scene.Node
 import scalafx.scene.input.{MouseButton, MouseEvent}

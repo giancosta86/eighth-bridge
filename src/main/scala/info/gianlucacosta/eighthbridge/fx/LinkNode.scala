@@ -1,10 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.VisualLink
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.scene.input.MouseEvent
+
 
 import scala.collection.JavaConversions._
 

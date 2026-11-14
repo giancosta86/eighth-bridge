@@ -1,7 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.graph.VisualVertex
-
 package object adjusters {
   type Level =
     Int
