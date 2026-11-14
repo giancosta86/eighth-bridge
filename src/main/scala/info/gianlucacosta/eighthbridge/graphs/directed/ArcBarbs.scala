@@ -12,8 +12,8 @@ case class ArcBarbs(
 
   require(length > 0)
 
-  def getSidePoints(source: Point2D, target: Point2D): Option[(Point2D, Point2D)] = {
-    if (source == target) {
+  def getSidePoints(arrowSource: Point2D, arrowTarget: Point2D): Option[(Point2D, Point2D)] = {
+    if (arrowSource == arrowTarget) {
       return None
     }
 
@@ -21,10 +21,10 @@ case class ArcBarbs(
       toRadians(angleInDegrees)
 
     val deltaX =
-      source.x - target.x
+      arrowSource.x - arrowTarget.x
 
     val deltaY =
-      source.y - target.y
+      arrowSource.y - arrowTarget.y
 
     val squaredDeltaY =
       deltaY * deltaY
@@ -33,13 +33,13 @@ case class ArcBarbs(
       deltaX * deltaX + squaredDeltaY
 
     val d =
-      source.x * deltaX + source.y * deltaY - a + length * sqrt(a) * cos(barbAngle)
+      arrowSource.x * deltaX + arrowSource.y * deltaY - a + length * sqrt(a) * cos(barbAngle)
 
     val halfB =
-      target.y * deltaX * deltaY - target.x * squaredDeltaY - d * deltaX
+      arrowTarget.y * deltaX * deltaY - arrowTarget.x * squaredDeltaY - d * deltaX
 
     val c =
-      squaredDeltaY * (target.x * target.x + target.y * target.y - length * length) + d * (d - 2 * target.y * deltaY)
+      squaredDeltaY * (arrowTarget.x * arrowTarget.x + arrowTarget.y * arrowTarget.y - length * length) + d * (d - 2 * arrowTarget.y * deltaY)
 
     val deltaQuarterRoot =
       sqrt(halfB * halfB - a * c)
