@@ -4,7 +4,7 @@ trait HasStyleClassesSettable extends TimestampedPrototype with HasStyleClasses 
   private var _styleClasses: Set[String] =
     Set[String]()
 
-  def styleClasses: Set[String] =
+  override def styleClasses: Set[String] =
     _styleClasses
 
   def setStyleClasses(styleClasses: Set[String]): this.type =

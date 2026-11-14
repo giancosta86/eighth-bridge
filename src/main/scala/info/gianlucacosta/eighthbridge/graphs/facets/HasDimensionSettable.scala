@@ -6,7 +6,7 @@ trait HasDimensionSettable extends TimestampedPrototype with HasDimension {
   private var _dimension: Dimension2D =
     new Dimension2D(0, 0)
 
-  def dimension: Dimension2D =
+  override def dimension: Dimension2D =
     _dimension
 
   def setDimension(dimension: Dimension2D): this.type = {

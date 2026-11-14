@@ -4,7 +4,7 @@ trait HasHandlesSettable extends TimestampedPrototype with HasHandles {
   private var _handles: List[LinkHandle] =
     Nil
 
-  def handles: List[LinkHandle] =
+  override def handles: List[LinkHandle] =
     _handles
 
   def setHandles(handles: List[LinkHandle]): this.type = {
