@@ -54,19 +54,19 @@ class UnionFind[V <: Vertex, E <: Edge] private(
           .toMap
     )
 
-  def add(edge: E): UnionFind[V, E] =
-    if (hasCycles)
-      new UnionFind[V, E](
-        graph,
-        edges + edge,
-        hasCycles,
-        rootByVertex,
-        rankByVertex
-      )
-    else
-      graph
-        .getAnchors(edge)
-        .map(anchors => {
+  def add(edge: E): UnionFind[V, E] = {
+    graph
+      .getAnchors(edge)
+      .map(anchors => {
+        if (hasCycles)
+          new UnionFind[V, E](
+            graph,
+            edges + edge,
+            hasCycles,
+            rootByVertex,
+            rankByVertex
+          )
+        else {
           val (vi, vj) =
             anchors.toPair
 
@@ -107,7 +107,7 @@ class UnionFind[V <: Vertex, E <: Edge] private(
                 rankByVertex +
                   (iRoot ->
                     (rankByVertex(iRoot) + 1)
-                  )
+                    )
               )
 
           new UnionFind[V, E](
@@ -122,6 +122,10 @@ class UnionFind[V <: Vertex, E <: Edge] private(
             rankByVertex =
               updatedRankByVertex
           )
-        })
-        .getOrElse(this)
+        }
+      })
+      .getOrElse(
+        this
+      )
+  }
 }
