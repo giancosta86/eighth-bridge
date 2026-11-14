@@ -9,6 +9,7 @@ trait HasNameSettable extends TimestampedPrototype with HasName {
 
   def setName(name: String): this.type = {
       if (name != _name) {
+        //TODO! What about this requirement, when the name actually starts out empty?
         require(name.nonEmpty, "The name cannot be empty!")
 
         val result =
