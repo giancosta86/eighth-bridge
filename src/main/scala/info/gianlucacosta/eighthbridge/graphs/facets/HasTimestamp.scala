@@ -53,17 +53,17 @@ object HasTimestamp {
           })
 
       TimestampedGraphDiff(
-        addedVertexes =
-          addedVertexes,
-
-        addedLinks =
-          addedLinks,
-
         updatedVertexes =
           updatedVertexes,
 
         updatedLinks =
           updatedLinks,
+
+        addedVertexes =
+          addedVertexes,
+
+        addedLinks =
+          addedLinks,
 
         removedVertexes =
           removedVertexes,

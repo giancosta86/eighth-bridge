@@ -8,7 +8,7 @@ import scalafx.geometry.Point2D
 trait AddLinkHandle extends GraphCanvasController {
   override def addLinkHandle(link: VisualLink, index: Int, point: Point2D): Unit = {
     val linkHandle =
-      LinkHandle.makeDefaultCircle(point)
+      LinkHandle.createDefault(point)
 
     val updatedLink =
       link

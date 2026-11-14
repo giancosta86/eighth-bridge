@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 
 trait HasStyleClassesSettable extends TimestampedPrototype with HasStyleClasses {
   private var _styleClasses: Set[String] =
-    Set()
+    Set[String]()
 
   def styleClasses: Set[String] =
     _styleClasses

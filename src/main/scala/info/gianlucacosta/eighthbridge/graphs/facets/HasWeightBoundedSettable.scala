@@ -2,9 +2,7 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 
 import info.gianlucacosta.helios.mathutils.Numbers
 
-trait HasWeightSettable extends TimestampedPrototype
-  with HasWeight
-  with HasWeightBounds {
+trait HasWeightBoundedSettable extends TimestampedPrototype with HasWeightBounded {
   private var _minWeight: Weight =
     0
 
