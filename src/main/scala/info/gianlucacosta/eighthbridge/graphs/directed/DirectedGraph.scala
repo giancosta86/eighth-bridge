@@ -6,11 +6,29 @@ import scala.annotation.tailrec
 import scala.language.implicitConversions
 
 object DirectedGraph {
-  implicit def toDirectedGraph[V <: Vertex, L <: Link, A <: L with Arc](self: Graph[V, L]): DirectedGraph[V, A] =
-    self.asInstanceOf[DirectedGraph[V, A]]
+  implicit def toDirectedGraph[
+    TGraphVertex <: Vertex,
+    TGraphLink <: Link,
+    TDirectedGraphVertex <: TGraphVertex,
+    TDirectedGraphArc <: TGraphLink with Arc
+  ](self: Graph[TGraphVertex, TGraphLink]): DirectedGraph[TDirectedGraphVertex, TDirectedGraphArc] =
+    self.asInstanceOf[DirectedGraph[TDirectedGraphVertex, TDirectedGraphArc]]
 
-  implicit def toGraph[V <: Vertex, L <: Link, A <: L with Arc](self: DirectedGraph[V, A]): Graph[V, L] =
-    self.asInstanceOf[Graph[V, L]]
+  implicit def toGraph[
+    TGraphVertex <: Vertex,
+    TGraphLink <: Link,
+    TDirectedGraphVertex <: TGraphVertex,
+    TDirectedGraphArc <: TGraphLink with Arc
+  ](self: DirectedGraph[TDirectedGraphVertex, TDirectedGraphArc]): Graph[TGraphVertex, TGraphLink] =
+    self.asInstanceOf[Graph[TGraphVertex, TGraphLink]]
+
+  implicit def toParent[
+    TParentVertex <: Vertex,
+    TParentArc <: Arc,
+    TDescendantVertex <: TParentVertex,
+    TDescendantArc <: TParentArc
+  ](descendant: DirectedGraph[TDescendantVertex, TDescendantArc]): DirectedGraph[TParentVertex, TParentArc] =
+    descendant.asInstanceOf[DirectedGraph[TParentVertex, TParentArc]]
 }
 
 final class DirectedGraph[

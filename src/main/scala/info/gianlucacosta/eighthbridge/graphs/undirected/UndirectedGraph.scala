@@ -5,11 +5,29 @@ import info.gianlucacosta.eighthbridge.graphs.{Graph, GraphCore, Link, Vertex}
 import scala.language.implicitConversions
 
 object UndirectedGraph {
-  implicit def toUndirectedGraph[V <: Vertex, L <: Link, E <: L with Edge](self: Graph[V, L]): UndirectedGraph[V, E] =
-    self.asInstanceOf[UndirectedGraph[V, E]]
+  implicit def toUndirectedGraph[
+    TGraphVertex <: Vertex,
+    TGraphLink <: Link,
+    TUndirectedGraphVertex <: TGraphVertex,
+    TUndirectedGraphArc <: TGraphLink with Edge
+  ](self: Graph[TGraphVertex, TGraphLink]): UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphArc] =
+    self.asInstanceOf[UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphArc]]
 
-  implicit def toGraph[V <: Vertex, L <: Link, E <: L with Edge](self: UndirectedGraph[V, E]): Graph[V, L] =
-    self.asInstanceOf[Graph[V, L]]
+  implicit def toGraph[
+    TGraphVertex <: Vertex,
+    TGraphLink <: Link,
+    TUndirectedGraphVertex <: TGraphVertex,
+    TUndirectedGraphArc <: TGraphLink with Edge
+  ](self: UndirectedGraph[TUndirectedGraphVertex, TUndirectedGraphArc]): Graph[TGraphVertex, TGraphLink] =
+    self.asInstanceOf[Graph[TGraphVertex, TGraphLink]]
+
+  implicit def toParent[
+    TParentVertex <: Vertex,
+    TParentEdge <: Edge,
+    TDescendantVertex <: TParentVertex,
+    TDescendantEdge <: TParentEdge
+  ](descendant: UndirectedGraph[TDescendantVertex, TDescendantEdge]): UndirectedGraph[TParentVertex, TParentEdge] =
+    descendant.asInstanceOf[UndirectedGraph[TParentVertex, TParentEdge]]
 }
 
 final class UndirectedGraph[
