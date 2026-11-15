@@ -41,7 +41,7 @@ private class LinkLabel(
   
   this.consumeMouseEvents()
 
-  override protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
+  override protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
     onDrag(deltaFromLatest)
   }
 

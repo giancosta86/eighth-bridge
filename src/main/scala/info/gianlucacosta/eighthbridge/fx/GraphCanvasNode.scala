@@ -35,7 +35,6 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
 
   protected def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = { }
 
-  //TODO! Is this still recommended?
   handleEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
@@ -58,7 +57,6 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
 
         case _ =>
       }
-      ()
     }
   }
 

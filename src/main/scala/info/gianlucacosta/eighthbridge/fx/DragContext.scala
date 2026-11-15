@@ -24,13 +24,13 @@ trait DragContext extends Node {
           event.screenY - latestSnapshot.screenY
         )
 
-      handleDragMotion(deltaFromLatest, event, startEvent)
+      handleDrag(deltaFromLatest, event, startEvent)
 
       latestSnapshot =
         event
   }
 
-  protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit
+  protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit
 
   protected def handleDragEnd(event: MouseEvent): Unit = { }
 
@@ -61,7 +61,6 @@ trait DragContext extends Node {
     }
   }
 
-  //TODO! Use filterEvent() whenever required, in lieu of handleEvent()!
   filterEvent(MouseEvent.MouseReleased) {
     (event: MouseEvent) => {
       handleDragEnd(event)

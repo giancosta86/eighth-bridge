@@ -70,7 +70,7 @@ private class HandleNode(
     }
   }
 
-  override protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
+  override protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
     onDrag(
       handle(),
       deltaFromLatest
