@@ -13,6 +13,12 @@ object Delta2D {
         self.y + delta.y
       )
 
+    def -(delta: Delta2D): Point2D =
+      new Point2D(
+        self.x - delta.x,
+        self.y - delta.y
+      )
+
     def -(other: Point2D): Delta2D =
       new Delta2D(
         self.x - other.x,

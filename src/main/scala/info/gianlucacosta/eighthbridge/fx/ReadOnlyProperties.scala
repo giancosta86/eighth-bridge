@@ -15,7 +15,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createDoubleBinding(
         expression,
-
         dependencies:_*
       )
 
@@ -29,7 +28,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createBooleanBinding(
         expression,
-
         dependencies:_*
       )
 
@@ -43,7 +41,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createIntegerBinding(
         expression,
-
         dependencies:_*
       )
 
@@ -57,7 +54,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createLongBinding(
         expression,
-
         dependencies:_*
       )
 
@@ -71,7 +67,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createFloatBinding(
         expression,
-
         dependencies:_*
       )
 
@@ -85,7 +80,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createStringBinding(
         expression,
-
         dependencies:_*
       )
 
@@ -99,7 +93,6 @@ object ReadOnlyProperties {
     backingProperty <==
       Bindings.createObjectBinding(
         expression,
-
         dependencies:_*
       )
 
