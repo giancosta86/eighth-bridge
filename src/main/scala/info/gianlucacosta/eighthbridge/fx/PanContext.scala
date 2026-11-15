@@ -17,8 +17,6 @@ trait PanContext extends Node with DragContext {
     _panning
 
   override protected def handleDragStart(event: MouseEvent): Unit = {
-    super.handleDragStart(event)
-
     if (event.isShiftDown && panEnabled()) {
       _panning() =
         true
@@ -46,7 +44,5 @@ trait PanContext extends Node with DragContext {
       _panning() =
         false
     }
-
-    super.handleDragEnd(event)
   }
 }

@@ -17,13 +17,7 @@ trait DragContext extends Node {
   def dragging: ReadOnlyBooleanProperty =
     _dragging
 
-  protected def handleDragStart(event: MouseEvent): Unit = {
-    startEvent =
-      event
-
-    latestSnapshot =
-      startEvent
-  }
+  protected def handleDragStart(event: MouseEvent): Unit = { }
 
   private def handlePrimaryDragged(event: MouseEvent): Unit = {
       val deltaFromLatest =
@@ -50,6 +44,12 @@ trait DragContext extends Node {
             case 1 =>
               _dragging() =
                 true
+
+              startEvent =
+                mouseEvent
+
+              latestSnapshot =
+                startEvent
 
               handleDragStart(mouseEvent)
 
