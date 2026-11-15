@@ -25,7 +25,7 @@ trait ZoomContext extends Node {
     if (zoomEnabled()) {
       event.consume()
 
-      val oldScale =
+      val currentScale =
         scaleX()
 
       val scaleFactor =
@@ -37,7 +37,7 @@ trait ZoomContext extends Node {
         math.min(
           maxZoomScale(),
 
-          oldScale * scaleFactor
+          currentScale * scaleFactor
         )
       )
 
@@ -48,16 +48,16 @@ trait ZoomContext extends Node {
         newScale
 
       val zoomFactor =
-        (newScale / oldScale) - 1
+        (newScale / currentScale) - 1
 
-      val canvasBounds =
+      val currentBounds =
         this.getBoundsInParent
 
       val deltaX =
-        event.sceneX - (canvasBounds.width / 2 + canvasBounds.minX)
+        event.sceneX - (currentBounds.width / 2 + currentBounds.minX)
 
       val deltaY =
-        event.sceneY - (canvasBounds.height / 2 + canvasBounds.minY)
+        event.sceneY - (currentBounds.height / 2 + currentBounds.minY)
 
       translateX() -=
         zoomFactor * deltaX
