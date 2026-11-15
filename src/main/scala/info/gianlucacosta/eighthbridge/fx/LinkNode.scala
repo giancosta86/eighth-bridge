@@ -68,4 +68,13 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
       )
     }
   }
+
+  override protected def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {
+    controller.setSelection(
+      selectedVertexes = Set(),
+      selectedLinks = Set(link())
+    )
+
+    controller.editLink(link())
+  }
 }
