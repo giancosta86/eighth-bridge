@@ -2,9 +2,9 @@ package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
 import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvas, LinkNode, VertexNode, VisualLink}
-import info.gianlucacosta.eighthbridge.graphs.Link
+import info.gianlucacosta.eighthbridge.graphs.{Facet, Link}
 import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, ArcBarbs}
-import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, LinkHandle}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
@@ -12,13 +12,9 @@ import scalafx.geometry.Point2D
 
 object PlainLinkNode {
   def getActualBarbs(link: Link): Option[ArcBarbs] =
-      link match {
-        case arc: Arc =>
-          Some(arc.barbs)
-
-        case _ =>
-          None
-      }
+    Facet
+      .as[Arc](link)
+      .map(_.barbs)
 }
 
 class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
@@ -33,11 +29,17 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   protected val targetVertexNode: VertexNode =
     graphCanvas.vertexNodesByVertex(targetVertex)
 
+  private val initialHandles: List[LinkHandle] =
+    Facet
+      .as[HasHandles](initialLink)
+      .map(_.handles)
+      .getOrElse(Nil)
+
   private val shaft =
     new Shaft(
       sourceVertexNode,
       targetVertexNode,
-      initialLink.handles,
+      initialHandles,
       onSegmentRightClick =
         handleRightClickOnShaftSegment,
       onHandleNodeRightClick =
@@ -48,7 +50,10 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
       handles <==
         Bindings.createObjectBinding(
           () =>
-            link().handles,
+            Facet
+              .as[HasHandles](link())
+              .map(_.handles)
+              .getOrElse(Nil),
 
           link
         )

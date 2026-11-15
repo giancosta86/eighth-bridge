@@ -1,5 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import info.gianlucacosta.eighthbridge.graphs.Facet
+import info.gianlucacosta.eighthbridge.graphs.facets.HasStyleClasses
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
@@ -24,7 +26,11 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
       "entity",
       "link"
     )
-    styleClass.addAll(link().styleClasses)
+
+    Facet
+      .as[HasStyleClasses](link())
+      .map(_.styleClasses)
+      .foreach(styleClass.addAll(_))
 
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,

@@ -2,7 +2,8 @@ package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvas, VisualLink}
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasLabel, HasOptionalCustomLabelCenterSettable}
+import info.gianlucacosta.eighthbridge.graphs.Facet
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, HasLabel, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.helios.fx.geometry.Segment
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
@@ -16,7 +17,14 @@ extends PlainLinkNode(graphCanvas, initialLink) {
   private val firstHandlePoint =
     Bindings.createObjectBinding[Option[Point2D]](
       () =>
-        link().handles.headOption.map(_.center),
+        Facet
+          .as[HasHandles](link())
+          .flatMap(
+            _
+              .handles
+              .headOption
+              .map(_.center)
+          ),
 
       link
     )

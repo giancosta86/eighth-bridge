@@ -7,4 +7,3 @@ trait VisualVertex extends TimestampedPrototype
   with Vertex
   with HasCenter
   with HasSelected
-  with HasStyleClasses
