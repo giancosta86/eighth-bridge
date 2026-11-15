@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge
 
-import info.gianlucacosta.eighthbridge.fx.Delta._
+import info.gianlucacosta.eighthbridge.fx.Delta2D._
 import info.gianlucacosta.eighthbridge.graphs.Graph
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelectedSettable}
@@ -67,7 +67,7 @@ package object fx {
         .updateLinks(updatedLinks)
     }
 
-    def moveSelectedVertexesBy(delta: Delta): VisualGraph = {
+    def moveSelectedVertexesBy(delta: Delta2D): VisualGraph = {
       val movedVertexes: Set[VisualVertex] =
         self.selectedVertexes.map(vertex =>
           vertex

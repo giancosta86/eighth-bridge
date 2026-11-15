@@ -27,7 +27,7 @@ trait PanContext extends Node with DragContext {
     }
   }
 
-  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
+  override protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
     if (_panning()) {
       event.consume()
 

@@ -19,7 +19,7 @@ trait DragContext extends Node {
 
   private def handlePrimaryDragged(event: MouseEvent): Unit = {
       val deltaFromLatest =
-        new Delta(
+        new Delta2D(
           event.screenX - latestSnapshot.screenX,
           event.screenY - latestSnapshot.screenY
         )
@@ -30,7 +30,7 @@ trait DragContext extends Node {
         event
   }
 
-  protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit
+  protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit
 
   protected def handleDragEnd(event: MouseEvent): Unit = { }
 

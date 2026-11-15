@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
-import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvas, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.Facet
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, HasLabel, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.helios.fx.geometry.Segment
@@ -127,7 +127,7 @@ extends PlainLinkNode(graphCanvas, initialLink) {
   children.add(labelConnector)
   children.add(label)
 
-  private def handleDragOnLabel(delta: Delta): Unit = {
+  private def handleDragOnLabel(delta: Delta2D): Unit = {
     val actualCenter: Point2D =
       link()
         .customLabelCenter

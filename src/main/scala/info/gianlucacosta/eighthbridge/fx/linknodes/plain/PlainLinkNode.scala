@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
-import info.gianlucacosta.eighthbridge.fx.{Delta, GraphCanvas, LinkNode, VertexNode, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, LinkNode, VertexNode, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.{Facet, Link}
 import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, ArcBarbs}
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, LinkHandle}
@@ -105,7 +105,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
     controller.deleteLinkHandle(link(), handle)
   }
 
-  private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta): Unit = {
+  private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta2D): Unit = {
     controller.dragLinkHandle(link(), handle, delta)
   }
 }

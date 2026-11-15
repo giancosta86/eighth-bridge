@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.{Delta, DragContext}
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, DragContext}
 import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
@@ -41,7 +41,7 @@ private class LinkLabel(
   
   this.consumeMouseEvents()
 
-  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
+  override protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
     onDrag(deltaFromLatest)
   }
 

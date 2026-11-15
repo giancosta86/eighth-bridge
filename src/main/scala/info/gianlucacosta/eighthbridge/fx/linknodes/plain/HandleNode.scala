@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.{Delta, DragContext}
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, DragContext}
 import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.SimpleObjectProperty
@@ -70,7 +70,7 @@ private class HandleNode(
     }
   }
 
-  override protected def handleDragMotion(deltaFromLatest: Delta, event: MouseEvent, startEvent: MouseEvent): Unit = {
+  override protected def handleDragMotion(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
     onDrag(
       handle(),
       deltaFromLatest

@@ -53,15 +53,15 @@ class GraphCanvasController {
 
   def deleteSelection(): Unit = {}
 
-  def dragSelectedVertexes(delta: Delta): Unit = {}
+  def dragSelectedVertexes(delta: Delta2D): Unit = {}
 
   def addLinkHandle(link: VisualLink, index: Int, point: Point2D): Unit = {}
 
   def deleteLinkHandle(link: VisualLink, handle: LinkHandle): Unit = {}
 
-  def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta): Unit = {}
+  def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta2D): Unit = {}
 
-  def dragLinkLabel(link: VisualLink, actualCenter: Point2D, delta: Delta): Unit = {}
+  def dragLinkLabel(link: VisualLink, actualCenter: Point2D, delta: Delta2D): Unit = {}
 
   def resetLinkLabelCenter(link: VisualLink): Unit = {}
 
