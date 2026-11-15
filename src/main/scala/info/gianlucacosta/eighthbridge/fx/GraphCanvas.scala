@@ -234,7 +234,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   def adjustGraph(adjuster: GraphAdjuster): Unit = {
     Platform.runLater {
       val adjustedGraph =
-        adjuster.adjustGraph(this)
+        adjuster.adjustGraph(this, graph())
 
       graph() =
         adjustedGraph

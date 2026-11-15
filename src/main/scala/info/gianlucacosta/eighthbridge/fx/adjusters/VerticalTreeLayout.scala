@@ -18,13 +18,13 @@ class VerticalTreeLayout(
                             successorSorter: SuccessorSorter =
                               DefaultSuccessorSorter
                           ) extends GraphAdjuster {
-  override def adjustGraph(graphCanvas: GraphCanvas): VisualGraph = {
-    val graph =
-      graphCanvas.graph()
+  override def adjustGraph(graphCanvas: GraphCanvas, graph: VisualGraph): VisualGraph = {
+    val actualGraph =
+      graph
         .asInstanceOf[VisualDirectedGraph]
 
-    if (graph.isEmpty) {
-      return graph
+    if (actualGraph.isEmpty) {
+      return actualGraph
     }
 
     var bandByVertex: Map[VisualVertex, Double] =
@@ -44,7 +44,7 @@ class VerticalTreeLayout(
         vertexNode.width()
 
       val successors =
-        graph
+        actualGraph
           .getSuccessors(vertex)
 
       val minAggregateSuccessorBand =
@@ -103,7 +103,7 @@ class VerticalTreeLayout(
       println()
     }
 
-    graph
+    actualGraph
       .rootVertexes
       .foreach(rootVertex =>
         registerTreeMetrics(0, rootVertex)
@@ -131,7 +131,7 @@ class VerticalTreeLayout(
         .toMap
 
     var updatedGraph =
-      graph
+      actualGraph
 
     def positionVertexes(
                           level: Level,
@@ -204,7 +204,7 @@ class VerticalTreeLayout(
 
     val sortedRootVertexes =
       rootSorter(
-        graph.rootVertexes
+        actualGraph.rootVertexes
       )
 
     val jammedRootBand =
@@ -222,7 +222,7 @@ class VerticalTreeLayout(
 
 
 
-    require(sortedRootVertexes.toSet == graph.rootVertexes)
+    require(sortedRootVertexes.toSet == actualGraph.rootVertexes)
 
     positionVertexes(
       level =
