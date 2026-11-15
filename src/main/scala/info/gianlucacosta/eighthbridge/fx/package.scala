@@ -1,10 +1,10 @@
 package info.gianlucacosta.eighthbridge
 
 import info.gianlucacosta.eighthbridge.fx.Delta2D._
-import info.gianlucacosta.eighthbridge.graphs.{Facet, Graph}
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelected, HasSelectedSettable}
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
+import info.gianlucacosta.eighthbridge.graphs.{Facet, Graph}
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
 package object fx {
