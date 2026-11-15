@@ -6,4 +6,3 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenter, HasSelected, Ha
 trait VisualVertex extends TimestampedPrototype
   with Vertex
   with HasCenter
-  with HasSelected

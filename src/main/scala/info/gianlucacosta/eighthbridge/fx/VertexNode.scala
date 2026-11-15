@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.graphs.Facet
-import info.gianlucacosta.eighthbridge.graphs.facets.HasStyleClasses
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasSelected, HasStyleClasses}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
@@ -34,9 +34,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       .map(_.styleClasses)
       .foreach(styleClass.addAll(_))
 
+    val selected =
+      Facet
+        .as[HasSelected](vertex())
+        .exists(_.selected)
+
     this.pseudoClassStateChanged(
       PseudoClasses.Selected,
-      vertex().selected
+      selected
     )
   }
 
@@ -47,9 +52,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   def height: ReadOnlyDoubleProperty
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
+    val selected =
+      Facet
+        .as[HasSelected](vertex())
+        .exists(_.selected)
+
     if (mouseEvent.controlDown) {
       val vertexesToSelect =
-        if (vertex().selected)
+        if (selected)
           graph.selectedVertexes - vertex()
         else
           graph.selectedVertexes + vertex()
@@ -61,7 +71,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         selectedLinks =
           graph.selectedLinks
       )
-    } else if (!vertex().selected) {
+    } else if (!selected) {
       controller.setSelection(
         selectedVertexes =
           Set(vertex()),

@@ -5,5 +5,4 @@ import info.gianlucacosta.eighthbridge.graphs.facets._
 
 trait VisualLink extends TimestampedPrototype
   with Link
-  with HasSelected
 

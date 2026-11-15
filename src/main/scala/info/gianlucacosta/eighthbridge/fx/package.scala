@@ -1,9 +1,9 @@
 package info.gianlucacosta.eighthbridge
 
 import info.gianlucacosta.eighthbridge.fx.Delta2D._
-import info.gianlucacosta.eighthbridge.graphs.Graph
+import info.gianlucacosta.eighthbridge.graphs.{Facet, Graph}
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelectedSettable}
+import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelected, HasSelectedSettable}
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 
@@ -19,12 +19,16 @@ package object fx {
 
   implicit class VisualGraphExtensions(self: VisualGraph) {
     def selectedVertexes: Set[VisualVertex] =
-      self.vertexes.filter(vertex => vertex.selected)
-
+      self.vertexes.filter(vertex =>
+        Facet.as[HasSelected](vertex)
+          .exists(_.selected)
+      )
 
     def selectedLinks: Set[VisualLink] =
-      self.links.filter(link => link.selected)
-
+      self.links.filter(link =>
+        Facet.as[HasSelected](link)
+          .exists(_.selected)
+      )
 
     def selectionEmpty: Boolean =
       self.selectedVertexes.isEmpty && selectedLinks.isEmpty
