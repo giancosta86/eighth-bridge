@@ -8,9 +8,9 @@ import java.lang.Math.{abs, signum}
 object Segments {
   /**
    * Returns the intersection point between the segment connecting two points (`sourcePoint` and `targetCenter)`)
-   * and the rectangle whose center is targetCenter.
+   * and the rectangle whose center is targetCenter and whose sides are `targetSize`.
    *
-   * @param sourcePoint The origin of the segment lying externally or on the sides of the rectangle.
+   * @param sourcePoint The origin of the segment - usually out of the rectangle.
    * @param targetCenter The center of the rectangle.
    * @param targetSize The size of the rectangle.
    * @return The intersection point - which could be None if the source point is internal to the rectangle.

@@ -41,8 +41,10 @@ package object fx {
       )
 
     def deselectAll: VisualGraph =
-      self.setSelection(Set(), Set())
-
+      self.setSelection(
+        Set[VisualVertex](),
+        Set[VisualLink]()
+      )
 
     def setSelection(
                       selectedVertexes: Set[VisualVertex],
@@ -62,8 +64,8 @@ package object fx {
           link
             .asInstanceOf[VisualLink with HasSelectedSettable]
             .setSelected(
-            selectedLinks.contains(link)
-          )
+              selectedLinks.contains(link)
+            )
         )
 
       self
@@ -77,8 +79,8 @@ package object fx {
           vertex
             .asInstanceOf[VisualVertex with HasCenterSettable]
             .setCenter(
-            (vertex.center + delta).nonNegative
-          )
+              (vertex.center + delta).nonNegative
+            )
         )
 
       self.updateVertexes(movedVertexes)
