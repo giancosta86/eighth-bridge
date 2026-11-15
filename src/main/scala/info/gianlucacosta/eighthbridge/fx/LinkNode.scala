@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.scene.input.MouseEvent
 
-
 import scala.collection.JavaConversions._
 
 /**

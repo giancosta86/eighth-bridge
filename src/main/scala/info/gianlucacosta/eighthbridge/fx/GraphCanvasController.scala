@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasOptionalCustomLabelCenterSettable, LinkHandle}
+import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import scalafx.Includes._
 import scalafx.geometry.{Dimension2D, Point2D}
 

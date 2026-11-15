@@ -1,12 +1,11 @@
 package info.gianlucacosta.eighthbridge
 
+import info.gianlucacosta.eighthbridge.fx.Delta._
 import info.gianlucacosta.eighthbridge.graphs.Graph
 import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenterSettable, HasSelectedSettable}
 import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
-
-import info.gianlucacosta.eighthbridge.fx.Delta._
 
 package object fx {
   type VisualGraph =

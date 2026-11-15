@@ -1,7 +1,5 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.fx.Delta
-import Delta._
 import scalafx.geometry.Point2D
 
 trait HasCenterSettable extends TimestampedPrototype with HasCenter {

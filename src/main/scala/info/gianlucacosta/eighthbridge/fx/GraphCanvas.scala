@@ -1,6 +1,5 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedGraphDiff
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._

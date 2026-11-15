@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.graphs.undirected
 
-import info.gianlucacosta.eighthbridge.graphs.{Link, Vertex}
+import info.gianlucacosta.eighthbridge.graphs.Vertex
 
 object UnionFind {
   private def findRootAndCompress[V <: Vertex](

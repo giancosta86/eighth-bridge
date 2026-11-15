@@ -1,7 +1,5 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
-import info.gianlucacosta.eighthbridge.graphs.directed.DirectedGraph
-import info.gianlucacosta.eighthbridge.graphs.undirected.UndirectedGraph
 import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 import info.gianlucacosta.helios.mathutils.Numbers
 

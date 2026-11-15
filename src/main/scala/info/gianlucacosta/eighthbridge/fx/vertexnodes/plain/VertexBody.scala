@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.vertexnodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.ReadOnlyProperties
-import scalafx.Includes._
 import scalafx.beans.property.ReadOnlyDoubleProperty
 import scalafx.scene.shape.Ellipse
 
