@@ -1,6 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import javafx.beans.property.SimpleBooleanProperty
 import scalafx.Includes._
+import scalafx.beans.property.ReadOnlyBooleanProperty
 import scalafx.scene.Node
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
@@ -8,6 +10,12 @@ import scalafx.scene.input.{MouseButton, MouseEvent}
 trait DragContext extends Node {
   private var startEvent: MouseEvent = _
   private var latestSnapshot: MouseEvent = _
+
+  private val _dragging =
+    new SimpleBooleanProperty(false)
+
+  def dragging: ReadOnlyBooleanProperty =
+    _dragging
 
   protected def handleDragStart(event: MouseEvent): Unit = {
     startEvent =
@@ -40,6 +48,9 @@ trait DragContext extends Node {
         case MouseButton.Primary =>
           mouseEvent.clickCount match {
             case 1 =>
+              _dragging() =
+                true
+
               handleDragStart(mouseEvent)
 
             case _ =>
@@ -63,7 +74,12 @@ trait DragContext extends Node {
 
   filterEvent(MouseEvent.MouseReleased) {
     (event: MouseEvent) => {
-      handleDragEnd(event)
+      try {
+        handleDragEnd(event)
+      } finally {
+        _dragging() =
+          false
+      }
     }
   }
 }
