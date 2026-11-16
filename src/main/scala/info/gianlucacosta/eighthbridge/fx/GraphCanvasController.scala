@@ -44,7 +44,9 @@ class GraphCanvasController {
 
   def editVertex(vertex: VisualVertex): Unit = {}
 
-  def editLink(link: VisualLink): Unit = {}
+  def editLink(link: VisualLink): Unit = {
+    println("EDITING THE LINK!")
+  }
 
   def canDrawSelectingArea: Boolean =
     false

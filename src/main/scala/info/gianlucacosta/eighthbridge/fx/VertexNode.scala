@@ -52,50 +52,45 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   def height: ReadOnlyDoubleProperty
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
-    val selected =
-      Facet
-        .as[HasSelected](vertex())
-        .exists(_.selected)
+    Facet
+      .as[HasSelected](vertex())
+      .map(_.selected)
+      .foreach(selected => {
+        if (mouseEvent.controlDown) {
+          val vertexesToSelect =
+            if (selected)
+              graph.selectedVertexes - vertex()
+            else
+              graph.selectedVertexes + vertex()
 
-    if (mouseEvent.controlDown) {
-      val vertexesToSelect =
-        if (selected)
-          graph.selectedVertexes - vertex()
-        else
-          graph.selectedVertexes + vertex()
+          controller.setSelection(
+            selectedVertexes =
+              vertexesToSelect,
 
-      controller.setSelection(
-        selectedVertexes =
-          vertexesToSelect,
+            selectedLinks =
+              graph.selectedLinks
+          )
+        } else if (!selected) {
+          controller.setSelection(
+            selectedVertexes =
+              Set(vertex()),
 
-        selectedLinks =
-          graph.selectedLinks
-      )
-    } else if (!selected) {
-      controller.setSelection(
-        selectedVertexes =
-          Set(vertex()),
-
-        selectedLinks =
-          Set()
-      )
-    }
+            selectedLinks =
+              Set()
+          )
+        }
+      })
   }
 
   protected override def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {
-    controller.setSelection(
-      selectedVertexes = Set(vertex()),
-      selectedLinks = Set()
-    )
-
     controller.editVertex(vertex())
   }
 
   protected override def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = {
-    val canStartCreatingLink =
+    val canCreateLink =
       graph.selectedVertexes.size == 1 && !graph.selectedVertexes.contains(vertex())
 
-    if (canStartCreatingLink) {
+    if (canCreateLink) {
       val selectedVertex =
         graph.selectedVertexes.head
 

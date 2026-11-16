@@ -49,42 +49,37 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   //TODO! Remove all println() calls!
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
-    val selected =
-      Facet
-        .as[HasSelected](link())
-        .exists(_.selected)
+    Facet
+      .as[HasSelected](link())
+      .map(_.selected)
+      .foreach(selected => {
+        if (mouseEvent.controlDown) {
+          val linksToSelect =
+            if (selected)
+              graph.selectedLinks - link()
+            else
+              graph.selectedLinks + link()
 
-    if (mouseEvent.controlDown) {
-      val linksToSelect =
-        if (selected)
-          graph.selectedLinks - link()
-        else
-          graph.selectedLinks + link()
+          controller.setSelection(
+            selectedVertexes =
+              graph.selectedVertexes,
 
-      controller.setSelection(
-        selectedVertexes =
-          graph.selectedVertexes,
+            selectedLinks =
+              linksToSelect
+          )
+        } else if (!selected) {
+          controller.setSelection(
+            selectedVertexes =
+              Set(),
 
-        selectedLinks =
-          linksToSelect
-      )
-    } else if (!selected) {
-      controller.setSelection(
-        selectedVertexes =
-          Set(),
-
-        selectedLinks =
-          Set(link())
-      )
-    }
+            selectedLinks =
+              Set(link())
+          )
+        }
+      })
   }
 
   override protected def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {
-    controller.setSelection(
-      selectedVertexes = Set(),
-      selectedLinks = Set(link())
-    )
-
     controller.editLink(link())
   }
 }
