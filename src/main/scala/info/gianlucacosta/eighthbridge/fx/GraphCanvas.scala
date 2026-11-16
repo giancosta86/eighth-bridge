@@ -82,7 +82,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
     }
   }
 
-  def dimension: ReadOnlyObjectProperty[Dimension2D] =
+  val dimension: ReadOnlyObjectProperty[Dimension2D] =
     ReadOnlyProperties.forObject(
       () =>
         new Dimension2D(
@@ -128,11 +128,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   fullRender()
 
   private def fullRender(): Unit = {
-    val currentGraph =
-      graph()
-
     render(
-      TimestampedGraphDiff.forSingleGraph(currentGraph)
+      TimestampedGraphDiff.forSingleGraph(graph())
     )
   }
 
