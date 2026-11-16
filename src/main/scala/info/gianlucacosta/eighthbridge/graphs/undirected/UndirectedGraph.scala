@@ -82,4 +82,11 @@ final class UndirectedGraph[
 
     unionFind.hasCycles
   }
+
+  @transient
+  lazy val isComplete: Boolean =
+    vertexes
+      .forall(
+        getNeighbors(_).size == vertexes.size - 1
+      )
 }
