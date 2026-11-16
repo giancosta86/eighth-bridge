@@ -19,7 +19,7 @@ trait EditVertexName //TODO! Setting the name must also set the label!
 
   override protected def doEditVertex(vertex: V): Option[V] = {
     val newNameInput =
-      InputDialogs.askForString("Vertex name:", vertex.name, "Edit vertex")
+      InputDialogs.askForString("Vertex name:", vertex.name, "Edit vertex...")
 
     if (newNameInput.isEmpty) {
       return None

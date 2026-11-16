@@ -17,7 +17,7 @@ trait EditLinkWeight
       initialValue = link.weight,
       minValue = link.demand,
       maxValue = link.capacity,
-      header = "Edit link"
+      header = "Edit link..."
     )
       .map(newWeight =>
         link.setWeight(newWeight)

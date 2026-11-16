@@ -5,41 +5,38 @@ import info.gianlucacosta.eighthbridge.fx.controllers.primitive.EditLink
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasWeightBoundedSettable, Weight}
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
-//TODO! Editing a link weight should also update its label?!
-trait EditLinkWeightAndMaxWeight extends EditLink {
+trait EditLinkWeightAndCapacity extends EditLink {
   override type L <:
     VisualLink with HasWeightBoundedSettable
 
-  def minValueForMaxWeight: Weight =
+  def minValueForCapacity: Weight =
     0
 
-  def maxValueForMaxWeight: Weight =
+  def maxValueForCapacity: Weight =
     Double.MaxValue
 
   override def doEditLink(link: L): Option[L] = {
     InputDialogs.askForDouble(
-        message = "Max weight:",
+        message = "Capacity:",
         initialValue = link.capacity,
-        minValue = minValueForMaxWeight,
-        maxValue = maxValueForMaxWeight,
-        header = "Edit link"
+        minValue = minValueForCapacity,
+        maxValue = maxValueForCapacity,
+        header = "Edit link..."
       )
-      .flatMap(newMaxWeight => {
+      .flatMap(newCapacity => {
         InputDialogs.askForDouble(
             message = "Weight:",
             initialValue = link.weight,
             minValue = link.demand,
-            maxValue = newMaxWeight,
-            header = "Edit link"
+            maxValue = newCapacity,
+            header = "Edit link..."
           )
           .map(newWeight =>
             link.setWeight(
-              demand =
-                link.demand,
               weight =
                 newWeight,
               capacity =
-                newMaxWeight
+                newCapacity
             )
           )
       })

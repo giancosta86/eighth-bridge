@@ -21,17 +21,11 @@ trait HasWeightBoundedSettable extends TimestampedPrototype with HasWeightBounde
   override def capacity: Weight =
     _capacity
 
-  def setWeight(weight: Weight): this.type =
-    setWeight(
-      demand=
-        _demand,
-      weight=
-        weight,
-      capacity=
-        _capacity
-    )
-
-  def setWeight(demand: Weight, weight: Weight, capacity: Weight): this.type =
+  def setWeight(
+                 demand: Weight = _demand,
+                 weight: Weight = _weight,
+                 capacity: Weight = _capacity
+ ): this.type =
     if (demand != _demand ||
       weight != _weight ||
       capacity != _capacity
