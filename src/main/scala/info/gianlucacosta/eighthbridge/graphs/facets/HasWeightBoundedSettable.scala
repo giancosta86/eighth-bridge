@@ -3,60 +3,60 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import info.gianlucacosta.helios.mathutils.Numbers
 
 trait HasWeightBoundedSettable extends TimestampedPrototype with HasWeightBounded {
-  private var _minWeight: Weight =
+  private var _demand: Weight =
     0
 
-  override def minWeight: Weight =
-    _minWeight
+  override def demand: Weight =
+    _demand
 
   private var _weight: Weight =
-    _minWeight
+    _demand
 
   override def weight: Weight =
     _weight
 
-  private var _maxWeight: Weight =
+  private var _capacity: Weight =
     Weight.PositiveInfinity
 
-  override def maxWeight: Weight =
-    _maxWeight
+  override def capacity: Weight =
+    _capacity
 
   def setWeight(weight: Weight): this.type =
     setWeight(
-      minWeight=
-        _minWeight,
+      demand=
+        _demand,
       weight=
         weight,
-      maxWeight=
-        _maxWeight
+      capacity=
+        _capacity
     )
 
-  def setWeight(minWeight: Weight, weight: Weight, maxWeight: Weight): this.type =
-    if (minWeight != _minWeight ||
+  def setWeight(demand: Weight, weight: Weight, capacity: Weight): this.type =
+    if (demand != _demand ||
       weight != _weight ||
-      maxWeight != _maxWeight
+      capacity != _capacity
     ) {
       require(
-        minWeight <= weight,
-        s"It must be minWeight(${Numbers.smartString(minWeight)}) <= weight(${Numbers.smartString(weight)})"
+        demand <= weight,
+        s"It must be demand(${Numbers.smartString(demand)}) <= weight(${Numbers.smartString(weight)})"
       )
 
       require(
-        weight <= maxWeight,
-        s"It must be weight(${Numbers.smartString(weight)}) <= maxWeight(${Numbers.smartString(maxWeight)})"
+        weight <= capacity,
+        s"It must be weight(${Numbers.smartString(weight)}) <= capacity(${Numbers.smartString(capacity)})"
       )
 
       val result =
         clone()
 
-      result._minWeight =
-        minWeight
+      result._demand =
+        demand
 
       result._weight =
         weight
 
-      result._maxWeight =
-        maxWeight
+      result._capacity =
+        capacity
 
       result
     } else

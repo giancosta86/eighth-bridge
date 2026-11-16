@@ -15,8 +15,8 @@ trait EditLinkWeight
     InputDialogs.askForDouble(
       message = "Weight:",
       initialValue = link.weight,
-      minValue = link.minWeight,
-      maxValue = link.maxWeight,
+      minValue = link.demand,
+      maxValue = link.capacity,
       header = "Edit link"
     )
       .map(newWeight =>

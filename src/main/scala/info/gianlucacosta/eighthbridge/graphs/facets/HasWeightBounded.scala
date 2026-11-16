@@ -3,13 +3,13 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import info.gianlucacosta.helios.mathutils.Numbers
 
 trait HasWeightBounded extends HasWeight {
-  def minWeight: Weight
+  def demand: Weight
 
-  def maxWeight: Weight
+  def capacity: Weight
 
   override def toString: String =
-    if (maxWeight < Weight.PositiveInfinity)
-      s"(${Numbers.smartString(weight)}; ${Numbers.smartString(maxWeight)}"
+    if (capacity < Weight.PositiveInfinity)
+      s"(${Numbers.smartString(weight)}; ${Numbers.smartString(capacity)}"
     else
       super.toString
 }

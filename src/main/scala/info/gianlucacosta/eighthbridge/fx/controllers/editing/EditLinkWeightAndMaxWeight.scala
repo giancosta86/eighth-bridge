@@ -19,7 +19,7 @@ trait EditLinkWeightAndMaxWeight extends EditLink {
   override def doEditLink(link: L): Option[L] = {
     InputDialogs.askForDouble(
         message = "Max weight:",
-        initialValue = link.maxWeight,
+        initialValue = link.capacity,
         minValue = minValueForMaxWeight,
         maxValue = maxValueForMaxWeight,
         header = "Edit link"
@@ -28,17 +28,17 @@ trait EditLinkWeightAndMaxWeight extends EditLink {
         InputDialogs.askForDouble(
             message = "Weight:",
             initialValue = link.weight,
-            minValue = link.minWeight,
+            minValue = link.demand,
             maxValue = newMaxWeight,
             header = "Edit link"
           )
           .map(newWeight =>
             link.setWeight(
-              minWeight =
-                link.minWeight,
+              demand =
+                link.demand,
               weight =
                 newWeight,
-              maxWeight =
+              capacity =
                 newMaxWeight
             )
           )
