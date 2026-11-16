@@ -29,7 +29,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
       EmptySelectionBounds
     )
 
-  protected val backgroundRectangle =
+  private val backgroundRectangle =
     new Rectangle {
       styleClass.add("backgroundRectangle")
 
@@ -46,7 +46,7 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
         graphCanvas.height
     }
 
-  protected val selectionRectangle =
+  private val selectionRectangle =
     new Rectangle {
       styleClass.add("selectionRectangle")
 
@@ -90,23 +90,13 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   )
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
-    controller.setSelection(Set(), Set())
+    if (!mouseEvent.controlDown) {
+      controller.setSelection(Set(), Set())
+    }
   }
 
   protected override def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = {
     controller.setSelection(Set(), Set())
-  }
-
-  protected override def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = {
-    if (selectionBounds().width < DefaultBackgroundNode.SelectionBoundsMinSize
-      && selectionBounds().height < DefaultBackgroundNode.SelectionBoundsMinSize) {
-      tryToCreateNewVertex(mouseEvent.point)
-    } else {
-      setSelectionFromRectangle()
-    }
-
-    selectionBounds() =
-      DefaultBackgroundNode.EmptySelectionBounds
   }
 
   override protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
@@ -119,22 +109,34 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
     }
   }
 
-  private def tryToCreateNewVertex(center: Point2D): Unit = {
-    controller.addVertex(center)
+  protected override def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = {
+    if (selectionBounds().width < DefaultBackgroundNode.SelectionBoundsMinSize
+      && selectionBounds().height < DefaultBackgroundNode.SelectionBoundsMinSize) {
+      controller.addVertex(mouseEvent.point)
+    } else {
+      setSelectionFromBounds()
+    }
+
+    selectionBounds() =
+      DefaultBackgroundNode.EmptySelectionBounds
   }
 
-  private def setSelectionFromRectangle(): Unit = {
-    val selectionVertexes = graphCanvas.vertexNodesByVertex
+  private def setSelectionFromBounds(): Unit = {
+    val selectionVertexes =
+      graphCanvas
+        .vertexNodesByVertex
         .values
         .filter(_.intersects(selectionBounds()))
         .map(_.vertex().asInstanceOf[VisualVertex])
         .toSet
 
-      val selectionLinks = graphCanvas.linkNodesByLink
-        .values
-        .filter(_.intersects(selectionBounds()))
-        .map(_.link().asInstanceOf[VisualLink])
-        .toSet
+      val selectionLinks =
+        graphCanvas
+          .linkNodesByLink
+          .values
+          .filter(_.intersects(selectionBounds()))
+          .map(_.link().asInstanceOf[VisualLink])
+          .toSet
 
       controller.setSelection(
         selectionVertexes,
