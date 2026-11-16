@@ -17,25 +17,18 @@ class VerticalTreeLayout(
                             successorSorter: SuccessorSorter =
                               DefaultSuccessorSorter
                           ) extends GraphAdjuster {
-  override def adjustGraph(graphCanvas: GraphCanvas, graph: VisualGraph): VisualGraph = {
-    val actualGraph =
-      graph
-        .asInstanceOf[VisualDirectedGraph]
 
-    if (actualGraph.isEmpty) {
-      return actualGraph
-    }
-
-    var bandByVertex: Map[VisualVertex, Double] =
+  private var bandByVertex: Map[VisualVertex, Double] =
       Map[VisualVertex, Double]()
 
-    var heightByVertex: Map[VisualVertex, Double] =
-      Map[VisualVertex, Double]()
+  private var heightByVertex: Map[VisualVertex, Double] =
+    Map[VisualVertex, Double]()
 
-    var maxHeightByLevel: Map[Level, Double] =
-      Map[Level, Double]()
+  private var maxHeightByLevel: Map[Level, Double] =
+    Map[Level, Double]()
 
-    def registerTreeMetrics(level: Level, vertex: VisualVertex): Unit = {
+  private def registerMetrics(graphCanvas: GraphCanvas, graph: VisualDirectedGraph): Unit = {
+    def registerMetrics(level: Level, vertex: VisualVertex): Unit = {
       val vertexNode =
         graphCanvas.vertexNodesByVertex(vertex)
 
@@ -43,13 +36,13 @@ class VerticalTreeLayout(
         vertexNode.width()
 
       val successors =
-        actualGraph
+        graph
           .getSuccessors(vertex)
 
       val minAggregateSuccessorBand =
         if (successors.nonEmpty) {
           successors.foreach(successor =>
-            registerTreeMetrics(
+            registerMetrics(
               level + 1,
               successor
             )
@@ -102,18 +95,18 @@ class VerticalTreeLayout(
       println()
     }
 
-    actualGraph
+    graph
       .rootVertexes
       .foreach(rootVertex =>
-        registerTreeMetrics(0, rootVertex)
+        registerMetrics(0, rootVertex)
       )
+  }
 
-    println(s"*****> MAX HEIGHT BY LEVEL: ${maxHeightByLevel}")
-
+  private def positionVertexes(graph: VisualDirectedGraph): VisualGraph = {
     val levelCount =
       maxHeightByLevel.size
 
-    val topByLevel: Map[Level, Double] =
+    val topByLevel =
       Range(1, levelCount)
         .foldLeft(List(0 -> 0.0))((cumulatedTuples, level) => {
           val previousTop =
@@ -130,7 +123,7 @@ class VerticalTreeLayout(
         .toMap
 
     var updatedGraph =
-      actualGraph
+      graph
 
     def positionVertexes(
                           level: Level,
@@ -203,7 +196,7 @@ class VerticalTreeLayout(
 
     val sortedRootVertexes =
       rootSorter(
-        actualGraph.rootVertexes
+        graph.rootVertexes
       )
 
     val jammedRootBand =
@@ -219,9 +212,7 @@ class VerticalTreeLayout(
 
     println(s"*****> AGGREGATE ROOT BAND: ${aggregateRootBand}")
 
-
-
-    require(sortedRootVertexes.toSet == actualGraph.rootVertexes)
+    require(sortedRootVertexes.toSet == graph.rootVertexes)
 
     positionVertexes(
       level =
@@ -235,5 +226,21 @@ class VerticalTreeLayout(
     )
 
     updatedGraph
+  }
+
+  override def adjustGraph(graphCanvas: GraphCanvas, graph: VisualGraph): VisualGraph = {
+    val actualGraph =
+      graph
+        .asInstanceOf[VisualDirectedGraph]
+
+    if (actualGraph.isEmpty) {
+      return actualGraph
+    }
+
+    registerMetrics(graphCanvas, actualGraph)
+
+    println(s"*****> MAX HEIGHT BY LEVEL: ${maxHeightByLevel}")
+
+    positionVertexes(actualGraph)
   }
 }
