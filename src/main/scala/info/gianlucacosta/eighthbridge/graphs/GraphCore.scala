@@ -278,4 +278,7 @@ abstract class GraphCore[
 
   override def hashCode(): Int =
     System.identityHashCode(this)
+
+  override def toString: String =
+    s"<V: ${vertexes.size}; L: ${links.size}>"
 }
