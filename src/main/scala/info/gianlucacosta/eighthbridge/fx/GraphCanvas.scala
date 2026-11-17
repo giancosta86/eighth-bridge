@@ -71,6 +71,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
   graph.onChange { (_, oldValue, newValue) =>
     println(s"${new java.util.Date}: THE GRAPH PROPERTY HAS CHANGED")
+    println(s"Old graph: ${oldValue}")
+    println(s"New graph: ${newValue}")
 
     val graphDiff =
       newValue.getDiffSince(oldValue)
