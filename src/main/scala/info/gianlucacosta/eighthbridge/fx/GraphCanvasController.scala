@@ -77,43 +77,39 @@ class GraphCanvasController {
     20
 
   def canvasDimension: Dimension2D = {
-    if (graphCanvas.vertexNodesByVertex.nonEmpty) {
-      val maxRightEdge =
-        graphCanvas
-          .vertexNodesByVertex
-          .values
-          .map(vertexNode =>
-            vertexNode.vertex().center.x + vertexNode.width() / 2
-          )
-          .max
+    val vertexesMaxPoint =
+      GraphMetrics.getVertexesRightBottomPoint(graphCanvas)
 
-      val maxBottomEdge =
-        graphCanvas
-          .vertexNodesByVertex
-          .values
-          .map(vertexNode =>
-            vertexNode.vertex().center.y + vertexNode.height() / 2
-          )
-          .max
+    val linkHandlesMaxPoint =
+      GraphMetrics.getLinkHandlesRightBottomPoint(graphCanvas)
 
-      val width =
-        math.max(
-          maxRightEdge + graphMargin,
-          minCanvasDimension.width
-        )
-
-      val height =
-        math.max(
-          maxBottomEdge + graphMargin,
-          minCanvasDimension.height
-        )
-
-      new Dimension2D(
-        width,
-        height
+    val contentRight =
+      Math.max(
+        vertexesMaxPoint.x,
+        linkHandlesMaxPoint.x
       )
-    } else {
-      minCanvasDimension
-    }
+
+    val contentBottom =
+      Math.max(
+        vertexesMaxPoint.y,
+        linkHandlesMaxPoint.y
+      )
+
+    val width =
+      Math.max(
+        contentRight + graphMargin,
+        minCanvasDimension.width
+      )
+
+    val height =
+      Math.max(
+        contentBottom + graphMargin,
+        minCanvasDimension.height
+      )
+
+    new Dimension2D(
+      width,
+      height
+    )
   }
 }
