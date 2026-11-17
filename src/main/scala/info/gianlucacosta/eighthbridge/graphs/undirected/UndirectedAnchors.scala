@@ -28,4 +28,7 @@ class UndirectedAnchors[V <: Vertex](oneVertex: V, anotherVertex: V)
     else
       None
   }
+
+  override def toString: String =
+    s"{${oneVertex}, ${anotherVertex}}"
 }

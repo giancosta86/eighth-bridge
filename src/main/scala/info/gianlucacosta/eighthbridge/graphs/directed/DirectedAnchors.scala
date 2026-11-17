@@ -16,4 +16,7 @@ class DirectedAnchors[V <: Vertex](val source: V, val target: V)
 
   override protected def actualEquals(other: Anchors[V]): Boolean =
     toPair == other.toPair
+
+  override def toString: String =
+    s"(${source}, ${target})"
 }
