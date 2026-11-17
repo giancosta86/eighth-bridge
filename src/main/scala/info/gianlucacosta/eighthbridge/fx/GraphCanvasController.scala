@@ -73,15 +73,11 @@ class GraphCanvasController {
       600
     )
 
-  //TODO! Move the margin and the min size to GraphCanvas
   def graphMargin: Int =
     20
 
-  //TODO! Handle the strange glitch occurring when a vertex has centerX == 0
   def canvasDimension: Dimension2D = {
-    if (graphCanvas.vertexNodesByVertex.isEmpty)
-      minCanvasDimension
-    else {
+    if (graphCanvas.vertexNodesByVertex.nonEmpty) {
       val maxRightEdge =
         graphCanvas
           .vertexNodesByVertex
@@ -100,18 +96,24 @@ class GraphCanvasController {
           )
           .max
 
-
-      new Dimension2D(
+      val width =
         math.max(
           maxRightEdge + graphMargin,
           minCanvasDimension.width
-        ),
+        )
 
+      val height =
         math.max(
           maxBottomEdge + graphMargin,
           minCanvasDimension.height
         )
+
+      new Dimension2D(
+        width,
+        height
       )
+    } else {
+      minCanvasDimension
     }
   }
 }

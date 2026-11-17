@@ -228,6 +228,10 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
       newDimension.width,
       newDimension.height
     )
+
+    this.setMaxWidth(newDimension.width)
+
+    this.setMaxHeight(newDimension.height)
   }
 
   def adjustGraph(adjuster: GraphAdjuster): Unit = {
