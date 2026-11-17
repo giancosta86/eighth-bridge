@@ -33,8 +33,12 @@ object Entity {
   }
 
   implicit class EntitySetExtensions[E <: Entity](self: Set[E]) {
-    def update(updated: E): Set[E] =
-      self - updated + updated
+    def update(updated: E): Set[E] = {
+      if (self.contains(updated))
+        self - updated + updated
+      else
+        self
+    }
   }
 
   implicit class EntityPairExtensions[E <: Entity](self: (E, E)) {
