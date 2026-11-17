@@ -27,9 +27,9 @@ class PlainVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex) ext
 
   children.add(body)
 
-  override def width: ReadOnlyDoubleProperty =
+  override val width: ReadOnlyDoubleProperty =
     body.width
 
-  override def height: ReadOnlyDoubleProperty =
+  override val height: ReadOnlyDoubleProperty =
     body.height
 }

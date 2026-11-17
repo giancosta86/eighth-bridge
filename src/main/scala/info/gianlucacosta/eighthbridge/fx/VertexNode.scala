@@ -48,8 +48,8 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   vertex() =
     initialVertex.asInstanceOf[V]
 
-  def width: ReadOnlyDoubleProperty
-  def height: ReadOnlyDoubleProperty
+  val width: ReadOnlyDoubleProperty
+  val height: ReadOnlyDoubleProperty
 
   protected override def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {
     Facet
