@@ -38,6 +38,12 @@ private class LinkLabel(
       center,
       height
     )
+
+  def bottomRight: Point2D =
+    new Point2D(
+      center().x + width() / 2,
+      center().y + height() / 2
+    )
   
   this.consumeMouseEvents()
 

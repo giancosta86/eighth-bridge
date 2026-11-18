@@ -8,6 +8,12 @@ class LinkHandle extends TimestampedPrototype
     with HasCenterSettable
     with HasDimensionSettable {
 
+  def bottomRight: Point2D =
+    new Point2D(
+      center.x + dimension.width / 2,
+      center.y + dimension.height / 2
+    )
+
   override def toString: String =
     s"LinkHandle{(${dimension.width} x ${dimension.height}) @ (${center.x}; ${center.y})}"
 }

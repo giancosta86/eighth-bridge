@@ -5,6 +5,8 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasSelected, HasStyleClass
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
+import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty}
+import scalafx.geometry.Point2D
 import scalafx.scene.input.MouseEvent
 
 import scala.collection.JavaConversions._
@@ -82,4 +84,6 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   override protected def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {
     controller.editLink(link())
   }
+
+  def bottomRight: Point2D
 }

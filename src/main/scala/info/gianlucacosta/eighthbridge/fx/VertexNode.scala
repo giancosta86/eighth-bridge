@@ -5,7 +5,7 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasSelected, HasStyleClass
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
-import scalafx.beans.property.ReadOnlyDoubleProperty
+import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.input.MouseEvent
 
@@ -111,5 +111,11 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
         width(),
         height()
       )
+    )
+
+  def bottomRight: Point2D =
+    new Point2D(
+      vertex().center.x + width() / 2,
+      vertex().center.y + height() / 2
     )
 }

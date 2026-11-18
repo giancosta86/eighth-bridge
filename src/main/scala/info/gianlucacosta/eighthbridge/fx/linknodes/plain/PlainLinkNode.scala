@@ -1,13 +1,15 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
+import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
-import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, LinkNode, VertexNode, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, LinkNode, ReadOnlyProperties, VertexNode, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, ArcBarbs}
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, LinkHandle}
 import info.gianlucacosta.eighthbridge.graphs.{Facet, Link}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
+import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.Point2D
 
 object PlainLinkNode {
@@ -61,11 +63,6 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
 
   children.add(shaft)
 
-  private val actualBarbs =
-    new SimpleObjectProperty[Option[ArcBarbs]](
-
-    )
-
   private val barbsNode =
     new BarbsNode(
       initialSourcePoint =
@@ -108,4 +105,10 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta2D): Unit = {
     controller.dragLinkHandle(link(), handle, delta)
   }
+
+  override def bottomRight: Point2D =
+    shaft.handles()
+      .foldLeft(new Point2D(0, 0))((cumulatedPoint, handle) =>
+        cumulatedPoint.mergeToBottomRight(handle.bottomRight)
+      )
 }

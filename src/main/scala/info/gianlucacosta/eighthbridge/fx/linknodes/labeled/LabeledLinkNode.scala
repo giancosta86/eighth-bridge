@@ -1,12 +1,14 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
+import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
-import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, VisualLink}
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, ReadOnlyProperties, VisualLink}
 import info.gianlucacosta.eighthbridge.graphs.Facet
 import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, HasLabel, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.helios.fx.geometry.Segment
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
+import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty}
 import scalafx.geometry.Point2D
 
 class LabeledLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink with HasLabel with HasOptionalCustomLabelCenterSettable)
@@ -139,4 +141,8 @@ extends PlainLinkNode(graphCanvas, initialLink) {
   private def handleSecondaryDoubleClickOnLabel(): Unit = {
     controller.resetLinkLabelCenter(link())
   }
+
+  override def bottomRight: Point2D =
+    label.bottomRight
+      .mergeToBottomRight(super.bottomRight)
 }

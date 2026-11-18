@@ -1,9 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import scalafx.Includes._
+import scalafx.beans.property.ReadOnlyObjectProperty
 import scalafx.geometry.{Dimension2D, Point2D}
 
 /**
@@ -77,39 +79,31 @@ class GraphCanvasController {
     20
 
   def canvasDimension: Dimension2D = {
-    val vertexesMaxPoint =
-      GraphMetrics.getVertexesRightBottomPoint(graphCanvas)
-
-    val linkHandlesMaxPoint =
-      GraphMetrics.getLinkHandlesRightBottomPoint(graphCanvas)
-
-    val contentRight =
-      Math.max(
-        vertexesMaxPoint.x,
-        linkHandlesMaxPoint.x
-      )
-
-    val contentBottom =
-      Math.max(
-        vertexesMaxPoint.y,
-        linkHandlesMaxPoint.y
-      )
-
-    val width =
-      Math.max(
-        contentRight + graphMargin,
-        minCanvasDimension.width
-      )
-
-    val height =
-      Math.max(
-        contentBottom + graphMargin,
+    val minBottomRight =
+      new Point2D(
+        minCanvasDimension.width,
         minCanvasDimension.height
       )
 
+    val bottomRightAfterVertexes =
+      graphCanvas
+        .vertexNodesByVertex
+        .values
+        .foldLeft(minBottomRight)((cumulatedBottomRight, vertexNode) =>
+          cumulatedBottomRight.mergeToBottomRight(vertexNode.bottomRight)
+        )
+
+    val bottomRightAfterLinks =
+      graphCanvas
+        .linkNodesByLink
+        .values
+        .foldLeft(bottomRightAfterVertexes)((cumulatedBottomRight, linkNode) =>
+          cumulatedBottomRight.mergeToBottomRight(linkNode.bottomRight)
+        )
+
     new Dimension2D(
-      width,
-      height
+      bottomRightAfterLinks.x + graphMargin,
+      bottomRightAfterLinks.y + graphMargin
     )
   }
 }

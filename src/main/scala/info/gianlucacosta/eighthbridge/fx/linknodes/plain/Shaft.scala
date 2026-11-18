@@ -72,7 +72,7 @@ private class Shaft(
       targetVertexNode.height
     )
 
-  private val segmentExtremes =
+  private val segmentExtremes: ObjectBinding[List[Point2D]] =
     Bindings.createObjectBinding[List[Point2D]](
       () =>
         intersectionWithSourceVertexNode().flatMap(intersectionWithSourceVertexNode =>
