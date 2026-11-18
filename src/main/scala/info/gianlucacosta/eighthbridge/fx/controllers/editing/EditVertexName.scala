@@ -12,8 +12,9 @@ import info.gianlucacosta.helios.fx.dialogs.InputDialogs
  * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
  * </ul>
  */
-trait EditVertexName //TODO! Setting the name must also set the label!
+trait EditVertexName
   extends EditVertex {
+
   override type V <:
     VisualVertex with HasNameSettable
 
@@ -32,13 +33,17 @@ trait EditVertexName //TODO! Setting the name must also set the label!
       throw new IllegalArgumentException("The vertex must have a name!")
     }
 
-    val nameAssignedToAnotherVertex =
+    val otherVertexNames =
       graph
         .vertexes
-        .exists(otherVertex => otherVertex.asInstanceOf[HasName].name == newName && otherVertex != vertex)
+        .collect {
+          case namedVertex: HasName if namedVertex != vertex =>
+            namedVertex.name
+        }
 
+    //TODO: consider replacing these require() with mere IllegalArgumentException's
     require(
-      !nameAssignedToAnotherVertex,
+      !otherVertexNames.contains(newName),
       "The vertex name must be unique!"
     )
 
