@@ -12,6 +12,39 @@ trait CreateVertexWithName
   protected val firstNameIndex =
     1
 
+  override def addVertex(center: Point2D): Unit = {
+    val existingNames: Set[String] =
+      graph
+        .vertexes
+        .collect {
+          case vertexWithName: VisualVertex with HasName =>
+            vertexWithName.name
+        }
+
+    var currentIndex =
+      firstNameIndex
+
+    while (true) {
+      val currentName =
+        getVertexName(currentIndex)
+
+      if (!existingNames.contains(currentName)) {
+        val newVertex =
+          createNamedVertex(center, currentName)
+
+        graph =
+          graph.addVertex(
+            newVertex
+          )
+
+        return
+      }
+
+      currentIndex +=
+        1
+    }
+  }
+
   /**
    * Given a vertex index, returns the vertex name
    *
@@ -20,35 +53,6 @@ trait CreateVertexWithName
    */
   protected def getVertexName(vertexIndex: Int): String =
     s"V${vertexIndex}"
-
-  override def addVertex(center: Point2D): Unit = {
-    val lastUsedVertexIndex = Stream.from(firstNameIndex)
-      .takeWhile(vertexIndex => {
-        val vertexName =
-          getVertexName(vertexIndex)
-
-        val vertexNameExists =
-          graph.vertexes.exists(_.asInstanceOf[HasName].name == vertexName)
-
-        vertexNameExists
-      })
-      .lastOption
-      .getOrElse(firstNameIndex - 1)
-
-    val vertexIndex =
-      lastUsedVertexIndex + 1
-
-    val vertexName =
-      getVertexName(vertexIndex)
-
-    val newVertex =
-      createNamedVertex(center, vertexName)
-
-    graph =
-      graph.addVertex(
-        newVertex
-      )
-  }
 
   /**
    * Actually instantiate the vertex
