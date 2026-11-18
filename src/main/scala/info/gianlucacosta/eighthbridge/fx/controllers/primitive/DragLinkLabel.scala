@@ -7,9 +7,9 @@ import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 import scalafx.geometry.Point2D
 
 trait DragLinkLabel extends GraphCanvasController {
-  override def dragLinkLabel(link: VisualLink, actualCenter: Point2D, delta: Delta2D): Unit = {
+  override def dragLinkLabel(link: VisualLink, currentCenter: Point2D, delta: Delta2D): Unit = {
     val updatedCenter =
-      (actualCenter + delta).nonNegative
+      (currentCenter + delta).nonNegative
 
     val updatedLink =
       link

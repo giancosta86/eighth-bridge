@@ -63,7 +63,7 @@ class GraphCanvasController {
 
   def dragLinkHandle(link: VisualLink, linkHandle: LinkHandle, delta: Delta2D): Unit = {}
 
-  def dragLinkLabel(link: VisualLink, actualCenter: Point2D, delta: Delta2D): Unit = {}
+  def dragLinkLabel(link: VisualLink, currentCenter: Point2D, delta: Delta2D): Unit = {}
 
   def resetLinkLabelCenter(link: VisualLink): Unit = {}
 

@@ -17,7 +17,7 @@ trait EditVertex extends GraphCanvasController {
         return
       } catch {
         case ex: IllegalArgumentException =>
-          Alerts.showWarning(ex.getMessage, "Edit vertex")
+          Alerts.showWarning(ex.getMessage, "Edit vertex...")
       }
     }
 

@@ -17,7 +17,7 @@ trait EditLink extends GraphCanvasController {
         return
       } catch {
         case ex: IllegalArgumentException =>
-          Alerts.showWarning(ex.getMessage, "Edit link")
+          Alerts.showWarning(ex.getMessage, "Edit link...")
       }
     }
 

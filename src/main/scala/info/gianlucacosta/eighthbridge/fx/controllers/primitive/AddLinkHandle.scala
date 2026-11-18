@@ -5,9 +5,9 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandlesSettable, LinkHa
 import scalafx.geometry.Point2D
 
 trait AddLinkHandle extends GraphCanvasController {
-  override def addLinkHandle(link: VisualLink, index: Int, point: Point2D): Unit = {
+  override def addLinkHandle(link: VisualLink, index: Int, center: Point2D): Unit = {
     val linkHandle =
-      LinkHandle.createDefault(point)
+      createLinkHandle(center)
 
     val updatedLink =
       link
@@ -17,4 +17,7 @@ trait AddLinkHandle extends GraphCanvasController {
     graph =
       graph.updateLink(updatedLink)
   }
+
+  protected def createLinkHandle(center: Point2D): LinkHandle =
+    LinkHandle.createDefault(center)
 }
