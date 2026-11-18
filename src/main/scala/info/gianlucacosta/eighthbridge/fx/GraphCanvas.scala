@@ -107,14 +107,12 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   focusTraversable =
     true
 
-  private var _vertexNodesByVertex: Map[VisualVertex, VertexNode] =
-    Map()
+  private var _vertexNodesByVertex: Map[VisualVertex, VertexNode] = _
 
   def vertexNodesByVertex: Map[VisualVertex, VertexNode] =
     _vertexNodesByVertex
 
-  private var _linkNodesByLink: Map[VisualLink, LinkNode] =
-    Map()
+  private var _linkNodesByLink: Map[VisualLink, LinkNode] = _
 
   def linkNodesByLink: Map[VisualLink, LinkNode] =
     _linkNodesByLink

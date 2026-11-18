@@ -12,8 +12,7 @@ import scalafx.geometry.{Dimension2D, Point2D}
   * Controller providing behavior for GraphCanvas
   */
 class GraphCanvasController {
-  private var _graphCanvas: GraphCanvas =
-    _
+  private var _graphCanvas: GraphCanvas = _
 
   protected[fx] final def graphCanvas: GraphCanvas =
     _graphCanvas
@@ -69,13 +68,13 @@ class GraphCanvasController {
 
   def resetLinkLabelCenter(link: VisualLink): Unit = {}
 
-  def minCanvasDimension: Dimension2D =
+  protected def minCanvasDimension: Dimension2D =
     new Dimension2D(
       800,
       600
     )
 
-  def graphMargin: Int =
+  protected def graphMargin: Int =
     20
 
   def canvasDimension: Dimension2D = {
