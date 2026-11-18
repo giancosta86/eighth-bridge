@@ -4,7 +4,7 @@ import scalafx.geometry.Point2D
 
 trait HasCenterSettable extends TimestampedPrototype with HasCenter {
   private var _center: Point2D =
-    new Point2D(0,0)
+    new Point2D(0, 0)
 
   override def center: Point2D =
     _center

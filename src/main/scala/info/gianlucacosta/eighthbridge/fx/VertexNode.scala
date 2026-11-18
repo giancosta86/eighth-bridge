@@ -5,15 +5,15 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasSelected, HasStyleClass
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
-import scalafx.beans.property.{ReadOnlyDoubleProperty, ReadOnlyObjectProperty}
+import scalafx.beans.property.ReadOnlyDoubleProperty
 import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.input.MouseEvent
 
 import scala.collection.JavaConversions._
 
 /**
-  * JavaFX node rendering a VisualVertex
-  */
+ * JavaFX node rendering a VisualVertex
+ */
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends GraphCanvasNode(graphCanvas) with DragContext {
 

@@ -4,22 +4,22 @@ import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas, VisualDir
 import info.gianlucacosta.eighthbridge.graphs.facets.HasCenterSettable
 
 class VerticalTreeLayout(
-                            minHorizontalGap: Double =
-                              40,
-                            verticalGap: Double =
-                              60,
-                            leftPadding: Double =
-                              15,
-                            topPadding: Double =
-                              15,
-                            rootSorter: RootSorter =
-                              DefaultRootSorter,
-                            successorSorter: SuccessorSorter =
-                              DefaultSuccessorSorter
-                          ) extends GraphAdjuster {
+                          minHorizontalGap: Double =
+                          40,
+                          verticalGap: Double =
+                          60,
+                          leftPadding: Double =
+                          15,
+                          topPadding: Double =
+                          15,
+                          rootSorter: RootSorter =
+                          DefaultRootSorter,
+                          successorSorter: SuccessorSorter =
+                          DefaultSuccessorSorter
+                        ) extends GraphAdjuster {
 
   private var bandByVertex: Map[VisualVertex, Double] =
-      Map[VisualVertex, Double]()
+    Map[VisualVertex, Double]()
 
   private var heightByVertex: Map[VisualVertex, Double] =
     Map[VisualVertex, Double]()
@@ -91,7 +91,7 @@ class VerticalTreeLayout(
       }
 
       println(s"%%%%%%%%% VERTEX NODE FOR ${vertex} @ ${level}: ${width} x ${height}")
-      println (s"!!!!!!!!! BAND FOR VERTEX ${vertex}: ${band}")
+      println(s"!!!!!!!!! BAND FOR VERTEX ${vertex}: ${band}")
       println()
     }
 

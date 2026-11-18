@@ -11,10 +11,10 @@ import scalafx.scene.control.Label
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
 private class LinkLabel(
-                        initialCenter: Point2D,
-                        onDrag: LabelDragHandler,
-                        onSecondaryDoubleClick: LabelSecondaryDoubleClickHandler
-                      )
+                         initialCenter: Point2D,
+                         onDrag: LabelDragHandler,
+                         onSecondaryDoubleClick: LabelSecondaryDoubleClickHandler
+                       )
   extends Label with DragContext {
   styleClass.add("label")
 
@@ -44,7 +44,7 @@ private class LinkLabel(
       center().x + width() / 2,
       center().y + height() / 2
     )
-  
+
   this.consumeMouseEvents()
 
   override protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {

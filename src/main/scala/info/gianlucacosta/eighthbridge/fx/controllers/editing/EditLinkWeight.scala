@@ -13,12 +13,12 @@ trait EditLinkWeight
 
   override protected def doEditLink(link: L): Option[L] = {
     InputDialogs.askForDouble(
-      message = "Weight:",
-      initialValue = link.weight,
-      minValue = link.demand,
-      maxValue = link.capacity,
-      header = "Edit link..."
-    )
+        message = "Weight:",
+        initialValue = link.weight,
+        minValue = link.demand,
+        maxValue = link.capacity,
+        header = "Edit link..."
+      )
       .map(newWeight =>
         link.setWeight(newWeight)
       )

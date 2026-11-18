@@ -8,18 +8,18 @@ trait HasNameSettable extends TimestampedPrototype with HasName {
     _name
 
   def setName(name: String): this.type = {
-      if (name != _name) {
-        //TODO! What about this requirement, when the name actually starts out empty?
-        require(name.nonEmpty, "The name cannot be empty!")
+    if (name != _name) {
+      //TODO! What about this requirement, when the name actually starts out empty?
+      require(name.nonEmpty, "The name cannot be empty!")
 
-        val result =
-          clone()
+      val result =
+        clone()
 
-        result._name =
-          name
+      result._name =
+        name
 
-        result
-      } else
-        this
+      result
+    } else
+      this
   }
 }

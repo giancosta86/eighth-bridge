@@ -35,9 +35,9 @@ final class DirectedGraph[
   V <: Vertex,
   A <: Arc
 ] private(
-   vertexes: Set[V],
-   linksByAnchors: Map[DirectedAnchors[V], Set[A]]
- ) extends GraphCore[V, A, DirectedAnchors[V]](
+           vertexes: Set[V],
+           linksByAnchors: Map[DirectedAnchors[V], Set[A]]
+         ) extends GraphCore[V, A, DirectedAnchors[V]](
   vertexes,
   linksByAnchors
 ) {
@@ -152,14 +152,14 @@ final class DirectedGraph[
    */
   @transient
   lazy val rootVertexes: Set[V] =
-    vertexes -- enteringLinksByVertex.keySet
+  vertexes -- enteringLinksByVertex.keySet
 
   /**
    * The vertexes having no exiting links
    */
   @transient
   lazy val leafVertexes: Set[V] =
-    vertexes -- exitingLinksByVertex.keySet
+  vertexes -- exitingLinksByVertex.keySet
 
 
   /**

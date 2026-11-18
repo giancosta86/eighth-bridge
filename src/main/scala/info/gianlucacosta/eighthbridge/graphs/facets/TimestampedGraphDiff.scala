@@ -3,13 +3,13 @@ package info.gianlucacosta.eighthbridge.graphs.facets
 import info.gianlucacosta.eighthbridge.graphs.{Graph, Link, Vertex}
 
 case class TimestampedGraphDiff[V <: Vertex with HasTimestamp, L <: Link with HasTimestamp](
-   updatedVertexes: Set[V],
-   updatedLinks: Set[L],
-   addedVertexes: Set[V],
-   addedLinks: Set[L],
-   removedVertexes: Set[V],
-   removedLinks: Set[L]
-) {
+                                                                                             updatedVertexes: Set[V],
+                                                                                             updatedLinks: Set[L],
+                                                                                             addedVertexes: Set[V],
+                                                                                             addedLinks: Set[L],
+                                                                                             removedVertexes: Set[V],
+                                                                                             removedLinks: Set[L]
+                                                                                           ) {
   def isEmpty: Boolean =
     updatedVertexes.isEmpty &&
       updatedLinks.isEmpty &&

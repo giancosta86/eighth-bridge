@@ -76,12 +76,12 @@ private class Shaft(
     Bindings.createObjectBinding[List[Point2D]](
       () =>
         intersectionWithSourceVertexNode().flatMap(intersectionWithSourceVertexNode =>
-          intersectionWithTargetVertexNode().map(intersectionWithTargetVertexNode =>
-            List(intersectionWithSourceVertexNode) ++
-              handles().map(_.center) ++
-              List(intersectionWithTargetVertexNode)
+            intersectionWithTargetVertexNode().map(intersectionWithTargetVertexNode =>
+              List(intersectionWithSourceVertexNode) ++
+                handles().map(_.center) ++
+                List(intersectionWithTargetVertexNode)
+            )
           )
-        )
           .getOrElse(Nil),
 
       intersectionWithSourceVertexNode,

@@ -13,14 +13,14 @@ import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
 
 /**
-  * JavaFX component rendering a graph.
-  *
-  * By plugging a controller, the canvas can flexibly:
-  * <ul>
-  * <li>Render graph components using different JavaFX nodes</li>
-  * <li>Support a given set of operations - for example: graph definition via user interaction</li>
-  * </ul>
-  */
+ * JavaFX component rendering a graph.
+ *
+ * By plugging a controller, the canvas can flexibly:
+ * <ul>
+ * <li>Render graph components using different JavaFX nodes</li>
+ * <li>Support a given set of operations - for example: graph definition via user interaction</li>
+ * </ul>
+ */
 class GraphCanvas extends Pane with PanContext with ZoomContext {
   styleClass.add("graph")
 

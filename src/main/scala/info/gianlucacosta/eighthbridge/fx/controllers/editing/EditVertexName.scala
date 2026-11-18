@@ -6,12 +6,12 @@ import info.gianlucacosta.eighthbridge.graphs.facets.{HasName, HasNameSettable}
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
 /**
-  * Mixin for GraphCanvasController that:
-  * <ul>
-  * <li>Creates a vertex by assigning it a unique name based on a counter</li>
-  * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
-  * </ul>
-  */
+ * Mixin for GraphCanvasController that:
+ * <ul>
+ * <li>Creates a vertex by assigning it a unique name based on a counter</li>
+ * <li>Allows the user to edit such name, ensuring the new name is still unique</li>
+ * </ul>
+ */
 trait EditVertexName //TODO! Setting the name must also set the label!
   extends EditVertex {
   override type V <:

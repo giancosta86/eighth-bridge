@@ -4,9 +4,9 @@ import info.gianlucacosta.eighthbridge.graphs.entities.IntBasedEntity
 import scalafx.geometry.Point2D
 
 class LinkHandle extends TimestampedPrototype
-    with IntBasedEntity
-    with HasCenterSettable
-    with HasDimensionSettable {
+  with IntBasedEntity
+  with HasCenterSettable
+  with HasDimensionSettable {
 
   def bottomRight: Point2D =
     new Point2D(

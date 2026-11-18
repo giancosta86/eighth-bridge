@@ -11,7 +11,7 @@ object MapUtils {
         self.getOrElse(key, Nil)
 
       val updatedList =
-        value::listToUpdate
+        value :: listToUpdate
 
       self +
         (key -> updatedList)

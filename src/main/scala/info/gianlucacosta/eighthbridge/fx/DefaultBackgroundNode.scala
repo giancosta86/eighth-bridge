@@ -6,7 +6,7 @@ import info.gianlucacosta.helios.fx.geometry.DiagonalBounds
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
-import scalafx.geometry.{BoundingBox, Point2D}
+import scalafx.geometry.BoundingBox
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.shape.Rectangle
 
@@ -19,8 +19,8 @@ object DefaultBackgroundNode {
 }
 
 /**
-  * Default, interactive implementation of BackgroundNode
-  */
+ * Default, interactive implementation of BackgroundNode
+ */
 class DefaultBackgroundNode(graphCanvas: GraphCanvas)
   extends GraphCanvasNode(graphCanvas) with BackgroundNode with DragContext {
 
@@ -130,17 +130,17 @@ class DefaultBackgroundNode(graphCanvas: GraphCanvas)
         .map(_.vertex().asInstanceOf[VisualVertex])
         .toSet
 
-      val selectionLinks =
-        graphCanvas
-          .linkNodesByLink
-          .values
-          .filter(_.intersects(selectionBounds()))
-          .map(_.link().asInstanceOf[VisualLink])
-          .toSet
+    val selectionLinks =
+      graphCanvas
+        .linkNodesByLink
+        .values
+        .filter(_.intersects(selectionBounds()))
+        .map(_.link().asInstanceOf[VisualLink])
+        .toSet
 
-      controller.setSelection(
-        selectionVertexes,
-        selectionLinks
-      )
+    controller.setSelection(
+      selectionVertexes,
+      selectionLinks
+    )
   }
 }

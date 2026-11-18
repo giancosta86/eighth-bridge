@@ -34,9 +34,9 @@ final class UndirectedGraph[
   V <: Vertex,
   E <: Edge
 ] private(
-  vertexes: Set[V],
-  linksByAnchors: Map[UndirectedAnchors[V], Set[E]]
-) extends GraphCore[V, E, UndirectedAnchors[V]](
+           vertexes: Set[V],
+           linksByAnchors: Map[UndirectedAnchors[V], Set[E]]
+         ) extends GraphCore[V, E, UndirectedAnchors[V]](
   vertexes,
   linksByAnchors
 ) {
@@ -48,9 +48,9 @@ final class UndirectedGraph[
   )
 
   override protected def copy(
-     updatedVertexes: Set[V],
-     updatedLinksByAnchors: Map[UndirectedAnchors[V], Set[E]]
-  ): this.type =
+                               updatedVertexes: Set[V],
+                               updatedLinksByAnchors: Map[UndirectedAnchors[V], Set[E]]
+                             ): this.type =
     new UndirectedGraph[V, E](
       vertexes =
         updatedVertexes,

@@ -4,4 +4,4 @@ import info.gianlucacosta.eighthbridge.graphs.undirected.Edge
 
 trait VisualEdge
   extends VisualLink
-  with Edge
+    with Edge

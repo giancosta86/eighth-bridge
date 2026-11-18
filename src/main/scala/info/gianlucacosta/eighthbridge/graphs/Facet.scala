@@ -11,5 +11,5 @@ object Facet {
 
       case _ =>
         None
-  }
+    }
 }

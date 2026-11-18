@@ -25,7 +25,7 @@ trait HasWeightBoundedSettable extends TimestampedPrototype with HasWeightBounde
                  demand: Weight = _demand,
                  weight: Weight = _weight,
                  capacity: Weight = _capacity
- ): this.type =
+               ): this.type =
     if (demand != _demand ||
       weight != _weight ||
       capacity != _capacity

@@ -13,8 +13,8 @@ object HasTimestamp {
   implicit class TimestampedGraphExtensions[
     V <: Vertex with HasTimestamp,
     L <: Link with HasTimestamp](
-                                          self: Graph[V, L]
-                                        ) {
+                                  self: Graph[V, L]
+                                ) {
     def getDiffSince(referenceGraph: Graph[V, L]): TimestampedGraphDiff[V, L] = {
       val addedVertexes =
         self.vertexes -- referenceGraph.vertexes

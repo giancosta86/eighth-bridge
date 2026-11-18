@@ -10,9 +10,9 @@ object Segments {
    * Returns the intersection point between the segment connecting two points (`sourcePoint` and `targetCenter)`)
    * and the rectangle whose center is targetCenter and whose sides are `targetSize`.
    *
-   * @param sourcePoint The origin of the segment - usually out of the rectangle.
+   * @param sourcePoint  The origin of the segment - usually out of the rectangle.
    * @param targetCenter The center of the rectangle.
-   * @param targetSize The size of the rectangle.
+   * @param targetSize   The size of the rectangle.
    * @return The intersection point - which could be None if the source point is internal to the rectangle.
    */
   def getIntersectionWithRectangle(sourcePoint: Point2D, targetCenter: Point2D, targetSize: Dimension2D): Option[Point2D] = {
@@ -22,7 +22,7 @@ object Segments {
     val deltaY =
       sourcePoint.y - targetCenter.y
 
-    val halfWidth  =
+    val halfWidth =
       targetSize.width / 2
 
     val halfHeight =

@@ -1,6 +1,7 @@
 package info.gianlucacosta.eighthbridge.graphs.facets
 
 //TODO! Move this to Helios?
+
 /**
  * This class is required in Scala 2.11 to support calling clone() from within a concrete trait method,
  * but also provide a convenient clone() method returning "this.type".

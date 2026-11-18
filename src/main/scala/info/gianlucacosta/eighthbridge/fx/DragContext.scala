@@ -17,24 +17,24 @@ trait DragContext extends Node {
   def dragging: ReadOnlyBooleanProperty =
     _dragging
 
-  protected def handleDragStart(event: MouseEvent): Unit = { }
+  protected def handleDragStart(event: MouseEvent): Unit = {}
 
   private def handlePrimaryDragged(event: MouseEvent): Unit = {
-      val deltaFromLatest =
-        new Delta2D(
-          event.screenX - latestSnapshot.screenX,
-          event.screenY - latestSnapshot.screenY
-        )
+    val deltaFromLatest =
+      new Delta2D(
+        event.screenX - latestSnapshot.screenX,
+        event.screenY - latestSnapshot.screenY
+      )
 
-      handleDrag(deltaFromLatest, event, startEvent)
+    handleDrag(deltaFromLatest, event, startEvent)
 
-      latestSnapshot =
-        event
+    latestSnapshot =
+      event
   }
 
   protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit
 
-  protected def handleDragEnd(event: MouseEvent): Unit = { }
+  protected def handleDragEnd(event: MouseEvent): Unit = {}
 
   filterEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {

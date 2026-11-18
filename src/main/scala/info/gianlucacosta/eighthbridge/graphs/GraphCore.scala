@@ -7,9 +7,9 @@ abstract class GraphCore[
   L <: Link,
   TAnchors <: Anchors[V]
 ](
-  override val vertexes: Set[V],
-  val linksByAnchors: Map[TAnchors, Set[L]]
-)
+   override val vertexes: Set[V],
+   val linksByAnchors: Map[TAnchors, Set[L]]
+ )
   extends Graph[V, L] {
   @transient
   override lazy val vertexesById: Map[Vertex#Id, V] =
@@ -32,9 +32,9 @@ abstract class GraphCore[
 
   protected def copy(
                       updatedVertexes: Set[V] =
-                        vertexes,
+                      vertexes,
                       updatedLinksByAnchors: Map[TAnchors, Set[L]] =
-                        linksByAnchors
+                      linksByAnchors
                     ): this.type
 
   protected def createAnchors(first: V, second: V): TAnchors
@@ -68,8 +68,8 @@ abstract class GraphCore[
 
   override def updateVertexes(updatedVertexes: Set[V]): this.type =
     updatedVertexes.foldLeft(this)((cumulatedGraph, vertex) =>
-      cumulatedGraph.updateVertex(vertex)
-    )
+        cumulatedGraph.updateVertex(vertex)
+      )
       .asInstanceOf[this.type]
 
   override def updateVertexes(updatedVertexes: V*): this.type =
@@ -173,8 +173,8 @@ abstract class GraphCore[
 
   override def updateLinks(updatedLinks: Set[L]): this.type =
     updatedLinks.foldLeft(this)((cumulatedGraph, link) =>
-      cumulatedGraph.updateLink(link)
-    )
+        cumulatedGraph.updateLink(link)
+      )
       .asInstanceOf[this.type]
 
   override def updateLinks(updatedLinks: L*): this.type =
@@ -217,9 +217,9 @@ abstract class GraphCore[
       }
       .mapValues(
         _.map {
-          case (_, second) =>
-            second
-        }
+            case (_, second) =>
+              second
+          }
           .toSet
       )
 

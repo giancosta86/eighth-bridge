@@ -8,14 +8,14 @@ import scalafx.scene.Group
 
 private object ShaftPolyline {
   private def buildSegmentsFromExtremes(
-                                 segmentExtremes: List[Point2D],
-                                 onSegmentRightClick: SegmentRightClickHandler
-                               ): List[ShaftSegment] =
+                                         segmentExtremes: List[Point2D],
+                                         onSegmentRightClick: SegmentRightClickHandler
+                                       ): List[ShaftSegment] =
     segmentExtremes
       .sliding(2)
       .zipWithIndex
       .map {
-        case (startPoint::endPoint::Nil, index) =>
+        case (startPoint :: endPoint :: Nil, index) =>
           new ShaftSegment(
             onRightClick = (point) => {
               onSegmentRightClick(index, point)
@@ -40,9 +40,9 @@ private object ShaftPolyline {
       .toList
 
   private def updateSegmentsFromExtremes(
-                                         segments: List[ShaftSegment],
-                                         segmentExtremes: List[Point2D]
-                                       ): Unit =
+                                          segments: List[ShaftSegment],
+                                          segmentExtremes: List[Point2D]
+                                        ): Unit =
     segments
       .zipWithIndex
       .foreach {

@@ -35,7 +35,7 @@ private class HandleNodeGroup(
       (currentHandleNodes -- handleNodesToRemove)
         .map(handleNode =>
           handleNode.handle() -> handleNode
-      )
+        )
         .toMap
 
 

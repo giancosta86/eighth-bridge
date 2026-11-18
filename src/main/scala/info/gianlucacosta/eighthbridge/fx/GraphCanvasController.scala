@@ -5,12 +5,11 @@ import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.graphs.facets.LinkHandle
 import scalafx.Includes._
-import scalafx.beans.property.ReadOnlyObjectProperty
 import scalafx.geometry.{Dimension2D, Point2D}
 
 /**
-  * Controller providing behavior for GraphCanvas
-  */
+ * Controller providing behavior for GraphCanvas
+ */
 class GraphCanvasController {
   private var _graphCanvas: GraphCanvas = _
 

@@ -8,9 +8,9 @@ import scalafx.geometry.Point2D
 import scalafx.scene.Group
 
 private class BarbsNode(
-                          initialSourcePoint: Point2D,
-                          initialIntersectionPoint: Option[Point2D],
-                          initialArcBarbs: Option[ArcBarbs]
+                         initialSourcePoint: Point2D,
+                         initialIntersectionPoint: Option[Point2D],
+                         initialArcBarbs: Option[ArcBarbs]
                        ) extends Group {
   val sourcePoint =
     new SimpleObjectProperty[Point2D](initialSourcePoint)

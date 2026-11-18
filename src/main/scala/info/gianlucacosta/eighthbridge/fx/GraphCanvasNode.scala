@@ -6,34 +6,34 @@ import scalafx.scene.Group
 import scalafx.scene.input.{MouseButton, MouseEvent}
 
 /**
-  * JavaFX node rendering a graph element into GraphCanvas.
-  */
+ * JavaFX node rendering a graph element into GraphCanvas.
+ */
 abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends Group {
   /**
-    * The controller of the owning graph canvas
-    *
-    * @return
-    */
+   * The controller of the owning graph canvas
+   *
+   * @return
+   */
   protected final def controller: GraphCanvasController =
     graphCanvas.controller()
 
   /**
-    * The current graph within the graph canvas
-    *
-    * @return
-    */
+   * The current graph within the graph canvas
+   *
+   * @return
+   */
   protected final def graph: VisualGraph =
     graphCanvas.graph()
 
   this.consumeMouseEvents()
 
-  protected def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = { }
+  protected def handlePrimaryPressed(mouseEvent: MouseEvent): Unit = {}
 
-  protected def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = { }
+  protected def handlePrimaryDoublePressed(mouseEvent: MouseEvent): Unit = {}
 
-  protected def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = { }
+  protected def handleSecondaryPressed(mouseEvent: MouseEvent): Unit = {}
 
-  protected def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = { }
+  protected def handlePrimaryReleased(mouseEvent: MouseEvent): Unit = {}
 
   handleEvent(MouseEvent.MousePressed) {
     (mouseEvent: MouseEvent) => {
