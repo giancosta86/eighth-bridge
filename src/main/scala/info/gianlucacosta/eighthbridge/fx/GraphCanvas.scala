@@ -130,6 +130,16 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   fullRender()
 
   private def fullRender(): Unit = {
+    _vertexNodesByVertex =
+      Map[VisualVertex, VertexNode]()
+
+    _linkNodesByLink =
+      Map[VisualLink, LinkNode]()
+
+    vertexNodes.children.clear()
+
+    linkNodes.children.clear()
+
     render(
       TimestampedGraphDiff.forSingleGraph(graph())
     )
