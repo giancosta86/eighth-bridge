@@ -5,7 +5,6 @@ import info.gianlucacosta.eighthbridge.fx.controllers.primitive.EditLink
 import info.gianlucacosta.eighthbridge.graphs.facets.HasWeightBoundedSettable
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
-//TODO! Editing a link weight should also update its label?!
 trait EditLinkWeight
   extends EditLink {
   override type L <:

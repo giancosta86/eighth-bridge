@@ -13,7 +13,7 @@ trait EditLinkWeightAndCapacity extends EditLink {
     0
 
   def maxValueForCapacity: Weight =
-    Double.MaxValue
+    Weight.MaxValue
 
   override def doEditLink(link: L): Option[L] = {
     InputDialogs.askForDouble(
