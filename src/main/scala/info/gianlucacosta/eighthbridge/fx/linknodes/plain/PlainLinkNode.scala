@@ -3,9 +3,9 @@ package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, LinkNode, VertexNode, VisualLink}
-import info.gianlucacosta.eighthbridge.graphs.directed.{Arc, ArcBarbs}
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandles, LinkHandle}
-import info.gianlucacosta.eighthbridge.graphs.{Facet, Link}
+import info.gianlucacosta.eighthbridge.core.directed.{Arc, ArcBarbs}
+import info.gianlucacosta.eighthbridge.core.facets.{HasHandles, LinkHandle}
+import info.gianlucacosta.eighthbridge.core.{Facet, Link}
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D

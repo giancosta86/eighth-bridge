@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.graphs.facets.TimestampedGraphDiff
+import info.gianlucacosta.eighthbridge.core.facets.TimestampedGraphDiff
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.application.Platform

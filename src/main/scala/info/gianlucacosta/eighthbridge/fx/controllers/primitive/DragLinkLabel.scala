@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
 import info.gianlucacosta.eighthbridge.fx.Delta2D._
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvasController, VisualLink}
-import info.gianlucacosta.eighthbridge.graphs.facets.HasOptionalCustomLabelCenterSettable
+import info.gianlucacosta.eighthbridge.core.facets.HasOptionalCustomLabelCenterSettable
 import info.gianlucacosta.helios.fx.Includes.extendPoint2D
 import scalafx.geometry.Point2D
 

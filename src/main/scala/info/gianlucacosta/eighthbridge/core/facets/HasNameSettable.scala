@@ -1,0 +1,25 @@
+package info.gianlucacosta.eighthbridge.core.facets
+
+trait HasNameSettable extends TimestampedPrototype with HasName {
+  private var _name: String =
+    ""
+
+  override def name: String =
+    _name
+
+  def setName(name: String): this.type = {
+    if (name != _name) {
+      //TODO! What about this requirement, when the name actually starts out empty?
+      require(name.nonEmpty, "The name cannot be empty!")
+
+      val result =
+        clone()
+
+      result._name =
+        name
+
+      result
+    } else
+      this
+  }
+}

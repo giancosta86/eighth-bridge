@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.graphs.Vertex
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasCenter, TimestampedPrototype}
+import info.gianlucacosta.eighthbridge.core.Vertex
+import info.gianlucacosta.eighthbridge.core.facets.{HasCenter, TimestampedPrototype}
 
 trait VisualVertex extends TimestampedPrototype
   with Vertex

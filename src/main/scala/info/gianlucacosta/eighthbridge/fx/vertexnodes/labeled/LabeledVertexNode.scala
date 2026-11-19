@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode, VisualVertex}
-import info.gianlucacosta.eighthbridge.graphs.facets.HasLabel
+import info.gianlucacosta.eighthbridge.core.facets.HasLabel
 import scalafx.beans.property.ReadOnlyDoubleProperty
 
 class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)

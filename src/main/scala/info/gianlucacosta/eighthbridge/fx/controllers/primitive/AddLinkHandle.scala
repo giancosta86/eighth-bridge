@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualLink}
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasHandlesSettable, LinkHandle}
+import info.gianlucacosta.eighthbridge.core.facets.{HasHandlesSettable, LinkHandle}
 import scalafx.geometry.Point2D
 
 trait AddLinkHandle extends GraphCanvasController {

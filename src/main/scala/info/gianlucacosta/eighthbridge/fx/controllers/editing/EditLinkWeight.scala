@@ -2,7 +2,7 @@ package info.gianlucacosta.eighthbridge.fx.controllers.editing
 
 import info.gianlucacosta.eighthbridge.fx.VisualLink
 import info.gianlucacosta.eighthbridge.fx.controllers.primitive.EditLink
-import info.gianlucacosta.eighthbridge.graphs.facets.HasWeightBoundedSettable
+import info.gianlucacosta.eighthbridge.core.facets.HasWeightBoundedSettable
 import info.gianlucacosta.helios.fx.dialogs.InputDialogs
 
 trait EditLinkWeight

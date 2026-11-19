@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.graphs.Facet
-import info.gianlucacosta.eighthbridge.graphs.facets.{HasSelected, HasStyleClasses}
+import info.gianlucacosta.eighthbridge.core.Facet
+import info.gianlucacosta.eighthbridge.core.facets.{HasSelected, HasStyleClasses}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
