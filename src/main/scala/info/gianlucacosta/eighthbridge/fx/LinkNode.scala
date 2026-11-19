@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.core.Facet
-import info.gianlucacosta.eighthbridge.core.facets.{HasSelected, HasStyleClasses}
+import info.gianlucacosta.eighthbridge.core.facets.{HasBottomRight, HasSelected, HasStyleClasses}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
@@ -14,7 +14,7 @@ import scala.collection.JavaConversions._
  * JavaFX node rendering a VisualLink
  */
 abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
-  extends GraphCanvasNode(graphCanvas) {
+  extends GraphCanvasNode(graphCanvas) with HasBottomRight {
 
   type L <:
     VisualLink
@@ -84,5 +84,5 @@ abstract class LinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
     controller.editLink(link())
   }
 
-  def bottomRight: Point2D
+  override def bottomRight: Point2D
 }

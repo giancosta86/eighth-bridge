@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.core.Facet
-import info.gianlucacosta.eighthbridge.core.facets.{HasSelected, HasStyleClasses}
+import info.gianlucacosta.eighthbridge.core.facets.{HasBottomRight, HasSelected, HasStyleClasses}
 import info.gianlucacosta.helios.fx.css.PseudoClasses
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
@@ -15,7 +15,7 @@ import scala.collection.JavaConversions._
  * JavaFX node rendering a VisualVertex
  */
 abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
-  extends GraphCanvasNode(graphCanvas) with DragContext {
+  extends GraphCanvasNode(graphCanvas) with DragContext with HasBottomRight {
 
   type V <:
     VisualVertex
@@ -113,7 +113,7 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       )
     )
 
-  def bottomRight: Point2D =
+  override def bottomRight: Point2D =
     new Point2D(
       vertex().center.x + width() / 2,
       vertex().center.y + height() / 2
