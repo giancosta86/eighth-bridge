@@ -7,25 +7,24 @@ import scalafx.scene.shape.Ellipse
 private class VertexBody extends Ellipse {
   styleClass.add("ellipse")
 
-  radiusX() =
+  val radius =
     10
 
+  radiusX() =
+    radius
+
   radiusY() =
-    10
+    radius
 
   val width: ReadOnlyDoubleProperty =
     ReadOnlyProperties.forDouble(
       () =>
-        radiusX() * 2,
-
-      radiusX
+        radius * 2
     )
 
   val height: ReadOnlyDoubleProperty =
     ReadOnlyProperties.forDouble(
       () =>
-        radiusY() * 2,
-
-      radiusY
+        radius * 2
     )
 }

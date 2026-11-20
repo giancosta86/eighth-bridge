@@ -32,4 +32,7 @@ class PlainVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex) ext
 
   override val height: ReadOnlyDoubleProperty =
     body.height
+
+  override protected def borderRadius: Double =
+    0
 }

@@ -104,15 +104,21 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
       .dragSelectedVertexes(deltaFromLatest)
   }
 
+  protected def borderRadius: Double
+
   def getIntersectionWithSegmentFromPoint(sourcePoint: Point2D): Option[Point2D] =
     Segments.getIntersectionWithRoundedRectangle(
-      sourcePoint,
-      vertex().center,
-      new Dimension2D(
-        width(),
-        height()
-      ),
-      16
+      sourcePoint =
+        sourcePoint,
+      targetCenter =
+        vertex().center,
+      targetSize =
+        new Dimension2D(
+          width(),
+          height()
+        ),
+      borderRadius =
+        borderRadius
     )
 
   override def bottomRight: Point2D =
