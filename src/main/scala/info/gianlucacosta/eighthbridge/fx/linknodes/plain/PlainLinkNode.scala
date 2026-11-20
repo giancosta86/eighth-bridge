@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
+import info.gianlucacosta.eighthbridge.core.bottomright.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, LinkNode, VertexNode, VisualLink}
 import info.gianlucacosta.eighthbridge.core.directed.{Arc, ArcBarbs}
@@ -96,7 +96,7 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   }
 
   private def handleRightClickOnHandleNode(handle: LinkHandle): Unit = {
-    println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
+    //println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
     controller.deleteLinkHandle(link(), handle)
   }
 

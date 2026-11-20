@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.core.BottomRightTracker
-import info.gianlucacosta.eighthbridge.core.facets.{HasBottomRight, TimestampedGraphDiff}
+import info.gianlucacosta.eighthbridge.core.bottomright.{BottomRightTracker, HasBottomRight}
+import info.gianlucacosta.eighthbridge.core.facets.TimestampedGraphDiff
 import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
 import scalafx.application.Platform
@@ -72,8 +72,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
   graph.onChange { (_, oldValue, newValue) =>
     println(s"${new java.util.Date}: THE GRAPH PROPERTY HAS CHANGED")
-    println(s"Old graph: ${oldValue}")
-    println(s"New graph: ${newValue}")
+    //println(s"Old graph: ${oldValue}")
+    //println(s"New graph: ${newValue}")
 
     val graphDiff =
       newValue.getDiffSince(oldValue)
@@ -114,52 +114,29 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   val paddingBottom =
     new SimpleDoubleProperty(20)
 
-  private val minBottomRight =
-    Bindings.createObjectBinding[HasBottomRight](
-      () =>
-        new HasBottomRight {
-          override def bottomRight: Point2D =
-            new Point2D(
-              minWidth(),
-              minHeight()
-            )
-        },
-
-      minWidth,
-      minHeight
-    )
-
   private val bottomRightTracker =
-    new BottomRightTracker(minBottomRight())
+    new BottomRightTracker()
 
-  minBottomRight.onChange((_, oldMinBottomRight, newMinBottomRight) => {
-    println("---------- MIN-BOTTOM-RIGHT CHANGED! --------")
-    //TODO! Can this be optimized?
-    bottomRightTracker.set(newMinBottomRight)
-    bottomRightTracker.remove(oldMinBottomRight)
-
-    updateSize()
-  })
 
   private def updateSize(): Unit = {
     val bottomRight =
       bottomRightTracker.bottomRight
 
-    val newDimension =
-      new Dimension2D(
-        bottomRight.x,
-        bottomRight.y
-      )
+    val newWidth =
+      bottomRight.x + paddingRight()
 
-    println(s":::::::: UPDATING THE SIZE ::::::::::: ${newDimension}")
+    val newHeight =
+      bottomRight.y + paddingBottom()
 
-    this.setMaxWidth(newDimension.width + paddingRight())
+    println(s"${new java.util.Date}:::::::: UPDATING THE SIZE :::::::::::")
+    println(s"Computed new size: ${newWidth}x${newHeight}")
 
-    this.setMaxHeight(newDimension.height + paddingBottom())
+    this.setMaxWidth(newWidth)
+    this.setMaxHeight(newHeight)
 
     this.resize(
-      newDimension.width + paddingRight(),
-      newDimension.height + paddingBottom()
+      newWidth,
+      newHeight
     )
   }
 

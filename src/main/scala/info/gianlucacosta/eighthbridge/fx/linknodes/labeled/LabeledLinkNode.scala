@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
-import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
+import info.gianlucacosta.eighthbridge.core.bottomright.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, VisualLink}
 import info.gianlucacosta.eighthbridge.core.Facet

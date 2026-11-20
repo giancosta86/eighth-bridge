@@ -1,8 +1,7 @@
-package info.gianlucacosta.eighthbridge.core.facets
+package info.gianlucacosta.eighthbridge.core.bottomright
 
 import scalafx.geometry.Point2D
 
-//TODO! To Helios-fx?
 trait HasBottomRight {
   def bottomRight: Point2D
 }

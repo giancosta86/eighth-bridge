@@ -1,9 +1,9 @@
-package info.gianlucacosta.eighthbridge.fx
+package info.gianlucacosta.eighthbridge.core
 
 import scalafx.geometry.Point2D
 
-//TODO! To helios-fx!
-object PointUtils {
+//TODO! Move all the package to helios-fx!
+package object bottomright {
   implicit class Point2DExtension(self: Point2D) {
     def mergeToBottomRight(other: Point2D): Point2D =
       new Point2D(
