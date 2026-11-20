@@ -16,8 +16,6 @@ class BottomRightTracker extends HasBottomRight {
     val bottomRight =
       item.bottomRight
 
-    println(s"++++++++ TRACKER: ITEM SET AT (${bottomRight.x}; ${bottomRight.y})")
-
     bottomRightByItem +=
       (item -> bottomRight)
 
@@ -27,8 +25,6 @@ class BottomRightTracker extends HasBottomRight {
   }
 
   def remove(item: HasBottomRight): Unit = {
-    println(s"++++++++ TRACKER: ITEM REMOVED!")
-
     bottomRightByItem -=
       item
 
@@ -38,11 +34,9 @@ class BottomRightTracker extends HasBottomRight {
   }
 
   private def recomputeRight(): Unit = {
-    println("RECOMPUTING RIGHT FRINGE!")
     bottomRightByItem.foreach { case (item, bottomRight) =>
       rightFringe.notifyItemValue(item, bottomRight.x)
     }
-    println(s"THE RECOMPUTED FRINGE VALUE IS: ${rightFringe.value}")
   }
 
   private def recomputeBottom(): Unit = {

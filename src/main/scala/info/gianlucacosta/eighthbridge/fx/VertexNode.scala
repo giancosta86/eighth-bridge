@@ -105,13 +105,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
   def getIntersectionWithSegmentFromPoint(sourcePoint: Point2D): Option[Point2D] =
-    Segments.getIntersectionWithRectangle(
+    Segments.getIntersectionWithRoundedRectangle(
       sourcePoint,
       vertex().center,
       new Dimension2D(
         width(),
         height()
-      )
+      ),
+      16
     )
 
   override def bottomRight: Point2D =
