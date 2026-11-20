@@ -1,12 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.core.facets.TimestampedGraphDiff
-import javafx.beans.property.SimpleObjectProperty
+import info.gianlucacosta.eighthbridge.core.BottomRightTracker
+import info.gianlucacosta.eighthbridge.core.facets.{HasBottomRight, TimestampedGraphDiff}
+import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
 import scalafx.application.Platform
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyObjectProperty
-import scalafx.geometry.Dimension2D
+import scalafx.geometry.{Dimension2D, Point2D}
 import scalafx.scene.Group
 import scalafx.scene.input.{KeyCode, KeyEvent}
 import scalafx.scene.layout.Pane
@@ -107,6 +108,61 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
   focusTraversable =
     true
 
+  val paddingRight =
+    new SimpleDoubleProperty(20)
+
+  val paddingBottom =
+    new SimpleDoubleProperty(20)
+
+  private val minBottomRight =
+    Bindings.createObjectBinding[HasBottomRight](
+      () =>
+        new HasBottomRight {
+          override def bottomRight: Point2D =
+            new Point2D(
+              minWidth(),
+              minHeight()
+            )
+        },
+
+      minWidth,
+      minHeight
+    )
+
+  private val bottomRightTracker =
+    new BottomRightTracker(minBottomRight())
+
+  minBottomRight.onChange((_, oldMinBottomRight, newMinBottomRight) => {
+    println("---------- MIN-BOTTOM-RIGHT CHANGED! --------")
+    //TODO! Can this be optimized?
+    bottomRightTracker.set(newMinBottomRight)
+    bottomRightTracker.remove(oldMinBottomRight)
+
+    updateSize()
+  })
+
+  private def updateSize(): Unit = {
+    val bottomRight =
+      bottomRightTracker.bottomRight
+
+    val newDimension =
+      new Dimension2D(
+        bottomRight.x,
+        bottomRight.y
+      )
+
+    println(s":::::::: UPDATING THE SIZE ::::::::::: ${newDimension}")
+
+    this.setMaxWidth(newDimension.width + paddingRight())
+
+    this.setMaxHeight(newDimension.height + paddingBottom())
+
+    this.resize(
+      newDimension.width + paddingRight(),
+      newDimension.height + paddingBottom()
+    )
+  }
+
   private var _vertexNodesByVertex: Map[VisualVertex, VertexNode] = _
 
   def vertexNodesByVertex: Map[VisualVertex, VertexNode] =
@@ -192,6 +248,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
       vertexNode.vertex() =
         updatedVertex.asInstanceOf[vertexNode.V]
+
+      bottomRightTracker.set(vertexNode)
     })
 
     graphDiff.updatedLinks.foreach(updatedLink => {
@@ -200,6 +258,8 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
       linkNode.link() =
         updatedLink.asInstanceOf[linkNode.L]
+
+      bottomRightTracker.set(linkNode)
     })
 
 
@@ -228,18 +288,24 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
         vertexNodes.children.remove(_)
       )
 
+    addedVertexNodesByVertex
+      .values
+      .foreach(bottomRightTracker.set)
 
-    val newDimension =
-      controller().canvasDimension
+    addedLinkNodesByLink
+      .values
+      .foreach(bottomRightTracker.set)
 
-    this.resize(
-      newDimension.width,
-      newDimension.height
-    )
+    danglingVertexNodesByVertex
+      .values
+      .foreach(bottomRightTracker.remove)
 
-    this.setMaxWidth(newDimension.width)
+    danglingLinkNodesByLink
+      .values
+      .foreach(bottomRightTracker.remove)
 
-    this.setMaxHeight(newDimension.height)
+
+    updateSize()
   }
 
   def adjustGraph(adjuster: GraphAdjuster): Unit = {

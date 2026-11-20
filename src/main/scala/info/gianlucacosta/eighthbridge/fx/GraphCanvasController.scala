@@ -1,11 +1,10 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.fx.PointUtils.Point2DExtension
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.vertexnodes.plain.PlainVertexNode
 import info.gianlucacosta.eighthbridge.core.facets.LinkHandle
 import scalafx.Includes._
-import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.geometry.Point2D
 
 /**
  * Controller providing behavior for GraphCanvas
@@ -66,42 +65,4 @@ class GraphCanvasController {
   def dragLinkLabel(link: VisualLink, currentCenter: Point2D, delta: Delta2D): Unit = {}
 
   def resetLinkLabelCenter(link: VisualLink): Unit = {}
-
-  protected def minCanvasDimension: Dimension2D =
-    new Dimension2D(
-      800,
-      600
-    )
-
-  protected def graphMargin: Int =
-    20
-
-  def canvasDimension: Dimension2D = {
-    val minBottomRight =
-      new Point2D(
-        minCanvasDimension.width,
-        minCanvasDimension.height
-      )
-
-    val bottomRightAfterVertexes =
-      graphCanvas
-        .vertexNodesByVertex
-        .values
-        .foldLeft(minBottomRight)((cumulatedBottomRight, vertexNode) =>
-          cumulatedBottomRight.mergeToBottomRight(vertexNode.bottomRight)
-        )
-
-    val bottomRightAfterLinks =
-      graphCanvas
-        .linkNodesByLink
-        .values
-        .foldLeft(bottomRightAfterVertexes)((cumulatedBottomRight, linkNode) =>
-          cumulatedBottomRight.mergeToBottomRight(linkNode.bottomRight)
-        )
-
-    new Dimension2D(
-      bottomRightAfterLinks.x + graphMargin,
-      bottomRightAfterLinks.y + graphMargin
-    )
-  }
 }
