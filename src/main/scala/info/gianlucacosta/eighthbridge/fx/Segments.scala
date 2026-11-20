@@ -69,7 +69,7 @@ object Segments {
                                            targetSize: Dimension2D,
                                            borderRadius: Double
                                          ): Option[Point2D] = {
-    require(0 < borderRadius && borderRadius <= Math.min(targetSize.width / 2, targetSize.height / 2))
+    require(0 <= borderRadius && borderRadius <= Math.min(targetSize.width / 2, targetSize.height / 2))
 
     getIntersectionWithRectangle(
       sourcePoint =
@@ -79,47 +79,44 @@ object Segments {
       targetSize =
         targetSize
     ).map(intersectionWithRectangle => {
-      val overlappingWidth =
-        targetSize.width / 2 - borderRadius
+      if (borderRadius > 0) {
+        val overlappingWidth =
+          targetSize.width / 2 - borderRadius
 
-      val overlappingHeight =
-        targetSize.height / 2 - borderRadius
+        val overlappingHeight =
+          targetSize.height / 2 - borderRadius
 
-      val zetaX =
-        intersectionWithRectangle.x - targetCenter.x
+        val zetaX =
+          intersectionWithRectangle.x - targetCenter.x
 
-      val zetaY =
-        intersectionWithRectangle.y - targetCenter.y
+        val zetaY =
+          intersectionWithRectangle.y - targetCenter.y
 
-      if (Math.abs(zetaX) > overlappingWidth && Math.abs(zetaY) > overlappingHeight) {
-        val m =
-          zetaY / zetaX
+        if (Math.abs(zetaX) > overlappingWidth && Math.abs(zetaY) > overlappingHeight) {
+          val m =
+            zetaY / zetaX
 
-        val deltaX =
-          Math.signum(zetaX) * overlappingWidth
+          val deltaX =
+            Math.signum(zetaX) * overlappingWidth
 
-        val deltaY =
-          Math.signum(zetaY) * overlappingHeight
+          val deltaY =
+            Math.signum(zetaY) * overlappingHeight
 
-        val deltaOverFour =
-          m * deltaX * (2 * deltaY - m * deltaX) - deltaY * deltaY + borderRadius * borderRadius * (m * m + 1)
+          val deltaOverFour =
+            m * deltaX * (2 * deltaY - m * deltaX) - deltaY * deltaY + borderRadius * borderRadius * (m * m + 1)
 
 
-        println(s"DELTA OVER FOUR IS: ${deltaOverFour}")
+          println(s"DELTA OVER FOUR IS: ${deltaOverFour}")
 
-        val omega =
-          (deltaX + m * deltaY + Math.signum(deltaX) * Math.sqrt(deltaOverFour)) / (m * m + 1)
+          val omega =
+            (deltaX + m * deltaY + Math.signum(deltaX) * Math.sqrt(deltaOverFour)) / (m * m + 1)
 
-        val result =
-            new Point2D(
+          new Point2D(
             targetCenter.x + omega,
             targetCenter.y + m * omega
           )
-
-        println(s"------------ ORIGINAL INTERSECTION POINT: ${intersectionWithRectangle}")
-        println(s"++++++++++++ ACTUAL INTERSECTION POINT: ${result}")
-
-        result
+        } else
+          intersectionWithRectangle
       } else {
         intersectionWithRectangle
       }
