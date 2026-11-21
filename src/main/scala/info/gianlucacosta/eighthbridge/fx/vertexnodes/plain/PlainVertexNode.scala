@@ -5,9 +5,12 @@ import scalafx.Includes._
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyDoubleProperty
 
-class PlainVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex) extends VertexNode(graphCanvas, initialVertex) {
+class PlainVertexNode(
+                       graphCanvas: GraphCanvas,
+                       initialVertex: VisualVertex,
+                       radius: Double = 10) extends VertexNode(graphCanvas, initialVertex) {
   private val body =
-    new VertexBody {
+    new VertexBody(radius) {
       centerX <==
         Bindings.createDoubleBinding(
           () =>

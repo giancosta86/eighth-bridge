@@ -4,11 +4,8 @@ import info.gianlucacosta.eighthbridge.fx.ReadOnlyProperties
 import scalafx.beans.property.ReadOnlyDoubleProperty
 import scalafx.scene.shape.Ellipse
 
-private class VertexBody extends Ellipse {
+private class VertexBody(radius: Double) extends Ellipse {
   styleClass.add("ellipse")
-
-  val radius =
-    10
 
   radiusX() =
     radius
