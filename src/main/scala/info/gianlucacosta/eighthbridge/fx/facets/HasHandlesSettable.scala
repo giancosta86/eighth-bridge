@@ -1,4 +1,7 @@
-package info.gianlucacosta.eighthbridge.core.facets
+package info.gianlucacosta.eighthbridge.fx.facets
+
+import info.gianlucacosta.eighthbridge.core.facets.TimestampedPrototype
+import info.gianlucacosta.eighthbridge.fx.LinkHandle
 
 trait HasHandlesSettable extends TimestampedPrototype with HasHandles {
   private var _handles: List[LinkHandle] =

@@ -1,6 +1,8 @@
-package info.gianlucacosta.eighthbridge.core.facets
+package info.gianlucacosta.eighthbridge.fx
 
 import info.gianlucacosta.eighthbridge.core.entities.IntBasedEntity
+import info.gianlucacosta.eighthbridge.core.facets.TimestampedPrototype
+import info.gianlucacosta.eighthbridge.fx.facets.{HasCenterSettable, HasDimensionSettable}
 import scalafx.geometry.Point2D
 
 class LinkHandle extends TimestampedPrototype

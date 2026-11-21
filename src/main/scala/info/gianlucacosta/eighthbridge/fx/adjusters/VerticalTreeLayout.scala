@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.adjusters
 
+import info.gianlucacosta.eighthbridge.fx.facets.HasCenterSettable
 import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas, VisualDirectedGraph, VisualGraph, VisualVertex}
-import info.gianlucacosta.eighthbridge.core.facets.HasCenterSettable
 
 class VerticalTreeLayout(
                           minHorizontalGap: Double =

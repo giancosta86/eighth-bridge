@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.core.bottomright
+package info.gianlucacosta.eighthbridge.fx.bottomright
 
 import scalafx.geometry.Point2D
 

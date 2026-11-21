@@ -1,13 +1,13 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.core.bottomright.{BottomRightTracker, HasBottomRight}
 import info.gianlucacosta.eighthbridge.core.facets.TimestampedGraphDiff
+import info.gianlucacosta.eighthbridge.fx.bottomright.BottomRightTracker
 import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
 import scalafx.Includes._
 import scalafx.application.Platform
 import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyObjectProperty
-import scalafx.geometry.{Dimension2D, Point2D}
+import scalafx.geometry.Dimension2D
 import scalafx.scene.Group
 import scalafx.scene.input.{KeyCode, KeyEvent}
 import scalafx.scene.layout.Pane

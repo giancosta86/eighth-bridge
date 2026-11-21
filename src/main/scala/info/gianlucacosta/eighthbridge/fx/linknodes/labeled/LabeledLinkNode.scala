@@ -1,10 +1,11 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
+import info.gianlucacosta.eighthbridge.core.Facet
 import info.gianlucacosta.eighthbridge.core.bottomright.Point2DExtension
+import info.gianlucacosta.eighthbridge.core.facets.HasLabel
+import info.gianlucacosta.eighthbridge.fx.facets.{HasHandles, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, GraphCanvas, VisualLink}
-import info.gianlucacosta.eighthbridge.core.Facet
-import info.gianlucacosta.eighthbridge.core.facets.{HasHandles, HasLabel, HasOptionalCustomLabelCenterSettable}
 import info.gianlucacosta.helios.fx.geometry.Segment
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings

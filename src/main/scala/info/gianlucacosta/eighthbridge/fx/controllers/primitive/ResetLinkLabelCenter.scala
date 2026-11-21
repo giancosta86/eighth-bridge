@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx.controllers.primitive
 
+import info.gianlucacosta.eighthbridge.fx.facets.HasOptionalCustomLabelCenterSettable
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvasController, VisualLink}
-import info.gianlucacosta.eighthbridge.core.facets.HasOptionalCustomLabelCenterSettable
 
 trait ResetLinkLabelCenter extends GraphCanvasController {
   override def resetLinkLabelCenter(link: VisualLink): Unit = {

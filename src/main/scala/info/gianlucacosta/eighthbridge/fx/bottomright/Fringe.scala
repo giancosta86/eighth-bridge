@@ -1,4 +1,4 @@
-package info.gianlucacosta.eighthbridge.core.bottomright
+package info.gianlucacosta.eighthbridge.fx.bottomright
 
 private class Fringe(onEmpty: () => Unit) {
   private var _value: Double =
