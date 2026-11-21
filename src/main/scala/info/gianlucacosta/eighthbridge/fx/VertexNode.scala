@@ -100,8 +100,14 @@ abstract class VertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   }
 
   override protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
-    controller
-      .dragSelectedVertexes(deltaFromLatest)
+    Facet
+      .as[HasSelected](vertex())
+      .foreach(withSelected => {
+        if (withSelected.selected) {
+          controller
+            .dragSelectedVertexes(deltaFromLatest)
+        }
+      })
   }
 
   protected def borderRadius: Double
