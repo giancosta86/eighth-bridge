@@ -5,6 +5,7 @@ import info.gianlucacosta.eighthbridge.fx.linknodes.plain.BarbsNode.ArcBarbsExte
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
+import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 
@@ -15,13 +16,13 @@ private class BarbsNode(
                          initialIntersectionPoint: Option[Point2D],
                          initialArcBarbs: Option[ArcBarbs]
                        ) extends Group {
-  val sourcePoint =
+  val sourcePoint: ObjectProperty[Point2D] =
     new SimpleObjectProperty[Point2D](initialSourcePoint)
 
-  val intersectionPoint =
+  val intersectionPoint: ObjectProperty[Option[Point2D]] =
     new SimpleObjectProperty[Option[Point2D]](initialIntersectionPoint)
 
-  val arcBarbs =
+  val arcBarbs: ObjectProperty[Option[ArcBarbs]] =
     new SimpleObjectProperty[Option[ArcBarbs]](initialArcBarbs)
 
   private val sidePoints =
