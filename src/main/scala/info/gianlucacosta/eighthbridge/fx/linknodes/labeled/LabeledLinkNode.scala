@@ -54,7 +54,9 @@ class LabeledLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink with Has
   private val label =
     new LinkLabel(
       initialCenter =
-        initialLink.customLabelCenter.getOrElse(labelAnchorPoint()),
+        initialLink
+          .customLabelCenter
+          .getOrElse(labelAnchorPoint()),
       onDrag =
         handleDragOnLabel,
       onSecondaryDoubleClick =
@@ -86,33 +88,33 @@ class LabeledLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink with Has
       startX <==
         Bindings.createDoubleBinding(
           () =>
-            label.center().x,
-
-          label.center
-        )
-
-      startY <==
-        Bindings.createDoubleBinding(
-          () =>
-            label.center().y,
-
-          label.center
-        )
-
-      endX <==
-        Bindings.createDoubleBinding(
-          () =>
             labelAnchorPoint().x,
 
           labelAnchorPoint
         )
 
-      endY <==
+      startY <==
         Bindings.createDoubleBinding(
           () =>
             labelAnchorPoint().y,
 
           labelAnchorPoint
+        )
+
+      endX <==
+        Bindings.createDoubleBinding(
+          () =>
+            label.center().x,
+
+          label.center
+        )
+
+      endY <==
+        Bindings.createDoubleBinding(
+          () =>
+            label.center().y,
+
+          label.center
         )
 
       visible <==
