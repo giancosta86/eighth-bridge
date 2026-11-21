@@ -15,7 +15,7 @@ private class HandleNodeGroup(
     new SimpleObjectProperty[List[LinkHandle]]
 
   private val handleNodes =
-    new SimpleObjectProperty[List[HandleNode]](Nil) //TODO: what about deleting this Nil?
+    new SimpleObjectProperty[List[HandleNode]](Nil)
 
   handles.onInvalidate {
     val updatedHandles =
