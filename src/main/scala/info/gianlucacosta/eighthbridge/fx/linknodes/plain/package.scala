@@ -10,9 +10,9 @@ package object plain {
   type SegmentRightClickHandler =
     (SegmentIndex, Point2D) => Unit
 
-  type HandleNodeRightClickHandler =
+  type HandleRightClickHandler =
     (LinkHandle) => Unit
 
-  type HandleNodeDragHandler =
+  type HandleDragHandler =
     (LinkHandle, Delta2D) => Unit
 }

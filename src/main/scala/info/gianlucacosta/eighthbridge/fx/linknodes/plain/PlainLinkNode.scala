@@ -20,7 +20,7 @@ object PlainLinkNode {
 class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
   extends LinkNode(graphCanvas, initialLink) {
 
-  protected val (sourceVertex, targetVertex) =
+  private val (sourceVertex, targetVertex) =
     graph.getAnchorPair(link()).get
 
   protected val sourceVertexNode: VertexNode =
@@ -37,15 +37,18 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
 
   private val shaft =
     new Shaft(
-      sourceVertexNode,
-      targetVertexNode,
-      initialHandles,
+      sourceVertexNode =
+        sourceVertexNode,
+      targetVertexNode =
+        targetVertexNode,
+      initialHandles =
+        initialHandles,
       onSegmentRightClick =
         handleRightClickOnShaftSegment,
-      onHandleNodeRightClick =
-        handleRightClickOnHandleNode,
-      onHandleNodeDrag =
-        handleDragOnHandleNode
+      onHandleRightClick =
+        handleRightClickOnHandle,
+      onHandleDrag =
+        handleDragOnHandle
     ) {
       handles <==
         Bindings.createObjectBinding(
@@ -95,12 +98,12 @@ class PlainLinkNode(graphCanvas: GraphCanvas, initialLink: VisualLink)
     controller.addLinkHandle(link(), shaftSegmentIndex, point)
   }
 
-  private def handleRightClickOnHandleNode(handle: LinkHandle): Unit = {
+  private def handleRightClickOnHandle(handle: LinkHandle): Unit = {
     //println(s"@@@@@@@@@@@ YOU HAVE RIGHT-CLICKED ON HANDLE-NODE FOR HANDLE ${handle}")
     controller.deleteLinkHandle(link(), handle)
   }
 
-  private def handleDragOnHandleNode(handle: LinkHandle, delta: Delta2D): Unit = {
+  private def handleDragOnHandle(handle: LinkHandle, delta: Delta2D): Unit = {
     controller.dragLinkHandle(link(), handle, delta)
   }
 

@@ -6,8 +6,55 @@ import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 
+private class ShaftPolyline(
+                             initialSegmentExtremes: List[Point2D],
+                             onSegmentRightClick: SegmentRightClickHandler
+                           ) extends Group {
+  private val segments =
+    new SimpleObjectProperty[List[ShaftSegment]](Nil)
+
+  segments.onChange {
+    children.clear()
+
+    segments().foreach(children.add(_))
+  }
+
+  val segmentExtremes: ObjectProperty[List[Point2D]] =
+    new SimpleObjectProperty[List[Point2D]](initialSegmentExtremes)
+
+  segmentExtremes.onChange {
+    updateSegmentNodes()
+  }
+
+  updateSegmentNodes()
+
+  private def updateSegmentNodes(): Unit = {
+    val shouldCreateSegmentsFromScratch = {
+      (segmentExtremes().size != segments().size + 1) &&
+        !(segmentExtremes().isEmpty && segments().isEmpty)
+    }
+
+    if (shouldCreateSegmentsFromScratch) {
+      segments() =
+        ShaftPolyline.buildSegmentNodesFromExtremes(
+          segmentExtremes =
+            segmentExtremes(),
+          onSegmentRightClick =
+            onSegmentRightClick
+        )
+    } else {
+      ShaftPolyline.updateSegmentNodesFromExtremes(
+        segments =
+          segments(),
+        segmentExtremes =
+          segmentExtremes()
+      )
+    }
+  }
+}
+
 private object ShaftPolyline {
-  private def buildSegmentsFromExtremes(
+  private def buildSegmentNodesFromExtremes(
                                          segmentExtremes: List[Point2D],
                                          onSegmentRightClick: SegmentRightClickHandler
                                        ): List[ShaftSegment] =
@@ -17,9 +64,10 @@ private object ShaftPolyline {
       .map {
         case (startPoint :: endPoint :: Nil, index) =>
           new ShaftSegment(
-            onRightClick = (point) => {
-              onSegmentRightClick(index, point)
-            }
+            onRightClick =
+              (point) => {
+                onSegmentRightClick(index, point)
+              }
           ) {
             startX() =
               startPoint.x
@@ -39,7 +87,7 @@ private object ShaftPolyline {
       }
       .toList
 
-  private def updateSegmentsFromExtremes(
+  private def updateSegmentNodesFromExtremes(
                                           segments: List[ShaftSegment],
                                           segmentExtremes: List[Point2D]
                                         ): Unit =
@@ -59,51 +107,4 @@ private object ShaftPolyline {
           segment.endY() =
             segmentExtremes(index + 1).y
       }
-}
-
-private class ShaftPolyline(
-                             initialSegmentExtremes: List[Point2D],
-                             onSegmentRightClick: SegmentRightClickHandler
-                           ) extends Group {
-  private val segments =
-    new SimpleObjectProperty[List[ShaftSegment]](Nil)
-
-  segments.onChange {
-    children.clear()
-
-    segments().foreach(children.add(_))
-  }
-
-  val segmentExtremes: ObjectProperty[List[Point2D]] =
-    new SimpleObjectProperty[List[Point2D]](initialSegmentExtremes)
-
-  segmentExtremes.onChange {
-    setupSegments()
-  }
-
-  setupSegments()
-
-  private def setupSegments(): Unit = {
-    val shouldRebuildSegments = {
-      (segmentExtremes().size != segments().size + 1) &&
-        !(segmentExtremes().isEmpty && segments().isEmpty)
-    }
-
-    if (shouldRebuildSegments) {
-      segments() =
-        ShaftPolyline.buildSegmentsFromExtremes(
-          segmentExtremes =
-            segmentExtremes(),
-          onSegmentRightClick =
-            onSegmentRightClick
-        )
-    } else {
-      ShaftPolyline.updateSegmentsFromExtremes(
-        segments =
-          segments(),
-        segmentExtremes =
-          segmentExtremes()
-      )
-    }
-  }
 }

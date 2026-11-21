@@ -11,8 +11,8 @@ import scalafx.scene.shape.Ellipse
 
 private class HandleNode(
                           initialHandle: LinkHandle,
-                          onRightClick: HandleNodeRightClickHandler,
-                          onDrag: HandleNodeDragHandler
+                          onRightClick: HandleRightClickHandler,
+                          onDrag: HandleDragHandler
                         ) extends Ellipse with DragContext {
   styleClass.add("handle")
 

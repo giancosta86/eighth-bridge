@@ -8,14 +8,14 @@ import scalafx.scene.Group
 
 private class HandleNodeGroup(
                                initialHandles: List[LinkHandle],
-                               onHandleNodeRightClick: HandleNodeRightClickHandler,
-                               onHandleNodeDrag: HandleNodeDragHandler
+                               onHandleRightClick: HandleRightClickHandler,
+                               onHandleDrag: HandleDragHandler
                              ) extends Group {
   val handles: ObjectProperty[List[LinkHandle]] =
     new SimpleObjectProperty[List[LinkHandle]]
 
   private val handleNodes =
-    new SimpleObjectProperty[List[HandleNode]](Nil)
+    new SimpleObjectProperty[List[HandleNode]](Nil) //TODO: what about deleting this Nil?
 
   handles.onInvalidate {
     val updatedHandles =
@@ -55,11 +55,12 @@ private class HandleNodeGroup(
           case None =>
             val brandNewHandleNode =
               new HandleNode(
-                handle,
+                initialHandle =
+                  handle,
                 onRightClick =
-                  onHandleNodeRightClick,
+                  onHandleRightClick,
                 onDrag =
-                  onHandleNodeDrag
+                  onHandleDrag
               )
 
             children.add(brandNewHandleNode)

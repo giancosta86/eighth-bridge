@@ -4,6 +4,7 @@ import info.gianlucacosta.eighthbridge.fx.{LinkHandle, VertexNode}
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.{Bindings, ObjectBinding}
+import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Point2D
 import scalafx.scene.Group
 
@@ -12,12 +13,11 @@ private class Shaft(
                      targetVertexNode: VertexNode,
                      initialHandles: List[LinkHandle],
                      onSegmentRightClick: SegmentRightClickHandler,
-                     onHandleNodeRightClick: HandleNodeRightClickHandler,
-                     onHandleNodeDrag: HandleNodeDragHandler
+                     onHandleRightClick: HandleRightClickHandler,
+                     onHandleDrag: HandleDragHandler
                    ) extends Group {
-  val handles =
+  val handles: ObjectProperty[List[LinkHandle]] =
     new SimpleObjectProperty[List[LinkHandle]](initialHandles)
-
 
   private val firstPointAfterSourceVertex =
     Bindings.createObjectBinding[Point2D](
@@ -98,7 +98,8 @@ private class Shaft(
 
   private val polyline =
     new ShaftPolyline(
-      segmentExtremes(),
+      initialSegmentExtremes =
+        segmentExtremes(),
       onSegmentRightClick =
         onSegmentRightClick
     ) {
@@ -110,11 +111,12 @@ private class Shaft(
 
   private val handleNodeGroup =
     new HandleNodeGroup(
-      initialHandles,
-      onHandleNodeRightClick =
-        onHandleNodeRightClick,
-      onHandleNodeDrag =
-        onHandleNodeDrag
+      initialHandles =
+        initialHandles,
+      onHandleRightClick =
+        onHandleRightClick,
+      onHandleDrag =
+        onHandleDrag
     ) {
       handles <==
         Shaft.this.handles
