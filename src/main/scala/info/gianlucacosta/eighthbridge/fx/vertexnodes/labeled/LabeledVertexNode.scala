@@ -15,33 +15,9 @@ class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
     VisualVertex with HasLabel
 
   private val label =
-    new Label {
-      styleClass.add("label")
-
-      layoutX <==
-        Bindings.createDoubleBinding(
-          () =>
-            vertex().center.x - width() / 2,
-
-          vertex,
-          width
-        )
-
-      layoutY <==
-        Bindings.createDoubleBinding(
-          () =>
-            vertex().center.y - height() / 2,
-
-          vertex,
-          height
-        )
-
-      text <== Bindings.createStringBinding(
-        () =>
-          vertex().label,
-
-        vertex
-      )
+    new VertexLabel(vertex()) {
+      vertex <==
+        LabeledVertexNode.this.vertex
     }
 
   children.add(label)
