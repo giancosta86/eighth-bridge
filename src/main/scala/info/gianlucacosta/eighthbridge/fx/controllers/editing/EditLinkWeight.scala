@@ -19,7 +19,10 @@ trait EditLinkWeight
         header = "Edit link..."
       )
       .map(newWeight =>
-        link.setWeight(newWeight)
+        link.setWeight(
+          weight =
+            newWeight
+        )
       )
   }
 }
