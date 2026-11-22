@@ -53,6 +53,8 @@ abstract class GraphCanvasNode(protected val graphCanvas: GraphCanvas) extends G
           mouseEvent.clickCount match {
             case 1 =>
               handleSecondaryPressed(mouseEvent)
+
+            case _ =>
           }
 
         case _ =>
