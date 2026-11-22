@@ -69,8 +69,6 @@ object Segments {
                                            targetSize: Dimension2D,
                                            borderRadius: Double
                                          ): Option[Point2D] = {
-    require(0 <= borderRadius && borderRadius <= Math.min(targetSize.width / 2, targetSize.height / 2))
-
     getIntersectionWithRectangle(
       sourcePoint =
         sourcePoint,
