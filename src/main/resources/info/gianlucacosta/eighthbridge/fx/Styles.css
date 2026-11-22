@@ -90,9 +90,9 @@
  *------------------*/
 
 .link:selected .line {
-    -fx-stroke: #18ab00;
+    -fx-stroke: #1545ff;
 }
 
 .link:selected .handle {
-    -fx-fill: #18ab00;
+    -fx-fill: #1545ff;
 }
