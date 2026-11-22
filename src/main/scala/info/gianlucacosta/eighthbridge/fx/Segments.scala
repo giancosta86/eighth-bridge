@@ -103,9 +103,6 @@ object Segments {
           val deltaOverFour =
             m * deltaX * (2 * deltaY - m * deltaX) - deltaY * deltaY + borderRadius * borderRadius * (m * m + 1)
 
-
-          println(s"DELTA OVER FOUR IS: ${deltaOverFour}")
-
           val omega =
             (deltaX + m * deltaY + Math.signum(deltaX) * Math.sqrt(deltaOverFour)) / (m * m + 1)
 
