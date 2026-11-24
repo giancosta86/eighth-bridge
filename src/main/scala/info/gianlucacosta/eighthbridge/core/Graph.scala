@@ -318,6 +318,11 @@ object Graph {
    ): Graph[ParentVertex, ParentLink] =
     self.asInstanceOf[Graph[ParentVertex, ParentLink]]
 
+  implicit class GraphExtensions[V <: Vertex, L <: Link](self: Graph[V, L]) {
+    def downcast[ChildVertex <: V, ChildLink <: Link]: Graph[ChildVertex, ChildLink] =
+      self.asInstanceOf[Graph[ChildVertex, ChildLink]]
+  }
+
   implicit class UndirectedGraphExtensions[V <: Vertex, E <: Edge](self: Graph[V, E]) {
     val isDirected: Boolean =
       false

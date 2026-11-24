@@ -232,7 +232,7 @@ class VerticalTreeLayout(
   override def adjustGraph(graphCanvas: GraphCanvas, graph: VisualGraph): VisualGraph = {
     val actualGraph =
       graph
-        .asInstanceOf[Graph[VisualVertex, VisualArc]]
+        .downcast
 
     if (actualGraph.isEmpty) {
       return actualGraph
