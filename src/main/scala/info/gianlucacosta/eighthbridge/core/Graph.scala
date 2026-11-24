@@ -13,7 +13,8 @@ final class Graph[
 ] private (
    val vertexes: Set[V],
    val linksByAnchors: Map[Anchors[V], Set[L]],
-   anchorsCreator: AnchorsCreator[V]
+   anchorsCreator: AnchorsCreator[V],
+   val isDirected: Boolean
  ) {
   @transient
   lazy val vertexesById: Map[Vertex#Id, V] =
@@ -46,7 +47,9 @@ final class Graph[
       linksByAnchors =
         updatedLinksByAnchors,
       anchorsCreator =
-        anchorsCreator
+        anchorsCreator,
+      isDirected =
+        isDirected
     )
 
   def addVertexes(vertexesToAdd: Set[V]): Graph[V, L] =
@@ -295,7 +298,9 @@ object Graph {
       linksByAnchors =
         Map[Anchors[V], Set[E]](),
       anchorsCreator =
-        (one, another) => new UndirectedAnchors[V](one, another)
+        (one, another) => new UndirectedAnchors[V](one, another),
+      isDirected =
+        false
     )
 
   def createDirected[V <: Vertex, A <: Arc](): Graph[V, A] = {
@@ -305,7 +310,9 @@ object Graph {
       linksByAnchors =
         Map[Anchors[V], Set[A]](),
       anchorsCreator =
-        (source, target) => new DirectedAnchors[V](source, target)
+        (source, target) => new DirectedAnchors[V](source, target),
+      isDirected =
+        true
     )
   }
 
@@ -324,9 +331,6 @@ object Graph {
   }
 
   implicit class UndirectedGraphExtensions[V <: Vertex, E <: Edge](self: Graph[V, E]) {
-    val isDirected: Boolean =
-      false
-
     def isCyclic: Boolean = {
       var unionFind =
         new UnionFind[V, E](self)
