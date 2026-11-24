@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.core.undirected
 
-import info.gianlucacosta.eighthbridge.core.Vertex
+import info.gianlucacosta.eighthbridge.core.{Graph, Vertex}
 
 object UnionFind {
   private def findRootAndCompress[V <: Vertex](
@@ -26,13 +26,13 @@ object UnionFind {
 }
 
 class UnionFind[V <: Vertex, E <: Edge] private(
-                                                 graph: UndirectedGraph[V, E],
+                                                 graph: Graph[V, E],
                                                  val edges: Set[E],
                                                  val hasCycles: Boolean,
                                                  rootByVertex: Map[V, V],
                                                  rankByVertex: Map[V, Int]
                                                ) {
-  def this(graph: UndirectedGraph[V, E]) =
+  def this(graph: Graph[V, E]) =
     this(
       graph =
         graph,

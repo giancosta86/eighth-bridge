@@ -1,5 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import info.gianlucacosta.eighthbridge.core.Graph
 import info.gianlucacosta.eighthbridge.core.facets.TimestampedGraphDiff
 import info.gianlucacosta.eighthbridge.fx.bottomright.BottomRightTracker
 import javafx.beans.property.{SimpleDoubleProperty, SimpleObjectProperty}
@@ -67,7 +68,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
   val graph =
     new SimpleObjectProperty[VisualGraph](
-      new VisualDirectedGraph
+      Graph.createDirected[VisualVertex, VisualArc]()
     )
 
   graph.onChange { (_, oldValue, newValue) =>

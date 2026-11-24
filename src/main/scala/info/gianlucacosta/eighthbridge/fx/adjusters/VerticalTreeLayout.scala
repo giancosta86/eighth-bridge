@@ -1,7 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.adjusters
 
+import info.gianlucacosta.eighthbridge.core.Graph
 import info.gianlucacosta.eighthbridge.fx.facets.HasCenterSettable
-import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas, VisualDirectedGraph, VisualGraph, VisualVertex}
+import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas, VisualArc, VisualGraph, VisualVertex}
 
 class VerticalTreeLayout(
                           minHorizontalGap: Double =
@@ -27,7 +28,7 @@ class VerticalTreeLayout(
   private var maxHeightByLevel: Map[Level, Double] =
     Map[Level, Double]()
 
-  private def registerMetrics(graphCanvas: GraphCanvas, graph: VisualDirectedGraph): Unit = {
+  private def registerMetrics(graphCanvas: GraphCanvas, graph: Graph[VisualVertex, VisualArc]): Unit = {
     def registerMetrics(level: Level, vertex: VisualVertex): Unit = {
       val vertexNode =
         graphCanvas.vertexNodesByVertex(vertex)
@@ -102,7 +103,7 @@ class VerticalTreeLayout(
       )
   }
 
-  private def positionVertexes(graph: VisualDirectedGraph): VisualGraph = {
+  private def positionVertexes(graph: Graph[VisualVertex, VisualArc]): VisualGraph = {
     val levelCount =
       maxHeightByLevel.size
 
@@ -231,7 +232,7 @@ class VerticalTreeLayout(
   override def adjustGraph(graphCanvas: GraphCanvas, graph: VisualGraph): VisualGraph = {
     val actualGraph =
       graph
-        .asInstanceOf[VisualDirectedGraph]
+        .asInstanceOf[Graph[VisualVertex, VisualArc]]
 
     if (actualGraph.isEmpty) {
       return actualGraph
