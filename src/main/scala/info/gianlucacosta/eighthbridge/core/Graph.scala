@@ -68,4 +68,6 @@ trait Graph[V <: Vertex, L <: Link] {
   def getConnectedLinks(vertex: V): Set[L]
 
   val isCyclic: Boolean
+
+  val isDirected: Boolean
 }

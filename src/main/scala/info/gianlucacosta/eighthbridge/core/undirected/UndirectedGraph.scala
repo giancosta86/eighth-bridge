@@ -89,4 +89,7 @@ final class UndirectedGraph[
       .forall(
         getNeighbors(_).size == vertexes.size - 1
       )
+
+  override val isDirected: Boolean =
+    false
 }

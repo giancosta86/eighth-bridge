@@ -274,4 +274,7 @@ final class DirectedGraph[
       (_, _) => ()
     )
       .isEmpty
+
+  override val isDirected: Boolean =
+    true
 }
