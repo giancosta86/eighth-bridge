@@ -3,8 +3,8 @@ package info.gianlucacosta.eighthbridge.fx.vertexnodes.labeled
 import info.gianlucacosta.eighthbridge.core.facets.HasLabel
 import info.gianlucacosta.eighthbridge.fx.VisualVertex
 import javafx.beans.property.SimpleObjectProperty
-import scalafx.beans.binding.Bindings
 import scalafx.Includes._
+import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ObjectProperty
 import scalafx.scene.control.Label
 

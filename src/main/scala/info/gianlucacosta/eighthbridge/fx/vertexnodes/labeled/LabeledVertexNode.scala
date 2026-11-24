@@ -4,9 +4,7 @@ import info.gianlucacosta.eighthbridge.core.facets.HasLabel
 import info.gianlucacosta.eighthbridge.fx.RegionUtils._
 import info.gianlucacosta.eighthbridge.fx.{GraphCanvas, VertexNode, VisualVertex}
 import scalafx.Includes._
-import scalafx.beans.binding.Bindings
 import scalafx.beans.property.ReadOnlyDoubleProperty
-import scalafx.scene.control.Label
 
 class LabeledVertexNode(graphCanvas: GraphCanvas, initialVertex: VisualVertex)
   extends VertexNode(graphCanvas, initialVertex) {

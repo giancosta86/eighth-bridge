@@ -1,10 +1,9 @@
 package info.gianlucacosta.eighthbridge.core
 
 import info.gianlucacosta.eighthbridge.core.MapUtils._
-import info.gianlucacosta.eighthbridge.core.directed.{Arc, DirectedAnchors, DirectedGraphExtensionOps, VertexFoldProcessor}
-import info.gianlucacosta.eighthbridge.core.undirected.{Edge, UndirectedAnchors, UndirectedGraphExtensionOps, UnionFind}
+import info.gianlucacosta.eighthbridge.core.directed.{Arc, DirectedAnchors, DirectedGraphExtensionOps}
+import info.gianlucacosta.eighthbridge.core.undirected.{Edge, UndirectedAnchors, UndirectedGraphExtensionOps}
 
-import scala.annotation.tailrec
 import scala.language.implicitConversions
 
 final class Graph[

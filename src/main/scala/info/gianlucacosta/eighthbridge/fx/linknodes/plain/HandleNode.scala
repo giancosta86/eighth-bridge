@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, DragContext, LinkHandle}
-import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
@@ -51,8 +50,6 @@ private class HandleNode(
       handle
     )
 
-  this.consumeMouseEvents()
-
   handleEvent(MouseEvent.MouseClicked) {
     (mouseEvent: MouseEvent) => {
       mouseEvent.button match {
@@ -60,6 +57,7 @@ private class HandleNode(
           mouseEvent.clickCount match {
             case 1 =>
               onRightClick(handle())
+              mouseEvent.consume()
 
             case _ =>
           }

@@ -1,7 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.labeled
 
 import info.gianlucacosta.eighthbridge.fx.{Delta2D, DragContext}
-import info.gianlucacosta.helios.fx.Includes.extendNode
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
 import scalafx.beans.binding.Bindings
