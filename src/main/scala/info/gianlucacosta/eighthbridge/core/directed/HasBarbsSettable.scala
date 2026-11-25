@@ -9,7 +9,7 @@ trait HasBarbsSettable extends TimestampedPrototype with Arc {
   override def barbs: ArcBarbs =
     _barbs
 
-  def setArcBarbs(barbs: ArcBarbs): this.type =
+  def setBarbs(barbs: ArcBarbs): this.type =
     if (barbs != _barbs) {
       val result =
         clone()
