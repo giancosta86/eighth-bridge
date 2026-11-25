@@ -161,7 +161,7 @@ class GraphCanvas extends Pane with PanContext with ZoomContext {
 
   fullRender()
 
-  private def fullRender(): Unit = {
+  def fullRender(): Unit = {
     _vertexNodesByVertex =
       Map[VisualVertex, VertexNode]()
 
