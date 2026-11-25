@@ -7,7 +7,7 @@
 }
 
 .selectionRectangle {
-    -fx-fill: #e5ffe0;
+    -fx-fill: #ffe4ba;
 }
 
 
@@ -66,12 +66,12 @@
  *-------*/
 
 .link .line {
-    -fx-stroke: #9fecf3;
+    -fx-stroke: #bbe1ff;
     -fx-stroke-width: 5;
 }
 
 .link .handle {
-    -fx-fill: #9fecf3;
+    -fx-fill: #bbe1ff;
 }
 
 .link .labelConnector {
@@ -90,9 +90,9 @@
  *------------------*/
 
 .link:selected .line {
-    -fx-stroke: #1545ff;
+    -fx-stroke: #ffce5a;
 }
 
 .link:selected .handle {
-    -fx-fill: #1545ff;
+    -fx-fill: #ffce5a;
 }
