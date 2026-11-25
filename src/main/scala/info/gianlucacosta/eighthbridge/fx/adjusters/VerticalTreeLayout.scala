@@ -1,0 +1,247 @@
+package info.gianlucacosta.eighthbridge.fx.adjusters
+
+import info.gianlucacosta.eighthbridge.core.Graph
+import info.gianlucacosta.eighthbridge.fx.facets.HasCenterSettable
+import info.gianlucacosta.eighthbridge.fx.{GraphAdjuster, GraphCanvas, VisualArc, VisualGraph, VisualVertex}
+
+class VerticalTreeLayout(
+                          minHorizontalGap: Double =
+                          40,
+                          verticalGap: Double =
+                          60,
+                          leftPadding: Double =
+                          15,
+                          topPadding: Double =
+                          15,
+                          rootSorter: RootSorter =
+                          DefaultRootSorter,
+                          successorSorter: SuccessorSorter =
+                          DefaultSuccessorSorter
+                        ) extends GraphAdjuster {
+
+  private var bandByVertex: Map[VisualVertex, Double] =
+    Map[VisualVertex, Double]()
+
+  private var heightByVertex: Map[VisualVertex, Double] =
+    Map[VisualVertex, Double]()
+
+  private var maxHeightByLevel: Map[Level, Double] =
+    Map[Level, Double]()
+
+  private def registerMetrics(graphCanvas: GraphCanvas, graph: Graph[VisualVertex, VisualArc]): Unit = {
+    def registerMetrics(level: Level, vertex: VisualVertex): Unit = {
+      val vertexNode =
+        graphCanvas.vertexNodesByVertex(vertex)
+
+      val width =
+        vertexNode.width()
+
+      val successors =
+        graph
+          .getSuccessors(vertex)
+
+      val minAggregateSuccessorBand =
+        if (successors.nonEmpty) {
+          successors.foreach(successor =>
+            registerMetrics(
+              level + 1,
+              successor
+            )
+          )
+
+          val jammedSuccessorBand =
+            successors
+              .toList
+              .map(bandByVertex)
+              .sum
+
+          println(s"??????? SUCCESSORS FOR ${vertex}: ${successors}")
+
+          println(s"======= JAMMED SUCCESSOR BAND FOR ${vertex}: ${jammedSuccessorBand}")
+
+          val minGapSpace =
+            minHorizontalGap * (successors.size - 1)
+
+          jammedSuccessorBand + minGapSpace
+        } else
+          0
+
+      val band =
+        Math.max(
+          width,
+          minAggregateSuccessorBand
+        )
+
+      require(
+        !bandByVertex.contains(vertex),
+        "The graph is not a tree!"
+      )
+
+      bandByVertex +=
+        (vertex -> band)
+
+      val height =
+        vertexNode.height()
+
+      heightByVertex +=
+        (vertex -> height)
+
+      if (height >= maxHeightByLevel.getOrElse(level, 0.0)) {
+        maxHeightByLevel +=
+          (level -> height)
+      }
+
+      println(s"%%%%%%%%% VERTEX NODE FOR ${vertex} @ ${level}: ${width} x ${height}")
+      println(s"!!!!!!!!! BAND FOR VERTEX ${vertex}: ${band}")
+      println()
+    }
+
+    graph
+      .rootVertexes
+      .foreach(rootVertex =>
+        registerMetrics(0, rootVertex)
+      )
+  }
+
+  private def positionVertexes(graph: Graph[VisualVertex, VisualArc]): VisualGraph = {
+    val levelCount =
+      maxHeightByLevel.size
+
+    val topByLevel =
+      Range(1, levelCount)
+        .foldLeft(List(0 -> 0.0))((cumulatedTuples, level) => {
+          val previousTop =
+            cumulatedTuples.head._2
+
+          val previousHeight =
+            maxHeightByLevel(level - 1)
+
+          val currentTop =
+            previousTop + previousHeight + verticalGap
+
+          (level -> currentTop) :: cumulatedTuples
+        })
+        .toMap
+
+    var updatedGraph =
+      graph
+
+    def positionVertexes(
+                          level: Level,
+                          parentBandLeft: Double,
+                          parentBand: Double,
+                          vertexes: List[VisualVertex]
+                        ): Unit = {
+      val jammedBand: Double =
+        vertexes.map(bandByVertex).sum
+
+      val freeSpaceInParentBand =
+        parentBand - jammedBand
+
+      val actualHorizontalGap =
+        freeSpaceInParentBand / (vertexes.size - 1)
+
+      vertexes.foldLeft(parentBandLeft)((cumulatedLeft, vertex) => {
+        val vertexBandLeft =
+          cumulatedLeft
+
+        val vertexBand =
+          bandByVertex(vertex)
+
+        val horizontalCenter =
+          vertexBandLeft + vertexBand / 2
+
+        val levelTop =
+          topByLevel(level)
+
+        val verticalCenter =
+          levelTop + heightByVertex(vertex) / 2
+
+        val updatedVertex =
+          vertex
+            .asInstanceOf[VisualVertex with HasCenterSettable]
+            .setCenter(
+              x =
+                horizontalCenter + leftPadding,
+              y =
+                verticalCenter + topPadding
+            )
+
+        updatedGraph =
+          updatedGraph.updateVertex(updatedVertex)
+
+        val successors =
+          updatedGraph.getSuccessors(vertex)
+
+        if (successors.nonEmpty) {
+          val sortedSuccessors =
+            successorSorter(level + 1, vertex, successors)
+
+          require(sortedSuccessors.toSet == successors)
+
+          positionVertexes(
+            level =
+              level + 1,
+            parentBandLeft =
+              vertexBandLeft,
+            parentBand =
+              vertexBand,
+            vertexes =
+              sortedSuccessors
+          )
+        }
+
+        horizontalCenter + vertexBand / 2 + actualHorizontalGap
+      })
+    }
+
+    val sortedRootVertexes =
+      rootSorter(
+        graph.rootVertexes
+      )
+
+    val jammedRootBand =
+      sortedRootVertexes
+        .map(bandByVertex)
+        .sum
+
+    val rootSpace =
+      minHorizontalGap * (sortedRootVertexes.size - 1)
+
+    val aggregateRootBand =
+      jammedRootBand + rootSpace
+
+    println(s"*****> AGGREGATE ROOT BAND: ${aggregateRootBand}")
+
+    require(sortedRootVertexes.toSet == graph.rootVertexes)
+
+    positionVertexes(
+      level =
+        0,
+      parentBandLeft =
+        0,
+      parentBand =
+        aggregateRootBand,
+      vertexes =
+        sortedRootVertexes
+    )
+
+    updatedGraph
+  }
+
+  override def adjustGraph(graphCanvas: GraphCanvas, graph: VisualGraph): VisualGraph = {
+    val actualGraph =
+      graph
+        .downcast
+
+    if (actualGraph.isEmpty) {
+      return actualGraph
+    }
+
+    registerMetrics(graphCanvas, actualGraph)
+
+    println(s"*****> MAX HEIGHT BY LEVEL: ${maxHeightByLevel}")
+
+    positionVertexes(actualGraph)
+  }
+}

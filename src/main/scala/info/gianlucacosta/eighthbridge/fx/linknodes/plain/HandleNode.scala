@@ -1,0 +1,76 @@
+package info.gianlucacosta.eighthbridge.fx.linknodes.plain
+
+import info.gianlucacosta.eighthbridge.fx.{Delta2D, DragContext, LinkHandle}
+import javafx.beans.property.SimpleObjectProperty
+import scalafx.Includes._
+import scalafx.beans.binding.Bindings
+import scalafx.beans.property.ObjectProperty
+import scalafx.scene.input.{MouseButton, MouseEvent}
+import scalafx.scene.shape.Ellipse
+
+private class HandleNode(
+                          initialHandle: LinkHandle,
+                          onRightClick: HandleRightClickHandler,
+                          onDrag: HandleDragHandler
+                        ) extends Ellipse with DragContext {
+  styleClass.add("handle")
+
+  val handle: ObjectProperty[LinkHandle] =
+    new SimpleObjectProperty[LinkHandle](initialHandle)
+
+  radiusX <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().dimension.width / 2,
+
+      handle
+    )
+
+  radiusY <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().dimension.height / 2,
+
+      handle
+    )
+
+  centerX <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().center.x,
+
+      handle
+    )
+
+  centerY <==
+    Bindings.createDoubleBinding(
+      () =>
+        handle().center.y,
+
+      handle
+    )
+
+  handleEvent(MouseEvent.MouseClicked) {
+    (mouseEvent: MouseEvent) => {
+      mouseEvent.button match {
+        case MouseButton.Secondary =>
+          mouseEvent.clickCount match {
+            case 1 =>
+              onRightClick(handle())
+              mouseEvent.consume()
+
+            case _ =>
+          }
+
+        case _ =>
+      }
+    }
+  }
+
+  override protected def handleDrag(deltaFromLatest: Delta2D, event: MouseEvent, startEvent: MouseEvent): Unit = {
+    onDrag(
+      handle(),
+      deltaFromLatest
+    )
+  }
+}
