@@ -11,6 +11,13 @@ trait HasWeight {
 }
 
 object HasWeight {
+  implicit class WeightedIterableExtensions(self: Iterable[HasWeight]) {
+    def totalWeight: Weight =
+      self
+        .map(_.weight)
+        .sum
+  }
+
   implicit class WeightedGraphExtensions[V <: Vertex, L <: Link with HasWeight](self: Graph[V, L]) {
     def getMinLinkBetween(source: V, target: V): Option[L] =
       self
