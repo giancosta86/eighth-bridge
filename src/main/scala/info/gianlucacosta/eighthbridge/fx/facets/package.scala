@@ -42,7 +42,7 @@ package object facets {
   }
 
   implicit class AllFacetsExtensions[T <: AnyRef](self: T) {
-    def copyAllFacetsFrom(source: AnyRef): T =
+    def copyFacetsFrom(source: AnyRef): T =
       self
         .copyCoreFacetsFrom(source)
         .copyFxFacetsFrom(source)
