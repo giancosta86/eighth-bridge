@@ -1,7 +1,8 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
 import info.gianlucacosta.eighthbridge.core.bottomright.Point2DExtension
-import info.gianlucacosta.eighthbridge.core.directed.{Arc, ArcBarbs}
+import info.gianlucacosta.eighthbridge.core.directed.Arc
+import info.gianlucacosta.eighthbridge.core.facets.Barbs
 import info.gianlucacosta.eighthbridge.core.{Facet, Link}
 import info.gianlucacosta.eighthbridge.fx.facets.HasHandles
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.PlainLinkNode.getActualBarbs
@@ -11,7 +12,7 @@ import scalafx.beans.binding.Bindings
 import scalafx.geometry.Point2D
 
 object PlainLinkNode {
-  def getActualBarbs(link: Link): Option[ArcBarbs] =
+  def getActualBarbs(link: Link): Option[Barbs] =
     Facet
       .as[Arc](link)
       .map(_.barbs)

@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx.linknodes.plain
 
-import info.gianlucacosta.eighthbridge.core.directed.ArcBarbs
+import info.gianlucacosta.eighthbridge.core.facets.Barbs
 import info.gianlucacosta.eighthbridge.fx.linknodes.plain.BarbsNode.ArcBarbsExtensions
 import javafx.beans.property.SimpleObjectProperty
 import scalafx.Includes._
@@ -14,7 +14,7 @@ import java.lang.Math.{cos, sqrt, toRadians}
 private class BarbsNode(
                          initialSourcePoint: Point2D,
                          initialIntersectionPoint: Option[Point2D],
-                         initialArcBarbs: Option[ArcBarbs]
+                         initialArcBarbs: Option[Barbs]
                        ) extends Group {
   val sourcePoint: ObjectProperty[Point2D] =
     new SimpleObjectProperty[Point2D](initialSourcePoint)
@@ -22,8 +22,8 @@ private class BarbsNode(
   val intersectionPoint: ObjectProperty[Option[Point2D]] =
     new SimpleObjectProperty[Option[Point2D]](initialIntersectionPoint)
 
-  val arcBarbs: ObjectProperty[Option[ArcBarbs]] =
-    new SimpleObjectProperty[Option[ArcBarbs]](initialArcBarbs)
+  val arcBarbs: ObjectProperty[Option[Barbs]] =
+    new SimpleObjectProperty[Option[Barbs]](initialArcBarbs)
 
   private val sidePoints =
     Bindings.createObjectBinding[Option[(Point2D, Point2D)]](
@@ -85,7 +85,7 @@ private class BarbsNode(
 }
 
 private object BarbsNode {
-  implicit class ArcBarbsExtensions(self: ArcBarbs) {
+  implicit class ArcBarbsExtensions(self: Barbs) {
     def getSidePoints(arrowSource: Point2D, arrowTarget: Point2D): Option[(Point2D, Point2D)] = {
       if (arrowSource == arrowTarget) {
         return None

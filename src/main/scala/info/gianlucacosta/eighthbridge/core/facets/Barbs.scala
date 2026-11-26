@@ -1,6 +1,6 @@
-package info.gianlucacosta.eighthbridge.core.directed
+package info.gianlucacosta.eighthbridge.core.facets
 
-case class ArcBarbs(
+case class Barbs(
                      angleInDegrees: Double,
                      length: Double
                    ) {
@@ -9,8 +9,8 @@ case class ArcBarbs(
   require(length > 0)
 }
 
-object ArcBarbs {
-  val Default = ArcBarbs(
+object Barbs {
+  val Default = Barbs(
     angleInDegrees = 30,
     length = 15
   )
