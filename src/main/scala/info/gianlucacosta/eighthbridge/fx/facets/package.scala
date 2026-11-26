@@ -1,7 +1,7 @@
 package info.gianlucacosta.eighthbridge.fx
 
+import info.gianlucacosta.eighthbridge.core.Facet
 import info.gianlucacosta.eighthbridge.core.facets.CoreFacetsExtensions
-import info.gianlucacosta.eighthbridge.core.{Facet, Vertex}
 
 package object facets {
   implicit class FxFacetsExtensions[T <: AnyRef](self: T) {
