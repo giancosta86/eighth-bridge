@@ -1,6 +1,6 @@
 package info.gianlucacosta.eighthbridge.fx
 
-import info.gianlucacosta.eighthbridge.core.Facet
+import info.gianlucacosta.eighthbridge.core.{Facet, Graph, Link, Vertex}
 import info.gianlucacosta.eighthbridge.core.facets.CoreFacetsExtensions
 
 package object facets {
@@ -46,5 +46,56 @@ package object facets {
       self
         .copyCoreFacetsFrom(source)
         .copyFxFacetsFrom(source)
+  }
+
+  implicit class GraphExtensions[SourceV <: Vertex, SourceL <: Link](
+     self: Graph[SourceV, SourceL]
+   ) {
+    def mapWithFacetsTo[TargetV <: Vertex, TargetL <: Link](
+       targetVertexCreator: (SourceV) => TargetV,
+       targetLinkCreator: (SourceV, SourceV, SourceL) => TargetL
+     ): Graph[TargetV, TargetL] = {
+      var targetGraph: Graph[TargetV, TargetL] = (
+        if (self.isDirected)
+          Graph.createDirected()
+        else
+          Graph.createUndirected()
+        ).asInstanceOf[Graph[TargetV, TargetL]]
+
+      var targetVertexBySourceVertex: Map[SourceV, TargetV] =
+        Map[SourceV, TargetV]()
+
+      self.vertexes.foreach(sourceVertex => {
+        val targetVertex =
+          targetVertexCreator(sourceVertex)
+            .copyFacetsFrom(sourceVertex)
+
+        targetVertexBySourceVertex +=
+          sourceVertex -> targetVertex
+
+        targetGraph =
+          targetGraph.addVertex(targetVertex)
+      })
+
+      self.links.foreach(sourceLink => {
+        val (firstSourceAnchor, secondSourceAnchor): (SourceV, SourceV) =
+          self.anchorsByLink(sourceLink).toPair
+
+        val targetAnchors =
+          (
+            targetVertexBySourceVertex(firstSourceAnchor),
+            targetVertexBySourceVertex(secondSourceAnchor)
+          )
+
+        val targetLink: TargetL =
+          targetLinkCreator(firstSourceAnchor, secondSourceAnchor, sourceLink)
+            .copyFacetsFrom(sourceLink)
+
+        targetGraph =
+          targetGraph.addLink(targetAnchors, targetLink)
+      })
+
+      targetGraph
+    }
   }
 }
