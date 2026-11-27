@@ -12,7 +12,7 @@ final class Graph[
 ] private (
    val vertexes: Set[V],
    val linksByAnchors: Map[Anchors[V], Set[L]],
-   anchorsCreator: AnchorsCreator[V],
+   anchorsCreator: (V, V) => Anchors[V],
    val isDirected: Boolean
  ) {
   @transient
